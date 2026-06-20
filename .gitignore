@@ -1,0 +1,16 @@
+node_modules
+.env
+.env.local
+.env.*.local
+.next
+.trae
+.local
+.agents
+skills-lock.json
+tsconfig.tsbuildinfo
+dist
+build
+coverage
+*.log
+.DS_Store
+._*
