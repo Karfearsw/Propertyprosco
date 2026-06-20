@@ -5,11 +5,13 @@ import { requireRole } from '@/lib/auth-guards'
 import SubscribeCard from '@/components/billing/SubscribeCard'
 import BillingStatusBanner from '@/components/billing/BillingStatusBanner'
 import { getBillingStatusLabel } from '@/lib/billing-state'
+import { getBillingPlan } from '@/lib/billing-config'
 
 export const metadata = { title: 'Billing' }
 
 export default async function RealtorBillingPage() {
   const user = await requireRole('REALTOR')
+  const plan = getBillingPlan('REALTOR')
   const realtor = await db.realtorProfile.findUnique({
     where: { userId: user.id },
   })
@@ -42,23 +44,16 @@ export default async function RealtorBillingPage() {
 
       <div className="mb-4">
         <SubscribeCard
-          title="Realtor Plan"
-          amountLabel="$24.99 / month · Unlimited clients"
-          description="Use Stripe to activate your monthly subscription and manage cancellation or card updates without a support email loop."
-          features={[
-            'Unlimited client management',
-            'Post projects on behalf of clients',
-            'Direct messaging with contractors',
-            'Track deadlines and inspections',
-            'Referral program access',
-            'Priority support',
-          ]}
+          title={plan.planName}
+          amountLabel={plan.amountLabel}
+          description={plan.summary}
+          features={plan.features.slice(0, 6)}
           status={status}
-          subscribeHref="/realtor/billing/subscribe"
+          subscribeHref={plan.subscribePath}
           manageEnabled={canManageBilling}
           manageLabel="Open Billing Portal"
-          accentButtonClassName="bg-pp-gold hover:bg-amber-800"
-          manageButtonClassName="w-full rounded-xl border border-pp-border px-5 py-3 text-[14px] font-black text-pp-dark hover:border-pp-gold hover:text-pp-gold transition-all"
+          accentButtonClassName={plan.accentButtonClassName}
+          manageButtonClassName={`w-full rounded-xl border border-pp-border px-5 py-3 text-[14px] font-black text-pp-dark transition-all ${plan.manageButtonHoverClassName}`}
           icon={<CreditCard size={24} className="text-pp-gold" />}
         />
       </div>

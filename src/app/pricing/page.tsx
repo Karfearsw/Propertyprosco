@@ -1,8 +1,12 @@
 import MarketingShell from '@/components/layout/MarketingShell'
 import Link from 'next/link'
 import { CheckCircle } from 'lucide-react'
+import { getBillingPlan } from '@/lib/billing-config'
 
 export const metadata = { title: 'Pricing' }
+
+const proPlan = getBillingPlan('PRO')
+const realtorPlan = getBillingPlan('REALTOR')
 
 const plans = [
   {
@@ -18,29 +22,29 @@ const plans = [
     features: ['Post unlimited projects','Receive unlimited quotes','Message pros directly','Two-way verified ratings','Save & manage favorite pros','Project history & tracking','Always free — no credit card ever'],
   },
   {
-    name: 'Service Pro',
-    price: '$9.99',
-    period: '/month',
+    name: proPlan.marketingName,
+    price: proPlan.amountLabel.split(' /')[0],
+    period: `/${proPlan.intervalLabel}`,
     color: 'text-pp-red',
     border: 'border-red-200',
     bg: 'bg-pp-red-light',
     btn: 'bg-pp-red hover:bg-pp-red-dark',
-    href: '/signup/pro',
+    href: proPlan.signupPath,
     cta: 'Start Pro account',
     popular: true,
-    features: ['Unlimited leads in your area','Send unlimited quotes','Verified business profile','License & insurance badge','Direct messaging','Schedule management','Saved leads','Priority listing in search','Flat monthly pricing — no per-lead fees'],
+    features: proPlan.features,
   },
   {
-    name: 'Realtor',
-    price: '$24.99',
-    period: '/month',
+    name: realtorPlan.marketingName,
+    price: realtorPlan.amountLabel.split(' /')[0],
+    period: `/${realtorPlan.intervalLabel}`,
     color: 'text-pp-gold',
     border: 'border-amber-200',
     bg: 'bg-pp-gold-light',
     btn: 'bg-pp-gold hover:bg-amber-800',
-    href: '/signup/realtor',
+    href: realtorPlan.signupPath,
     cta: 'Start Realtor account',
-    features: ['Unlimited client management','Post projects on behalf of clients','Assign pros to listings','Track deadlines & inspections','Direct messaging with contractors','Referral program access','Priority support','Flat monthly pricing — cancel anytime'],
+    features: realtorPlan.features,
   },
 ]
 

@@ -3,7 +3,7 @@ import { SubscriptionStatus } from '@prisma/client'
 import { z } from 'zod'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
-import { getBillingPlan, isBillingRole } from '@/lib/billing-config'
+import { getBillingPlan, getBillingPriceId, isBillingRole } from '@/lib/billing-config'
 import { normalizeStripeSubscriptionStatus } from '@/lib/billing-state'
 import { env, requireStripeBillingEnv } from '@/lib/env'
 import { getStripeServer } from '@/lib/stripe-server'
@@ -23,8 +23,10 @@ export async function POST(req: Request) {
     requireStripeBillingEnv()
     const stripe = getStripeServer()
     const plan = getBillingPlan(session.user.role)
-    const priceId =
-      session.user.role === 'PRO' ? env.stripeProPriceId : env.stripeRealtorPriceId
+    const priceId = getBillingPriceId(session.user.role, {
+      stripeProPriceId: env.stripeProPriceId,
+      stripeRealtorPriceId: env.stripeRealtorPriceId,
+    })
 
     if (!priceId) {
       return NextResponse.json({ error: 'Billing is not configured for this plan yet.' }, { status: 500 })

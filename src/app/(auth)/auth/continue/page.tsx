@@ -9,7 +9,11 @@ import {
   parseDesiredRole,
   roleLabel,
 } from '@/lib/auth-flows'
+import { getBillingPlan } from '@/lib/billing-config'
 import { roleHome } from '@/lib/role-routes'
+
+const proPlan = getBillingPlan('PRO')
+const realtorPlan = getBillingPlan('REALTOR')
 
 const roleCards = [
   {
@@ -22,7 +26,7 @@ const roleCards = [
   },
   {
     role: 'PRO' as const,
-    eyebrow: '$9.99/month',
+    eyebrow: proPlan.amountLabel.replace(' / ', '/'),
     title: 'I offer home services',
     description: 'Get matched leads, manage quotes, and keep all client messages in one dashboard.',
     accentClass: 'border-red-200 bg-red-50 text-red-700',
@@ -30,7 +34,7 @@ const roleCards = [
   },
   {
     role: 'REALTOR' as const,
-    eyebrow: '$24.99/month',
+    eyebrow: realtorPlan.amountLabel.replace(' / ', '/'),
     title: 'I coordinate projects for clients',
     description: 'Manage clients, projects, referrals, and communication from one workspace.',
     accentClass: 'border-amber-200 bg-amber-50 text-amber-800',

@@ -3,11 +3,15 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Home, Hammer, Briefcase } from 'lucide-react'
+import { getBillingPlan } from '@/lib/billing-config'
+
+const proPlan = getBillingPlan('PRO')
+const realtorPlan = getBillingPlan('REALTOR')
 
 const roles = [
   { id: 'homeowner', icon: <Home size={26}/>, name: 'Property Owner', desc: 'I need a trusted pro for my home', price: '✓ Free forever', priceColor: 'text-pp-green', selClass:'border-pp-green bg-pp-green-light' },
-  { id: 'pro',       icon: <Hammer size={26}/>, name: 'Service Pro', desc: 'I offer home improvement services', price: '$9.99 / month', priceColor: 'text-pp-red',  selClass:'border-pp-red bg-pp-red-light' },
-  { id: 'realtor',   icon: <Briefcase size={26}/>, name: 'Realtor', desc: 'I manage contractors for clients', price: '$29.99 / month', priceColor: 'text-pp-gold', selClass:'border-pp-gold bg-pp-gold-light' },
+  { id: 'pro',       icon: <Hammer size={26}/>, name: proPlan.marketingName, desc: 'I offer home improvement services', price: proPlan.amountLabel, priceColor: 'text-pp-red',  selClass:'border-pp-red bg-pp-red-light' },
+  { id: 'realtor',   icon: <Briefcase size={26}/>, name: realtorPlan.marketingName, desc: 'I manage contractors for clients', price: realtorPlan.amountLabel, priceColor: 'text-pp-gold', selClass:'border-pp-gold bg-pp-gold-light' },
 ]
 
 export default function SignupPage() {
@@ -34,7 +38,7 @@ export default function SignupPage() {
           <h2 className="text-[34px] font-black text-white tracking-tight leading-tight mb-4">Choose how you use<br />Property Pros.</h2>
           <p className="text-[15px] text-gray-400 leading-relaxed mb-8 max-w-sm">Three types of accounts — each built for a different role in the home services world.</p>
           <div className="space-y-3.5">
-            {[['🏠','Property Owners post projects free — always'],['🔨','Service pros get unlimited leads for $9.99/mo'],['💼','Realtors manage clients & contractors for $24.99/mo']].map(([icon,text]) => (
+            {[['🏠','Property Owners post projects free — always'],['🔨',`Service pros get unlimited leads for ${proPlan.amountLabel}`],['💼',`Realtors manage clients & contractors for ${realtorPlan.amountLabel}`]].map(([icon,text]) => (
               <div key={text} className="flex items-center gap-3 text-[14px] font-bold text-gray-300">
                 <div className="w-9 h-9 rounded-[10px] bg-white/8 flex items-center justify-center text-base shrink-0">{icon}</div>{text}
               </div>
@@ -42,7 +46,7 @@ export default function SignupPage() {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-3 relative z-10">
-          {[['Free','Property Owners'],['$9.99','Pros / mo'],['$24.99','Realtors / mo']].map(([n,l]) => (
+          {[['Free','Property Owners'],[proPlan.amountLabel.split(' /')[0],'Pros / mo'],[realtorPlan.amountLabel.split(' /')[0],'Realtors / mo']].map(([n,l]) => (
             <div key={l} className="bg-white/6 border border-white/8 rounded-xl p-3.5">
               <div className="text-xl font-black text-white">{n}</div>
               <div className="text-[11px] text-gray-500 font-bold mt-0.5">{l}</div>

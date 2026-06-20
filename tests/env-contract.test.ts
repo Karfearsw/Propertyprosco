@@ -61,7 +61,7 @@ test('rejects partial Stripe billing configuration', () => {
   )
 })
 
-test('accepts a complete production-ready contract', () => {
+test('rejects test Stripe keys in production validation', () => {
   const report = validateEnvContract(
     {
       DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
@@ -74,6 +74,56 @@ test('accepts a complete production-ready contract', () => {
       SMTP_PASS: 'smtp-pass',
       STRIPE_SECRET_KEY: 'sk_test_123',
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
+      STRIPE_WEBHOOK_SECRET: 'whsec_123',
+      STRIPE_PRO_PRICE_ID: 'price_pro_123',
+      STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+    },
+    'production',
+  )
+
+  assert.ok(
+    report.errors.includes('STRIPE_SECRET_KEY must be a live key in production, not a test key.'),
+  )
+  assert.ok(
+    report.errors.includes(
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY must be a live key in production, not a test key.',
+    ),
+  )
+})
+
+test('rejects malformed Stripe identifier prefixes', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    STRIPE_SECRET_KEY: 'secret_123',
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'publishable_123',
+    STRIPE_WEBHOOK_SECRET: 'webhook_123',
+    STRIPE_PRO_PRICE_ID: 'pro_123',
+    STRIPE_REALTOR_PRICE_ID: 'realtor_123',
+  })
+
+  assert.ok(report.errors.includes('STRIPE_SECRET_KEY must start with sk_.'))
+  assert.ok(
+    report.errors.includes('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY must start with pk_.'),
+  )
+  assert.ok(report.errors.includes('STRIPE_WEBHOOK_SECRET must start with whsec_.'))
+  assert.ok(report.errors.includes('STRIPE_PRO_PRICE_ID must start with price_.'))
+  assert.ok(report.errors.includes('STRIPE_REALTOR_PRICE_ID must start with price_.'))
+})
+
+test('accepts a complete production-ready contract', () => {
+  const report = validateEnvContract(
+    {
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+      AUTH_SECRET: 'production-secret',
+      NEXTAUTH_URL: 'https://app.example.com',
+      SMTP_HOST: 'smtp.example.com',
+      SMTP_PORT: '587',
+      SMTP_FROM: 'Property Pros <noreply@example.com>',
+      SMTP_USER: 'smtp-user',
+      SMTP_PASS: 'smtp-pass',
+      STRIPE_SECRET_KEY: 'sk_live_123',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_live_123',
       STRIPE_WEBHOOK_SECRET: 'whsec_123',
       STRIPE_PRO_PRICE_ID: 'price_pro_123',
       STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',

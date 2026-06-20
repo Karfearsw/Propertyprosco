@@ -64,6 +64,20 @@ Paid Pro and Realtor billing requires the following values:
 - `STRIPE_REALTOR_PRICE_ID`
 - `STRIPE_BILLING_PORTAL_RETURN_URL` optional override for the billing portal return path
 
+Production billing guidance:
+
+- Use live Stripe keys for production. Test keys are valid for local and test-mode work only.
+- Use correctly formatted Stripe identifiers:
+  - `STRIPE_SECRET_KEY` -> `sk_live_...`
+  - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` -> `pk_live_...`
+  - `STRIPE_WEBHOOK_SECRET` -> `whsec_...`
+  - `STRIPE_PRO_PRICE_ID` and `STRIPE_REALTOR_PRICE_ID` -> `price_...`
+- The app keeps role-based mapping server-side:
+  - `STRIPE_REALTOR_PRICE_ID` powers the Realtor plan
+  - `STRIPE_PRO_PRICE_ID` powers the Pro plan
+- Stripe Buy Button IDs or hosted test checkout URLs can be used as product references during setup, but the authenticated app billing flow still runs through Stripe Elements, setup intents, server-side subscription creation, and webhooks.
+- On Vercel, set these as encrypted project env vars for Preview and Production separately, then confirm the webhook destination matches the deployed app origin before turning on live billing.
+
 ## Validation Scripts
 
 - `npm run prisma:validate`: validates Prisma schema configuration.

@@ -4,6 +4,9 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { getBillingPlan } from '@/lib/billing-config'
+
+const plan = getBillingPlan('REALTOR')
 
 export default function RealtorSignupPage() {
   const router = useRouter()
@@ -42,8 +45,11 @@ export default function RealtorSignupPage() {
           <p className="text-[15px] text-gray-400 leading-relaxed mb-6">One dashboard for all your clients, contractors, and deadlines. Close faster. Stress less.</p>
           <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-6">Monthly billing starts after you activate your subscription.</div>
           <div className="space-y-3.5">
-            {[['👥','Manage all your clients in one place'],['🔨','Assign vetted pros per listing'],['📅','Track deadlines & inspections'],['📊','$24.99/mo flat — no per-use fees']].map(([i,t]) => (
-              <div key={t} className="flex items-center gap-3 text-[14px] font-bold text-gray-300"><div className="w-9 h-9 rounded-[10px] bg-white/8 flex items-center justify-center shrink-0">{i}</div>{t}</div>
+            {plan.features.slice(0, 4).map((feature) => (
+              <div key={feature} className="flex items-center gap-3 text-[14px] font-bold text-gray-300">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-white/8">OK</div>
+                {feature}
+              </div>
             ))}
           </div>
         </div>
@@ -53,7 +59,7 @@ export default function RealtorSignupPage() {
         <div className="w-full max-w-[440px]">
           <h1 className="text-[24px] font-black text-pp-dark tracking-tight mb-1.5">Create your realtor account</h1>
           <p className="text-[14px] text-pp-gray mb-5">Already have an account? <Link href="/login" className="text-pp-red font-extrabold hover:underline">Log in</Link></p>
-          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-5">You&apos;ll go to billing next to activate your $24.99/month subscription.</div>
+          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-5">You&apos;ll go to billing next to activate your {plan.amountLabel} subscription.</div>
 
           {error && <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[13px] font-bold rounded-xl px-4 py-3 mb-4"><AlertCircle size={14}/>{error}</div>}
 

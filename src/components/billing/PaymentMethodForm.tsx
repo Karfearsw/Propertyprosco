@@ -3,18 +3,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { StripeElementsOptions } from '@stripe/stripe-js'
+import type { BillingPlan } from '@/lib/billing-config'
 import { stripeClientPromise } from '@/lib/stripe-client'
 
 type PaymentMethodFormProps = {
-  planName: string
-  amountLabel: string
-  billingPath: string
+  plan: BillingPlan
 }
 
 function PaymentMethodFields({
-  planName,
-  amountLabel,
-  billingPath,
+  plan,
 }: PaymentMethodFormProps) {
   const stripe = useStripe()
   const elements = useElements()
@@ -59,7 +56,7 @@ function PaymentMethodFields({
         throw new Error(data.error ?? 'Unable to start your subscription.')
       }
 
-      window.location.href = data.redirectTo ?? billingPath
+      window.location.href = data.redirectTo ?? plan.billingPath
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unable to start your subscription.')
       setIsSaving(false)
@@ -70,8 +67,8 @@ function PaymentMethodFields({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="rounded-2xl border border-pp-border bg-white p-5">
         <div className="mb-4">
-          <h2 className="text-[18px] font-black text-pp-dark">{planName}</h2>
-          <p className="text-[13px] font-bold text-pp-gray">{amountLabel}</p>
+          <h2 className="text-[18px] font-black text-pp-dark">{plan.planName}</h2>
+          <p className="text-[13px] font-bold text-pp-gray">{plan.amountLabel}</p>
           <p className="mt-2 text-[12px] font-bold text-pp-gray">
             Your billing starts as soon as Stripe confirms your payment method and creates
             your subscription.

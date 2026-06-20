@@ -4,6 +4,10 @@ import MarketingShell from '@/components/layout/MarketingShell'
 import ServiceIcon from '@/components/brand/ServiceIcon'
 import TrustBadge from '@/components/brand/TrustBadge'
 import DiscoverySearchForm from '@/components/find-a-pro/DiscoverySearchForm'
+import { getBillingPlan } from '@/lib/billing-config'
+
+const proPlan = getBillingPlan('PRO')
+const realtorPlan = getBillingPlan('REALTOR')
 
 const services = [
   { name: 'Roofing',      count: '2,400+ pros' },
@@ -128,8 +132,8 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
             {[
               { type:'homeowner', icon:<Home size={32}/>, badge:'Property Owner', title:'Post Projects Free', price:'Always free',  priceColor:'text-pp-green', borderColor:'border-green-200', bg:'bg-pp-green-light', btnBg:'bg-pp-green hover:bg-green-700', features:['Post unlimited projects','Compare quotes side-by-side','Verified licensed pros only','Free forever — no credit card'], href:'/signup/homeowner' },
-              { type:'pro',       icon:<Hammer size={32}/>, badge:'Service Pro',  title:'Get Unlimited Leads', price:'$9.99/month', priceColor:'text-pp-red',   borderColor:'border-red-200',   bg:'bg-pp-red-light',   btnBg:'bg-pp-red hover:bg-pp-red-dark',   features:['Unlimited leads in your area','Send quotes directly to owners','Build your verified profile','Monthly plan with no per-lead fees'], href:'/signup/pro' },
-              { type:'realtor',   icon:<Briefcase size={32}/>, badge:'Realtor',  title:'Manage Clients & Pros', price:'$24.99/month', priceColor:'text-pp-gold', borderColor:'border-amber-200', bg:'bg-pp-gold-light',  btnBg:'bg-pp-gold hover:bg-amber-800',    features:['Manage all your clients','Assign contractors per listing','Track deadlines & inspections','Monthly plan with cancel-anytime billing'], href:'/signup/realtor' },
+              { type:'pro',       icon:<Hammer size={32}/>, badge:proPlan.marketingName,  title:'Get Unlimited Leads', price:proPlan.amountLabel.replace(' / ', '/'), priceColor:'text-pp-red',   borderColor:'border-red-200',   bg:'bg-pp-red-light',   btnBg:'bg-pp-red hover:bg-pp-red-dark',   features:proPlan.features.slice(0, 4), href:proPlan.signupPath },
+              { type:'realtor',   icon:<Briefcase size={32}/>, badge:realtorPlan.marketingName,  title:'Manage Clients & Pros', price:realtorPlan.amountLabel.replace(' / ', '/'), priceColor:'text-pp-gold', borderColor:'border-amber-200', bg:'bg-pp-gold-light',  btnBg:'bg-pp-gold hover:bg-amber-800',    features:realtorPlan.features.slice(0, 4), href:realtorPlan.signupPath },
             ].map(u => (
               <div key={u.type} className={`rounded-3xl p-8 ${u.bg} border ${u.borderColor} hover:-translate-y-1 transition-transform`}>
                 <div className="text-center mb-5">

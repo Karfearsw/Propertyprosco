@@ -79,6 +79,40 @@ function validateNumberLike(report: EnvValidationReport, input: EnvMap, name: st
   report.errors.push(`${name} must be a valid number.`)
 }
 
+function validatePrefix(report: EnvValidationReport, input: EnvMap, name: string, prefix: string) {
+  const value = readEnvValue(input, name)
+  if (!value || value.startsWith(prefix)) {
+    return
+  }
+
+  report.errors.push(`${name} must start with ${prefix}.`)
+}
+
+function validateStripeFormats(report: EnvValidationReport, input: EnvMap) {
+  validatePrefix(report, input, 'STRIPE_SECRET_KEY', 'sk_')
+  validatePrefix(report, input, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY', 'pk_')
+  validatePrefix(report, input, 'STRIPE_WEBHOOK_SECRET', 'whsec_')
+  validatePrefix(report, input, 'STRIPE_PRO_PRICE_ID', 'price_')
+  validatePrefix(report, input, 'STRIPE_REALTOR_PRICE_ID', 'price_')
+}
+
+function validateStripeMode(report: EnvValidationReport, input: EnvMap, target: ValidationTarget) {
+  if (target !== 'production') return
+
+  const stripeSecretKey = readEnvValue(input, 'STRIPE_SECRET_KEY')
+  const stripePublishableKey = readEnvValue(input, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+
+  if (stripeSecretKey?.startsWith('sk_test_')) {
+    report.errors.push('STRIPE_SECRET_KEY must be a live key in production, not a test key.')
+  }
+
+  if (stripePublishableKey?.startsWith('pk_test_')) {
+    report.errors.push(
+      'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY must be a live key in production, not a test key.',
+    )
+  }
+}
+
 export function validateEnvContract(
   input: EnvMap,
   target: ValidationTarget = 'local',
@@ -123,6 +157,9 @@ export function validateEnvContract(
     const missingStripe = findMissing(input, STRIPE_REQUIRED_VARS)
     report.errors.push(`Stripe billing requires: ${missingStripe.join(', ')}.`)
   }
+
+  validateStripeMode(report, input, target)
+  validateStripeFormats(report, input)
 
   if (target === 'production' && !hasCompleteSmtp && !hasAnonymousSmtp) {
     report.warnings.push(

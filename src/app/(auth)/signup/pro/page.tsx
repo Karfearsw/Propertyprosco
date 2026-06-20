@@ -4,10 +4,12 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle, Check } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { getBillingPlan } from '@/lib/billing-config'
 
 const SERVICE_LIST = ['Roofing','Plumbing','Electrical','Painting','Landscaping','Remodeling','HVAC','Windows','Flooring','Masonry','Driveways','Fencing','Deck / Patio','Handyman','Gutters']
 
 const steps = ['Account','Business','Services','Review']
+const plan = getBillingPlan('PRO')
 
 export default function ProSignupPage() {
   const router  = useRouter()
@@ -69,13 +71,16 @@ export default function ProSignupPage() {
           <h2 className="text-[34px] font-black text-white tracking-tight leading-tight mb-4">Start getting<br />leads today.</h2>
           <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-6">Monthly billing starts after you activate your subscription.</div>
           <div className="space-y-3.5">
-            {[['⚡','Unlimited leads in your service area'],['📊','Your own verified business profile'],['💬','Direct messaging with homeowners'],['💰','Flat $9.99/mo — no per-lead fees']].map(([i,t]) => (
-              <div key={t} className="flex items-center gap-3 text-[14px] font-bold text-gray-300"><div className="w-9 h-9 rounded-[10px] bg-white/8 flex items-center justify-center shrink-0">{i}</div>{t}</div>
+            {plan.features.slice(0, 4).map((feature) => (
+              <div key={feature} className="flex items-center gap-3 text-[14px] font-bold text-gray-300">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-white/8">OK</div>
+                {feature}
+              </div>
             ))}
           </div>
         </div>
         <div className="grid grid-cols-3 gap-3 relative z-10">
-          {[['$9.99','/month'],['$0','Per lead'],['Stripe','Secure billing']].map(([n,l]) => (
+          {[[plan.amountLabel.split(' /')[0],`/${plan.intervalLabel}`],['$0','Per lead'],['Stripe','Secure billing']].map(([n,l]) => (
             <div key={l} className="bg-white/6 border border-white/8 rounded-xl p-3.5"><div className="text-xl font-black text-white">{n}</div><div className="text-[11px] text-gray-500 font-bold mt-0.5">{l}</div></div>
           ))}
         </div>
@@ -184,7 +189,7 @@ export default function ProSignupPage() {
                 <div><span className="text-pp-gray">License:</span> {form.licenseNumber||'Not added yet'}</div>
                 <div><span className="text-pp-gray">Credentials:</span> {[form.licensed && 'Licensed', form.insured && 'Insured', form.backgroundCheck && 'Background checked'].filter(Boolean).join(', ') || 'Pending setup'}</div>
               </div>
-              <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">You&apos;ll head to billing next to activate your $9.99/month subscription.</div>
+              <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">You&apos;ll head to billing next to activate your {plan.amountLabel} subscription.</div>
               <div className="flex gap-3">
                 <button onClick={()=>setStep(2)} className="flex-shrink-0 px-5 py-3.5 rounded-xl bg-pp-dark text-white text-[14px] font-bold">← Back</button>
                 <button onClick={submit} disabled={loading} className="flex-1 py-3.5 rounded-xl bg-pp-red text-white text-[15px] font-black hover:bg-pp-red-dark transition-all disabled:opacity-60">

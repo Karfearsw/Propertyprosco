@@ -5,11 +5,13 @@ import { requireRole } from '@/lib/auth-guards'
 import SubscribeCard from '@/components/billing/SubscribeCard'
 import BillingStatusBanner from '@/components/billing/BillingStatusBanner'
 import { getBillingStatusLabel } from '@/lib/billing-state'
+import { getBillingPlan } from '@/lib/billing-config'
 
 export const metadata = { title: 'Billing' }
 
 export default async function ProBillingPage() {
   const user = await requireRole('PRO')
+  const plan = getBillingPlan('PRO')
   const pro = await db.proProfile.findUnique({
     where: { userId: user.id },
     include: { user: true },
@@ -44,23 +46,16 @@ export default async function ProBillingPage() {
 
       <div className="mb-4">
         <SubscribeCard
-          title="Pro Plan"
-          amountLabel="$9.99 / month · Unlimited leads"
-          description="Use Stripe to activate your monthly subscription securely and manage cancellation or card updates without contacting support."
-          features={[
-            'Unlimited leads in your area',
-            'Send unlimited quotes',
-            'Verified business profile',
-            'Direct messaging with homeowners',
-            'Schedule management',
-            'Priority support',
-          ]}
+          title={plan.planName}
+          amountLabel={plan.amountLabel}
+          description={plan.summary}
+          features={plan.features.slice(0, 6)}
           status={status}
-          subscribeHref="/pro/billing/subscribe"
+          subscribeHref={plan.subscribePath}
           manageEnabled={canManageBilling}
           manageLabel="Open Billing Portal"
-          accentButtonClassName="bg-pp-red hover:bg-pp-red-dark"
-          manageButtonClassName="w-full rounded-xl border border-pp-border px-5 py-3 text-[14px] font-black text-pp-dark hover:border-pp-red hover:text-pp-red transition-all"
+          accentButtonClassName={plan.accentButtonClassName}
+          manageButtonClassName={`w-full rounded-xl border border-pp-border px-5 py-3 text-[14px] font-black text-pp-dark transition-all ${plan.manageButtonHoverClassName}`}
           icon={<CreditCard size={24} className="text-pp-red" />}
         />
       </div>
