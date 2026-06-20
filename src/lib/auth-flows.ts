@@ -1,7 +1,7 @@
 import 'server-only'
 import bcrypt from 'bcryptjs'
 import { SubscriptionStatus } from '@prisma/client'
-import { createHash, randomBytes } from 'crypto'
+import { createHash, randomBytes, randomInt } from 'crypto'
 import { db } from '@/lib/db'
 
 export type AppRole = 'HOMEOWNER' | 'PRO' | 'REALTOR' | 'ADMIN'
@@ -17,8 +17,10 @@ const dashboardByRole: Record<AppRole, string> = {
 
 const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000
 const EMAIL_VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000
+const EMAIL_VERIFICATION_CODE_TTL_MS = 15 * 60 * 1000
 const PASSWORD_RESET_PREFIX = 'password-reset:'
 const EMAIL_VERIFICATION_PREFIX = 'verify-email:'
+const EMAIL_VERIFICATION_CODE_PREFIX = 'verify-email-code:'
 
 type PersistedUser = {
   id: string
@@ -44,8 +46,20 @@ function verificationIdentifier(email: string) {
   return `${EMAIL_VERIFICATION_PREFIX}${normalizeEmail(email)}`
 }
 
+function verificationCodeIdentifier(email: string) {
+  return `${EMAIL_VERIFICATION_CODE_PREFIX}${normalizeEmail(email)}`
+}
+
 function hashToken(token: string) {
   return createHash('sha256').update(token).digest('hex')
+}
+
+function hashScopedToken(identifier: string, token: string) {
+  return createHash('sha256').update(`${identifier}:${token}`).digest('hex')
+}
+
+function generateVerificationCode() {
+  return String(randomInt(0, 1_000_000)).padStart(6, '0')
 }
 
 export function normalizeEmail(email: string) {
@@ -274,6 +288,96 @@ export async function issueEmailVerificationToken(email: string) {
   }
 }
 
+export async function issueEmailVerificationCode(email: string) {
+  const normalizedEmail = normalizeEmail(email)
+  const user = await db.user.findUnique({
+    where: { email: normalizedEmail },
+    select: {
+      email: true,
+      password: true,
+      emailVerified: true,
+    },
+  })
+
+  if (!user?.password || user.emailVerified) {
+    return {
+      email: normalizedEmail,
+      expiresAt: new Date(Date.now() + EMAIL_VERIFICATION_CODE_TTL_MS),
+      issued: false,
+      code: null as string | null,
+      alreadyVerified: Boolean(user?.emailVerified),
+    }
+  }
+
+  const code = generateVerificationCode()
+  const expiresAt = new Date(Date.now() + EMAIL_VERIFICATION_CODE_TTL_MS)
+  const identifier = verificationCodeIdentifier(normalizedEmail)
+
+  await db.verificationToken.deleteMany({
+    where: { identifier },
+  })
+
+  await db.verificationToken.create({
+    data: {
+      identifier,
+      token: hashScopedToken(identifier, code),
+      expires: expiresAt,
+    },
+  })
+
+  return {
+    email: normalizedEmail,
+    expiresAt,
+    issued: true,
+    code,
+    alreadyVerified: false,
+  }
+}
+
+export async function issueEmailVerificationChallenge(email: string) {
+  const normalizedEmail = normalizeEmail(email)
+  const user = await db.user.findUnique({
+    where: { email: normalizedEmail },
+    select: {
+      email: true,
+      password: true,
+      emailVerified: true,
+    },
+  })
+
+  if (!user?.password || user.emailVerified) {
+    return {
+      email: normalizedEmail,
+      expiresAt: new Date(Date.now() + EMAIL_VERIFICATION_TTL_MS),
+      issued: false,
+      rawToken: null as string | null,
+      code: null as string | null,
+      alreadyVerified: Boolean(user?.emailVerified),
+    }
+  }
+
+  await db.verificationToken.deleteMany({
+    where: {
+      OR: [
+        { identifier: verificationIdentifier(normalizedEmail) },
+        { identifier: verificationCodeIdentifier(normalizedEmail) },
+      ],
+    },
+  })
+
+  const tokenState = await issueEmailVerificationToken(normalizedEmail)
+  const codeState = await issueEmailVerificationCode(normalizedEmail)
+
+  return {
+    email: normalizedEmail,
+    expiresAt: tokenState.expiresAt,
+    issued: tokenState.issued && codeState.issued,
+    rawToken: tokenState.rawToken,
+    code: codeState.code,
+    alreadyVerified: false,
+  }
+}
+
 export async function validatePasswordResetToken(rawToken: string) {
   const token = rawToken.trim()
   if (!token) return null
@@ -334,6 +438,35 @@ export async function validateEmailVerificationToken(rawToken: string) {
   }
 }
 
+export async function validateEmailVerificationCode(email: string, rawCode: string) {
+  const normalizedEmail = normalizeEmail(email)
+  const code = rawCode.trim()
+  if (!code) return null
+
+  const identifier = verificationCodeIdentifier(normalizedEmail)
+  const record = await db.verificationToken.findFirst({
+    where: {
+      identifier,
+      token: hashScopedToken(identifier, code),
+    },
+  })
+
+  if (!record) {
+    return null
+  }
+
+  if (record.expires < new Date()) {
+    await db.verificationToken.deleteMany({ where: { identifier } })
+    return null
+  }
+
+  return {
+    email: normalizedEmail,
+    expiresAt: record.expires,
+    hashedToken: record.token,
+  }
+}
+
 export async function verifyEmailWithToken(rawToken: string) {
   const tokenState = await validateEmailVerificationToken(rawToken)
   if (!tokenState) {
@@ -376,6 +509,73 @@ export async function verifyEmailWithToken(rawToken: string) {
     }),
     db.verificationToken.deleteMany({
       where: { identifier: verificationIdentifier(tokenState.email) },
+    }),
+  ])
+
+  return {
+    ok: true as const,
+    email: user.email,
+    alreadyVerified: false,
+  }
+}
+
+export async function verifyEmailWithCode(email: string, rawCode: string) {
+  const codeState = await validateEmailVerificationCode(email, rawCode)
+  if (!codeState) {
+    return { ok: false as const, error: 'This verification code is invalid or has expired.' }
+  }
+
+  const user = await db.user.findUnique({
+    where: { email: codeState.email },
+    select: {
+      id: true,
+      email: true,
+      password: true,
+      emailVerified: true,
+    },
+  })
+
+  if (!user?.password) {
+    await db.verificationToken.deleteMany({
+      where: {
+        OR: [
+          { identifier: verificationIdentifier(codeState.email) },
+          { identifier: verificationCodeIdentifier(codeState.email) },
+        ],
+      },
+    })
+    return { ok: false as const, error: 'This verification code is no longer valid.' }
+  }
+
+  if (user.emailVerified) {
+    await db.verificationToken.deleteMany({
+      where: {
+        OR: [
+          { identifier: verificationIdentifier(codeState.email) },
+          { identifier: verificationCodeIdentifier(codeState.email) },
+        ],
+      },
+    })
+
+    return {
+      ok: true as const,
+      email: user.email,
+      alreadyVerified: true,
+    }
+  }
+
+  await db.$transaction([
+    db.user.update({
+      where: { id: user.id },
+      data: { emailVerified: new Date() },
+    }),
+    db.verificationToken.deleteMany({
+      where: {
+        OR: [
+          { identifier: verificationIdentifier(codeState.email) },
+          { identifier: verificationCodeIdentifier(codeState.email) },
+        ],
+      },
     }),
   ])
 

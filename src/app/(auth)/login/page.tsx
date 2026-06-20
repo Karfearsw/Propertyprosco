@@ -8,7 +8,7 @@ import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
 
 function authErrorMessage(errorCode: string | null, credentialsCode: string | null) {
   if (errorCode === 'CredentialsSignin' && credentialsCode === 'email_not_verified') {
-    return 'Verify your email address before logging in with your password.'
+    return 'Verify your email address before logging in. Use the link or 6-digit code from your inbox.'
   }
 
   switch (errorCode) {
@@ -54,9 +54,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex bg-white">
+    <div className="min-h-dvh overflow-x-clip bg-white lg:flex">
       {/* LEFT PANEL */}
-      <div className="hidden lg:flex w-[42%] bg-pp-dark flex-col p-10 relative overflow-hidden">
+      <div className="relative hidden overflow-hidden bg-pp-dark lg:flex lg:min-h-dvh lg:w-[42%] lg:flex-col lg:p-10">
         <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-pp-red/12" />
         <div className="absolute -bottom-24 -left-16 w-72 h-72 rounded-full bg-pp-red/7" />
         <Link href="/" className="flex items-center gap-3 relative z-10 mb-16">
@@ -86,7 +86,7 @@ export default function LoginPage() {
       </div>
 
       {/* RIGHT PANEL */}
-      <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
+      <div className="flex min-h-dvh min-w-0 flex-1 items-center justify-center px-4 py-8 sm:px-6 lg:overflow-y-auto lg:px-8">
         <div className="w-full max-w-[440px]">
           <h1 className="text-[24px] font-black text-pp-dark tracking-tight mb-1.5">Log in to your account</h1>
           <p className="text-[14px] text-pp-gray mb-6">New here? <Link href="/signup" className="text-pp-red font-extrabold hover:underline">Create a free account</Link></p>
@@ -105,17 +105,21 @@ export default function LoginPage() {
           )}
 
           {(callbackCode === 'email_not_verified' || error.includes('Verify your email')) && email && (
-            <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] font-bold text-amber-800">
-              Need a fresh verification email?{' '}
+            <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] font-bold leading-relaxed text-amber-800">
+              Use the verification link or the 6-digit code from your inbox. Need a fresh email?{' '}
               <Link
                 href={`/verify-email?email=${encodeURIComponent(email)}`}
                 className="text-pp-red hover:underline"
               >
-                Resend it here
+                Verify here
               </Link>
               .
             </div>
           )}
+
+          <div className="mb-5 rounded-xl border border-pp-border bg-pp-bg px-4 py-3 text-[13px] leading-relaxed text-pp-gray">
+            Email/password accounts require verification before first login. If your link fails, you can confirm with the 6-digit code from the same email.
+          </div>
 
           <SocialAuthButtons
             dividerText="or continue with email"

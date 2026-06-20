@@ -1,12 +1,10 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 
 export const metadata = { title: 'Terms of Service' }
 
 export default function TermsPage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <div className="max-w-3xl mx-auto px-6 py-20">
         <h1 className="font-display text-[36px] font-black text-pp-dark mb-2">Terms of Service</h1>
         <p className="text-[13px] font-bold text-pp-gray mb-10">Last updated: January 1, 2025</p>
@@ -26,7 +24,6 @@ export default function TermsPage() {
           </div>
         ))}
       </div>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

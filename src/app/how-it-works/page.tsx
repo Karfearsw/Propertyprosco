@@ -1,13 +1,11 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import Link from 'next/link'
 
 export const metadata = { title: 'How It Works' }
 
 export default function HowItWorksPage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <div className="bg-pp-dark py-20 px-6 text-center">
         <p className="text-[11px] font-black tracking-[2px] uppercase text-red-400 mb-3">Simple Process</p>
         <h1 className="font-display text-[48px] font-black text-white tracking-tight mb-4">How Property Pros works</h1>
@@ -55,7 +53,6 @@ export default function HowItWorksPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

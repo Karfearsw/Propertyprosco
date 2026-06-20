@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function ContactPage() {
@@ -17,8 +16,7 @@ export default function ContactPage() {
   }
 
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <div className="bg-pp-dark py-20 px-6 text-center">
         <h1 className="font-display text-[44px] font-black text-white tracking-tight mb-3">Contact Us</h1>
         <p className="text-[16px] text-gray-400 max-w-md mx-auto">Have a question or need help? We respond to all inquiries within one business day.</p>
@@ -63,7 +61,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

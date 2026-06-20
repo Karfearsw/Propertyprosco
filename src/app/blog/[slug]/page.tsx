@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import ServiceIcon from '@/components/brand/ServiceIcon'
 import { blogPosts, getBlogPost } from '@/lib/content'
 
@@ -27,8 +26,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   if (!post) notFound()
 
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <section className="bg-pp-dark px-6 py-16">
         <div className="max-w-3xl mx-auto text-center">
           <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-pp-red/10">
@@ -50,7 +48,6 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           ))}
         </div>
       </article>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

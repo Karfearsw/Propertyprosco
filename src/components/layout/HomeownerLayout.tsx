@@ -48,8 +48,8 @@ export default function HomeownerLayout({ children, user }: Props) {
   )
 
   return (
-    <div className="min-h-screen bg-pp-bg font-body">
-      <header className="bg-ho-sidebar h-[60px] flex items-center justify-between px-5 sticky top-0 z-50 border-b border-white/6">
+    <div className="min-h-dvh overflow-x-clip bg-pp-bg font-body">
+      <header className="sticky top-0 z-50 flex h-16 items-center justify-between border-b border-white/6 bg-ho-sidebar px-4 sm:px-5">
         <Link href="/homeowner/dashboard" className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-[9px] bg-pp-green flex items-center justify-center font-black text-[12px] text-white">PP</div>
           <span className="text-[17px] font-black text-white"><span className="text-green-400">Property</span> Pros</span>
@@ -63,8 +63,8 @@ export default function HomeownerLayout({ children, user }: Props) {
         </div>
       </header>
 
-      {drawerOpen && <div onClick={()=>setDrawerOpen(false)} className="fixed inset-0 top-[60px] bg-black/40 z-40 lg:hidden"/>}
-      <div className={`fixed top-[60px] right-0 bottom-0 w-72 bg-ho-sidebar border-l border-white/7 z-50 flex-col p-3 overflow-y-auto shadow-2xl transition-transform duration-200 ${drawerOpen ? 'flex' : 'hidden'}`}>
+      {drawerOpen && <div onClick={()=>setDrawerOpen(false)} className="fixed inset-0 top-16 bg-black/40 z-40 lg:hidden"/>}
+      <div className={`fixed bottom-0 right-0 top-16 z-50 flex w-72 flex-col overflow-y-auto border-l border-white/7 bg-ho-sidebar p-3 shadow-2xl transition-transform duration-200 lg:hidden ${drawerOpen ? 'translate-x-0' : 'translate-x-full pointer-events-none'}`}>
         <NavItems onNav={()=>setDrawerOpen(false)}/>
         <div className="mt-auto pt-3 border-t border-white/7">
           <button onClick={()=>signOut({callbackUrl:'/login'})} className="flex items-center gap-2.5 px-3 py-2.5 rounded-[9px] text-[13px] font-extrabold text-red-400 hover:bg-pp-red/10 transition-all w-full"><LogOut size={15}/>Log out</button>
@@ -72,7 +72,7 @@ export default function HomeownerLayout({ children, user }: Props) {
       </div>
 
       <div className="flex">
-        <aside className="hidden lg:flex w-[220px] bg-ho-sidebar flex-col p-2.5 sticky top-[60px] h-[calc(100vh-60px)] overflow-y-auto shrink-0">
+        <aside className="sticky top-16 hidden h-[calc(100dvh-4rem)] w-[220px] shrink-0 overflow-y-auto bg-ho-sidebar p-2.5 lg:flex">
           <div className="flex-1"><NavItems/></div>
           <div className="border-t border-white/7 pt-2.5">
             <div className="flex items-center gap-2 px-2.5 py-2 mb-1">
@@ -82,7 +82,7 @@ export default function HomeownerLayout({ children, user }: Props) {
             <button onClick={()=>signOut({callbackUrl:'/login'})} className="flex items-center gap-2 px-2.5 py-2 rounded-[9px] text-[12px] font-extrabold text-red-400 hover:bg-pp-red/10 transition-all w-full"><LogOut size={13}/>Log out</button>
           </div>
         </aside>
-        <main className="flex-1 min-w-0">{children}</main>
+        <main className="app-shell-main flex-1">{children}</main>
       </div>
     </div>
   )

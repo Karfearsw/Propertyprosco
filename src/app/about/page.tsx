@@ -1,13 +1,11 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import Link from 'next/link'
 
 export const metadata = { title: 'About Property Pros' }
 
 export default function AboutPage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <div className="bg-pp-dark py-20 px-6 text-center relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage:'linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)',backgroundSize:'60px 60px'}}/>
         <div className="relative z-10 max-w-2xl mx-auto">
@@ -64,7 +62,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

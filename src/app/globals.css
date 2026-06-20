@@ -5,17 +5,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap');
 
 @layer base {
+  html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+  }
   * { box-sizing: border-box; }
+  *::before,
+  *::after { box-sizing: border-box; }
   body {
+    min-height: 100dvh;
     font-family: 'Manrope', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
   }
+  img,
+  svg,
+  video,
+  canvas { max-width: 100%; }
+  button,
+  input,
+  select,
+  textarea { font: inherit; }
   a { text-decoration: none; color: inherit; }
+  :focus-visible {
+    outline: 2px solid rgba(220, 38, 38, 0.45);
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {
   .font-display { font-family: 'Playfair Display', serif; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .app-shell-main {
+    width: 100%;
+    min-width: 0;
+    overflow-x: clip;
+  }
 }

@@ -1,5 +1,4 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import Link from 'next/link'
 import ServiceIcon from '@/components/brand/ServiceIcon'
 import { blogPosts } from '@/lib/content'
@@ -8,8 +7,7 @@ export const metadata = { title: 'Blog' }
 
 export default function BlogPage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <div className="bg-pp-dark py-16 px-6 text-center">
         <h1 className="font-display text-[44px] font-black text-white tracking-tight mb-3">Property Pros Blog</h1>
         <p className="text-[15px] text-gray-400 max-w-xl mx-auto">Tips, guides, and insights for homeowners, service pros, and real estate professionals.</p>
@@ -40,7 +38,6 @@ export default function BlogPage() {
           ))}
         </div>
       </section>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

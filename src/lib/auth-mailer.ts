@@ -103,30 +103,50 @@ function wrapEmail(title: string, intro: string, actionLabel: string, actionUrl:
   `
 }
 
+function codePill(code: string) {
+  return `
+    <div style="margin:24px 0;padding:18px;border:1px dashed #d1d5db;border-radius:16px;background:#f9fafb;text-align:center;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#6b7280;margin-bottom:10px;">
+        Verification Code
+      </div>
+      <div style="font-size:30px;font-weight:900;letter-spacing:0.32em;color:#111827;">
+        ${code}
+      </div>
+    </div>
+  `
+}
+
 export async function sendVerificationEmail({
+  code,
   email,
   fallbackOrigin,
   token,
 }: {
+  code: string
   email: string
   fallbackOrigin?: string
   token: string
 }) {
-  const verifyUrl = buildAppUrl(`/verify-email?token=${encodeURIComponent(token)}`, fallbackOrigin)
+  const verifyUrl = buildAppUrl(
+    `/verify-email?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`,
+    fallbackOrigin
+  )
   const subject = 'Verify your Property Pros email'
   const text = [
     'Welcome to Property Pros.',
     `Verify your email address by opening: ${verifyUrl}`,
+    `Or enter this code manually: ${code}`,
+    'The verification code expires in 15 minutes.',
     'This verification link expires in 24 hours.',
   ].join('\n')
 
   const html = wrapEmail(
     'Verify your email address',
-    'Confirm your Property Pros account to unlock credentials login and continue into the right workspace.',
+    'Confirm your Property Pros account to unlock credentials login and continue into the right workspace. You can use the button below or enter the verification code manually.',
     'Verify Email',
     verifyUrl,
-    'This verification link expires in 24 hours. If you did not create this account, you can ignore this message.',
-  )
+    'The verification code expires in 15 minutes and the verification link expires in 24 hours. If you did not create this account, you can ignore this message.',
+  ).replace('</a>', '</a>' + codePill(code))
 
   return sendAuthEmail({
     fallbackOrigin,

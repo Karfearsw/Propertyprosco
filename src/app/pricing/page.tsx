@@ -1,5 +1,4 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import Link from 'next/link'
 import { CheckCircle } from 'lucide-react'
 
@@ -47,8 +46,7 @@ const plans = [
 
 export default function PricingPage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <section className="bg-pp-dark py-20 px-6 text-center">
         <p className="text-[11px] font-black tracking-[2px] uppercase text-red-400 mb-3">Simple Pricing</p>
         <h1 className="font-display text-[48px] font-black text-white tracking-tight mb-4">Fair pricing. No surprises.</h1>
@@ -97,7 +95,6 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

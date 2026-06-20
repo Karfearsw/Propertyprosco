@@ -1,5 +1,4 @@
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import DemoOverview from '@/components/demo/DemoOverview'
 import { demoHighlights } from '@/lib/demo-data'
 
@@ -12,8 +11,7 @@ export default function ProDemoPage() {
   const demo = demoHighlights.pro
 
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
       <DemoOverview
         accentClass="bg-pro-sidebar"
         badgeLabel="Public Demo"
@@ -22,7 +20,6 @@ export default function ProDemoPage() {
         statLine={demo.statLine}
         cards={demo.cards}
       />
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }

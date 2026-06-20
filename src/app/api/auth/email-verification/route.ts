@@ -2,13 +2,19 @@ import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
 import {
-  issueEmailVerificationToken,
+  issueEmailVerificationChallenge,
   normalizeEmail,
+  verifyEmailWithCode,
   verifyEmailWithToken,
 } from '@/lib/auth-flows'
 
 const resendSchema = z.object({
   email: z.string().email(),
+})
+
+const codeSchema = z.object({
+  email: z.string().email(),
+  code: z.string().trim().min(6).max(6),
 })
 
 export async function GET(req: Request) {
@@ -39,10 +45,11 @@ export async function POST(req: Request) {
     const body = await req.json()
     const { email } = resendSchema.parse(body)
     const normalizedEmail = normalizeEmail(email)
-    const result = await issueEmailVerificationToken(normalizedEmail)
+    const result = await issueEmailVerificationChallenge(normalizedEmail)
 
-    if (result.issued && result.rawToken) {
+    if (result.issued && result.rawToken && result.code) {
       const delivery = await sendVerificationEmail({
+        code: result.code,
         email: normalizedEmail,
         fallbackOrigin: origin,
         token: result.rawToken,
@@ -68,6 +75,34 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { error: 'Unable to send the verification email right now.' },
+      { status: 500 },
+    )
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const body = await req.json()
+    const { email, code } = codeSchema.parse(body)
+    const normalizedEmail = normalizeEmail(email)
+    const result = await verifyEmailWithCode(normalizedEmail, code)
+
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      email: result.email,
+      alreadyVerified: result.alreadyVerified,
+    })
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+    }
+
+    return NextResponse.json(
+      { error: 'Unable to verify that code right now.' },
       { status: 500 },
     )
   }

@@ -22,7 +22,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await auth()
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-dvh bg-white text-pp-dark antialiased">
         <SessionProvider session={session}>
           {children}
         </SessionProvider>

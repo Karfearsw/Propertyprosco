@@ -3,7 +3,7 @@ import { SubscriptionStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
-import { issueEmailVerificationToken, normalizeEmail } from '@/lib/auth-flows'
+import { issueEmailVerificationChallenge, normalizeEmail } from '@/lib/auth-flows'
 import { db } from '@/lib/db'
 import { calculateProProfileCompletion, sanitizeStringArray } from '@/lib/profile-completion'
 
@@ -62,10 +62,11 @@ export async function POST(req: Request) {
     })
     if (existing) {
       if (existing.password && !existing.emailVerified) {
-        const verification = await issueEmailVerificationToken(email)
+        const verification = await issueEmailVerificationChallenge(email)
 
-        if (verification.issued && verification.rawToken) {
+        if (verification.issued && verification.rawToken && verification.code) {
           await sendVerificationEmail({
+            code: verification.code,
             email,
             fallbackOrigin: origin,
             token: verification.rawToken,
@@ -161,10 +162,11 @@ export async function POST(req: Request) {
       },
     })
 
-    const verification = await issueEmailVerificationToken(email)
+    const verification = await issueEmailVerificationChallenge(email)
 
-    if (verification.issued && verification.rawToken) {
+    if (verification.issued && verification.rawToken && verification.code) {
       await sendVerificationEmail({
+        code: verification.code,
         email,
         fallbackOrigin: origin,
         token: verification.rawToken,
