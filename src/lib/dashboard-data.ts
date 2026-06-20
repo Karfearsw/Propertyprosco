@@ -9,7 +9,7 @@ export async function getHomeownerSnapshot(userId: string) {
       orderBy: { createdAt: 'desc' },
       take: 4,
       include: {
-        project: { select: { id: true, title: true, category: true } },
+        project: { select: { id: true, title: true, category: true, status: true } },
         pro: { select: { id: true, name: true } },
       },
     }),
@@ -43,7 +43,12 @@ export async function getProSnapshot(userId: string) {
 
   const [recentLeads, recentQuotes, schedule, reviews, unreadMessages, recentMessages, notifications, savedLeadsCount, quickJobsCount] = await Promise.all([
     db.proLead.findMany({ where: { proId: proProfileId }, take: 5, orderBy: { createdAt: 'desc' }, include: { project: { include: { owner: { select: { name: true, zipCode: true } }, _count: { select: { quotes: true } } } } } }),
-    db.quote.findMany({ where: { proId: userId }, take: 5, orderBy: { createdAt: 'desc' }, include: { project: { select: { title: true, category: true } } } }),
+    db.quote.findMany({
+      where: { proId: userId },
+      take: 5,
+      orderBy: { createdAt: 'desc' },
+      include: { project: { select: { title: true, category: true, status: true } } },
+    }),
     db.scheduleEntry.findMany({ where: { proId: proProfileId }, take: 4, orderBy: { date: 'asc' } }),
     db.review.findMany({ where: { subjectId: userId }, take: 3, orderBy: { createdAt: 'desc' }, include: { author: { select: { name: true } } } }),
     db.message.count({ where: { receiverId: userId, read: false } }),
@@ -77,8 +82,32 @@ export async function getRealtorSnapshot(userId: string) {
   const [user, realtor, clients, projects, notifications, unreadMessages, recentMessages] = await Promise.all([
     db.user.findUnique({ where: { id: userId } }),
     db.realtorProfile.findUnique({ where: { userId } }),
-    db.realtorClient.findMany({ where: { realtor: { userId } }, orderBy: { createdAt: 'desc' }, take: 5 }),
-    db.project.findMany({ where: { ownerId: userId }, orderBy: { createdAt: 'desc' }, take: 5, include: { _count: { select: { quotes: true } } } }),
+    db.realtorClient.findMany({
+      where: { realtor: { userId } },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      include: {
+        _count: { select: { projects: true } },
+        projects: {
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+          select: {
+            id: true,
+            title: true,
+            createdAt: true,
+          },
+        },
+      },
+    }),
+    db.project.findMany({
+      where: { ownerId: userId },
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+      include: {
+        realtorClient: { select: { id: true, name: true } },
+        _count: { select: { quotes: true } },
+      },
+    }),
     db.notification.findMany({ where: { userId, read: false }, take: 5, orderBy: { createdAt: 'desc' } }),
     db.message.count({ where: { receiverId: userId, read: false } }),
     db.message.findMany({

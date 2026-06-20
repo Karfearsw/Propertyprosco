@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Pro — Property Pros</title>
+  <meta name="description" content="Browse and search verified local contractors on Property Pros. Find roofers, pavers, electricians, plumbers, and more in your area." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+      --font-display: 'Playfair Display', serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); }
+    a { text-decoration: none; color: inherit; }
+    header { background: var(--dark); padding: 0 48px; height: 66px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 18px; font-weight: 900; color: #fff; }
+    .brand-name span { color: #f87171; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .nav-link:hover, .nav-link.active { color: #fff; }
+    .hdr-btns { display: flex; gap: 10px; }
+    .btn { padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+    .btn-ghost { border-color: rgba(255,255,255,.2); color: #fff; }
+    .btn-ghost:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .hero { background: var(--dark); padding: 52px 48px 0; position: relative; overflow: hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at 70% 0%, rgba(220,38,38,.15) 0%, transparent 60%); }
+    .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
+    .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; color: #f87171; margin-bottom: 14px; }
+    .hero h1 { font-family: var(--font-display); font-size: 46px; font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.05; margin-bottom: 14px; }
+    .hero h1 em { color: #f87171; font-style: normal; }
+    .hero-sub { font-size: 16px; color: #9ca3af; line-height: 1.7; max-width: 500px; margin-bottom: 28px; font-weight: 700; }
+    .search-wrap { background: var(--white); border-radius: 16px; padding: 6px; display: flex; gap: 4px; max-width: 680px; box-shadow: 0 20px 48px rgba(0,0,0,.3); margin-bottom: 14px; }
+    .geo-link { display:inline-flex; align-items:center; gap:6px; background:none; border:none; cursor:pointer; color:rgba(255,255,255,.85); font-weight:700; font-size:13px; padding:2px 0; margin-bottom:18px; }
+    .geo-link:hover { color:#fff; text-decoration:underline; }
+    .geo-link i { width:14px; height:14px; }
+    .locmsg { max-width:680px; margin:0 0 22px; padding:12px 15px; border-radius:11px; font-size:13.5px; font-weight:600; line-height:1.45; }
+    .locmsg a { color:inherit; text-decoration:underline; }
+    .locmsg.coming { background:#eff6ff; color:#1d4ed8; }
+    .locmsg.unknown { background:#fff7ed; color:#c2410c; }
+    .sf { display: flex; align-items: center; gap: 10px; flex: 1; padding: 10px 14px; }
+    .sf i { color: var(--gray); flex-shrink: 0; }
+    .sf input { border: none; outline: none; font-size: 14px; font-family: var(--font); color: var(--dark); width: 100%; font-weight: 700; }
+    .sf input::placeholder { color: #9ca3af; font-weight: 600; }
+    .sdiv { width: 1px; background: var(--border); margin: 10px 0; }
+    .sbtn { padding: 11px 22px; background: var(--red); color: #fff; border: none; border-radius: 12px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); white-space: nowrap; display: flex; align-items: center; gap: 6px; transition: background .15s; }
+    .sbtn:hover { background: var(--red-dark); }
+    .chips { display: flex; gap: 7px; flex-wrap: wrap; padding-bottom: 28px; }
+    .chip { padding: 7px 15px; border-radius: 999px; background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.1); font-size: 12px; font-weight: 700; color: #d1d5db; cursor: pointer; transition: all .2s; }
+    .chip:hover, .chip.active { background: var(--red); border-color: var(--red); color: #fff; }
+    .layout { max-width: 1200px; margin: 0 auto; padding: 28px 48px 80px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+    .sidebar { position: sticky; top: 86px; height: fit-content; }
+    .fcard { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+    .ftitle { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .ftitle a { font-size: 11px; color: var(--red); cursor: pointer; text-transform: none; letter-spacing: 0; font-weight: 800; }
+    .fgroup { margin-bottom: 14px; }
+    .flabel { font-size: 11px; font-weight: 800; color: var(--dark2); margin-bottom: 7px; text-transform: uppercase; letter-spacing: .5px; }
+    .fopts { display: flex; flex-direction: column; gap: 6px; }
+    .fopt { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--dark3); cursor: pointer; }
+    .fopt input { width: 15px; height: 15px; accent-color: var(--red); cursor: pointer; }
+    .star-opts { display: flex; gap: 5px; }
+    .sopt { padding: 5px 11px; border-radius: 7px; border: 1px solid var(--border); font-size: 12px; font-weight: 800; cursor: pointer; transition: all .15s; font-family: var(--font); background: var(--white); }
+    .sopt.active, .sopt:hover { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .rhead { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+    .rcount { font-size: 15px; font-weight: 900; }
+    .rcount span { color: var(--gray); font-weight: 700; }
+    .rsort { padding: 8px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 13px; font-family: var(--font); font-weight: 700; color: var(--dark); background: var(--white); cursor: pointer; }
+    .rsort:focus { outline: none; border-color: var(--red); }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .pcard { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 18px; transition: all .2s; position: relative; overflow: hidden; }
+    .pcard:hover { border-color: #d1d5db; box-shadow: 0 6px 20px rgba(0,0,0,.07); transform: translateY(-2px); }
+    .pcard.featured { border-color: #fde68a; }
+    .frib { position: absolute; top: 12px; right: 0; background: var(--gold); color: #fff; font-size: 9px; font-weight: 900; padding: 3px 10px 3px 12px; border-radius: 4px 0 0 4px; letter-spacing: .5px; text-transform: uppercase; }
+    .ctop { display: flex; gap: 11px; margin-bottom: 12px; }
+    .av { width: 48px; height: 48px; border-radius: 13px; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; flex-shrink: 0; }
+    .pname { font-size: 14px; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ptrade { font-size: 11px; font-weight: 700; color: var(--gray); margin-bottom: 5px; }
+    .bdgs { display: flex; gap: 4px; flex-wrap: wrap; }
+    .bdg { font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 999px; }
+    .bdg-li { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .bdg-v { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .bdg-top { background: var(--gold-light); color: var(--gold); border: 1px solid #fde68a; }
+    .rrow { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+    .stars { color: #f59e0b; font-size: 13px; }
+    .rnum { font-size: 13px; font-weight: 900; }
+    .rcnt { font-size: 11px; font-weight: 700; color: var(--gray); }
+    .locrow { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--gray); margin-bottom: 9px; }
+    .pdesc { font-size: 12px; color: var(--gray); line-height: 1.6; margin-bottom: 11px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .stags { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 12px; }
+    .stag { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--bg); color: var(--dark3); border: 1px solid var(--border); }
+    .cfooter { display: flex; gap: 7px; align-items: center; }
+    .resp { font-size: 11px; font-weight: 800; color: var(--green); display: flex; align-items: center; gap: 3px; margin-right: auto; }
+    .cbtn { padding: 7px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font); border: 1px solid var(--border); background: var(--white); color: var(--dark); transition: all .15s; }
+    .cbtn:hover { background: var(--bg); }
+    .cbtn.pri { background: var(--red); color: #fff; border-color: var(--red); }
+    .cbtn.pri:hover { background: var(--red-dark); }
+    .banner { background: var(--dark); border-radius: 16px; padding: 24px 28px; margin-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .banner h3 { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 3px; }
+    .banner p { font-size: 13px; color: #9ca3af; font-weight: 700; }
+    .bbtn { padding: 11px 22px; background: var(--red); color: #fff; border: none; border-radius: 11px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); white-space: nowrap; transition: background .15s; display: flex; align-items: center; gap: 6px; }
+    .bbtn:hover { background: var(--red-dark); }
+    .pag { display: flex; gap: 7px; justify-content: center; margin-top: 28px; }
+    .pbtn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border); background: var(--white); font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: flex; align-items: center; justify-content: center; }
+    .pbtn:hover { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .pbtn.active { background: var(--red); color: #fff; border-color: var(--red); }
+    .nores { grid-column: 1/-1; text-align: center; padding: 56px 20px; }
+    .nores h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; margin-top: 12px; }
+    .nores p { font-size: 14px; color: var(--gray); font-weight: 700; }
+    footer { background: var(--dark); padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .fl { display: flex; gap: 18px; flex-wrap: wrap; }
+    .fl a { font-size: 13px; font-weight: 700; color: #4b5563; transition: color .15s; }
+    .fl a:hover { color: #fff; }
+    .fc { font-size: 12px; color: #374151; }
+    @media(max-width:900px){.layout{grid-template-columns:1fr;padding:20px}.sidebar{position:static}.grid{grid-template-columns:1fr}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}.hero{padding:32px 18px 0}.hero h1{font-size:30px}.search-wrap{flex-direction:column}.sdiv{display:none}}
+  
+    /* ── SHARED HEADER ── */
+    .pp-header { background: var(--dark, #111827); padding: 0 48px; height: 66px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .pp-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .pp-logo { width: 36px; height: 36px; border-radius: 10px; background: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0; }
+    .pp-brand-name { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.3px; }
+    .pp-brand-name span { color: #f87171; }
+    .pp-nav { display: flex; gap: 4px; align-items: center; }
+    .pp-nav-link { font-size: 13px; font-weight: 700; color: #9ca3af; padding: 7px 12px; border-radius: 8px; text-decoration: none; transition: all .15s; white-space: nowrap; }
+    .pp-nav-link:hover, .pp-nav-link.active { color: #fff; background: rgba(255,255,255,.07); }
+    .pp-btns { display: flex; gap: 8px; align-items: center; }
+    .pp-btn { padding: 8px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: inherit; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; border: 1px solid transparent; white-space: nowrap; }
+    .pp-btn-ghost { border-color: rgba(255,255,255,.2); color: #fff; background: transparent; }
+    .pp-btn-ghost:hover { background: rgba(255,255,255,.08); }
+    .pp-btn-red { background: #dc2626; color: #fff; border-color: #dc2626; }
+    .pp-btn-red:hover { background: #b91c1c; }
+    /* Hamburger */
+    .pp-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border-radius: 8px; background: transparent; border: none; }
+    .pp-hamburger:hover { background: rgba(255,255,255,.08); }
+    .pp-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all .25s; }
+    .pp-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .pp-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .pp-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    /* Mobile drawer */
+    .pp-drawer { display: none; position: fixed; top: 66px; left: 0; right: 0; bottom: 0; background: #111827; z-index: 99; flex-direction: column; padding: 16px; overflow-y: auto; }
+    .pp-drawer.open { display: flex; }
+    .pp-drawer-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; font-size: 15px; font-weight: 700; color: #9ca3af; text-decoration: none; transition: all .15s; border: 1px solid transparent; }
+    .pp-drawer-link:hover, .pp-drawer-link.active { background: rgba(255,255,255,.06); color: #fff; border-color: rgba(255,255,255,.08); }
+    .pp-drawer-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 0; }
+    .pp-drawer-btns { display: flex; flex-direction: column; gap: 8px; padding: 8px 0; margin-top: auto; }
+    .pp-drawer-btn { padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 800; text-align: center; text-decoration: none; transition: all .15s; border: none; cursor: pointer; font-family: inherit; }
+    .pp-drawer-btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12) !important; }
+    .pp-drawer-btn-red { background: #dc2626; color: #fff; }
+    .pp-drawer-btn-red:hover { background: #b91c1c; }
+    @media (max-width: 860px) {
+      .pp-header { padding: 0 20px; }
+      .pp-nav { display: none; }
+      .pp-btns { display: none; }
+      .pp-hamburger { display: flex; }
+    }
+    @media (min-width: 861px) {
+      .pp-drawer { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="pp-header">
+    <a href="index.html" class="pp-brand">
+      <div class="pp-logo">PP</div>
+      <div class="pp-brand-name"><span>Property</span> Pros</div>
+    </a>
+    <nav class="pp-nav">
+      <a href="index.html" class="pp-nav-link">Home</a>
+      <a href="find-a-pro.html" class="pp-nav-link active">Find a Pro</a>
+      <a href="how-it-works.html" class="pp-nav-link">How It Works</a>
+      <a href="pricing.html" class="pp-nav-link">Pricing</a>
+      <a href="blog.html" class="pp-nav-link">Blog</a>
+      <a href="about.html" class="pp-nav-link">About</a>
+    </nav>
+    <div class="pp-btns">
+      <a href="login.html" class="pp-btn pp-btn-ghost">Log in</a>
+      <a href="post-project.html" class="pp-btn pp-btn-red">Post a project</a>
+    </div>
+    <button class="pp-hamburger" id="pp-hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </header>
+
+  <!-- MOBILE DRAWER -->
+  <div class="pp-drawer" id="pp-drawer">
+    <a href="index.html" class="pp-drawer-link">🏠 Home</a>
+    <a href="find-a-pro.html" class="pp-drawer-link active">🔍 Find a Pro</a>
+    <a href="how-it-works.html" class="pp-drawer-link">💡 How It Works</a>
+    <a href="pricing.html" class="pp-drawer-link">🏷️ Pricing</a>
+    <a href="blog.html" class="pp-drawer-link">📖 Blog</a>
+    <a href="about.html" class="pp-drawer-link">ℹ️ About</a>
+    <a href="contact.html" class="pp-drawer-link">✉️ Contact</a>
+    <div class="pp-drawer-divider"></div>
+    <a href="homeowner-landing.html" class="pp-drawer-link">👤 For Homeowners</a>
+    <a href="pro-landing.html" class="pp-drawer-link">🔧 For Contractors</a>
+    <a href="realtor-landing.html" class="pp-drawer-link">🏡 For Realtors</a>
+    <div class="pp-drawer-divider"></div>
+    <div class="pp-drawer-btns">
+      <a href="login.html" class="pp-drawer-btn pp-drawer-btn-ghost">Log in</a>
+      <a href="post-project.html" class="pp-drawer-btn pp-drawer-btn-red">Post a project free →</a>
+    </div>
+  </div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Pro Directory</div>
+    <h1>Find the right pro<br>for <em>any job</em></h1>
+    <p class="hero-sub">Browse verified local contractors by trade, rating, and location. No middleman — message them directly and get quotes fast.</p>
+    <div class="search-wrap">
+      <div class="sf"><i data-lucide="wrench" size="17"></i><input id="sq" placeholder="Trade or service (e.g. Roofing, Driveway)" oninput="go()" /></div>
+      <div class="sdiv"></div>
+      <div class="sf"><i data-lucide="map-pin" size="17"></i><input id="sloc" placeholder="ZIP code or city" onkeydown="if(event.key==='Enter')go()" /></div>
+      <button class="sbtn" onclick="go()"><i data-lucide="search" size="15"></i> Search</button>
+    </div>
+    <button id="geoBtn" class="geo-link" type="button" onclick="useMyLocation()"><i data-lucide="locate-fixed" size="13"></i> Use my current location</button>
+    <div id="locMsg" class="locmsg" hidden></div>
+    <div class="chips">
+      <div class="chip active" onclick="setTrade('all',this)">All trades</div>
+      <div class="chip" onclick="setTrade('roofing',this)">Roofing</div>
+      <div class="chip" onclick="setTrade('driveways',this)">Driveways</div>
+      <div class="chip" onclick="setTrade('electrical',this)">Electrical</div>
+      <div class="chip" onclick="setTrade('landscaping',this)">Landscaping</div>
+      <div class="chip" onclick="setTrade('plumbing',this)">Plumbing</div>
+      <div class="chip" onclick="setTrade('painting',this)">Painting</div>
+      <div class="chip" onclick="setTrade('junk',this)">Junk Removal</div>
+      <div class="chip" onclick="setTrade('handyman',this)">Handyman</div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="fcard">
+      <div class="ftitle">Filters <a onclick="resetF()">Reset</a></div>
+      <div class="fgroup">
+        <div class="flabel">Verification</div>
+        <div class="fopts">
+          <label class="fopt"><input type="checkbox" id="fl" onchange="go()"> Licensed & Insured</label>
+          <label class="fopt"><input type="checkbox" id="fv" onchange="go()"> Verified</label>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Min Rating</div>
+        <div class="star-opts">
+          <button class="sopt active" onclick="setR(0,this)">Any</button>
+          <button class="sopt" onclick="setR(4,this)">4+</button>
+          <button class="sopt" onclick="setR(4.5,this)">4.5+</button>
+        </div>
+      </div>
+      <div class="fgroup">
+        <div class="flabel">Response Time</div>
+        <div class="fopts">
+          <label class="fopt"><input type="radio" name="rt" value="any" checked onchange="go()"> Any</label>
+          <label class="fopt"><input type="radio" name="rt" value="fast" onchange="go()"> Under 2 hours</label>
+          <label class="fopt"><input type="radio" name="rt" value="same" onchange="go()"> Same day</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="rhead">
+      <div class="rcount"><span id="rcnt">12</span> pros in Rhode Island</div>
+      <select class="rsort" onchange="go()">
+        <option value="rating">Highest rated</option>
+        <option value="reviews">Most reviews</option>
+        <option value="response">Fastest response</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+    <a href="post-project.html" style="display:block">
+      <div class="banner">
+        <div><h3>Don't see the right pro?</h3><p>Post your project free — verified pros send you quotes.</p></div>
+        <button class="bbtn"><i data-lucide="plus" size="15"></i> Post my project</button>
+      </div>
+    </a>
+    <div class="pag">
+      <button class="pbtn active">1</button>
+      <button class="pbtn">2</button>
+      <button class="pbtn">3</button>
+      <button class="pbtn"><i data-lucide="chevron-right" size="13"></i></button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a><a href="find-a-pro.html">Find a Pro</a>
+    <a href="post-project.html">Post a Project</a><a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+         <a href="community-fund.html">Community Fund</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+
+<script>
+/* ---- Territory / market config (inline, scale-ready) -------------------
+   To launch a new state: change its status from 'comingSoon' to 'live'. */
+const PP_MARKETS=[
+  {state:'Rhode Island',abbr:'RI',status:'live',       zips:['028','029']},
+  {state:'Massachusetts',abbr:'MA',status:'comingSoon',zips:['010','011','012','013','014','015','016','017','018','019','020','021','022','023','024','025','026','027','055']},
+  {state:'Connecticut', abbr:'CT',status:'comingSoon', zips:['060','061','062','063','064','065','066','067','068','069']},
+];
+function ppZip(v){return (v||'').replace(/\D/g,'').slice(0,5);}
+function ppCheckZip(v){
+  const z=ppZip(v); if(z.length<3) return {status:'unknown',market:null,zip:z};
+  const m=PP_MARKETS.find(m=>m.zips.includes(z.slice(0,3)));
+  if(!m) return {status:'unknown',market:null,zip:z};
+  return {status:m.status,market:m,zip:z};
+}
+const PROS=[
+  {id:1,name:'Apex Roofing Group',trade:'Roofing',av:'AR',bg:'#1e40af',rating:4.9,reviews:214,loc:'Providence, RI',zip:'02903',dist:'2.1 mi',desc:'Specializing in full roof replacements, storm damage repair, and new installations. GAF-certified with 12 years in RI.',tags:['Roof Replacement','Leak Repair','Storm Damage','Gutters'],tier:'licensed',resp:'fast',featured:true},
+  {id:2,name:'Premier Paving & Masonry',trade:'Driveways & Masonry',av:'PP',bg:'#166534',rating:4.8,reviews:168,loc:'Cranston, RI',zip:'02920',dist:'0.8 mi',desc:'Full-service asphalt and concrete driveways, patios, retaining walls, and masonry work throughout RI.',tags:['Asphalt','Concrete','Patios','Masonry'],tier:'licensed',resp:'same',featured:true},
+  {id:3,name:'Northshore Electric Co.',trade:'Electrical',av:'NE',bg:'#92400e',rating:4.9,reviews:187,loc:'N. Providence, RI',zip:'02911',dist:'3.4 mi',desc:'Licensed master electricians. Panel upgrades, EV charger installs, whole-home rewiring, and new construction.',tags:['Panel Upgrades','EV Chargers','Rewiring','Inspections'],tier:'licensed',resp:'fast'},
+  {id:4,name:'GreenLine Landscaping',trade:'Landscaping',av:'GL',bg:'#15803d',rating:4.7,reviews:132,loc:'Johnston, RI',zip:'02919',dist:'4.2 mi',desc:'Full landscape design and maintenance. Lawn care, planting, hardscaping, and seasonal cleanup throughout RI.',tags:['Lawn Care','Design','Planting','Cleanup'],tier:'verified',resp:'same'},
+  {id:5,name:'AquaFlow Plumbing',trade:'Plumbing',av:'AF',bg:'#1d4ed8',rating:4.8,reviews:156,loc:'Warwick, RI',zip:'02886',dist:'5.1 mi',desc:'Licensed plumbers for residential and light commercial. Water heaters, pipe repairs, bathroom remodels.',tags:['Water Heaters','Pipe Repair','Bath Remodel','Drains'],tier:'licensed',resp:'fast'},
+  {id:6,name:'Pro Brush Painting',trade:'Painting',av:'PB',bg:'#7e22ce',rating:4.6,reviews:98,loc:'East Providence, RI',zip:'02914',dist:'3.7 mi',desc:'Interior and exterior painting for homes and condos. Prep, prime, and paint with a 2-year warranty on labor.',tags:['Interior','Exterior','Cabinet Refinishing','Staining'],tier:'verified',resp:'same'},
+  {id:7,name:'Clear Out Junk RI',trade:'Junk Removal',av:'CJ',bg:'#9a3412',rating:4.8,reviews:203,loc:'Pawtucket, RI',zip:'02860',dist:'4.8 mi',desc:'Same-day junk removal, estate cleanouts, construction debris, and appliance disposal. Eco-friendly.',tags:['Same Day','Estate Cleanouts','Demo Debris','Appliances'],tier:'verified',resp:'fast'},
+  {id:8,name:'Fix-It Felix Handyman',trade:'Handyman',av:'FF',bg:'#374151',rating:4.7,reviews:89,loc:'Cranston, RI',zip:'02920',dist:'1.2 mi',desc:'General handyman for all the jobs that need doing. Drywall, tile, fixtures, doors, and assembly.',tags:['Drywall','Tile','Fixtures','Doors'],tier:'verified',resp:'same'},
+  {id:9,name:'StoneEdge Masonry',trade:'Masonry',av:'SE',bg:'#78350f',rating:4.9,reviews:74,loc:'Lincoln, RI',zip:'02865',dist:'7.3 mi',desc:'Custom stone and brick work. Chimneys, walkways, garden walls, and historic restoration throughout RI.',tags:['Chimneys','Walkways','Stone Walls','Restoration'],tier:'licensed',resp:'same'},
+  {id:10,name:'BrightCoat Painters',trade:'Painting',av:'BC',bg:'#0f766e',rating:4.5,reviews:61,loc:'Woonsocket, RI',zip:'02895',dist:'9.1 mi',desc:'Reliable painting crew for residential interiors and exteriors. Clean work, great prep, on-time delivery.',tags:['Interior','Exterior','Trim','Ceilings'],tier:'verified',resp:'same'},
+  {id:11,name:'PowerUp Electric',trade:'Electrical',av:'PE',bg:'#b45309',rating:4.7,reviews:112,loc:'Cumberland, RI',zip:'02864',dist:'8.4 mi',desc:'Residential electrical services. Outlets, lighting, ceiling fans, smoke detectors, and small panel work.',tags:['Outlets','Lighting','Ceiling Fans','Detectors'],tier:'licensed',resp:'same'},
+  {id:12,name:'LawnKing Services',trade:'Landscaping',av:'LK',bg:'#166534',rating:4.4,reviews:47,loc:'West Warwick, RI',zip:'02893',dist:'6.9 mi',desc:'Weekly lawn maintenance, spring and fall cleanups, mulching, and basic landscape design.',tags:['Weekly Mowing','Mulching','Cleanups','Edging'],tier:'verified',resp:'same'},
+];
+let trade='all',minR=0;
+function draw(list){
+  const g=document.getElementById('grid');
+  document.getElementById('rcnt').textContent=list.length;
+  if(!list.length){g.innerHTML='<div class="nores"><i data-lucide="search-x" size="40"></i><h3>No pros found</h3><p>Try adjusting your filters or a different trade.</p></div>';lucide.createIcons();return;}
+  g.innerHTML=list.map(p=>`
+    <div class="pcard${p.featured?' featured':''}">
+      ${p.featured?'<div class="frib">Featured</div>':''}
+      <div class="ctop">
+        <div class="av" style="background:${p.bg}">${p.av}</div>
+        <div style="flex:1;min-width:0">
+          <div class="pname">${p.name}</div>
+          <div class="ptrade">${p.trade}</div>
+          <div class="bdgs">
+            ${p.tier==='licensed'?'<span class="bdg bdg-li">Licensed & Insured</span>':'<span class="bdg bdg-v">Verified</span>'}
+            ${p.rating>=4.8?'<span class="bdg bdg-top">Top Rated</span>':''}
+          </div>
+        </div>
+      </div>
+      <div class="rrow">
+        <div class="stars">${'★'.repeat(Math.floor(p.rating))}</div>
+        <div class="rnum">${p.rating}</div>
+        <div class="rcnt2 rcnt">(${p.reviews} reviews)</div>
+      </div>
+      <div class="locrow"><i data-lucide="map-pin" size="11"></i> ${p.loc} · ${p.dist}</div>
+      <div class="pdesc">${p.desc}</div>
+      <div class="stags">${p.tags.slice(0,3).map(t=>`<span class="stag">${t}</span>`).join('')}</div>
+      <div class="cfooter">
+        <div class="resp"><i data-lucide="zap" size="11"></i> ${p.resp==='fast'?'Responds ~2hrs':'Same-day'}</div>
+        <button class="cbtn">Save</button>
+        <a href="post-project.html" class="cbtn pri">Get a quote</a>
+      </div>
+    </div>`).join('');
+  lucide.createIcons();
+}
+function go(){
+  const q=(document.getElementById('sq').value||'').toLowerCase();
+  const fl=document.getElementById('fl').checked;
+  const fv=document.getElementById('fv').checked;
+  const rt=document.querySelector('input[name="rt"]:checked')?.value||'any';
+  const sort=document.querySelector('.rsort').value;
+
+  // --- location: read the ZIP/city field and check our territory ---
+  const locRaw=(document.getElementById('sloc').value||'').trim();
+  const zip=ppZip(locRaw);
+  let locZip=null;            // numeric ZIP we sort proximity against
+  if(zip.length===5){
+    const chk=ppCheckZip(zip);
+    if(chk.status==='comingSoon'){ return locMsg('coming',chk); }
+    if(chk.status==='unknown'){     return locMsg('unknown',chk); }
+    locZip=parseInt(zip,10);   // live RI ZIP — use it to sort nearest first
+  }
+  locMsg('clear');
+
+  let res=PROS.filter(p=>{
+    const tq=q||trade;
+    if(tq&&tq!=='all'&&!p.trade.toLowerCase().includes(tq)&&!p.tags.join(' ').toLowerCase().includes(tq))return false;
+    if(fl&&p.tier!=='licensed')return false;
+    if(fv&&p.tier!=='verified')return false;
+    if(minR>0&&p.rating<minR)return false;
+    if(rt==='fast'&&p.resp!=='fast')return false;
+    return true;
+  });
+  if(sort==='rating')res.sort((a,b)=>b.rating-a.rating);
+  else if(sort==='reviews')res.sort((a,b)=>b.reviews-a.reviews);
+  else if(locZip!==null)res.sort((a,b)=>Math.abs(parseInt(a.zip,10)-locZip)-Math.abs(parseInt(b.zip,10)-locZip));
+  else res.sort((a,b)=>a.resp==='fast'?-1:1);
+  draw(res);
+}
+
+// Show / clear the out-of-area message under the search bar.
+function locMsg(kind,chk){
+  const el=document.getElementById('locMsg');
+  if(!el)return;
+  if(kind==='clear'){el.hidden=true;el.innerHTML='';return;}
+  el.hidden=false;
+  if(kind==='coming'){
+    el.className='locmsg coming';
+    el.innerHTML="We're not live in "+chk.market.state+" yet \u2014 "+
+      "<a href='waitlist.html?zip="+chk.zip+"&state="+chk.market.abbr+"'>join the waitlist</a> and we'll tell you when we launch your area.";
+  }else{
+    el.className='locmsg unknown';
+    el.innerHTML="We don't serve that area yet. We're live in Rhode Island, with more states coming \u2014 "+
+      "<a href='waitlist.html'>join the waitlist</a>.";
+  }
+}
+
+// Use the browser's current location, then match it to our nearest market.
+function useMyLocation(){
+  if(!navigator.geolocation){return locMsg('unknown',{});}
+  const btn=document.getElementById('geoBtn'); if(btn)btn.textContent='Locating\u2026';
+  navigator.geolocation.getCurrentPosition(function(pos){
+    // Prototype: nearest market by distance to its center.
+    // Production: reverse-geocode coords -> real ZIP, then ppCheckZip(zip).
+    const centers=[{m:PP_MARKETS[0],la:41.82,ln:-71.41},{m:PP_MARKETS[1],la:42.36,ln:-71.06},{m:PP_MARKETS[2],la:41.77,ln:-72.67}];
+    let best=centers[0],bd=1e9;
+    for(const c of centers){const d=Math.hypot(c.la-pos.coords.latitude,c.ln-pos.coords.longitude);if(d<bd){bd=d;best=c;}}
+    if(btn)btn.innerHTML='<i data-lucide=\"locate-fixed\" size=\"13\"></i> Use my current location';
+    if(window.lucide)lucide.createIcons();
+    if(best.m.status==='live'){document.getElementById('sloc').value=best.m.state;locMsg('clear');go();}
+    else{locMsg('coming',{market:best.m,zip:''});}
+  },function(){if(btn)btn.innerHTML='<i data-lucide=\"locate-fixed\" size=\"13\"></i> Use my current location';locMsg('unknown',{});});
+}
+function setTrade(t,el){
+  trade=t;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sq').value=t==='all'?'':t;
+  go();
+}
+function setR(v,el){
+  minR=v;
+  document.querySelectorAll('.sopt').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  go();
+}
+function resetF(){
+  document.getElementById('fl').checked=false;
+  document.getElementById('fv').checked=false;
+  document.querySelector('input[name="rt"]').checked=true;
+  minR=0;
+  document.querySelectorAll('.sopt')[0].click();
+  document.querySelectorAll('.chip')[0].click();
+  document.getElementById('sq').value='';
+}
+draw(PROS);
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

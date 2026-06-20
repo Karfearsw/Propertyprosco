@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Email successfully verified — welcome to Property Pros." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Verified — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+
+    header { background: var(--dark); padding: 0 32px; height: 62px; display: flex; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 24px; padding: 48px 44px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.06); }
+
+    /* SUCCESS ANIMATION */
+    .success-circle { width: 88px; height: 88px; border-radius: 50%; background: var(--green-light); border: 3px solid #bbf7d0; display: flex; align-items: center; justify-content: center; margin: 0 auto 28px; animation: popIn .5s cubic-bezier(.175,.885,.32,1.275); }
+    @keyframes popIn { 0% { transform: scale(0); opacity:0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity:1; } }
+    .check-icon { font-size: 40px; animation: checkDraw .4s ease .3s both; }
+    @keyframes checkDraw { from { transform: scale(0) rotate(-20deg); } to { transform: scale(1) rotate(0); } }
+
+    /* CONFETTI */
+    .confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+    .confetti-piece { position: absolute; width: 10px; height: 10px; border-radius: 2px; animation: confettiFall linear both; }
+    @keyframes confettiFall { 0% { transform: translateY(-20px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+    .card-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+    .card-title { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .card-sub { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 28px; }
+
+    /* USER TYPE CARD */
+    .account-type-card { border-radius: 14px; padding: 16px 20px; margin-bottom: 28px; display: flex; gap: 14px; align-items: center; text-align: left; }
+    .atc-icon { font-size: 32px; flex-shrink: 0; }
+    .atc-title { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .atc-sub { font-size: 13px; font-weight: 700; }
+
+    /* NEXT STEPS */
+    .next-steps { background: var(--bg); border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; text-align: left; }
+    .ns-title { font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 12px; }
+    .ns-item { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .ns-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .ns-check { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; margin-top: 1px; }
+    .ns-text { font-size: 13px; font-weight: 700; color: var(--dark); line-height: 1.5; }
+    .ns-text span { color: var(--gray); font-weight: 600; font-size: 12px; display: block; margin-top: 2px; }
+
+    /* CTA BUTTONS */
+    .cta-primary { width: 100%; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: 900; cursor: pointer; font-family: var(--font); border: none; color: #fff; transition: all .15s; margin-bottom: 10px; display: block; text-decoration: none; }
+    .cta-secondary { width: 100%; padding: 12px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); border: 1px solid var(--border); background: var(--white); color: var(--dark); transition: all .15s; display: block; text-decoration: none; }
+    .cta-secondary:hover { background: var(--bg); }
+
+    /* AUTO REDIRECT */
+    .auto-redirect { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 16px; }
+    .auto-redirect span { color: var(--dark); font-weight: 900; }
+  </style>
+</head>
+<body>
+
+  <!-- CONFETTI -->
+  <div class="confetti-wrap" id="confetti"></div>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+  </header>
+     
+  <div class="main">
+    <div class="card">
+
+      <div class="success-circle">
+        <div class="check-icon">✅</div>
+      </div>
+
+      <div class="card-eyebrow">Verification complete</div>
+      <div class="card-title">You're all set!</div>
+      <div class="card-sub" id="card-sub">Your email has been verified and your account is ready to go.</div>
+
+      <!-- ACCOUNT TYPE CARD -->
+      <div class="account-type-card" id="account-card">
+        <!-- Injected by JS -->
+      </div>
+
+      <!-- NEXT STEPS -->
+      <div class="next-steps" id="next-steps">
+        <!-- Injected by JS -->
+      </div>
+
+      <!-- CTA BUTTONS -->
+      <a class="cta-primary" id="cta-primary" href="homeowner-dashboard.html">Go to my dashboard →</a>
+      <a class="cta-secondary" id="cta-secondary" href="index.html">Explore the platform first</a>
+
+      <!-- AUTO REDIRECT -->
+      <div class="auto-redirect">
+        Redirecting automatically in <span id="countdown">8</span> seconds...
+        <a href="#" id="cancel-redirect" onclick="cancelRedirect(event)" style="color:var(--red);font-weight:800;margin-left:6px">Cancel</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type') || 'homeowner';
+
+    const config = {
+      homeowner: {
+        cardBg: '#f0fdf4', cardBorder: '#bbf7d0',
+        icon: '', title: 'Property Owner Account', color: '#16a34a',
+        sub: 'Free forever · Post unlimited projects · Get verified quotes',
+        checkColor: '#16a34a',
+        steps: [
+          { text: 'Post your first project', sub: 'Describe the work and set your budget — takes 2 minutes' },
+          { text: 'Review quotes from verified pros', sub: 'You\'ll typically receive your first quote within 2 hours' },
+          { text: 'Hire the best fit and get the job done', sub: 'Message pros, compare ratings, and accept when you\'re ready' },
+        ],
+        primaryLabel: ' Post My First Project →',
+        primaryHref: 'post-project.html',
+        primaryColor: '#16a34a',
+        secondaryLabel: 'Browse Pros In My Area First',
+        secondaryHref: 'homeowner-dashboard.html',
+        redirectHref: 'homeowner-dashboard.html',
+      },
+      pro: {
+        cardBg: '#fef2f2', cardBorder: '#fecaca',
+        icon: '🔨', title: 'Service Pro account', color: '#dc2626',
+        sub: '$9.99/month · 14-day free trial · Unlimited leads',
+        checkColor: '#dc2626',
+        steps: [
+          { text: 'Complete your profile', sub: 'Add photos, a bio, your license number, and your service area' },
+          { text: 'Upload your license & insurance', sub: 'Get your Verified badge — it increases win rate significantly' },
+          { text: 'Start browsing and responding to leads', sub: 'Matched leads will appear in your dashboard automatically' },
+        ],
+        primaryLabel: '📊 Go to my dashboard →',
+        primaryHref: 'dashboard.html',
+        primaryColor: '#dc2626',
+        secondaryLabel: 'Browse open projects first',
+        secondaryHref: 'leads.html',
+        redirectHref: 'dashboard.html',
+      },
+      realtor: {
+        cardBg: '#fef3c7', cardBorder: '#fde68a',
+        icon: '🏡', title: 'Realtor Pro account', color: '#b45309',
+        sub: '$24.99/Annually · 14-day free trial · Full client management', 
+        checkColor: '#b45309',
+        steps: [
+          { text: 'Complete your brokerage profile', sub: 'Add your license number, brokerage, and service area' },
+          { text: 'Add your first client', sub: 'Import from CSV or add manually — tag them by transaction stage' },
+          { text: 'Post your first project on behalf of a client', sub: 'Get quotes in hours, not days — keep your deals on track' },
+        ],
+        primaryLabel: '📊 Go to my dashboard →',
+        primaryHref: 'realtor-dashboard.html',
+        primaryColor: '#b45309',
+        secondaryLabel: 'Add my first client →',
+        secondaryHref: 'realtor-clients.html',
+        redirectHref: 'realtor-dashboard.html',
+      }
+    };
+
+    const c = config[type] || config.homeowner;
+
+    // Account card
+    document.getElementById('account-card').style.background = c.cardBg;
+    document.getElementById('account-card').style.border = `1px solid ${c.cardBorder}`;
+    document.getElementById('account-card').innerHTML = `
+      <div class="atc-icon">${c.icon}</div>
+      <div>
+        <div class="atc-title">${c.title}</div>
+        <div class="atc-sub" style="color:${c.color}">${c.sub}</div>
+      </div>`;
+
+    // Next steps
+    document.getElementById('next-steps').innerHTML = `
+      <div class="ns-title">Your next steps</div>
+      ${c.steps.map(s => `
+        <div class="ns-item">
+          <div class="ns-check" style="background:${c.checkColor}">→</div>
+          <div class="ns-text">${s.text}<span>${s.sub}</span></div>
+        </div>`).join('')}`;
+
+    // CTAs
+    const primary = document.getElementById('cta-primary');
+    primary.textContent = c.primaryLabel;
+    primary.href = c.primaryHref;
+    primary.style.background = c.primaryColor;
+    document.getElementById('cta-secondary').textContent = c.secondaryLabel;
+    document.getElementById('cta-secondary').href = c.secondaryHref;
+
+    // Auto redirect countdown
+    let seconds = 8;
+    let redirectTimer;
+    let cancelled = false;
+
+    redirectTimer = setInterval(() => {
+      if (cancelled) return;
+      seconds--;
+      document.getElementById('countdown').textContent = seconds;
+      if (seconds <= 0) {
+        clearInterval(redirectTimer);
+        if (!cancelled) window.location.href = c.redirectHref;
+      }
+    }, 1000);
+
+    function cancelRedirect(e) {
+      e.preventDefault();
+      cancelled = true;
+      clearInterval(redirectTimer);
+      document.querySelector('.auto-redirect').innerHTML = 'Auto-redirect cancelled. Take your time!';
+    }
+
+    // Confetti
+    const colors = ['#dc2626','#16a34a','#2563eb','#d97706','#7c3aed','#f59e0b'];
+    const confettiWrap = document.getElementById('confetti');
+    for (let i = 0; i < 60; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.width = (Math.random() * 8 + 6) + 'px';
+      piece.style.height = (Math.random() * 8 + 6) + 'px';
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      piece.style.animationDelay = (Math.random() * 1.5) + 's';
+      confettiWrap.appendChild(piece);
+    }
+    // Remove confetti after 4 seconds
+    setTimeout(() => confettiWrap.remove(), 5000);
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

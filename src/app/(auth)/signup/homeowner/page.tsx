@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
@@ -19,9 +18,14 @@ export default function HomeownerSignupPage() {
     e.preventDefault(); setError(''); setLoading(true)
     const res = await fetch('/api/auth/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...form, role:'HOMEOWNER'}) })
     const json = await res.json()
-    if (!res.ok) { setError(json.error ?? 'Registration failed'); setLoading(false); return }
-    await signIn('credentials', { email: form.email, password: form.password, redirect: false })
-    router.push('/auth/continue?desiredRole=HOMEOWNER')
+    if (!res.ok && !json.requiresEmailVerification) {
+      setError(json.error ?? 'Registration failed')
+      setLoading(false)
+      return
+    }
+
+    const email = encodeURIComponent(json.email ?? form.email)
+    router.push(`/verify-email?email=${email}`)
   }
 
   return (

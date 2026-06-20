@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Property Pros — Front-End QA Checklist (Scanned)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #fff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header { background: var(--dark); padding: 0 28px; height: 62px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; }
+    .brand-name span { color: #f87171; }
+    .hdr-right { display: flex; gap: 10px; align-items: center; }
+    .hdr-stat { font-size: 13px; font-weight: 800; color: #9ca3af; }
+    .hdr-stat strong { color: #4ade80; }
+    .btn { padding: 8px 16px; border-radius: 9px; font-size: 12px; font-weight: 800; cursor: pointer; border: none; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+
+    /* MAIN */
+    .main { max-width: 1000px; margin: 0 auto; padding: 28px 20px 80px; }
+
+    /* INTRO */
+    .intro { background: var(--dark); border-radius: 18px; padding: 24px 28px; margin-bottom: 22px; position: relative; overflow: hidden; }
+    .intro::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 85% 50%, rgba(220,38,38,.12) 0%, transparent 60%); }
+    .intro-inner { position: relative; z-index: 1; }
+    .intro h1 { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 4px; letter-spacing: -0.4px; }
+    .intro-sub { font-size: 13px; color: #6b7280; font-weight: 700; margin-bottom: 18px; line-height: 1.5; }
+    .intro-note { background: rgba(220,38,38,.12); border: 1px solid rgba(220,38,38,.25); border-radius: 10px; padding: 10px 14px; font-size: 12px; font-weight: 700; color: #fca5a5; margin-bottom: 16px; }
+    .intro-stats { display: flex; gap: 20px; flex-wrap: wrap; }
+    .istat { }
+    .istat-num { font-size: 26px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1; }
+    .istat-label { font-size: 10px; color: #6b7280; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 2px; }
+
+    /* PROGRESS */
+    .progress-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; margin-bottom: 18px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .prog-bar-wrap { flex: 1; min-width: 180px; }
+    .prog-bar-top { display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; color: var(--gray); margin-bottom: 6px; }
+    .prog-bar { height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--green), #4ade80); border-radius: 999px; transition: width .4s ease; }
+    .prog-pct { font-size: 26px; font-weight: 900; color: var(--green); letter-spacing: -1px; }
+
+    /* LEGEND */
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+    .leg { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--gray); }
+    .leg-dot { width: 9px; height: 9px; border-radius: 50%; }
+
+    /* FILTERS */
+    .filters { display: flex; gap: 7px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+    .fbtn { padding: 6px 13px; border-radius: 999px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; font-family: var(--font); transition: all .15s; }
+    .fbtn:hover { border-color: var(--dark); color: var(--dark); }
+    .fbtn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .search-box { padding: 7px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 12px; font-family: var(--font); color: var(--dark); margin-left: auto; width: 200px; }
+    .search-box:focus { outline: none; border-color: var(--red); }
+
+    /* SECTION */
+    .section { margin-bottom: 22px; }
+    .sec-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 11px; cursor: pointer; user-select: none; transition: background .15s; margin-bottom: 8px; }
+    .sec-head:hover { background: var(--bg); }
+    .sec-icon { width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .sec-title { font-size: 14px; font-weight: 900; flex: 1; }
+    .sec-sub { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .sec-prog { font-size: 11px; font-weight: 900; padding: 2px 9px; border-radius: 999px; }
+    .sec-arrow { font-size: 14px; color: var(--gray); transition: transform .2s; }
+    .section.collapsed .sec-arrow { transform: rotate(-90deg); }
+    .section.collapsed .items { display: none; }
+
+    /* ITEMS */
+    .items { display: flex; flex-direction: column; gap: 5px; padding-left: 2px; }
+    .item { background: var(--white); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; transition: border-color .15s; }
+    .item:hover { border-color: #d1d5db; }
+    .item.checked { background: #fafafa; }
+    .item.checked .ititle { text-decoration: line-through; color: var(--gray); }
+    .item.flagged { border-left: 3px solid var(--amber); }
+    .item[data-priority="critical"] { }
+    .item[data-priority="fix"] { }
+
+    /* CHECKBOX */
+    .cb { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; margin-top: 1px; transition: all .15s; }
+    .cb:hover { border-color: var(--green); }
+    .item.checked .cb { background: var(--green); border-color: var(--green); }
+    .cb-check { display: none; color: #fff; font-size: 11px; font-weight: 900; }
+    .item.checked .cb-check { display: block; }
+
+    /* CONTENT */
+    .icontent { flex: 1; min-width: 0; }
+    .itop { display: flex; align-items: flex-start; gap: 7px; flex-wrap: wrap; margin-bottom: 3px; }
+    .ititle { font-size: 13px; font-weight: 800; color: var(--dark); line-height: 1.35; }
+    .ibadge { font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+    .b-crit { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .b-fix { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+    .b-quick { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+    .b-p2 { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .b-scan { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .idesc { font-size: 12px; color: var(--gray); font-weight: 600; line-height: 1.55; }
+    .ilink { font-size: 11px; font-weight: 800; color: var(--blue); margin-top: 4px; display: inline-flex; align-items: center; gap: 3px; }
+    .ilink:hover { color: var(--red); }
+    .scan-flag { font-size: 10px; font-weight: 800; color: var(--red); background: #fef2f2; border: 1px solid #fecaca; border-radius: 5px; padding: 2px 7px; margin-top: 4px; display: inline-block; }
+
+    /* ACTIONS */
+    .iactions { display: flex; gap: 5px; flex-shrink: 0; margin-top: 1px; }
+    .abtn { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--gray); font-family: var(--font); transition: all .15s; white-space: nowrap; }
+    .abtn:hover { background: var(--border); color: var(--dark); }
+    .abtn.flagged { border-color: #fde68a; background: #fffbeb; color: #92400e; }
+
+    /* NOTE */
+    .inote { margin-top: 7px; font-size: 12px; color: var(--dark); font-weight: 600; line-height: 1.5; background: var(--bg); border-left: 3px solid var(--border); padding: 6px 10px; border-radius: 0 6px 6px 0; display: none; }
+    .inote.vis { display: block; }
+    .note-ta { width: 100%; padding: 6px 9px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; font-family: var(--font); color: var(--dark); resize: none; min-height: 52px; margin-top: 5px; }
+    .note-ta:focus { outline: none; border-color: var(--blue); }
+
+    /* COMPLETION */
+    .done-banner { display: none; background: linear-gradient(135deg,#166534,#16a34a); border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; text-align: center; }
+    .done-banner.show { display: block; }
+    .done-banner h2 { font-size: 18px; font-weight: 900; color: #fff; }
+    .done-banner p { font-size: 13px; color: rgba(255,255,255,.8); margin-top: 4px; }
+
+    @media (max-width: 600px) {
+      header { padding: 0 14px; }
+      .main { padding: 16px 12px 60px; }
+      .intro { padding: 18px; }
+      .item { flex-direction: column; }
+      .iactions { margin-top: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo">PP</div>
+    <div class="brand-name"><span>Property</span> Pros</div>
+  </div>
+  <div class="hdr-right">
+    <div class="hdr-stat"><strong id="h-done">0</strong> / <span id="h-total">0</span></div>
+    <button class="btn btn-ghost" onclick="window.print()">Print</button>
+    <button class="btn btn-red" onclick="resetAll()">Reset</button>
+  </div>
+</header>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div class="intro-inner">
+      <h1>Front-End QA Checklist — Property Pros</h1>
+      <div class="intro-sub">Built from a live scan of all 51 uploaded files. Items marked 🔍 Scan Found are confirmed issues detected in your actual code.</div>
+      <div class="intro-note">🔍 Items tagged "Scan Found" were detected directly from your uploaded files — these are real issues, not assumptions.</div>
+      <div class="intro-stats">
+        <div class="istat"><div class="istat-num" id="s-total">0</div><div class="istat-label">Total items</div></div>
+        <div class="istat"><div class="istat-num" id="s-done" style="color:#4ade80">0</div><div class="istat-label">Done</div></div>
+        <div class="istat"><div class="istat-num" id="s-flag" style="color:#fbbf24">0</div><div class="istat-label">Flagged</div></div>
+        <div class="istat"><div class="istat-num" style="color:#f87171">36</div><div class="istat-label">Missing Lucide CDN</div></div>
+        <div class="istat"><div class="istat-num" style="color:#fbbf24">51</div><div class="istat-label">Pages scanned</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DONE BANNER -->
+  <div class="done-banner" id="done-banner">
+    <h2>🎉 QA complete — Property Pros is ready to deploy!</h2>
+    <p>All items checked off. Push to Netlify and start the backend.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-card">
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-top"><span>Overall progress</span><span id="prog-label">0 of 0</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <div class="prog-pct" id="prog-pct">0%</div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg"><div class="leg-dot" style="background:#fecaca"></div> 🔴 Critical — blocks launch</div>
+    <div class="leg"><div class="leg-dot" style="background:#fde68a"></div> 🟡 Fix before launch</div>
+    <div class="leg"><div class="leg-dot" style="background:#bbf7d0"></div> 🟢 Quick win</div>
+    <div class="leg"><div class="leg-dot" style="background:#bfdbfe"></div> 🔵 Phase 2</div>
+    <div class="leg"><div class="leg-dot" style="background:#fca5a5"></div> 🔍 Scan detected</div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="fbtn active" onclick="filter('all',this)">All</button>
+    <button class="fbtn" onclick="filter('unchecked',this)">Unchecked</button>
+    <button class="fbtn" onclick="filter('critical',this)">🔴 Critical</button>
+    <button class="fbtn" onclick="filter('fix',this)">🟡 Fix first</button>
+    <button class="fbtn" onclick="filter('scan',this)">🔍 Scan issues</button>
+    <button class="fbtn" onclick="filter('flagged',this)">🚩 Flagged</button>
+    <input class="search-box" placeholder="Search..." oninput="search(this.value)" />
+  </div>
+
+  <div id="container"></div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────
+const SECTIONS = [
+{
+  id:'global', title:'Global — Applies to ALL Pages', icon:'⚙️', color:'#f3f4f6',
+  items:[
+    {id:'g1', title:'Add Lucide CDN to 36 pages missing it', desc:'billing, browse-projects, customer-profile, dashboard, email-notification, email-verified, forgot-password, homeowner-messages, homeowner-notifications, homeowner-profile, homeowner-projects, homepage, leads, messages, notifications, privacy, pro-profile, quick-jobs-booking, quick-jobs-pro, quick-jobs, quotes, realtor-clients, realtor-dashboard, realtor-messages, realtor-notifications, realtor-post-project, realtor-referrals, realtor-settings, reset-password, saved-leads, saved-pros, schedule, settings, terms, verify-email', p:'critical', scan:true},
+    {id:'g2', title:'Replace emoji icons with Lucide across all pages', desc:'Scan found 20+ pages with emoji used as UI icons in buttons and nav items. High-impact pages: quick-jobs (192 emojis), leads (103), pro-profile (96), homeowner-projects (94), customer-profile (89)', p:'fix', scan:true},
+    {id:'g3', title:'Remove 7 href="#" dead links', desc:'email-notification.html (4), qa-checklist.html (2), email-verified.html (1). These buttons do nothing when clicked.', p:'fix', scan:true},
+    {id:'g4', title:'Add meta description to all 51 pages', desc:'Scan found 0 of 51 pages have a meta description tag. Required for Google search previews.', p:'fix', scan:true},
+    {id:'g5', title:'Add Open Graph tags to public pages', desc:'og:title, og:description, og:image missing on all pages. Needed for social sharing previews.', p:'fix'},
+    {id:'g6', title:'All modal overlays close on Escape key and overlay click', desc:'Spot-check 10 pages — every modal should have both escape and click-outside close handlers', p:'fix'},
+    {id:'g7', title:'No horizontal scroll on mobile (375px)', desc:'Open every page in Chrome DevTools at 375px width. Check for overflow on tables, wide cards, or grids', p:'critical'},
+    {id:'g8', title:'All footer links correct on all pages', desc:'Terms, Privacy, Contact, Articles, Plus, Waitlist all link correctly across all 51 pages', p:'quick'},
+    {id:'g9', title:'All pages load in under 3 seconds', desc:'Check homeowner-dashboard, browse-projects, leads, and realtor-clients which are the heaviest pages', p:'quick'},
+    {id:'g10', title:'No placeholder text remaining in content', desc:'Search each file for "lorem", "TBD", "Coming soon" in main body text (not intentional Phase 2 labels)', p:'fix'},
+    {id:'g11', title:'homepage.html — decide whether to keep or remove', desc:'Scan found homepage.html — this is the old CSS-only version with homestylesheet.css. Either redirect it to index.html or delete it before deploy', p:'critical', scan:true, link:'homepage.html'},
+    {id:'g12', title:'homestylesheet.css — clean up or integrate', desc:'Separate CSS file only used by homepage.html. If homepage.html is removed this file is orphaned.', p:'fix', scan:true},
+  ]
+},
+{
+  id:'public', title:'Public / Marketing Pages', icon:'🌐', color:'#eff6ff',
+  items:[
+    {id:'p1', title:'index.html — Mobile hamburger menu works', desc:'Scan confirmed hamburger present. Test: opens, all links work, closes on link click and outside tap', p:'fix', link:'index.html'},
+    {id:'p2', title:'index.html — All CTA buttons route correctly', desc:'"Post a project" → post-project.html, "Find a pro" → homeowner-dashboard.html, contractor CTAs → login.html', p:'fix', link:'index.html'},
+    {id:'p3', title:'index.html — No broken images or layout gaps', desc:'Check hero, stats strip, service grid, and testimonials on desktop and mobile', p:'quick'},
+    {id:'p4', title:'about.html — Has no onclick handlers', desc:'Scan found 0 onclick events. Confirm all links are standard hrefs and nothing is broken.', p:'quick', scan:true, link:'about.html'},
+    {id:'p5', title:'about.html — Founder story copy is updated', desc:'Confirm the new personal founding story has been added to replace any placeholder text', p:'fix', link:'about.html'},
+    {id:'p6', title:'pricing.html — Missing "Plus" mention', desc:'Scan found no Plus reference on pricing.html. Add a Plus™ $9.99/year row or section linking to plus.html', p:'fix', scan:true, link:'pricing.html'},
+    {id:'p7', title:'pricing.html — Pro price is $9.99/month, Realtor is $29.99/month', desc:'Confirm both prices are correct throughout the page', p:'critical', link:'pricing.html'},
+    {id:'p8', title:'contact.html — Form submit shows confirmation', desc:'Scan confirmed form exists (29 onclick handlers). Test submit fires toast or success state', p:'fix', link:'contact.html'},
+    {id:'p9', title:'contact.html — Article links go to articles.html', desc:'Scan confirmed articles.html is referenced. Test all "Read article" links', p:'quick', link:'contact.html'},
+    {id:'p10', title:'articles.html — Search bar filters correctly', desc:'Scan confirmed 39 onclick handlers and search present. Test typing filters visible articles', p:'quick', link:'articles.html'},
+    {id:'p11', title:'articles.html — User type tabs filter sections', desc:'Homeowners / Pros / Realtors tabs hide/show correct sections', p:'quick', link:'articles.html'},
+    {id:'p12', title:'articles.html — Article modals open, close on ✕ and Escape', desc:'Click any article card, verify modal opens with content, test both close methods', p:'quick', link:'articles.html'},
+    {id:'p13', title:'pro-landing.html — Has only 6 onclick handlers', desc:'Scan found 6. Confirm all CTAs work — trial button, pricing anchor, and nav links', p:'quick', link:'pro-landing.html'},
+    {id:'p14', title:'homeowner-landing.html — Mobile works correctly', desc:'Scan found no hamburger on this page. Confirm mobile layout is usable without a hamburger nav', p:'fix', scan:true, link:'homeowner-landing.html'},
+    {id:'p15', title:'realtor-landing.html — All 11 CTAs route correctly', desc:'Trial, pricing, and demo buttons all tested', p:'quick', link:'realtor-landing.html'},
+    {id:'p16', title:'plus.html — Get Plus modal opens and submits correctly', desc:'Scan confirmed 20 onclick handlers, modal, and confetti present. Test full flow: open → fill name+email → submit → success', p:'fix', link:'plus.html'},
+    {id:'p17', title:'plus.html — Charity selector works in modal', desc:'Three charity options highlight on click, selection persists to submit', p:'quick', link:'plus.html'},
+    {id:'p18', title:'plus.html — $9.99/year price shown everywhere', desc:'Confirm no "$0.99/month" text remains on the page', p:'critical', link:'plus.html'},
+    {id:'p19', title:'waitlist.html — Form submits and shows success state', desc:'Scan found counter and toast present but no charity section. Form: enter name+email → submit → position shown + confetti', p:'fix', scan:true, link:'waitlist.html'},
+    {id:'p20', title:'waitlist.html — Add charity/give back section', desc:'Scan found charity is missing from waitlist.html. The plus.html has it but waitlist does not. Consider adding a brief mention.', p:'fix', scan:true, link:'waitlist.html'},
+    {id:'p21', title:'waitlist.html — User type selector works (Homeowner/Contractor/Realtor)', desc:'Scan found 14 onclick handlers. Test all three type buttons highlight and Contractor shows trade dropdown', p:'quick', link:'waitlist.html'},
+    {id:'p22', title:'terms.html — Page renders fully, all section links work', desc:'Scan found Lucide CDN missing. Add it if any icons are used, then verify all anchor links jump correctly', p:'quick', link:'terms.html'},
+    {id:'p23', title:'privacy.html — Sidebar present but Lucide CDN missing', desc:'Scan found privacy.html has a sidebar reference and is missing Lucide CDN. Check icon display', p:'fix', scan:true, link:'privacy.html'},
+    {id:'p24', title:'404.html — Search and Go Home buttons work', desc:'Scan confirmed 1 onclick. Test search routes to correct page, "Go home" goes to index.html', p:'quick', link:'404.html'},
+  ]
+},
+{
+  id:'auth', title:'Auth Flow', icon:'🔐', color:'#fef2f2',
+  items:[
+    {id:'a1', title:'login.html — Tab switching (Homeowner/Pro/Realtor) works', desc:'Scan found no "tab" keyword — verify tab switching mechanism is present and working under a different class name', p:'critical', scan:true, link:'login.html'},
+    {id:'a2', title:'login.html — 48 onclick handlers — test all buttons', desc:'Scan found 48 onclick events. Social login (Google/Apple) should show "coming soon" toast. All form submits route correctly.', p:'critical', scan:true, link:'login.html'},
+    {id:'a3', title:'login.html — Homeowner signup → verify-email.html?type=homeowner', desc:'Test signup flow routes to correct verify page with correct type param', p:'critical', link:'login.html'},
+    {id:'a4', title:'login.html — Pro signup → verify-email.html?type=pro', desc:'Pro signup routes to verify page with pro type', p:'critical'},
+    {id:'a5', title:'login.html — Realtor signup → verify-email.html?type=realtor', desc:'Realtor signup routes to verify page with realtor type', p:'critical'},
+    {id:'a6', title:'verify-email.html — Lucide CDN missing', desc:'Scan confirmed Lucide CDN not present. Add script tag and createIcons() call', p:'fix', scan:true, link:'verify-email.html'},
+    {id:'a7', title:'verify-email.html — Resend button 60s countdown works', desc:'Scan confirmed resend and countdown present. Click resend — button disables, counter counts down to 0', p:'quick', link:'verify-email.html'},
+    {id:'a8', title:'verify-email.html — Demo band link routes correctly with type param', desc:'Demo link updates based on URL type param (homeowner/pro/realtor)', p:'fix', link:'verify-email.html'},
+    {id:'a9', title:'email-verified.html — Lucide CDN missing', desc:'Scan confirmed Lucide CDN not present. One dead href="#" also found.', p:'fix', scan:true, link:'email-verified.html'},
+    {id:'a10', title:'email-verified.html — Confetti fires on load', desc:'Confetti animation should play immediately when page loads', p:'quick', link:'email-verified.html'},
+    {id:'a11', title:'email-verified.html — Auto-redirect to correct dashboard in 8s', desc:'?type=homeowner → homeowner-dashboard, ?type=pro → dashboard, ?type=realtor → realtor-dashboard', p:'critical', link:'email-verified.html'},
+    {id:'a12', title:'email-verified.html — Cancel redirect works', desc:'"Cancel" link stops the countdown and redirect', p:'quick'},
+    {id:'a13', title:'forgot-password.html — Lucide CDN missing', desc:'Scan confirmed missing. Add and test icons display', p:'fix', scan:true, link:'forgot-password.html'},
+    {id:'a14', title:'forgot-password.html — Email validation and panel switch work', desc:'Empty/invalid email shows error. Valid email → 0.9s delay → success panel with entered email shown', p:'fix', link:'forgot-password.html'},
+    {id:'a15', title:'forgot-password.html — Resend link works', desc:'Resend link changes to "✓ Resent!" and resets after 3s', p:'quick'},
+    {id:'a16', title:'reset-password.html — Lucide CDN missing', desc:'Scan confirmed missing. Add CDN script.', p:'fix', scan:true, link:'reset-password.html'},
+    {id:'a17', title:'reset-password.html — Password strength meter fills correctly', desc:'Meter fills bar by bar and strength label updates (Weak/Fair/Good/Strong)', p:'quick', link:'reset-password.html'},
+    {id:'a18', title:'reset-password.html — Requirements checklist updates in real time', desc:'All 4 requirements (length, uppercase, number, special char) check off as typed', p:'quick'},
+    {id:'a19', title:'reset-password.html — Confirm mismatch shows error', desc:'Entering mismatched passwords shows red error message', p:'quick'},
+    {id:'a20', title:'reset-password.html — Submit redirects to login after 5s', desc:'Successful reset shows success panel and auto-redirects to login.html', p:'fix'},
+  ]
+},
+{
+  id:'homeowner', title:'Homeowner Flow', icon:'🏠', color:'#f0fdf4',
+  items:[
+    {id:'h1', title:'homeowner-dashboard.html — hw-sidebar NOT present', desc:'Scan found no hw-layout or hw-sidebar. The left sidebar added earlier may not be in this version. Add consistent sidebar to match dashboard style.', p:'critical', scan:true, link:'homeowner-dashboard.html'},
+    {id:'h2', title:'homeowner-dashboard.html — Bottom nav present and works', desc:'Scan confirmed bottom-nav present. Test all 5 tabs on mobile (≤768px)', p:'fix', link:'homeowner-dashboard.html'},
+    {id:'h3', title:'homeowner-dashboard.html — Plus section and showPlusToast present', desc:'Scan confirmed Plus section exists. Test each locked feature card fires toast with correct feature name', p:'fix', link:'homeowner-dashboard.html'},
+    {id:'h4', title:'homeowner-dashboard.html — Search bar filters pro cards', desc:'Typing in the main search bar filters visible pro cards', p:'fix'},
+    {id:'h5', title:'homeowner-dashboard.html — Heart (♥) save buttons toggle correctly', desc:'Clicking save on a pro card toggles state. Test multiple cards independently', p:'fix'},
+    {id:'h6', title:'post-project.html — Step 1 category picker works', desc:'Clicking a category card highlights it and enables Next button', p:'critical', link:'post-project.html'},
+    {id:'h7', title:'post-project.html — Questionnaire auto-advances on single choice', desc:'After selecting a single-choice option, moves to next question after ~300ms automatically', p:'critical'},
+    {id:'h8', title:'post-project.html — Multi-select chips toggle correctly', desc:'Chips toggle on/off, multiple can be selected simultaneously', p:'critical'},
+    {id:'h9', title:'post-project.html — Description pre-fills from answers on Step 3', desc:'Scan confirmed confetti and photo upload present. Verify description textarea is pre-filled with generated text based on answers', p:'critical'},
+    {id:'h10', title:'post-project.html — No sessionStorage in this version', desc:'Scan found no sessionStorage usage. The questionnaire data stays in JS state only — confirm this works across all 5 steps without page reload', p:'fix', scan:true},
+    {id:'h11', title:'post-project.html — Photo upload drag-drop works', desc:'Drag image file onto upload area OR click to select — both show thumbnail preview', p:'fix'},
+    {id:'h12', title:'post-project.html — Budget presets and custom input work', desc:'Clicking preset highlights it, custom input clears preset selection', p:'fix'},
+    {id:'h13', title:'post-project.html — Confirm step (Step 5) populates all fields', desc:'Category, answers, photos, description, budget, timeline all show in confirm summary', p:'critical'},
+    {id:'h14', title:'post-project.html — Each Edit button jumps to correct step', desc:'Edit in confirm panel goes to step 1 (category), step 3 (photos), step 4 (budget)', p:'fix'},
+    {id:'h15', title:'post-project.html — Submit fires confetti + success overlay', desc:'Scan confirmed confetti present. Clicking "Post my project" shows success overlay with stats', p:'fix'},
+    {id:'h16', title:'post-project.html — Progress dots update correctly', desc:'5 dots advance through steps 1–5 with done/active/pending states', p:'quick'},
+    {id:'h17', title:'homeowner-projects.html — Lucide CDN missing', desc:'Scan confirmed missing. 27 emoji buttons found — will display as text without Lucide.', p:'critical', scan:true, link:'homeowner-projects.html'},
+    {id:'h18', title:'homeowner-projects.html — No repost functionality found', desc:'Scan found no "repost" keyword. If a project expires the homeowner cannot repost from this page currently.', p:'fix', scan:true},
+    {id:'h19', title:'homeowner-projects.html — Quote comparison modal works', desc:'Clicking "View quotes" opens side-by-side comparison with accept/decline buttons', p:'fix', link:'homeowner-projects.html'},
+    {id:'h20', title:'homeowner-projects.html — Status badges display correctly', desc:'Active, Pending, Completed, Expired all show with correct colors', p:'quick'},
+    {id:'h21', title:'homeowner-messages.html — Lucide CDN missing + 19 emoji buttons', desc:'Scan confirmed both issues. Add Lucide CDN and replace emoji icons in message bubbles and action buttons', p:'critical', scan:true, link:'homeowner-messages.html'},
+    {id:'h22', title:'homeowner-messages.html — Conversation switching works', desc:'Clicking a contact on the left loads their conversation thread on the right', p:'fix'},
+    {id:'h23', title:'homeowner-messages.html — Send message adds to thread', desc:'Typing and pressing Enter or Send adds message to right panel thread', p:'fix'},
+    {id:'h24', title:'homeowner-notifications.html — Lucide CDN missing + 8 emoji buttons', desc:'Scan confirmed both issues. Add CDN and replace icon emojis', p:'fix', scan:true, link:'homeowner-notifications.html'},
+    {id:'h25', title:'homeowner-notifications.html — Bell badge clears on visit', desc:'After visiting notifications page, the badge count on the nav bell clears', p:'quick'},
+    {id:'h26', title:'homeowner-settings.html — All 8 tabs switch correctly', desc:'Scan confirmed switchTab present and Plus tab exists. Test: Profile, Addresses, Notifications, Privacy, Security, Connected, Data, Plus™', p:'fix', link:'homeowner-settings.html'},
+    {id:'h27', title:'homeowner-settings.html — Plus™ tab shows upgrade content', desc:'Clicking Plus™ tab shows the upgrade banner, feature cards, and coming soon list', p:'fix'},
+    {id:'h28', title:'homeowner-settings.html — Save buttons fire toasts', desc:'Scan found no toast on this page. Add toast feedback to profile save and notification save buttons', p:'fix', scan:true},
+    {id:'h29', title:'saved-pros.html — Lucide CDN missing + no hw-sidebar', desc:'Scan confirmed both. Add CDN and add consistent left sidebar to match other homeowner pages', p:'fix', scan:true, link:'saved-pros.html'},
+    {id:'h30', title:'saved-pros.html — 29 emoji buttons need Lucide replacement', desc:'Heart, message, note, remove buttons all using emoji icons', p:'fix', scan:true},
+    {id:'h31', title:'saved-pros.html — Filter tabs work', desc:'Trade filter tabs show only matching pro cards', p:'quick'},
+    {id:'h32', title:'saved-pros.html — Remove pro confirms and fades card', desc:'"Remove" button shows confirm dialog, then fades and removes the card', p:'fix'},
+    {id:'h33', title:'homeowner-profile.html — Lucide CDN missing + 28 emoji buttons', desc:'Scan found homeowner-profile.html (separate from customer-profile.html) with same issues', p:'fix', scan:true, link:'homeowner-profile.html'},
+  ]
+},
+{
+  id:'pro', title:'Pro (Contractor) Flow', icon:'🔨', color:'#fef2f2',
+  items:[
+    {id:'pr1', title:'dashboard.html — Lucide CDN missing + 6 emoji buttons', desc:'Scan confirmed. Add CDN, replace emoji in sidebar nav and notification items', p:'critical', scan:true, link:'dashboard.html'},
+    {id:'pr2', title:'dashboard.html — Onboarding checklist renders + progress bar fills', desc:'Scan confirmed checklist and step keywords present. Verify bar width matches completed steps', p:'fix'},
+    {id:'pr3', title:'dashboard.html — Notification toast fires after ~8s', desc:'Scan confirmed toast present. Test new lead toast appears automatically', p:'quick'},
+    {id:'pr4', title:'dashboard.html — Quick Jobs sidebar link goes to quick-jobs-pro.html', desc:'Quick Jobs nav item in sidebar routes correctly', p:'quick'},
+    {id:'pr5', title:'leads.html — Lucide CDN missing + 6 emoji buttons', desc:'Scan confirmed both issues. High priority — leads is the core pro feature.', p:'critical', scan:true, link:'leads.html'},
+    {id:'pr6', title:'leads.html — "Matched" filter tab missing', desc:'Scan found Hot/New/All tabs but no Matched tab. Add or verify tab label matches code', p:'fix', scan:true},
+    {id:'pr7', title:'leads.html — View details modal opens with correct data per lead', desc:'Scan confirmed modal present. Click each lead card — modal shows that lead\'s specific project details', p:'critical'},
+    {id:'pr8', title:'leads.html — Send quote modal opens from both card and detail modal', desc:'Both the card-level and modal-level "Send quote" buttons open the quote form', p:'critical'},
+    {id:'pr9', title:'leads.html — Filter tabs work (Hot/New/All)', desc:'Confirmed tabs present. Test each tab shows correct filtered results', p:'fix'},
+    {id:'pr10', title:'leads.html — Message button routes to messages.html', desc:'"Message" button on lead card links to correct page', p:'fix'},
+    {id:'pr11', title:'quotes.html — Lucide CDN missing + 17 emoji buttons', desc:'Scan confirmed. Heavy emoji usage — 17 buttons need icon replacement', p:'critical', scan:true, link:'quotes.html'},
+    {id:'pr12', title:'quotes.html — All filter tabs work (All/Pending/Accepted/Declined/Withdrawn)', desc:'Scan confirmed all status keywords present. Test each tab filters correctly', p:'fix'},
+    {id:'pr13', title:'quotes.html — Edit quote modal pre-fills and saves', desc:'Edit button opens modal with current price pre-filled, save fires toast', p:'fix'},
+    {id:'pr14', title:'quotes.html — Withdraw shows confirm dialog', desc:'"Withdraw" shows confirmation before changing quote status', p:'fix'},
+    {id:'pr15', title:'saved-leads.html — Lucide CDN missing + 21 emoji buttons', desc:'Scan confirmed both. Replace all emoji icons after adding CDN', p:'critical', scan:true, link:'saved-leads.html'},
+    {id:'pr16', title:'saved-leads.html — Filter tabs work (All/Hot/Expiring/New)', desc:'Each tab filters lead cards correctly', p:'fix'},
+    {id:'pr17', title:'saved-leads.html — Send quote modal works from saved lead', desc:'"Send quote" on a saved lead card opens the quote form', p:'fix'},
+    {id:'pr18', title:'saved-leads.html — Remove lead works', desc:'"Remove" confirms and fades card out', p:'fix'},
+    {id:'pr19', title:'browse-projects.html — Lucide CDN missing + no bookmark found', desc:'Scan confirmed CDN missing and no "bookmark" keyword. Save/bookmark feature may be broken.', p:'critical', scan:true, link:'browse-projects.html'},
+    {id:'pr20', title:'browse-projects.html — 9 emoji buttons need replacement', desc:'After adding Lucide CDN, replace emoji icon buttons with Lucide equivalents', p:'fix', scan:true},
+    {id:'pr21', title:'browse-projects.html — Filter panel updates results', desc:'Trade, budget, and distance filters show/hide project cards', p:'fix'},
+    {id:'pr22', title:'messages.html — Lucide CDN missing + 10 emoji buttons', desc:'Scan confirmed both. Also no "thread" keyword found — verify message thread display', p:'critical', scan:true, link:'messages.html'},
+    {id:'pr23', title:'messages.html — Conversation switching and send both work', desc:'Left panel click loads thread, Enter/Send adds message to right panel', p:'fix'},
+    {id:'pr24', title:'schedule.html — Lucide CDN missing + 4 emoji buttons', desc:'Scan confirmed. Add CDN and replace emoji in job status badges', p:'fix', scan:true, link:'schedule.html'},
+    {id:'pr25', title:'schedule.html — Calendar renders and job cards show correct data', desc:'Upcoming jobs list shows homeowner, service, date, price', p:'fix'},
+    {id:'pr26', title:'schedule.html — Mark complete fires toast', desc:'Scan found no toast on schedule.html. Add toast feedback to mark complete action', p:'fix', scan:true},
+    {id:'pr27', title:'billing.html — Lucide CDN missing', desc:'Scan confirmed. Add CDN and verify all billing icons display', p:'fix', scan:true, link:'billing.html'},
+    {id:'pr28', title:'billing.html — Cancel subscription flow works', desc:'Scan confirmed cancel keyword present. Test cancel button shows confirm dialog', p:'fix'},
+    {id:'pr29', title:'billing.html — No toast feedback found', desc:'Scan found no toast on billing.html. Add confirmation toast for payment updates and cancel actions', p:'fix', scan:true},
+    {id:'pr30', title:'settings.html — Lucide CDN missing', desc:'Scan confirmed missing. Only 11 onclick handlers — lightest pro settings page.', p:'fix', scan:true, link:'settings.html'},
+    {id:'pr31', title:'settings.html — No "tier" or "verification" keywords found', desc:'Scan found settings.html is missing the two-tier verification system (Licensed & Insured vs Verified). The code snippets we provided need to be added.', p:'critical', scan:true},
+    {id:'pr32', title:'settings.html — All tabs switch correctly (Profile/Verification/Portfolio/Service area/Notifications)', desc:'Test each tab shows the correct content section', p:'fix'},
+    {id:'pr33', title:'notifications.html — Lucide CDN missing + 7 emoji buttons', desc:'Scan confirmed both. Add CDN, replace notification type icons', p:'fix', scan:true, link:'notifications.html'},
+    {id:'pr34', title:'quick-jobs-pro.html — Lucide CDN missing + 8 emoji buttons', desc:'Scan confirmed. Add CDN before testing toggle and availability features', p:'fix', scan:true, link:'quick-jobs-pro.html'},
+    {id:'pr35', title:'quick-jobs-pro.html — Live/Pause toggle works', desc:'Toggle button switches pro between live and paused state with correct badge update', p:'fix'},
+    {id:'pr36', title:'quick-jobs-pro.html — Service cards expand/collapse price input', desc:'Clicking a service card reveals the price input section', p:'fix'},
+    {id:'pr37', title:'dashboard.html — Mobile sidebar drawer works', desc:'On mobile (≤768px), ☰ topbar button slides in sidebar, overlay tap closes it', p:'fix'},
+  ]
+},
+{
+  id:'realtor', title:'Realtor Flow', icon:'💼', color:'#fef3c7',
+  items:[
+    {id:'rt1', title:'realtor-dashboard.html — Lucide CDN missing + 6 emoji buttons', desc:'Scan confirmed both. Core realtor page — high priority to fix icons', p:'critical', scan:true, link:'realtor-dashboard.html'},
+    {id:'rt2', title:'realtor-dashboard.html — All stat cards and nav links work', desc:'Jobs posted, credits, clients stats all show. All sidebar nav items route correctly', p:'fix'},
+    {id:'rt3', title:'realtor-dashboard.html — Mobile sidebar drawer works', desc:'☰ button slides sidebar in on mobile', p:'fix'},
+    {id:'rt4', title:'realtor-clients.html — Lucide CDN missing + 6 emoji buttons', desc:'Scan confirmed both. 41 onclick handlers — complex page, test thoroughly after fix', p:'critical', scan:true, link:'realtor-clients.html'},
+    {id:'rt5', title:'realtor-clients.html — Clicking client loads their detail panel', desc:'Left panel client click populates middle and right panels with that client\'s data', p:'fix'},
+    {id:'rt6', title:'realtor-clients.html — Three tabs (Overview/Projects/Docs) switch correctly', desc:'Tab switching within the client detail panel works', p:'fix'},
+    {id:'rt7', title:'realtor-clients.html — No toast feedback found', desc:'Scan found no toast. Add confirmation toasts for adding clients and posting projects', p:'fix', scan:true},
+    {id:'rt8', title:'realtor-post-project.html — Lucide CDN missing', desc:'Scan confirmed missing. 44 onclick handlers — add CDN before testing wizard steps', p:'critical', scan:true, link:'realtor-post-project.html'},
+    {id:'rt9', title:'realtor-post-project.html — No "wizard" keyword — confirm step flow', desc:'Scan found no "wizard" label. Verify the 6-step flow has clear step indicators and back/next navigation', p:'fix', scan:true},
+    {id:'rt10', title:'realtor-post-project.html — Client selector pre-fills their details', desc:'Selecting a client from dropdown fills in property address and contact info', p:'fix'},
+    {id:'rt11', title:'realtor-post-project.html — No toast on submit', desc:'Scan found no toast. Add success state after posting a project for a client', p:'fix', scan:true},
+    {id:'rt12', title:'realtor-messages.html — Lucide CDN missing + 8 emoji buttons', desc:'Scan confirmed both. Test conversation switching after adding CDN', p:'fix', scan:true, link:'realtor-messages.html'},
+    {id:'rt13', title:'realtor-messages.html — No toast found', desc:'Add toast when message is sent successfully', p:'fix', scan:true},
+    {id:'rt14', title:'realtor-referrals.html — Lucide CDN missing + 9 emoji buttons', desc:'Scan confirmed both. 28 onclick handlers.', p:'fix', scan:true, link:'realtor-referrals.html'},
+    {id:'rt15', title:'realtor-referrals.html — Generate link button shows shareable URL', desc:'Clicking generate creates a unique referral link and allows copying', p:'fix'},
+    {id:'rt16', title:'realtor-referrals.html — No toast found', desc:'Add toast when link is copied or generated', p:'fix', scan:true},
+    {id:'rt17', title:'realtor-notifications.html — Lucide CDN missing', desc:'Scan confirmed. Add CDN and verify notification items display correctly', p:'fix', scan:true, link:'realtor-notifications.html'},
+    {id:'rt18', title:'realtor-settings.html — Lucide CDN missing', desc:'Scan confirmed. 41 onclick handlers — complex settings page.', p:'fix', scan:true, link:'realtor-settings.html'},
+    {id:'rt19', title:'realtor-settings.html — All 6 tabs switch correctly', desc:'Profile, Brokerage, Billing, Referrals, Notifications, Security all show correct content', p:'fix'},
+    {id:'rt20', title:'realtor-settings.html — No toast found', desc:'Add toast confirmation to all save buttons on settings tabs', p:'fix', scan:true},
+  ]
+},
+{
+  id:'shared', title:'Shared / Utility Pages', icon:'👤', color:'#f5f3ff',
+  items:[
+    {id:'sh1', title:'pro-profile.html — Lucide CDN missing + 9 emoji buttons', desc:'Scan confirmed both. 27 onclick handlers. Core conversion page — needs to be clean.', p:'critical', scan:true, link:'pro-profile.html'},
+    {id:'sh2', title:'pro-profile.html — "Post a project →" CTA routes to post-project.html', desc:'Scan confirmed post-project present. Test main CTA and any other quote buttons go to correct page', p:'critical'},
+    {id:'sh3', title:'pro-profile.html — Verified badge shows correct tier', desc:'Roofing trade shows "Licensed & Insured", junk removal shows "Verified"', p:'fix'},
+    {id:'sh4', title:'pro-profile.html — Portfolio/Reviews tabs switch correctly', desc:'No toast found on this page — verify tab switching works without toast dependency', p:'fix'},
+    {id:'sh5', title:'customer-profile.html — Lucide CDN missing + 28 emoji buttons', desc:'Scan confirmed both. Heavy emoji usage — 42 onclick handlers.', p:'fix', scan:true, link:'customer-profile.html'},
+    {id:'sh6', title:'customer-profile.html — Trust Score bar fills correctly', desc:'Progress bar width matches the percentage value shown', p:'quick'},
+    {id:'sh7', title:'homeowner-profile.html — Lucide CDN missing + 28 emoji buttons', desc:'Scan found this is a separate page from customer-profile.html with same issues. Decide if both are needed or consolidate.', p:'fix', scan:true, link:'homeowner-profile.html'},
+    {id:'sh8', title:'email-notification.html — Lucide CDN missing + 4 dead href="#" links', desc:'Scan confirmed both. Email template page — fix dead links and add CDN if icons are used', p:'fix', scan:true, link:'email-notification.html'},
+    {id:'sh9', title:'quick-jobs.html — Lucide CDN missing', desc:'Scan confirmed missing. 192 emojis — heaviest emoji page in the whole platform', p:'fix', scan:true, link:'quick-jobs.html'},
+    {id:'sh10', title:'quick-jobs.html — Category tabs filter services', desc:'All/Junk/Lawn/Cleaning/Handyman/Painting tabs show correct services', p:'p2'},
+    {id:'sh11', title:'quick-jobs-booking.html — Lucide CDN missing + no onclick handlers', desc:'Scan found 0 onclick handlers and no Lucide CDN on the booking confirmation page. Page may be static/incomplete.', p:'fix', scan:true, link:'quick-jobs-booking.html'},
+  ]
+},
+{
+  id:'prelaunch', title:'Pre-Launch Checklist', icon:'🚀', color:'#fef2f2',
+  items:[
+    {id:'l1', title:'Deploy all files to Netlify', desc:'Upload all 51 HTML files + homestylesheet.css to Netlify. Get a live public URL.', p:'critical'},
+    {id:'l2', title:'Create _redirects file for Netlify 404 handling', desc:'Add a file named _redirects with: /* /404.html 404', p:'fix'},
+    {id:'l3', title:'Add favicon to all pages', desc:'Add <link rel="icon" href="/favicon.ico"> to every page head. Even a simple red PP square works for launch.', p:'quick'},
+    {id:'l4', title:'Test every page on a real iPhone (Safari)', desc:'Open every major page on actual iOS Safari. Chrome DevTools emulation misses iOS-specific rendering bugs.', p:'critical'},
+    {id:'l5', title:'Test every page on a real Android (Chrome)', desc:'Android Chrome also differs from DevTools. Test especially the pro and realtor sidebars.', p:'fix'},
+    {id:'l6', title:'Add meta descriptions to all 51 pages', desc:'Even a simple 1-line description significantly improves Google search click-through rates', p:'fix'},
+    {id:'l7', title:'Add OG tags to 5 key public pages', desc:'index.html, waitlist.html, plus.html, homeowner-landing.html, pro-landing.html — these are most likely to be shared on social', p:'fix'},
+    {id:'l8', title:'Set up a real support email address', desc:'Add support@propertypros.com or similar to contact.html. Currently no real email shown.', p:'fix'},
+    {id:'l9', title:'Share waitlist.html URL with your first network', desc:'Send to family, friends, local contractors, realtors you know. Goal: 50+ signups before launch day.', p:'critical'},
+    {id:'l10', title:'Demo the platform to 3 real homeowners', desc:'Watch them navigate without guidance. Note everything that confuses them — those are your biggest UX problems.', p:'critical'},
+    {id:'l11', title:'Demo to 3 real contractors', desc:'Especially the leads page, quote sending, and verification flow. Contractors are your primary revenue source.', p:'critical'},
+    {id:'l12', title:'Set up Google Analytics or Plausible before going live', desc:'Add tracking before launch — you need data from day one. Plausible is privacy-friendly and easier to set up.', p:'fix'},
+    {id:'l13', title:'Decide on homepage.html vs index.html', desc:'You have two homepage files. Remove or redirect homepage.html before deploying — having two homepage files will confuse search engines.', p:'critical', scan:true},
+    {id:'l14', title:'Confirm all inter-page links use correct filenames', desc:'Spot-check 10 pages — verify links go to actual existing filenames (e.g. index.html not home.html)', p:'fix'},
+  ]
+},
+];
+
+// ── STATE ──────────────────────────────────────────
+let state = JSON.parse(localStorage.getItem('pp_qa2_state') || '{}');
+let currentFilter = 'all';
+
+function getS(id) { return state[id] || {checked:false,flagged:false,note:''}; }
+function saveS() { localStorage.setItem('pp_qa2_state', JSON.stringify(state)); }
+
+// ── RENDER ──────────────────────────────────────────
+function render() {
+  const c = document.getElementById('container');
+  c.innerHTML = '';
+  SECTIONS.forEach(sec => {
+    const el = document.createElement('div');
+    el.className = 'section';
+    el.id = 'sec-' + sec.id;
+    const total = sec.items.length;
+    const done = sec.items.filter(i => getS(i.id).checked).length;
+    const pct = Math.round(done/total*100);
+    const pc = pct===100?'#16a34a':pct>50?'#d97706':'#6b7280';
+    el.innerHTML = `
+      <div class="sec-head" onclick="toggleSec('${sec.id}')">
+        <div class="sec-icon" style="background:${sec.color}">${sec.icon}</div>
+        <div class="sec-title">${sec.title}</div>
+        <div class="sec-sub">${done}/${total} items</div>
+        <div class="sec-prog" style="background:${sec.color};color:${pc}">${pct}%</div>
+        <div class="sec-arrow">▾</div>
+      </div>
+      <div class="items" id="items-${sec.id}">
+        ${sec.items.map(item => renderItem(item)).join('')}
+      </div>`;
+    c.appendChild(el);
+  });
+  updateStats();
+}
+
+function renderItem(item) {
+  const s = getS(item.id);
+  const bmap = {critical:'<span class="ibadge b-crit">🔴 Critical</span>',fix:'<span class="ibadge b-fix">🟡 Fix first</span>',quick:'<span class="ibadge b-quick">🟢 Quick win</span>',p2:'<span class="ibadge b-p2">🔵 Phase 2</span>'};
+  const scanBadge = item.scan ? '<span class="ibadge b-scan">🔍 Scan Found</span>' : '';
+  const link = item.link ? `<a class="ilink" href="${item.link}" target="_blank">↗ Open page</a>` : '';
+  return `
+    <div class="item${s.checked?' checked':''}${s.flagged?' flagged':''}" id="item-${item.id}" data-p="${item.p}" data-scan="${item.scan||false}" data-flagged="${s.flagged}">
+      <div class="cb" onclick="toggleCheck('${item.id}')"><div class="cb-check">✓</div></div>
+      <div class="icontent">
+        <div class="itop">
+          <div class="ititle">${item.title}</div>
+          ${bmap[item.p]||''}${scanBadge}
+        </div>
+        <div class="idesc">${item.desc}</div>
+        ${link}
+        <div class="inote${s.note?' vis':''}" id="note-${item.id}">${s.note||''}</div>
+      </div>
+      <div class="iactions">
+        <button class="abtn${s.flagged?' flagged':''}" onclick="toggleFlag('${item.id}')">${s.flagged?'🚩 On':'🚩'}</button>
+        <button class="abtn" onclick="toggleNote('${item.id}')">📝</button>
+      </div>
+    </div>`;
+}
+
+// ── INTERACTIONS ──────────────────────────────────────────
+function toggleCheck(id) {
+  if(!state[id]) state[id]={checked:false,flagged:false,note:''};
+  state[id].checked = !state[id].checked;
+  saveS();
+  refreshItem(id);
+  updateStats();
+  checkDone();
+}
+
+function toggleFlag(id) {
+  if(!state[id]) state[id]={checked:false,flagged:false,note:''};
+  state[id].flagged = !state[id].flagged;
+  saveS();
+  refreshItem(id);
+  updateStats();
+}
+
+function toggleNote(id) {
+  const note = document.getElementById('note-'+id);
+  if(!note) return;
+  const open = note.classList.contains('vis');
+  if(open) { note.classList.remove('vis'); return; }
+  note.classList.add('vis');
+  if(note.querySelector('textarea')) return;
+  const s = getS(id);
+  const ta = document.createElement('textarea');
+  ta.className='note-ta';
+  ta.placeholder='Add a note...';
+  ta.value = s.note||'';
+  ta.onchange = () => {
+    if(!state[id]) state[id]={checked:false,flagged:false,note:''};
+    state[id].note = ta.value;
+    saveS();
+  };
+  note.innerHTML = s.note?`<div style="margin-bottom:5px">${s.note}</div>`:'';
+  note.appendChild(ta);
+  ta.focus();
+}
+
+function toggleSec(id) {
+  document.getElementById('sec-'+id).classList.toggle('collapsed');
+}
+
+function refreshItem(id) {
+  let found = null;
+  for(const s of SECTIONS) {
+    const i = s.items.find(x=>x.id===id);
+    if(i){found={sec:s,item:i};break;}
+  }
+  if(!found) return;
+  const el = document.getElementById('item-'+id);
+  if(el){const t=document.createElement('div');t.innerHTML=renderItem(found.item);el.replaceWith(t.firstElementChild);}
+  // Update section header
+  const secEl = document.getElementById('sec-'+found.sec.id);
+  if(secEl){
+    const total=found.sec.items.length;
+    const done=found.sec.items.filter(i=>getS(i.id).checked).length;
+    const pct=Math.round(done/total*100);
+    const pc=pct===100?'#16a34a':pct>50?'#d97706':'#6b7280';
+    const sub=secEl.querySelector('.sec-sub');
+    const prog=secEl.querySelector('.sec-prog');
+    if(sub) sub.textContent=`${done}/${total} items`;
+    if(prog){prog.textContent=`${pct}%`;prog.style.color=pc;}
+  }
+}
+
+// ── STATS ──────────────────────────────────────────
+function updateStats() {
+  let total=0,done=0,flagged=0;
+  SECTIONS.forEach(s=>s.items.forEach(i=>{total++;if(getS(i.id).checked)done++;if(getS(i.id).flagged)flagged++;}));
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-flag').textContent=flagged;
+  document.getElementById('h-done').textContent=done;
+  document.getElementById('h-total').textContent=total;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-label').textContent=`${done} of ${total}`;
+}
+
+function checkDone() {
+  let total=0,done=0;
+  SECTIONS.forEach(s=>s.items.forEach(i=>{total++;if(getS(i.id).checked)done++;}));
+  const banner=document.getElementById('done-banner');
+  if(done===total&&total>0){banner.classList.add('show');banner.scrollIntoView({behavior:'smooth',block:'center'});}
+  else banner.classList.remove('show');
+}
+
+// ── FILTER & SEARCH ──────────────────────────────────────────
+function filter(type, btn) {
+  currentFilter=type;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+
+function search(q) { applyFilter(q); }
+
+function applyFilter(q) {
+  const query=(q||document.querySelector('.search-box')?.value||'').toLowerCase();
+  document.querySelectorAll('.item').forEach(el=>{
+    const id=el.id.replace('item-','');
+    const s=getS(id);
+    const p=el.dataset.p;
+    const scan=el.dataset.scan==='true';
+    const flagged=s.flagged;
+    const text=el.textContent.toLowerCase();
+    let show=true;
+    if(currentFilter==='unchecked') show=!s.checked;
+    else if(currentFilter==='critical') show=p==='critical';
+    else if(currentFilter==='fix') show=p==='fix';
+    else if(currentFilter==='scan') show=scan;
+    else if(currentFilter==='flagged') show=flagged;
+    if(show&&query) show=text.includes(query);
+    el.style.display=show?'':'none';
+  });
+  SECTIONS.forEach(sec=>{
+    const wrap=document.getElementById('items-'+sec.id);
+    if(!wrap) return;
+    const anyVis=[...wrap.querySelectorAll('.item')].some(el=>el.style.display!=='none');
+    const secEl=document.getElementById('sec-'+sec.id);
+    if(secEl) secEl.style.display=anyVis?'':'none';
+  });
+}
+
+function resetAll() {
+  if(!confirm('Reset all progress? This cannot be undone.')) return;
+  localStorage.removeItem('pp_qa2_state');
+  state={};
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

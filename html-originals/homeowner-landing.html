@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Post your home improvement project free on Property Pros. Get quotes from verified local contractors in Rhode Island." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Homeowners — Property Pros | Free Contractor Quotes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --green: #16a34a; --green-light: #f0fdf4; --green-dark: #15803d;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f9fafb;
+      --white: #ffffff; --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+      --display: 'Playfair Display', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--white); color: var(--dark); overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 17px; font-weight: 900; color: var(--dark); letter-spacing: -0.5px; }
+    .brand-name span { color: var(--red); }
+    .header-nav { display: flex; gap: 28px; align-items: center; }
+    .header-link { font-size: 14px; font-weight: 700; color: var(--gray); transition: color .15s; }
+    .header-link:hover { color: var(--dark); }
+    .header-cta { display: flex; gap: 10px; }
+    .btn { padding: 10px 20px; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; }
+    .btn-ghost { background: none; color: var(--dark); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .btn-lg { padding: 15px 32px; font-size: 16px; border-radius: 13px; }
+    .btn-xl { padding: 18px 40px; font-size: 17px; border-radius: 14px; }
+
+    /* ── HERO ── */
+    .hero { background: var(--dark); min-height: 92vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 80px 40px; }
+    .hero-bg { position: absolute; inset: 0; }
+    .hero-bg-circle { position: absolute; border-radius: 50%; }
+    .hero-bg-1 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(22,163,74,.15) 0%, transparent 70%); top: -100px; right: -100px; }
+    .hero-bg-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(220,38,38,.1) 0%, transparent 70%); bottom: -50px; left: 200px; }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px); background-size: 60px 60px; }
+    .hero-inner { position: relative; z-index: 2; max-width: 1100px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(22,163,74,.15); border: 1px solid rgba(22,163,74,.25); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 800; color: #4ade80; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-title { font-family: var(--display); font-size: clamp(38px, 5vw, 58px); font-weight: 900; color: #fff; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
+    .hero-title .accent { color: #4ade80; }
+    .hero-title .underline { position: relative; display: inline-block; }
+    .hero-title .underline::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 3px; background: var(--green); border-radius: 2px; }
+    .hero-sub { font-size: 17px; color: #9ca3af; line-height: 1.8; margin-bottom: 36px; max-width: 480px; }
+    .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 40px; }
+    .hero-proof { display: flex; gap: 24px; flex-wrap: wrap; }
+    .proof-item { display: flex; align-items: center; gap: 8px; }
+    .proof-check { width: 20px; height: 20px; border-radius: 50%; background: rgba(22,163,74,.2); display: flex; align-items: center; justify-content: center; }
+    .proof-text { font-size: 13px; font-weight: 700; color: #9ca3af; }
+
+    /* HERO CARD */
+    .hero-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 24px; padding: 24px; backdrop-filter: blur(10px); }
+    .hc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .hc-title { font-size: 13px; font-weight: 800; color: #fff; }
+    .hc-badge { font-size: 11px; font-weight: 800; background: rgba(22,163,74,.2); color: #4ade80; padding: 3px 10px; border-radius: 999px; }
+    .hc-quote { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 14px; padding: 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; transition: all .2s; }
+    .hc-quote:hover { background: rgba(255,255,255,.1); }
+    .hc-quote.featured { border-color: rgba(22,163,74,.4); background: rgba(22,163,74,.08); }
+    .hc-quote-left { display: flex; gap: 10px; align-items: center; }
+    .hc-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 11px; color: #fff; flex-shrink: 0; }
+    .hc-pro-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .hc-pro-rating { font-size: 11px; color: #fbbf24; font-weight: 700; margin-top: 2px; }
+    .hc-price { font-size: 18px; font-weight: 900; color: #fff; }
+    .hc-price-sub { font-size: 10px; color: #6b7280; font-weight: 700; }
+    .hc-best { font-size: 10px; font-weight: 800; color: #4ade80; margin-top: 4px; }
+    .hc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+    .hc-stat { text-align: center; background: rgba(255,255,255,.04); border-radius: 10px; padding: 10px; }
+    .hc-stat-num { font-size: 18px; font-weight: 900; color: #fff; }
+    .hc-stat-label { font-size: 10px; color: #6b7280; font-weight: 700; margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* ── FEAR SECTION ── */
+    .fear-section { background: var(--bg); padding: 100px 40px; }
+    .fear-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: var(--red); margin-bottom: 12px; text-align: center;}
+    .section-title { font-family: var(--display); font-size: clamp(30px, 4vw, 46px); font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 14px; text-align: center;}
+    .section-sub { font-size: 17px; color: var(--gray); line-height: 1.7; max-width: 560px; margin: 0 auto 56px; text-align: center;}
+    .fears-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .fear-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 30px; position: relative; overflow: hidden; transition: all .2s; }
+    .fear-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+    .fear-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .fear-card.red::before { background: var(--red); }
+    .fear-card.green::before { background: var(--green); }
+    .fear-card.amber::before { background: var(--amber); }
+    .fear-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; text-align: center;}
+    .fear-problem { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--red); margin: 0 auto 8px; text-align: center;}
+    .fear-title { font-size: 20px; font-weight: 900; margin: 0 auto 10px; letter-spacing: -0.3px; text-align: center;}
+    .fear-body { font-size: 14px; color: var(--gray); line-height: 1.7; margin: 0 auto 16px; text-align: center;}
+    .fear-solution { display: flex; align-items: flex-start; gap: 8px; background: var(--green-light); border-radius: 10px; padding: 12px 14px; }
+    .fear-solution-text { font-size: 13px; font-weight: 700; color: #166534; line-height: 1.5; text-align: center;}
+
+    /* ── HOW IT WORKS ── */
+    .how-section { padding: 100px 40px; background: var(--white); }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .how-steps { display: flex; flex-direction: column; gap: 0; }
+    .how-step { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: all .15s; }
+    .how-step:last-child { border-bottom: none; }
+    .how-step:hover .how-step-num { background: var(--green); color: #fff; }
+    .how-step-num { width: 44px; height: 44px; border-radius: 12px; background: var(--bg); border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: var(--dark); flex-shrink: 0; transition: all .2s; }
+    .how-step-content { flex: 1; }
+    .how-step-title { font-size: 17px; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.3px; }
+    .how-step-body { font-size: 14px; color: var(--gray); line-height: 1.7; }
+    .how-step-time { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 8px; text-transform: uppercase; letter-spacing: .5px; }
+    .how-visual { background: var(--dark); border-radius: 24px; padding: 32px; position: relative; overflow: hidden; }
+    .how-visual-bg { position: absolute; inset: 0; background: radial-gradient(circle at 70% 30%, rgba(22,163,74,.15) 0%, transparent 60%); }
+    .how-visual-content { position: relative; z-index: 2; }
+    .how-visual-label { font-size: 11px; font-weight: 800; color: #4ade80; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; }
+    .mock-project { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 14px; padding: 16px; margin-bottom: 12px; }
+    .mock-project-title { font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .mock-project-meta { font-size: 12px; color: #6b7280; font-weight: 700; }
+    .mock-quotes { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+    .mock-quote-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 10px 14px; }
+    .mock-quote-item.top { border-color: rgba(22,163,74,.4); background: rgba(22,163,74,.08); }
+    .mqi-name { font-size: 12px; font-weight: 800; color: #fff; }
+    .mqi-rating { font-size: 11px; color: #fbbf24; }
+    .mqi-price { font-size: 14px; font-weight: 900; color: #fff; }
+    .mock-timer { display: flex; align-items: center; gap: 8px; background: rgba(22,163,74,.1); border: 1px solid rgba(22,163,74,.2); border-radius: 10px; padding: 10px 14px; margin-top: 12px; }
+    .mock-timer-text { font-size: 12px; font-weight: 800; color: #4ade80; }
+
+    /* ── STATS ── */
+    .stats-section { background: var(--green); padding: 70px 40px; }
+    .stats-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; text-align: center; }
+    .stat-num { font-family: var(--display); font-size: 52px; font-weight: 900; color: #fff; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; }
+    .stat-label { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.7); }
+
+    /* ── TRUST ── */
+    .trust-section { padding: 100px 40px; background: var(--bg); }
+    .trust-inner { max-width: 1100px; margin: 0 auto; }
+    .trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .trust-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 30px; }
+    .trust-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; text-align: center;}
+    .trust-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; letter-spacing: -0.3px; text-align: center;}
+    .trust-body { font-size: 14px; color: var(--gray); line-height: 1.7; text-align: center;}
+
+    /* ── TESTIMONIALS ── */
+    .testi-section { padding: 100px 40px; background: var(--white); }
+    .testi-inner { max-width: 1100px; margin: 0 auto; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 28px; }
+    .testi-stars { color: var(--amber); font-size: 16px; margin-bottom: 14px; letter-spacing: 2px; }
+    .testi-quote { font-size: 15px; color: var(--dark3); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+    .testi-footer { display: flex; gap: 12px; align-items: center; }
+    .testi-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0; }
+    .testi-name { font-size: 14px; font-weight: 800; }
+    .testi-meta { font-size: 12px; color: var(--gray); font-weight: 700; }
+
+    /* ── FAQ ── */
+    .faq-section { padding: 100px 40px; background: var(--bg); }
+    .faq-inner { max-width: 720px; margin: 0 auto; }
+    .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { padding: 20px 22px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 15px; font-weight: 800; gap: 16px; transition: background .15s; }
+    .faq-q:hover { background: var(--bg); }
+    .faq-arrow { font-size: 20px; color: var(--gray); flex-shrink: 0; font-weight: 400; transition: transform .2s; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--green); }
+    .faq-a { display: none; padding: 0 22px 20px; font-size: 14px; color: var(--gray); line-height: 1.8; border-top: 1px solid var(--border); padding-top: 16px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── FINAL CTA ── */
+    .final-cta { background: var(--dark); padding: 100px 40px; position: relative; overflow: hidden; }
+    .final-cta-bg { position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(22,163,74,.12) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(220,38,38,.08) 0%, transparent 60%); }
+    .final-cta-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; text-align: center; }
+    .final-cta-title { font-family: var(--display); font-size: clamp(34px, 5vw, 52px); font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 18px; }
+    .final-cta-sub { font-size: 17px; color: #9ca3af; line-height: 1.7; margin-bottom: 36px; }
+    .final-cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+    .final-cta-note { font-size: 13px; color: #4b5563; font-weight: 700; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark2); padding: 40px; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-link { font-size: 13px; font-weight: 700; color: #6b7280; transition: color .15s; }
+    .footer-link:hover { color: #fff; }
+    .footer-copy { font-size: 12px; color: #4b5563; }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(24px); animation: fadeUp .6s ease forwards; }
+    .fade-up.d1 { animation-delay: .1s; }
+    .fade-up.d2 { animation-delay: .2s; }
+    .fade-up.d3 { animation-delay: .3s; }
+    .fade-up.d4 { animation-delay: .4s; }
+    .fade-up.d5 { animation-delay: .5s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .fears-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      header { padding: 0 20px; }
+      .header-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="pro-landing.html" class="header-link">Contractors</a>
+      <a href="realtor-landing.html" class="header-link">Realtors</a>
+      <a href="pricing.html" class="header-link">Pricing</a>
+      <a href="about.html" class="header-link">About</a>
+    </nav>
+    <div class="header-cta">
+      <a href="login.html" class="btn btn-ghost">Log in</a>
+      <a href="login.html" class="btn btn-green">Get free quotes →</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-bg-circle hero-bg-1"></div>
+      <div class="hero-bg-circle hero-bg-2"></div>
+      <div class="hero-grid"></div>
+    </div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-tag fade-up"><i data-lucide="shield-check" style="width:14px;height:14px"></i> Always free for Property Owners</div>
+        <h1 class="hero-title fade-up d1">Find a contractor<br>you can actually <span class="accent underline">trust.</span></h1>
+        <p class="hero-sub fade-up d2">Post your project for free. Get verified quotes from licensed, insured, and rated local pros — usually within 2 hours. No spam, no pressure, no surprises.</p>
+        <div class="hero-cta fade-up d3">
+          <a href="login.html" class="btn btn-green btn-lg"><i data-lucide="file-plus" style="width:18px;height:18px"></i> Post Project</a>
+          <a href="login.html" class="btn btn-ghost btn-lg" style="color:#fff;border-color:rgba(255,255,255,.2)">Browse Pros</a>
+        </div>
+        <div class="hero-proof fade-up d4">
+          <div class="proof-item">
+            <div class="proof-check"><i data-lucide="check" style="width:12px;height:12px;color:#4ade80"></i></div>
+            <div class="proof-text">Free forever</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-check"><i data-lucide="check" style="width:12px;height:12px;color:#4ade80"></i></div>
+            <div class="proof-text">No obligation</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-check"><i data-lucide="check" style="width:12px;height:12px;color:#4ade80"></i></div>
+            <div class="proof-text">Verified pros only</div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-check"><i data-lucide="check" style="width:12px;height:12px;color:#4ade80"></i></div>
+            <div class="proof-text">First quote in ~2 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO CARD -->
+      <div class="hero-card fade-up d5">
+        <div class="hc-header">
+          <div class="hc-title">🏠 Roof replacement — 4 quotes received</div>
+          <div class="hc-badge">Live demo</div>
+        </div>
+        <div class="mock-project" style="background:rgba(255,255,255,.04)">
+          <div class="mock-project-title">Full roof replacement — 2,200 sq ft colonial</div>
+          <div class="mock-project-meta">Your area · Budget $5,000–$10,000 · ASAP</div>
+        </div>
+        <div style="font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin:14px 0 10px">Incoming quotes</div>
+        <div class="hc-quote featured">
+          <div class="hc-quote-left">
+            <div class="hc-avatar" style="background:#111827">AR</div>
+            <div>
+              <div class="hc-pro-name">Apex Roofing Group</div>
+              <div class="hc-pro-rating">★★★★★ 4.9 · 214 reviews</div>
+              <div class="hc-best">⭐ Best match</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="hc-price">$4,200</div>
+            <div class="hc-price-sub">Fixed price</div>
+          </div>
+        </div>
+        <div class="hc-quote">
+          <div class="hc-quote-left">
+            <div class="hc-avatar" style="background:#059669">NR</div>
+            <div>
+              <div class="hc-pro-name">NE Roofing Co.</div>
+              <div class="hc-pro-rating">★★★★☆ 4.7 · 98 reviews</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="hc-price">$3,850</div>
+            <div class="hc-price-sub">Fixed price</div>
+          </div>
+        </div>
+        <div class="hc-quote">
+          <div class="hc-quote-left">
+            <div class="hc-avatar" style="background:#7c3aed">KH</div>
+            <div>
+              <div class="hc-pro-name">Kev Hernandez Contracting</div>
+              <div class="hc-pro-rating">★★★★★ 4.8 · 168 reviews</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="hc-price">$4,600</div>
+            <div class="hc-price-sub">Fixed price</div>
+          </div>
+        </div>
+        <div class="hc-stats">
+          <div class="hc-stat"><div class="hc-stat-num">4</div><div class="hc-stat-label">Quotes</div></div>
+          <div class="hc-stat"><div class="hc-stat-num">1.8h</div><div class="hc-stat-label">Avg response</div></div>
+          <div class="hc-stat"><div class="hc-stat-num">$0</div><div class="hc-stat-label">Cost to you</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEARS SECTION -->
+  <section class="fear-section">
+    <div class="fear-inner">
+      <div class="section-eyebrow">We get it</div>
+      <div class="section-title">Hiring a contractor<br>used to be a nightmare.</div>
+      <div class="section-sub">We built Property Pros because we've lived these frustrations. Every feature on this platform exists to solve a real problem homeowners face.</div>
+
+      <div class="fears-grid">
+        <div class="fear-card red">
+          <div class="fear-icon" style="background:#fef2f2"><i data-lucide="alert-triangle" style="width:24px;height:24px;color:#dc2626"></i></div>
+          <div class="fear-problem">The problem</div>
+          <div class="fear-title">"I don't know if this contractor is legitimate"</div>
+          <div class="fear-body">Finding a contractor through Google or a neighbor's recommendation gives you zero information about their actual credentials, insurance status, or track record with past clients.</div>
+          <div class="fear-solution">
+            <i data-lucide="shield-check" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:1px"></i>
+            <div class="fear-solution-text">Every pro on Property Pros is verified — license number confirmed, insurance checked, and identity validated before they can respond to a single lead.</div>
+          </div>
+        </div>
+
+        <div class="fear-card green">
+          <div class="fear-icon" style="background:#f0fdf4"><i data-lucide="clock" style="width:24px;height:24px;color:#16a34a"></i></div>
+          <div class="fear-problem">The problem</div>
+          <div class="fear-title">"Getting quotes takes forever"</div>
+          <div class="fear-body">Calling five different contractors, leaving voicemails, waiting days for callbacks, and then trying to compare prices that are formatted completely differently.</div>
+          <div class="fear-solution">
+            <i data-lucide="zap" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:1px"></i>
+            <div class="fear-solution-text">Post your project once and receive structured, comparable quotes from multiple verified pros — usually within 2 hours. No phone tag required.</div>
+          </div>
+        </div>
+
+        <div class="fear-card amber">
+          <div class="fear-icon" style="background:#fffbeb"><i data-lucide="dollar-sign" style="width:24px;height:24px;color:#d97706"></i></div>
+          <div class="fear-problem">The problem</div>
+          <div class="fear-title">"I have no idea what's a fair price"</div>
+          <div class="fear-body">Without multiple quotes, you have no reference point. The first contractor you call could be charging twice the market rate and you'd have no way of knowing.</div>
+          <div class="fear-solution">
+            <i data-lucide="bar-chart-2" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:1px"></i>
+            <div class="fear-solution-text">Seeing multiple quotes side by side immediately shows you the market rate for your project. You'll know exactly what's fair before hiring anyone.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="how-inner">
+      <div class="how-grid">
+        <div>
+          <div class="section-eyebrow">Simple process</div>
+          <div class="section-title" style="margin-bottom:14px">Get quotes in<br>3 simple steps.</div>
+          <div class="section-sub" style="margin-bottom:36px">No complicated forms, no account setup fees, no confusion. Start to first quote in under 2 hours.</div>
+
+          <div class="how-steps">
+            <div class="how-step">
+              <div class="how-step-num">1</div>
+              <div class="how-step-content">
+                <div class="how-step-title">Post your project</div>
+                <div class="how-step-body">Describe the work, set your budget range, and add any photos. Takes about 2 minutes and costs nothing.</div>
+                <div class="how-step-time">⏱ 2 minutes to post</div>
+              </div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">2</div>
+              <div class="how-step-content">
+                <div class="how-step-title">Receive verified quotes</div>
+                <div class="how-step-body">Verified local pros in your area see your project and send quotes with pricing, timeline, and a personal message.</div>
+                <div class="how-step-time">⏱ First quote usually within 2 hours</div>
+              </div>
+            </div>
+            <div class="how-step">
+              <div class="how-step-num">3</div>
+              <div class="how-step-content">
+                <div class="how-step-title">Compare and hire</div>
+                <div class="how-step-body">Compare quotes side by side, read reviews, message pros with questions, and hire the one you trust most.</div>
+                <div class="how-step-time">⏱ Your decision, your timeline</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:36px">
+            <a href="login.html" class="btn btn-green btn-lg">Post your project free →</a>
+          </div>
+        </div>
+
+        <div class="how-visual">
+          <div class="how-visual-bg"></div>
+          <div class="how-visual-content">
+            <div class="how-visual-label">Live project example</div>
+            <div class="mock-project">
+              <div class="mock-project-title">Driveway resurfacing — 60ft asphalt</div>
+              <div class="mock-project-meta" style="margin-top:4px">📍 Your area · Budget $2,500–$5,000 · Within 2 weeks</div>
+            </div>
+            <div style="font-size:11px;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Quotes received</div>
+            <div class="mock-quotes">
+              <div class="mock-quote-item top">
+                <div>
+                  <div class="mqi-name">Premier Paving & Masonry</div>
+                  <div class="mqi-rating">★★★★★ 4.9 · ✓ Verified</div>
+                </div>
+                <div class="mqi-price">$3,200</div>
+              </div>
+              <div class="mock-quote-item">
+                <div>
+                  <div class="mqi-name">City Asphalt Solutions</div>
+                  <div class="mqi-rating">★★★★☆ 4.6 · ✓ Verified</div>
+                </div>
+                <div class="mqi-price">$3,800</div>
+              </div>
+              <div class="mock-quote-item">
+                <div>
+                  <div class="mqi-name">Northeast Blacktop Co.</div>
+                  <div class="mqi-rating">★★★★★ 4.8 · ✓ Verified</div>
+                </div>
+                <div class="mqi-price">$4,100</div>
+              </div>
+            </div>
+            <div class="mock-timer">
+              <i data-lucide="clock" style="width:14px;height:14px;color:#4ade80;flex-shrink:0"></i>
+              <div class="mock-timer-text">3 quotes received in 1h 42m — $0 cost to you</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section">
+    <div class="stats-inner">
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Verified, local pros</div>
+      </div>
+      <div>
+        <div class="stat-num">2hrs</div>
+        <div class="stat-label">Avg. time to first quote</div>
+      </div>
+      <div>
+        <div class="stat-num">$0</div>
+        <div class="stat-label">Cost to homeowners — always</div>
+      </div>
+      <div>
+        <div class="stat-num">4.8★</div>
+        <div class="stat-label">Average pro rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust-section">
+    <div class="trust-inner">
+      <div style="text-align:center;margin-bottom:56px">
+        <div class="section-eyebrow" style="text-align:center">Why homeowners trust us</div>
+        <div class="section-title" style="text-align:center">Built for your protection.</div>
+        <div class="section-sub" style="margin: 0 auto;text-align:center">Every feature on Property Pros exists to protect homeowners and hold contractors accountable.</div>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#f0fdf4"><i data-lucide="shield-check" style="width:24px;height:24px;color:#16a34a"></i></div>
+          <div class="trust-title">License & insurance verified</div>
+          <div class="trust-body">Every pro on the platform has had their contractor's license and insurance certificate manually verified by our team. The Verified badge isn't automatic — it's earned.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#eff6ff"><i data-lucide="star" style="width:24px;height:24px;color:#2563eb"></i></div>
+          <div class="trust-title">Two-way rating system</div>
+          <div class="trust-body">After every job, both the homeowner and the pro rate each other. Ratings are anonymous until both parties submit — preventing retaliation and ensuring honest reviews.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#fef2f2"><i data-lucide="message-circle" style="width:24px;height:24px;color:#dc2626"></i></div>
+          <div class="trust-title">Message before you commit</div>
+          <div class="trust-body">Chat directly with any pro before accepting their quote. Ask questions, clarify scope, share photos — you're never locked in until you say so.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#fffbeb"><i data-lucide="badge-check" style="width:24px;height:24px;color:#d97706"></i></div>
+          <div class="trust-title">Trust Score for every homeowner</div>
+          <div class="trust-body">Pros can see your Trust Score before quoting. This creates mutual accountability — good homeowners attract better pros, and everyone behaves better on the platform.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#f0fdf4"><i data-lucide="dollar-sign" style="width:24px;height:24px;color:#16a34a"></i></div>
+          <div class="trust-title">100% free — no hidden fees</div>
+          <div class="trust-body">Homeowners never pay. No subscription, no commission on the job, no premium tier. Pros pay a flat monthly fee so they're motivated to win your business — not just respond to collect a fee.</div>
+        </div>
+        <div class="trust-card">
+          <div class="trust-icon" style="background:#eff6ff"><i data-lucide="map-pin" style="width:24px;height:24px;color:#2563eb"></i></div>
+          <div class="trust-title">Local pros who know your area</div>
+          <div class="trust-body">Every pro is matched to your project based on their service area, trade, and availability. You'll only hear from contractors who are actually set up to do your job.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi-section">
+    <div class="testi-inner">
+      <div style="text-align:center;margin-bottom:56px">
+        <div class="section-eyebrow" style="text-align:center">Real homeowners</div>
+        <div class="section-title" style="text-align:center">What people are saying.</div>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"I posted my roof project at 8am and had 4 quotes by 11am. I ended up hiring a contractor I never would have found on my own. The whole process was completely painless."</div>
+          <div class="testi-footer">
+            <div class="testi-avatar" style="background:#7c3aed">MR</div>
+            <div>
+              <div class="testi-name">Maria R.</div>
+              <div class="testi-meta">Homeowner · Providence, RI</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"I've used Angie's List before and always felt like I was getting spammed. Property Pros was completely different — the contractors actually read my project description and gave real quotes."</div>
+          <div class="testi-footer">
+            <div class="testi-avatar" style="background:#059669">JW</div>
+            <div>
+              <div class="testi-name">James W.</div>
+              <div class="testi-meta">Homeowner · Johnston, RI</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"The verified badge actually means something. I checked the license number they listed and it was real. I hired them and the job was perfect. That peace of mind was worth everything."</div>
+          <div class="testi-footer">
+            <div class="testi-avatar" style="background:#dc2626">TB</div>
+            <div>
+              <div class="testi-name">Tanya B.</div>
+              <div class="testi-meta">Homeowner · Woonsocket, RI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="faq-inner">
+      <div style="text-align:center;margin-bottom:48px">
+        <div class="section-eyebrow" style="text-align:center">Questions</div>
+        <div class="section-title" style="text-align:center">Everything you need to know.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Is Property Pros really free for homeowners? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Yes — completely and permanently free. There is no subscription, no premium tier, no commission on jobs won, and no hidden fees of any kind. Homeowners will never pay a cent to use Property Pros. Contractors pay a flat $9.99 per month which is how we keep it free for you.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">How fast will I get quotes? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Most homeowners receive their first quote within 2 hours of posting. For popular trades like roofing, painting, and driveways, you'll often have 3 or more quotes within the same day. Emergency projects can sometimes be quoted within 30 minutes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">How are contractors verified? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Every contractor on Property Pros goes through a manual verification process before they can respond to any leads. We confirm their contractor's license with the state licensing board, verify their general liability insurance certificate, and validate their identity. The Verified badge only appears after all three checks pass.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Am I obligated to hire anyone who quotes me? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Never. You can receive as many quotes as you want, message any pro, and walk away without hiring anyone — all at no cost. You only hire if and when you find a pro you're completely comfortable with.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">What if the work turns out badly? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">After every completed job, both parties leave reviews. If you had a bad experience with a contractor, leave an honest review — it helps protect other homeowners and creates accountability on the platform. For serious disputes, contact our support team and we'll help mediate.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">What trades are covered? <span class="faq-arrow">+</span></div>
+        <div class="faq-a">Property Pros covers all major home improvement trades including roofing, driveways and paving, masonry, painting (interior and exterior), landscaping, electrical, plumbing, HVAC, junk removal, general remodeling, bathroom and kitchen renovation, flooring, fencing, and more. If it's a home project, we have pros who can do it.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final-cta">
+    <div class="final-cta-bg"></div>
+    <div class="final-cta-inner">
+      <div class="section-eyebrow" style="text-align:center;color:#4ade80">Get started today</div>
+      <div class="final-cta-title">Your next project deserves a contractor you can trust.</div>
+      <div class="final-cta-sub">Join thousands of homeowners across New England who get verified quotes from reliable local contractors — for free, every time.</div>
+      <div class="final-cta-btns">
+        <a href="login.html" class="btn btn-green btn-xl"><i data-lucide="file-plus" style="width:20px;height:20px"></i> Post your project free</a>
+        <a href="login.html" class="btn btn-ghost btn-xl" style="color:#fff;border-color:rgba(255,255,255,.2)">Browse pros first</a>
+      </div>
+      <div class="final-cta-note">Free forever · No credit card · No obligation · First quote in ~2 hours</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo">PP</div>
+        <div class="brand-name" style="color:#fff"><span>Property</span> Pros</div>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="pro-landing.html" class="footer-link">For contractors</a>
+        <a href="realtor-landing.html" class="footer-link">For realtors</a>
+        <a href="pricing.html" class="footer-link">Pricing</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+         <a href="community-fund.html" class="footer-link">Community Fund</a>
+        <a href="terms.html" class="footer-link">Terms</a>
+        <a href="privacy.html" class="footer-link">Privacy</a>
+      </div>
+      <div class="footer-copy">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    function toggleFAQ(el) {
+      const item = el.parentElement;
+      item.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>

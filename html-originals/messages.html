@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your Property Pros messages — communicate directly with homeowners about projects and quotes." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --dark3: #374151;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--dark);
+      display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+    }
+
+    /* SIDEBAR NAV */
+
+
+
+
+    .sb-logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 13px; color: #fff;
+    }
+
+    .sb-title { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .sb-title .red { color: #f87171; }
+
+
+    .sb-section-label {
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: #4b5563; font-weight: 800; padding: 10px 8px 4px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; color: #9ca3af;
+      cursor: pointer; margin-bottom: 2px;
+      text-decoration: none; transition: all .15s;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px;
+    }
+
+    .nav-item.active .nav-badge { background: rgba(255,255,255,.25); }
+
+
+
+
+
+
+
+
+    /* CONVERSATIONS PANEL */
+    .shell { display: flex; height: calc(100vh - 60px); overflow: hidden; width: 100%; }
+    .conversations {
+      width: 300px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      height: 100vh;
+      flex-shrink: 0;
+    }
+
+    .conv-header {
+      padding: 18px 16px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .conv-title {
+      font-size: 18px; font-weight: 900; margin-bottom: 12px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .new-msg-btn {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--red); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; font-weight: 300;
+      transition: background .15s;
+    }
+
+    .new-msg-btn:hover { background: var(--red-dark); }
+
+    .search-conv {
+      width: 100%; padding: 9px 12px 9px 34px;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-size: 13px; font-family: var(--font); color: var(--dark);
+      background: var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center;
+      background-size: 14px;
+    }
+
+    .search-conv:focus { outline: none; border-color: var(--red); background-color: var(--white); }
+
+    .conv-filter {
+      display: flex; gap: 6px; padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-pill {
+      padding: 5px 12px; border-radius: 999px; font-size: 12px;
+      font-weight: 700; cursor: pointer; border: 1px solid var(--border);
+      background: var(--white); color: var(--gray); transition: all .15s;
+    }
+
+    .filter-pill.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .filter-pill:hover:not(.active) { border-color: var(--dark); color: var(--dark); }
+
+    .conv-list { flex: 1; overflow-y: auto; }
+
+    .conv-item {
+      display: flex; gap: 12px; padding: 14px 16px;
+      cursor: pointer; transition: background .15s;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .conv-item:hover { background: var(--bg); }
+    .conv-item.active { background: var(--red-light); border-left: 3px solid var(--red); }
+
+    .conv-avatar {
+      width: 44px; height: 44px; border-radius: 13px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; flex-shrink: 0;
+      position: relative;
+    }
+
+    .online-dot {
+      width: 11px; height: 11px; background: #22c55e;
+      border-radius: 50%; border: 2px solid var(--white);
+      position: absolute; bottom: -1px; right: -1px;
+    }
+
+    .conv-info { flex: 1; min-width: 0; }
+
+    .conv-name {
+      font-size: 14px; font-weight: 800; margin-bottom: 3px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .conv-time { font-size: 11px; color: var(--gray); font-weight: 600; flex-shrink: 0; }
+
+    .conv-preview {
+      font-size: 12px; color: var(--gray); white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; max-width: 180px;
+    }
+
+    .conv-preview.bold { color: var(--dark); font-weight: 700; }
+
+    .unread-badge {
+      width: 18px; height: 18px; background: var(--red);
+      border-radius: 50%; color: #fff; font-size: 10px;
+      font-weight: 900; display: flex; align-items: center;
+      justify-content: center; position: absolute; top: 14px; right: 14px;
+    }
+
+    .conv-tag {
+      font-size: 10px; font-weight: 700; color: var(--gray);
+      background: var(--bg); padding: 2px 8px; border-radius: 999px;
+      margin-top: 4px; display: inline-block;
+    }
+
+    /* CHAT AREA */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 60px);
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    /* CHAT HEADER */
+    .chat-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .chat-header-left { display: flex; align-items: center; gap: 12px; }
+
+    .chat-avatar {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; position: relative;
+    }
+
+    .chat-name { font-size: 15px; font-weight: 900; }
+    .chat-status { font-size: 12px; color: var(--green); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+    .status-dot { width: 7px; height: 7px; background: var(--green); border-radius: 50%; }
+
+    .chat-header-actions { display: flex; gap: 8px; }
+
+    .icon-btn {
+      width: 36px; height: 36px; border-radius: 9px;
+      border: 1px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 16px; transition: all .15s;
+    }
+
+    .icon-btn:hover { background: var(--bg); border-color: var(--dark); }
+
+    .chat-tag {
+      font-size: 11px; font-weight: 700; color: var(--gray);
+      background: var(--bg); padding: 4px 10px; border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+
+    /* MESSAGES BODY */
+    .messages-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex; flex-direction: column;
+      gap: 4px;
+      background: var(--bg);
+    }
+
+    .day-divider {
+      text-align: center; font-size: 11px; font-weight: 800;
+      color: var(--gray); margin: 12px 0;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .day-divider::before, .day-divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* MESSAGE BUBBLES */
+    .msg-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 2px;
+    }
+
+    .msg-row.mine { flex-direction: row-reverse; }
+
+    .msg-sender-avatar {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 11px; flex-shrink: 0;
+      align-self: flex-end;
+    }
+
+    .msg-bubble-wrap { display: flex; flex-direction: column; max-width: 65%; }
+    .msg-row.mine .msg-bubble-wrap { align-items: flex-end; }
+
+    .msg-sender-name {
+      font-size: 11px; font-weight: 800; color: var(--gray);
+      margin-bottom: 4px; padding: 0 4px;
+    }
+
+    .msg-bubble {
+      padding: 11px 14px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.6;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .msg-bubble.theirs {
+      background: var(--white);
+      color: var(--dark);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+
+    .msg-bubble.mine {
+      background: var(--dark);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-bubble.mine a { color: #f87171; }
+
+    .msg-time {
+      font-size: 10px; color: var(--gray); margin-top: 4px;
+      padding: 0 4px; font-weight: 600;
+    }
+
+    .msg-row.mine .msg-time { text-align: right; }
+
+    .msg-status { font-size: 10px; color: var(--gray); }
+    .msg-status.read { color: var(--green); }
+
+    /* IMAGE MESSAGE */
+    .msg-image {
+      border-radius: 14px; overflow: hidden;
+      max-width: 260px; cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+    }
+
+    .msg-image img {
+      width: 100%; display: block;
+      transition: transform .2s;
+    }
+
+    .msg-image:hover img { transform: scale(1.02); }
+
+    .img-placeholder {
+      width: 240px; height: 160px;
+      border-radius: 14px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; position: relative;
+    }
+
+    .img-placeholder.roof { background: linear-gradient(135deg, #374151, #111827); }
+    .img-placeholder.driveway { background: linear-gradient(135deg, #1e3a5f, #111827); }
+    .img-placeholder.masonry { background: linear-gradient(135deg, #4a2c2a, #111827); }
+
+    .img-label {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 11px; font-weight: 700; color: rgba(255,255,255,.8);
+    }
+
+    /* QUOTE CARD IN CHAT */
+    .quote-bubble {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 14px; max-width: 280px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .quote-bubble-label {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--red); margin-bottom: 8px;
+    }
+
+    .quote-bubble-title { font-size: 14px; font-weight: 900; margin-bottom: 4px; color: var(--dark); }
+    .quote-bubble-amount { font-size: 22px; font-weight: 900; color: var(--dark); margin-bottom: 8px; }
+    .quote-bubble-detail { font-size: 12px; color: var(--gray); margin-bottom: 12px; line-height: 1.5; }
+
+    .quote-bubble-actions { display: flex; gap: 8px; }
+
+    .qb-btn {
+      flex: 1; padding: 8px; border-radius: 8px; font-size: 12px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      border: 1px solid var(--border); background: var(--white); color: var(--dark);
+      transition: all .15s;
+    }
+
+    .qb-btn.accept { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .qb-btn.accept:hover { background: var(--red); border-color: var(--red); }
+    .qb-btn:hover { background: var(--bg); }
+
+    /* TYPING INDICATOR */
+    .typing-indicator {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 0; font-size: 12px; color: var(--gray); font-weight: 700;
+    }
+
+    .typing-dots { display: flex; gap: 3px; }
+
+    .typing-dot {
+      width: 6px; height: 6px; background: var(--gray);
+      border-radius: 50%; animation: typingBounce 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: .2s; }
+    .typing-dot:nth-child(3) { animation-delay: .4s; }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+    }
+
+    /* INPUT AREA */
+    .chat-input-area {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 14px 20px;
+      flex-shrink: 0;
+    }
+
+    .image-preview-strip {
+      display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;
+    }
+
+    .img-preview-thumb {
+      width: 72px; height: 72px; border-radius: 10px;
+      background: var(--dark2); position: relative;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; overflow: hidden; flex-shrink: 0;
+    }
+
+    .img-preview-thumb img {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; border-radius: 10px;
+    }
+
+    .img-preview-thumb video {
+      width: 100%; height: 100%; object-fit: cover;
+      display: block; border-radius: 10px;
+    }
+
+    .video-thumb-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,.45); border-radius: 10px;
+      gap: 2px;
+    }
+
+    .video-play-icon {
+      font-size: 20px; color: #fff; line-height: 1;
+    }
+
+    .video-dur-label {
+      font-size: 9px; font-weight: 800; color: rgba(255,255,255,.8);
+      background: rgba(0,0,0,.4); padding: 1px 5px; border-radius: 4px;
+    }
+
+    .video-type-badge {
+      position: absolute; bottom: 4px; left: 4px;
+      font-size: 9px; font-weight: 900; color: #fff;
+      background: var(--red); padding: 1px 5px; border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .img-remove {
+      position: absolute; top: -4px; right: -4px;
+      width: 18px; height: 18px; background: var(--red);
+      border-radius: 50%; color: #fff; font-size: 10px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-weight: 900; border: 2px solid var(--white);
+      z-index: 2;
+    }
+
+    /* VIDEO MESSAGE BUBBLE */
+    .msg-video-wrap {
+      border-radius: 14px; overflow: hidden;
+      max-width: 300px; position: relative;
+      background: #000; box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      cursor: pointer;
+    }
+
+    .msg-video-wrap video {
+      width: 100%; display: block; max-height: 200px; object-fit: cover;
+    }
+
+    .msg-video-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,.38);
+      transition: background .15s;
+    }
+
+    .msg-video-wrap:hover .msg-video-overlay { background: rgba(0,0,0,.22); }
+
+    .video-play-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: rgba(255,255,255,.92);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; transition: transform .15s;
+    }
+
+    .msg-video-wrap:hover .video-play-btn { transform: scale(1.08); }
+
+    .msg-video-meta {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 11px; font-weight: 800; color: rgba(255,255,255,.9);
+      text-shadow: 0 1px 3px rgba(0,0,0,.5);
+    }
+
+    .video-badge {
+      position: absolute; top: 8px; right: 8px;
+      background: rgba(220,38,38,.85); color: #fff;
+      font-size: 10px; font-weight: 900; padding: 2px 7px;
+      border-radius: 5px; letter-spacing: 0.5px;
+    }
+
+    /* UPLOAD PROGRESS */
+    .upload-progress-bar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 3px; background: rgba(255,255,255,.2);
+    }
+
+    .upload-progress-fill {
+      height: 100%; background: var(--red);
+      border-radius: 999px; transition: width .3s ease;
+    }
+
+    /* ATTACH MENU POPUP */
+    .attach-menu {
+      position: absolute; bottom: 56px; left: 0;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      display: none; flex-direction: column; gap: 2px;
+      z-index: 20; min-width: 180px;
+    }
+
+    .attach-menu.open { display: flex; }
+
+    .attach-menu-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: 9px; cursor: pointer;
+      font-size: 13px; font-weight: 800; color: var(--dark);
+      transition: background .12s;
+    }
+
+    .attach-menu-item:hover { background: var(--bg); }
+
+    .attach-menu-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; flex-shrink: 0;
+    }
+
+    .attach-menu-sub { font-size: 11px; color: var(--gray); font-weight: 600; margin-top: 1px; }
+
+    /* SIZE WARNING TOAST */
+    .size-toast {
+      position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: var(--dark); color: #fff; font-size: 12px; font-weight: 800;
+      padding: 8px 16px; border-radius: 999px; white-space: nowrap;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+      z-index: 30;
+    }
+
+    .size-toast.show { opacity: 1; }
+
+    .input-row {
+      display: flex; gap: 10px; align-items: flex-end;
+    }
+
+    .input-actions { display: flex; gap: 6px; align-items: center; }
+
+    .attach-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; transition: all .15s; flex-shrink: 0;
+    }
+
+    .attach-btn:hover { background: var(--bg); border-color: var(--dark); }
+
+    .emoji-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      border: 1px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; cursor: pointer; transition: all .15s; flex-shrink: 0;
+    }
+
+    .emoji-btn:hover { background: var(--bg); }
+
+    .msg-input-wrap {
+      flex: 1; background: var(--bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 10px 14px;
+      display: flex; align-items: flex-end; gap: 8px;
+      transition: border-color .15s;
+    }
+
+    .msg-input-wrap:focus-within { border-color: var(--red); background: var(--white); }
+
+    .msg-input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-size: 14px; font-family: var(--font); color: var(--dark);
+      resize: none; min-height: 20px; max-height: 120px;
+      line-height: 1.5; overflow-y: auto;
+    }
+
+    .msg-input::placeholder { color: var(--gray); }
+
+    .send-btn {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--red); color: #fff; border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all .15s; flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .send-btn:hover { background: var(--red-dark); transform: scale(1.05); }
+    .send-btn:active { transform: scale(0.97); }
+
+    /* EMOJI PICKER */
+    .emoji-picker {
+      position: absolute; bottom: 80px; left: 260px;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.12);
+      display: none; flex-wrap: wrap; gap: 4px; width: 240px;
+      z-index: 10;
+    }
+
+    .emoji-picker.open { display: flex; }
+
+    .emoji-opt {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; cursor: pointer; transition: background .1s;
+    }
+
+    .emoji-opt:hover { background: var(--bg); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.85); z-index: 200;
+      align-items: center; justify-content: center;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(255,255,255,.15); color: #fff; border: none;
+      font-size: 20px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    .lightbox-img {
+      max-width: 90vw; max-height: 85vh; border-radius: 16px;
+    }
+
+    /* INFO PANEL */
+    .info-panel {
+      width: 260px; background: var(--white);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      height: 100vh; overflow-y: auto; flex-shrink: 0;
+    }
+
+    .info-header {
+      padding: 18px 16px; border-bottom: 1px solid var(--border);
+      font-size: 13px; font-weight: 900;
+    }
+
+    .info-section { padding: 16px; border-bottom: 1px solid var(--border); }
+    .info-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 10px; }
+
+    .info-avatar-big {
+      width: 56px; height: 56px; border-radius: 16px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 18px; margin: 0 auto 10px;
+    }
+
+    .info-name { font-size: 15px; font-weight: 900; text-align: center; margin-bottom: 4px; }
+    .info-role { font-size: 12px; color: var(--gray); text-align: center; margin-bottom: 12px; }
+
+    .info-stat-row { display: flex; justify-content: space-around; margin-bottom: 12px; }
+    .info-stat { text-align: center; }
+    .info-stat-num { font-size: 18px; font-weight: 900; color: var(--dark); }
+    .info-stat-label { font-size: 11px; color: var(--gray); font-weight: 700; }
+
+    .info-btn {
+      width: 100%; padding: 9px; border-radius: 10px; font-size: 13px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      border: 1px solid var(--border); background: var(--white); color: var(--dark);
+      margin-bottom: 6px; transition: all .15s;
+    }
+
+    .info-btn.red { background: var(--red); color: #fff; border-color: var(--red); }
+    .info-btn.red:hover { background: var(--red-dark); }
+    .info-btn:hover:not(.red) { background: var(--bg); }
+
+    .shared-photos {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+    }
+
+    .shared-photo {
+      aspect-ratio: 1; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; cursor: pointer; transition: opacity .15s;
+    }
+
+    .shared-photo:hover { opacity: 0.8; }
+    .shared-photo.p1 { background: linear-gradient(135deg, #374151, #111827); }
+    .shared-photo.p2 { background: linear-gradient(135deg, #1e3a5f, #111827); }
+    .shared-photo.p3 { background: linear-gradient(135deg, #4a2c2a, #111827); }
+    .shared-photo.p4 { background: linear-gradient(135deg, #1a3a2a, #111827); }
+    .shared-photo.p5 { background: linear-gradient(135deg, #2a1a3a, #111827); }
+    .shared-photo.p6 { background: var(--bg); color: var(--gray); font-size: 13px; font-weight: 800; }
+
+    .lead-link-card {
+      background: var(--red-light); border: 1px solid #fecaca;
+      border-radius: 12px; padding: 12px; font-size: 12px;
+    }
+
+    .lead-link-title { font-weight: 900; color: var(--dark); margin-bottom: 4px; }
+    .lead-link-detail { color: var(--gray); margin-bottom: 8px; }
+    .lead-link-btn { color: var(--red); font-weight: 800; cursor: pointer; font-size: 12px; }
+
+    /* HIDDEN INPUT */
+    #file-input { display: none; }
+
+    @media (max-width: 1100px) {
+      .info-panel { display: none; }
+    }
+
+    @media (max-width: 800px) {
+  
+      .shell { display: flex; height: calc(100vh - 60px); overflow: hidden; width: 100%; }
+    .conversations { width: 260px; }
+    }
+
+    @media (max-width: 600px) {
+      .shell { display: flex; height: calc(100vh - 60px); overflow: hidden; width: 100%; }
+    .conversations { display: none; }
+    }
+    @media (max-width:768px) { aside { display:none !important; } }
+  </style>
+</head>
+<body>
+  <header style="background:#7f1d1d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#f87171">Property</span> Pros</div>
+    </a>
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:rgba(255,255,255,.08);color:#d1d5db;font-size:13px;font-weight:800;text-decoration:none;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.14)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">
+      <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Back to dashboard
+    </a>
+  </header>
+
+    <div class="shell">
+  <!-- CONVERSATIONS PANEL -->
+  <div class="conversations">
+    <div class="conv-header">
+      <div class="conv-title">
+        Messages
+        <button class="new-msg-btn" title="New message">+</button>
+      </div>
+      <input class="search-conv" placeholder="Search conversations..." />
+    </div>
+    <div class="conv-filter">
+      <div class="filter-pill active">All</div>
+      <div class="filter-pill">Unread</div>
+      <div class="filter-pill">Leads</div>
+      <div class="filter-pill">Jobs</div>
+    </div>
+    <div class="conv-list">
+
+      <div class="conv-item active" data-contact="maria" onclick="switchConv(this, 'maria')">
+        <div class="conv-avatar" style="background:#7c3aed">
+          MS
+          <div class="online-dot"></div>
+        </div>
+        <div class="conv-info">
+          <div class="conv-name">Maria Santos <span class="conv-time">9:42 AM</span></div>
+          <div class="conv-preview bold">Is Saturday morning good for you?</div>
+          <div class="conv-tag">🏠 Roof replacement</div>
+        </div>
+        <div class="unread-badge">2</div>
+      </div>
+
+      <div class="conv-item" data-contact="james" onclick="switchConv(this, 'james')">
+        <div class="conv-avatar" style="background:#0369a1">JW</div>
+        <div class="conv-info">
+          <div class="conv-name">James Whitfield <span class="conv-time">8:15 AM</span></div>
+          <div class="conv-preview bold">Can you do a free estimate this week?</div>
+          <div class="conv-tag">🛣️ Driveway resurfacing</div>
+        </div>
+        <div class="unread-badge">1</div>
+      </div>
+
+      <div class="conv-item" data-contact="tanya" onclick="switchConv(this, 'tanya')">
+        <div class="conv-avatar" style="background:#065f46">TB</div>
+        <div class="conv-info">
+          <div class="conv-name">Tanya Brooks <span class="conv-time">Yesterday</span></div>
+          <div class="conv-preview">Thanks, the quote looks great!</div>
+          <div class="conv-tag">🚛 Basement cleanout</div>
+        </div>
+      </div>
+
+      <div class="conv-item" data-contact="david" onclick="switchConv(this, 'david')">
+        <div class="conv-avatar" style="background:#92400e">DL</div>
+        <div class="conv-info">
+          <div class="conv-name">David Lim <span class="conv-time">Mon</span></div>
+          <div class="conv-preview">See you Monday, thanks again!</div>
+          <div class="conv-tag">🧱 Retaining wall</div>
+        </div>
+      </div>
+
+      <div class="conv-item" data-contact="rosa" onclick="switchConv(this, 'rosa')">
+        <div class="conv-avatar" style="background:#be185d">RM</div>
+        <div class="conv-info">
+          <div class="conv-name">Rosa Mendez <span class="conv-time">Apr 14</span></div>
+          <div class="conv-preview">📷 Photo</div>
+          <div class="conv-tag">🧱 Patio stone border</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CHAT AREA -->
+  <div class="chat-area">
+
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <div class="chat-avatar" style="background:#7c3aed">MS</div>
+        <div>
+          <div class="chat-name">Maria Santos</div>
+          <div class="chat-status"><div class="status-dot"></div> Online now</div>
+        </div>
+        <div class="chat-tag">🏠 Roof replacement</div>
+      </div>
+      <div class="chat-header-actions">
+        <a href="leads.html?lead=maria" class="icon-btn" title="View lead" style="text-decoration:none">📋</a>
+        <button class="icon-btn" title="Schedule">📅</button>
+        <button class="icon-btn" title="Call">📞</button>
+        <button class="icon-btn" title="More options">⋯</button>
+      </div>
+    </div>
+
+    <div class="messages-body" id="messages-body">
+
+      <div class="day-divider">Monday, April 14</div>
+
+      <!-- THEIRS -->
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="msg-sender-name">Maria Santos</div>
+          <div class="msg-bubble theirs">
+            Hi! I found your profile on Property Pros. I need a full roof replacement on my colonial home. About 2,200 sq ft. Are you available for a free estimate?
+          </div>
+          <div class="msg-time">10:12 AM</div>
+        </div>
+      </div>
+
+      <!-- MINE -->
+      <div class="msg-row mine">
+        <div class="msg-bubble-wrap">
+          <div class="msg-bubble mine">
+            Hi Maria! Yes, absolutely. We do free estimates for all new customers. I'd love to come take a look. Can you tell me a bit more about the current condition of the roof?
+          </div>
+          <div class="msg-time">10:18 AM · <span class="msg-status read">✓✓ Read</span></div>
+        </div>
+      </div>
+
+      <!-- THEIRS -->
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="msg-bubble theirs">
+            It's about 22 years old. Multiple spots are leaking and some shingles have blown off. Here are a few photos from outside:
+          </div>
+          <div class="msg-time">10:21 AM</div>
+        </div>
+      </div>
+
+      <!-- IMAGE MESSAGE -->
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="img-placeholder roof" onclick="openLightbox()" style="cursor:pointer">
+            🏠
+            <div class="img-label">roof_damage_front.jpg</div>
+          </div>
+          <div class="msg-time">10:21 AM</div>
+        </div>
+      </div>
+
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="img-placeholder driveway" onclick="openLightbox()" style="cursor:pointer">
+            🔍
+            <div class="img-label">roof_close_up.jpg</div>
+          </div>
+          <div class="msg-time">10:22 AM</div>
+        </div>
+      </div>
+
+      <div class="day-divider">Today, April 19</div>
+
+      <!-- MINE — QUOTE CARD -->
+      <div class="msg-row mine">
+        <div class="msg-bubble-wrap">
+          <div class="quote-bubble">
+            <div class="quote-bubble-label">📄 Quote sent</div>
+            <div class="quote-bubble-title">Full Roof Replacement</div>
+            <div class="quote-bubble-amount">$5,400</div>
+            <div class="quote-bubble-detail">
+              Includes: removal of old shingles, full underlayment, architectural asphalt shingles, flashing, ridge caps, and full cleanup. Est. 2–3 days.
+            </div>
+            <div class="quote-bubble-actions">
+              <button class="qb-btn">View details</button>
+              <button class="qb-btn accept">Accept quote</button>
+            </div>
+          </div>
+          <div class="msg-time">9:30 AM · <span class="msg-status read">✓✓ Read</span></div>
+        </div>
+      </div>
+
+      <!-- THEIRS -->
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="msg-bubble theirs">
+            Wow, thank you! This looks really thorough. Does the price include the materials or is that separate?
+          </div>
+          <div class="msg-time">9:38 AM</div>
+        </div>
+      </div>
+
+      <!-- MINE -->
+      <div class="msg-row mine">
+        <div class="msg-bubble-wrap">
+          <div class="msg-bubble mine">
+            Yes — everything is included. Materials, labor, disposal of the old roof, and a final walkthrough inspection. No hidden costs. 👍
+          </div>
+          <div class="msg-time">9:40 AM · <span class="msg-status read">✓✓ Read</span></div>
+        </div>
+      </div>
+
+      <!-- THEIRS -->
+      <div class="msg-row">
+        <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+        <div class="msg-bubble-wrap">
+          <div class="msg-bubble theirs">
+            Is Saturday morning good for you?
+          </div>
+          <div class="msg-time">9:42 AM</div>
+        </div>
+      </div>
+
+      <!-- TYPING -->
+      <div class="typing-indicator" id="typing-indicator" style="display:none">
+        <div class="msg-sender-avatar" style="background:#7c3aed;width:30px;height:30px;border-radius:8px;font-size:11px">MS</div>
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+        <span>Maria is typing...</span>
+      </div>
+
+    </div>
+
+    <!-- INPUT AREA -->
+    <div class="chat-input-area" style="position:relative">
+      <div class="image-preview-strip" id="image-preview-strip"></div>
+
+      <!-- ATTACH MENU -->
+      <div class="attach-menu" id="attach-menu">
+        <div class="attach-menu-item" onclick="triggerUpload('image')">
+          <div class="attach-menu-icon" style="background:#fef2f2">🖼️</div>
+          <div>
+            <div>Photos</div>
+            <div class="attach-menu-sub">JPG, PNG, WEBP — max 10MB each</div>
+          </div>
+        </div>
+        <div class="attach-menu-item" onclick="triggerUpload('video')">
+          <div class="attach-menu-icon" style="background:#eff6ff">🎬</div>
+          <div>
+            <div>Video</div>
+            <div class="attach-menu-sub">MP4, MOV, WEBM — max 100MB</div>
+          </div>
+        </div>
+        <div class="attach-menu-item" onclick="triggerUpload('pdf')">
+          <div class="attach-menu-icon" style="background:#f0fdf4">📄</div>
+          <div>
+            <div>Document</div>
+            <div class="attach-menu-sub">PDF, DOC, DOCX — max 20MB</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIZE WARNING TOAST -->
+      <div class="size-toast" id="size-toast">File too large — max 100MB for video, 10MB for images</div>
+
+      <div class="input-row">
+        <div class="input-actions" style="position:relative">
+          <button class="attach-btn" title="Attach file" onclick="toggleAttachMenu(event)" id="attach-trigger">📎</button>
+          <button class="attach-btn" title="Send video" onclick="triggerUpload('video')" style="font-size:16px">🎬</button>
+          <button class="emoji-btn" title="Emoji" onclick="toggleEmoji()">😊</button>
+        </div>
+        <div class="msg-input-wrap">
+          <textarea
+            class="msg-input"
+            id="msg-input"
+            placeholder="Type a message..."
+            rows="1"
+            onInput="autoResize(this)"
+            onKeydown="handleKey(event)"
+          ></textarea>
+        </div>
+        <button class="send-btn" onclick="sendMessage()" title="Send">
+          ➤
+        </button>
+      </div>
+
+      <!-- HIDDEN FILE INPUTS -->
+      <input type="file" id="file-input-image" accept="image/*" multiple onchange="handleFileSelect(event,'image')" style="display:none" />
+      <input type="file" id="file-input-pdf" accept=".pdf,.doc,.docx,application/pdf" multiple onchange="handleFileSelect(event,'pdf')" style="display:none" />
+      <input type="file" id="file-input-video" accept="video/mp4,video/quicktime,video/webm,video/*" multiple onchange="handleFileSelect(event,'video')" style="display:none" />
+    </div>
+
+  </div>
+
+  <!-- INFO PANEL -->
+  <div class="info-panel">
+    <div class="info-header">Contact info</div>
+    <div class="info-section">
+      <div class="info-avatar-big" style="background:#7c3aed">MS</div>
+      <div class="info-name">Maria Santos</div>
+      <div class="info-role">Homeowner</div>
+      <div class="info-stat-row">
+        <div class="info-stat"><div class="info-stat-num">3</div><div class="info-stat-label">Projects</div></div>
+        <div class="info-stat"><div class="info-stat-num">4.9</div><div class="info-stat-label">Rating</div></div>
+        <div class="info-stat"><div class="info-stat-num">2yr</div><div class="info-stat-label">Member</div></div>
+      </div>
+      <button class="info-btn red">Send quote</button>
+      
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Active lead</div>
+      <div class="lead-link-card">
+        <div class="lead-link-title">🏠 Full roof replacement</div>
+        <div class="lead-link-detail">Budget: $4,000–$7,000 · 2 pros quoted</div>
+        <a href="leads.html?lead=maria" class="lead-link-btn" style="text-decoration:none;display:block">View lead →</a>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Shared photos</div>
+      <div class="shared-photos">
+        <div class="shared-photo p1" onclick="openLightbox()">🏠</div>
+        <div class="shared-photo p2" onclick="openLightbox()">🔍</div>
+        <div class="shared-photo p3" onclick="openLightbox()">🧱</div>
+        <div class="shared-photo p4" onclick="openLightbox()">🌿</div>
+        <div class="shared-photo p5" onclick="openLightbox()">🔧</div>
+        <div class="shared-photo p6">+4</div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Contact</div>
+      <div style="font-size:13px;color:var(--gray);line-height:2">
+        📧 maria.santos@email.com<br>
+        📞 (401) 555-0192<br>
+        📍 Your area
+      </div>
+    </div>
+  </div>
+
+  <!-- EMOJI PICKER -->
+  <div class="emoji-picker" id="emoji-picker">
+    <div class="emoji-opt" onclick="addEmoji('👍')">👍</div>
+    <div class="emoji-opt" onclick="addEmoji('👋')">👋</div>
+    <div class="emoji-opt" onclick="addEmoji('✅')">✅</div>
+    <div class="emoji-opt" onclick="addEmoji('🎉')">🎉</div>
+    <div class="emoji-opt" onclick="addEmoji('🙏')">🙏</div>
+    <div class="emoji-opt" onclick="addEmoji('😊')">😊</div>
+    <div class="emoji-opt" onclick="addEmoji('🏠')">🏠</div>
+    <div class="emoji-opt" onclick="addEmoji('🔨')">🔨</div>
+    <div class="emoji-opt" onclick="addEmoji('📷')">📷</div>
+    <div class="emoji-opt" onclick="addEmoji('📋')">📋</div>
+    <div class="emoji-opt" onclick="addEmoji('💰')">💰</div>
+    <div class="emoji-opt" onclick="addEmoji('⚡')">⚡</div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div style="font-size:100px">🏠</div>
+  </div>
+
+  <script>
+    // AUTO RESIZE TEXTAREA
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+    }
+
+    // SEND ON ENTER (SHIFT+ENTER = NEW LINE)
+    function handleKey(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+
+    // SEND MESSAGE
+    function sendMessage() {
+      const input = document.getElementById('msg-input');
+      const strip = document.getElementById('image-preview-strip');
+      const text = input.value.trim();
+      const body = document.getElementById('messages-body');
+      const hasAttachments = strip.children.length > 0;
+
+      if (!text && !hasAttachments) return;
+
+      // Send attachments first
+      if (hasAttachments) {
+        Array.from(strip.children).forEach(thumb => {
+          const isVideo = thumb.dataset.type === 'video';
+          const src = thumb.dataset.src || '';
+          const name = thumb.dataset.name || (isVideo ? 'video.mp4' : 'photo.jpg');
+          const dur = thumb.dataset.duration || '';
+          const row = document.createElement('div');
+          row.className = 'msg-row mine';
+
+          if (isVideo) {
+            row.innerHTML = `
+              <div class="msg-bubble-wrap">
+                <div class="msg-video-wrap" onclick="openVideoPlayer('${src}', '${name}')">
+                  ${src ? `<video src="${src}" muted playsinline preload="metadata" style="max-height:200px;width:100%"></video>` : `<div style="height:160px;display:flex;align-items:center;justify-content:center;background:#1f2937;font-size:40px">🎬</div>`}
+                  <div class="msg-video-overlay">
+                    <div class="video-play-btn">▶</div>
+                  </div>
+                  <div class="video-badge">VIDEO</div>
+                  <div class="msg-video-meta">${name}${dur ? ' · ' + dur : ''}</div>
+                </div>
+                <div class="msg-time">${getTime()} · <span class="msg-status">✓ Sent</span></div>
+              </div>`;
+          } else {
+            row.innerHTML = `
+              <div class="msg-bubble-wrap">
+                <div class="img-placeholder masonry" onclick="openLightbox()" style="cursor:pointer;${src ? `background-image:url(${src});background-size:cover;background-position:center` : ''}">
+                  ${src ? '' : '📷'}
+                  <div class="img-label">${name}</div>
+                </div>
+                <div class="msg-time">${getTime()} · <span class="msg-status">✓ Sent</span></div>
+              </div>`;
+          }
+          body.appendChild(row);
+        });
+        strip.innerHTML = '';
+      }
+
+      // Send text
+      if (text) {
+        const row = document.createElement('div');
+        row.className = 'msg-row mine';
+        row.innerHTML = `
+          <div class="msg-bubble-wrap">
+            <div class="msg-bubble mine">${escapeHtml(text)}</div>
+            <div class="msg-time">${getTime()} · <span class="msg-status">✓ Sent</span></div>
+          </div>`;
+        body.appendChild(row);
+      }
+
+      input.value = '';
+      input.style.height = 'auto';
+      scrollToBottom();
+
+      // Simulate typing response
+      setTimeout(() => {
+        document.getElementById('typing-indicator').style.display = 'flex';
+        scrollToBottom();
+      }, 800);
+
+      setTimeout(() => {
+        document.getElementById('typing-indicator').style.display = 'none';
+        const replies = [
+          "That sounds great, thank you!",
+          "Perfect, I'll check my schedule.",
+          "Okay, I'll get back to you shortly.",
+          "Thanks for the quick reply! 🙏",
+          "Can you confirm the start date?"
+        ];
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        const row = document.createElement('div');
+        row.className = 'msg-row';
+        row.innerHTML = `
+          <div class="msg-sender-avatar" style="background:#7c3aed">MS</div>
+          <div class="msg-bubble-wrap">
+            <div class="msg-bubble theirs">${reply}</div>
+            <div class="msg-time">${getTime()}</div>
+          </div>`;
+        body.appendChild(row);
+        scrollToBottom();
+      }, 2600);
+    }
+
+    // ATTACH MENU
+    function toggleAttachMenu(e) {
+      e.stopPropagation();
+      document.getElementById('attach-menu').classList.toggle('open');
+    }
+
+    function closeAttachMenu() {
+      document.getElementById('attach-menu').classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#attach-trigger') && !e.target.closest('#attach-menu')) {
+        closeAttachMenu();
+      }
+    });
+
+    // TRIGGER UPLOAD
+    function triggerUpload(type) {
+      closeAttachMenu();
+      const ids = { video: 'file-input-video', pdf: 'file-input-pdf', image: 'file-input-image' };
+      document.getElementById(ids[type] || 'file-input-image').click();
+    }
+
+    // FORMAT DURATION
+    function formatDuration(secs) {
+      if (!secs || isNaN(secs)) return '';
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    // SHOW SIZE TOAST
+    function showSizeToast(msg) {
+      const t = document.getElementById('size-toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // HANDLE FILE SELECT
+    function handleFileSelect(e, type) {
+      if (type === 'pdf') {
+        Array.from(e.target.files).forEach(function(file) {
+          if (file.size > 20 * 1024 * 1024) {
+            var t = document.getElementById('size-toast');
+            t.style.opacity = '1';
+            setTimeout(function(){ t.style.opacity = '0'; }, 3000);
+            return;
+          }
+          var body = document.getElementById('messages-body');
+          var row = document.createElement('div');
+          row.className = 'msg-row sent';
+          var sizeMB = (file.size/1024/1024).toFixed(1);
+          row.innerHTML = '<div class="msg-bubble" style="background:var(--red);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 16px;max-width:280px"><div style="font-size:24px;flex-shrink:0">📄</div><div style="min-width:0"><div style="font-size:13px;font-weight:800;overflow:hidden;text-overflow:ellipsis">' + file.name + '</div><div style="font-size:11px;opacity:.8;margin-top:2px">' + sizeMB + ' MB</div></div></div><div class="msg-time">Now · Sent</div>';
+          body.appendChild(row);
+          body.scrollTop = body.scrollHeight;
+        });
+        e.target.value = '';
+        return;
+      }
+      const files = Array.from(e.target.files);
+      const strip = document.getElementById('image-preview-strip');
+
+      files.forEach(file => {
+        const isVideo = type === 'video' || file.type.startsWith('video/');
+        const maxSize = isVideo ? 100 * 1024 * 1024 : 10 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+          showSizeToast(`${file.name} is too large. Max ${isVideo ? '100MB for video' : '10MB for images'}.`);
+          return;
+        }
+
+        const thumb = document.createElement('div');
+        thumb.className = 'img-preview-thumb';
+        thumb.dataset.type = isVideo ? 'video' : 'image';
+        thumb.dataset.name = file.name;
+
+        const objectUrl = URL.createObjectURL(file);
+        thumb.dataset.src = objectUrl;
+
+        if (isVideo) {
+          // Video thumbnail with real preview
+          thumb.innerHTML = `
+            <video src="${objectUrl}" muted playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover;border-radius:10px"></video>
+            <div class="video-thumb-overlay">
+              <div class="video-play-icon">▶</div>
+              <div class="video-dur-label" id="dur-${Date.now()}">...</div>
+            </div>
+            <div class="video-type-badge">VIDEO</div>
+            <div class="img-remove" onclick="this.parentElement.remove()">✕</div>`;
+
+          // Get real duration from metadata
+          const vid = thumb.querySelector('video');
+          const durLabel = thumb.querySelector('[id^="dur-"]');
+          vid.addEventListener('loadedmetadata', () => {
+            const d = formatDuration(vid.duration);
+            if (durLabel) durLabel.textContent = d;
+            thumb.dataset.duration = d;
+          });
+
+        } else {
+          // Image thumbnail with real preview
+          thumb.innerHTML = `
+            <img src="${objectUrl}" alt="${file.name}" />
+            <div class="img-remove" onclick="this.parentElement.remove()">✕</div>`;
+        }
+
+        strip.appendChild(thumb);
+      });
+
+      e.target.value = '';
+    }
+
+    // VIDEO PLAYER MODAL
+    function openVideoPlayer(src, name) {
+      let modal = document.getElementById('video-modal');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'video-modal';
+        modal.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:14px';
+        modal.innerHTML = `
+          <button onclick="closeVideoPlayer()" style="position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.15);color:#fff;border:none;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+          <video id="modal-video" controls style="max-width:90vw;max-height:78vh;border-radius:14px;background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5)"></video>
+          <div id="modal-video-name" style="color:rgba(255,255,255,.7);font-size:13px;font-weight:700;font-family:var(--font)"></div>`;
+        modal.addEventListener('click', e => { if (e.target === modal) closeVideoPlayer(); });
+        document.body.appendChild(modal);
+      }
+      const vid = modal.querySelector('#modal-video');
+      modal.querySelector('#modal-video-name').textContent = name || '';
+      if (src) vid.src = src;
+      modal.style.display = 'flex';
+      if (src) vid.play().catch(() => {});
+    }
+
+    function closeVideoPlayer() {
+      const modal = document.getElementById('video-modal');
+      if (!modal) return;
+      const vid = modal.querySelector('#modal-video');
+      if (vid) { vid.pause(); vid.src = ''; }
+      modal.style.display = 'none';
+    }
+
+    // EMOJI
+    function toggleEmoji() {
+      document.getElementById('emoji-picker').classList.toggle('open');
+    }
+
+    function addEmoji(emoji) {
+      const input = document.getElementById('msg-input');
+      input.value += emoji;
+      input.focus();
+      document.getElementById('emoji-picker').classList.remove('open');
+    }
+
+    document.addEventListener('click', (e) => {
+      const picker = document.getElementById('emoji-picker');
+      if (!e.target.closest('.emoji-btn') && !e.target.closest('.emoji-picker')) {
+        picker.classList.remove('open');
+      }
+    });
+
+    // LIGHTBOX
+    function openLightbox() { document.getElementById('lightbox').classList.add('open'); }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+    // SWITCH CONVERSATION
+    // CONVERSATION DATA
+    const contacts = {
+      maria: {
+        name: 'Maria Santos', initials: 'MS', color: '#7c3aed',
+        status: 'Online now', project: '🏠 Roof replacement',
+        preview: 'Is Saturday morning available for you?'
+      },
+      james: {
+        name: 'James Whitfield', initials: 'JW', color: '#059669',
+        status: 'Last seen 2h ago', project: '🛣️ Driveway paving',
+        preview: 'Can you do a free estimate this week?'
+      },
+      tanya: {
+        name: 'Tanya Brooks', initials: 'TB', color: '#d97706',
+        status: 'Last seen yesterday', project: '🚛 Junk removal',
+        preview: 'Thanks for the quote, looks good!'
+      },
+      david: {
+        name: 'David Lim', initials: 'DL', color: '#1d4ed8',
+        status: 'Last seen Monday', project: '🧱 Masonry work',
+        preview: "We're all set for Monday, see you then."
+      },
+      rosa: {
+        name: 'Rosa Mendez', initials: 'RM', color: '#dc2626',
+        status: 'Last seen 3 days ago', project: '🛁 Bathroom remodel',
+        preview: 'Let me know when you can start.'
+      }
+    };
+
+    function switchConv(el, name) {
+      document.querySelectorAll('.conv-item').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      const badge = el.querySelector('.unread-badge');
+      if (badge) badge.remove();
+
+      // Update chat header
+      const c = contacts[name];
+      if (!c) return;
+      document.querySelector('.chat-avatar').style.background = c.color;
+      document.querySelector('.chat-avatar').textContent = c.initials;
+      document.querySelector('.chat-name').textContent = c.name;
+      document.querySelector('.chat-status').innerHTML = '<div class="status-dot"></div> ' + c.status;
+      document.querySelector('.chat-tag').textContent = c.project;
+      document.querySelector('.msg-input').placeholder = 'Message ' + c.name + '...';
+
+      // Clear messages body and show a placeholder for this conversation
+      const body = document.getElementById('messages-body');
+      body.innerHTML = `
+        <div class="day-divider">Today</div>
+        <div style="text-align:center;padding:40px 20px;">
+          <div style="width:56px;height:56px;border-radius:16px;background:${c.color};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;margin:0 auto 14px">${c.initials}</div>
+          <div style="font-size:15px;font-weight:900;color:var(--dark);margin-bottom:6px">${c.name}</div>
+          <div style="font-size:13px;color:var(--gray);font-weight:700">${c.project}</div>
+          <div style="margin-top:20px;background:var(--bg);border-radius:12px;padding:14px 18px;display:inline-block;max-width:320px">
+            <div style="font-size:13px;color:var(--dark3);font-weight:700;font-style:italic">"${c.preview}"</div>
+            <div style="font-size:11px;color:var(--gray);font-weight:700;margin-top:6px">Latest message</div>
+          </div>
+          <div style="margin-top:16px;font-size:13px;color:var(--gray)">Send a message to continue this conversation</div>
+        </div>`;
+    }
+
+    // FILTER PILLS
+    document.querySelectorAll('.filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+      });
+    });
+
+    // HELPERS
+    function scrollToBottom() {
+      const body = document.getElementById('messages-body');
+      setTimeout(() => body.scrollTop = body.scrollHeight, 50);
+    }
+
+    function getTime() {
+      return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+    }
+
+    scrollToBottom();
+
+    // Read URL parameter and open the correct conversation on load
+    const params = new URLSearchParams(window.location.search);
+    const openContact = params.get('contact');
+    if (openContact) {
+      const convItem = document.querySelector(`[data-contact="${openContact}"]`);
+      if (convItem) {
+        switchConv(convItem, openContact);
+        convItem.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+  </div><!-- /shell -->
+
+</body>
+</html>

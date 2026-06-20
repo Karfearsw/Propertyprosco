@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your saved leads on Property Pros — projects you've bookmarked to quote later." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Leads — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); display: flex; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* SIDEBAR */
+    .sidebar { width: 224px; min-height: 100vh; background: #7f1d1d; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0; }
+    .sb-brand { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; gap: 10px; }
+    .sb-logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .sb-title { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .sb-title .red { color: #f87171; }
+    .sb-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+    .sb-section-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #4b5563; font-weight: 800; padding: 10px 8px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #9ca3af; cursor: pointer; margin-bottom: 2px; text-decoration: none; transition: all .15s; }
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px; }
+    .nav-item.active .nav-badge { background: rgba(255,255,255,.25); }
+    .sb-avatar { width: 36px; height: 36px; border-radius: 10px; background: var(--dark2); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; flex-shrink: 0; }
+    .sb-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .sb-role { font-size: 11px; color: #6b7280; }
+
+    /* MAIN */
+    .main { flex: 1; min-width: 0; }
+
+    /* TOPBAR */
+    .topbar { padding: 20px 28px; border-bottom: 1px solid var(--border); background: var(--white); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .page-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--white); color: var(--dark); }
+    .btn:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+
+    /* CONTENT */
+    .content { padding: 24px 28px; }
+
+    /* STATS */
+    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; transition: border-color .15s; }
+    .stat-card:hover { border-color: var(--red); }
+    .stat-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--gray); margin-bottom: 8px; }
+    .stat-num { font-size: 26px; font-weight: 900; letter-spacing: -1px; }
+    .stat-sub { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 4px; }
+    .stat-sub.amber { color: var(--amber); }
+    .stat-sub.green { color: var(--green); }
+    .stat-sub.red { color: var(--red); }
+
+    /* FILTER BAR */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .filter-tab { padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .15s; }
+    .filter-tab:hover { border-color: var(--dark); color: var(--dark); }
+    .filter-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .filter-right { margin-left: auto; }
+    .search-input { padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-family: var(--font); color: var(--dark); width: 200px; }
+    .search-input:focus { outline: none; border-color: var(--red); }
+
+    /* LEAD CARD */
+    .lead-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 12px; overflow: hidden; transition: all .2s; }
+    .lead-card:hover { border-color: #d1d5db; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .lead-card.expiring { border-left: 4px solid var(--amber); }
+    .lead-card.hot { border-left: 4px solid var(--red); }
+    .lead-card.new-lead { border-left: 4px solid var(--blue); }
+
+    /* CARD HEADER */
+    .lc-header { padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+    .lc-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .lc-main { flex: 1; min-width: 0; }
+    .lc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 5px; }
+    .lc-title { font-size: 15px; font-weight: 900; letter-spacing: -0.3px; }
+    .lc-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+    .badge-hot { background: var(--red-light); color: #991b1b; }
+    .badge-new { background: var(--blue-light); color: #1e40af; }
+    .badge-expiring { background: var(--amber-light); color: #92400e; }
+    .badge-trade { background: var(--bg); color: var(--dark3); border: 1px solid var(--border); }
+    .lc-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: var(--gray); }
+
+    /* CARD BODY */
+    .lc-desc { padding: 0 20px 14px; font-size: 13px; color: var(--dark3); line-height: 1.7; }
+    .lc-budget { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 8px; padding: 4px 10px; font-size: 13px; font-weight: 900; color: #166534; }
+
+    /* NOTE */
+    .lc-note { margin: 0 20px 14px; background: var(--amber-light); border: 1px solid #fde68a; border-radius: 10px; padding: 10px 12px; font-size: 12px; color: #78350f; font-weight: 700; cursor: pointer; transition: background .15s; }
+    .lc-note:hover { background: #fde68a; }
+    .lc-note-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--amber); margin-bottom: 3px; }
+
+    /* TAGS */
+    .lc-tags { padding: 0 20px 14px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .lc-tag { font-size: 11px; font-weight: 700; background: var(--bg); border: 1px solid var(--border); padding: 3px 10px; border-radius: 999px; color: var(--dark3); }
+
+    /* CARD FOOTER */
+    .lc-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: var(--bg); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .lc-homeowner { display: flex; gap: 8px; align-items: center; }
+    .lc-hw-avatar { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 11px; color: #fff; flex-shrink: 0; }
+    .lc-hw-name { font-size: 12px; font-weight: 800; }
+    .lc-hw-trust { font-size: 11px; font-weight: 700; color: var(--green); }
+    .lc-actions { display: flex; gap: 8px; }
+    .unsave-btn { font-size: 16px; background: none; border: 1px solid #fecaca; border-radius: 8px; padding: 6px 10px; cursor: pointer; color: var(--red); transition: all .15s; }
+    .unsave-btn:hover { background: var(--red-light); }
+
+    /* QUOTE MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .modal-header { padding: 20px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+    .modal-title { font-size: 16px; font-weight: 900; }
+    .modal-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray); }
+    .modal-body { padding: 20px 22px; }
+    .modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; background: var(--bg); border-radius: 0 0 20px 20px; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark3); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-family: var(--font); color: var(--dark); }
+    .form-input:focus { outline: none; border-color: var(--red); }
+    textarea.form-input { resize: vertical; min-height: 90px; }
+
+    /* EMPTY */
+    .empty-state { text-align: center; padding: 80px 20px; }
+    .empty-icon { font-size: 56px; margin-bottom: 16px; }
+    .empty-title { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+    .empty-sub { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 400px; margin: 0 auto 24px; }
+
+    @keyframes toastSlide { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+  
+    /* dark-sidebar link palette (scoped) */
+    .sidebar .nav-item { color: rgba(255,255,255,.65); }
+    .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+    .sidebar .nav-item.active { background: #dc2626; color:#fff; }
+    .sidebar .nav-item.active .nav-count { background:#fff; color:#dc2626; }
+    .sidebar .nav-section, .sidebar .nav-label { color: #fca5a5; }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">PP</div>
+      <div class="sb-title"><span class="red">Property</span> Pros</div>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section-label">Main</div>
+      <a href="dashboard.html" class="nav-item"><span class="nav-icon">📊</span> Dashboard</a>
+      <a href="leads.html" class="nav-item"><span class="nav-icon">⚡</span> My Leads <span class="nav-badge">4</span></a>
+      <a href="quotes.html" class="nav-item"><span class="nav-icon">💰</span> My Quotes <span class="nav-badge">12</span></a>
+      <a href="saved-leads.html" class="nav-item active"><span class="nav-icon">🔖</span> Saved Leads <span class="nav-badge">5</span></a>
+      <a href="leads.html" class="nav-item"><span class="nav-icon">🔍</span> Browse projects</a>
+      <a href="messages.html" class="nav-item"><span class="nav-icon">💬</span> Messages <span class="nav-badge">3</span></a>
+      <a href="schedule.html" class="nav-item"><span class="nav-icon">📅</span> Schedule</a>
+      <a href="notifications.html" class="nav-item"><span class="nav-icon">🔔</span> Notifications <span class="nav-badge" id="pro-notif-badge" style="display:none">0</span></a>
+      <div class="sb-section-label">Quick Jobs</div>
+      <a href="quick-jobs-pro.html" class="nav-item"><span class="nav-icon">⚡</span> Quick Jobs setup</a>
+      <div class="sb-section-label">Business</div>
+      <a href="billing.html" class="nav-item"><span class="nav-icon">💳</span> Billing</a>
+      <a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+      <a href="contact.html" class="nav-item"><span class="nav-icon">💡</span> Support</a>
+    </nav>
+    <div style="flex-direction:column;align-items:stretch;gap:0;padding:0">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px">
+        <div class="sb-avatar">KH</div>
+        <div><div class="sb-name">Kev Hernandez</div><div class="sb-role">Pro account</div></div>
+        <a href="settings.html" style="margin-left:auto;font-size:18px;text-decoration:none;color:#4b5563">⚙️</a>
+      </div>
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-top:1px solid rgba(255,255,255,.06);font-size:12px;font-weight:800;color:#6b7280;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='#6b7280'">
+        <span style="font-size:14px">🚪</span> Log out
+      </a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <div class="page-title">🔖 Saved Leads</div>
+        <div class="page-sub">Projects you've bookmarked — quote before they expire</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <a href="leads.html" class="btn">🔍 Browse more leads</a>
+        <a href="leads.html" class="btn btn-red">⚡ My active leads</a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- STATS -->
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-label">Saved leads</div>
+          <div class="stat-num">5</div>
+          <div class="stat-sub">total bookmarked</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Expiring soon</div>
+          <div class="stat-num">2</div>
+          <div class="stat-sub amber">Close soon — act now</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total budget</div>
+          <div class="stat-num">$24K</div>
+          <div class="stat-sub green">Combined value</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Already quoted</div>
+          <div class="stat-num">1</div>
+          <div class="stat-sub">of 5 saved leads</div>
+        </div>
+      </div>
+
+      <!-- FILTER BAR -->
+      <div class="filter-bar">
+        <div class="filter-tab active" onclick="filterLeads('all', this)">All <span style="font-size:11px;background:rgba(0,0,0,.1);padding:1px 6px;border-radius:999px;margin-left:4px">5</span></div>
+        <div class="filter-tab" onclick="filterLeads('hot', this)">🔥 Hot</div>
+        <div class="filter-tab" onclick="filterLeads('expiring', this)">⏰ Expiring</div>
+        <div class="filter-tab" onclick="filterLeads('new-lead', this)">🆕 New</div>
+        <div class="filter-right">
+          <input class="search-input" type="text" placeholder="🔍 Search saved leads..." oninput="searchLeads(this.value)" />
+        </div>
+      </div>
+
+      <!-- LEAD CARDS -->
+      <div id="leads-list">
+
+        <!-- LEAD 1 — HOT, EXPIRING -->
+        <div class="lead-card hot expiring" data-type="hot" data-search="roof replacement roofing maria">
+          <div class="lc-header">
+            <div class="lc-icon" style="background:var(--red-light)">🏠</div>
+            <div class="lc-main">
+              <div class="lc-top">
+                <div class="lc-title">Full roof replacement — 2,200 sq ft colonial</div>
+                <div class="lc-badges">
+                  <span class="badge badge-hot">🔥 Hot lead</span>
+                  <span class="badge badge-expiring">⏰ Closes in 2 days</span>
+                  <span class="badge badge-trade">🏠 Roofing</span>
+                </div>
+              </div>
+              <div class="lc-meta">
+                <span>📍 Your area</span>
+                <span>📅 Posted Apr 18</span>
+                <span>👥 4 pros quoted</span>
+                <span>🕐 Saved 2 days ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-desc">
+            Need a full roof replacement on a 2,200 sq ft colonial. 22-year-old shingles with multiple leaks. Looking for architectural grade asphalt. Free estimate requested. <span class="lc-budget">💰 $4,000–$7,000</span>
+          </div>
+          <div class="lc-note" onclick="openNote(this, 'roof')">
+            <div class="lc-note-label">📝 Your note</div>
+            Good budget range — matches our typical roof quote. Follow up before it closes!
+          </div>
+          <div class="lc-tags">
+            <span class="lc-tag">Architectural shingles</span>
+            <span class="lc-tag">Free estimate ok</span>
+            <span class="lc-tag">ASAP</span>
+          </div>
+          <div class="lc-footer">
+            <div class="lc-homeowner">
+              <div class="lc-hw-avatar" style="background:#7c3aed">MS</div>
+              <div>
+                <div class="lc-hw-name">Maria Santos</div>
+                <div class="lc-hw-trust">Trust Score: 94 ✓</div>
+              </div>
+            </div>
+            <div class="lc-actions">
+              <a href="customer-profile.html" class="btn btn-sm">👤 Profile</a>
+              <a href="messages.html" class="btn btn-sm">💬 Message</a>
+              <button class="btn btn-sm btn-red" onclick="openQuoteModal('Maria Santos', 'Full roof replacement')">Send quote →</button>
+              <button class="unsave-btn" onclick="unsaveLead(this, 'Roof replacement')" title="Remove from saved">🔖</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEAD 2 — NEW, HIGH VALUE -->
+        <div class="lead-card new-lead" data-type="new-lead" data-search="kitchen remodel renovation tanya">
+          <div class="lc-header">
+            <div class="lc-icon" style="background:var(--blue-light)">🍳</div>
+            <div class="lc-main">
+              <div class="lc-top">
+                <div class="lc-title">Full kitchen remodel — cabinets, counters, flooring</div>
+                <div class="lc-badges">
+                  <span class="badge badge-new">🆕 New</span>
+                  <span class="badge badge-trade">🔨 Remodeling</span>
+                </div>
+              </div>
+              <div class="lc-meta">
+                <span>📍 Your area</span>
+                <span>📅 Posted Apr 20</span>
+                <span>👥 2 pros quoted</span>
+                <span>🕐 Saved today</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-desc">
+            Full kitchen gut and remodel — remove existing cabinets, new shaker-style cabinets, quartz countertops, new flooring, and light fixtures. Open to material recommendations. <span class="lc-budget">💰 $15,000–$25,000</span>
+          </div>
+          <div class="lc-note" onclick="openNote(this, 'kitchen')">
+            <div class="lc-note-label">📝 Your note</div>
+            High-value job — check schedule availability for Q2. Call to discuss scope.
+          </div>
+          <div class="lc-tags">
+            <span class="lc-tag">Cabinets</span>
+            <span class="lc-tag">Quartz countertops</span>
+            <span class="lc-tag">Flooring</span>
+            <span class="lc-tag">Within 2 months</span>
+          </div>
+          <div class="lc-footer">
+            <div class="lc-homeowner">
+              <div class="lc-hw-avatar" style="background:#dc2626">TB</div>
+              <div>
+                <div class="lc-hw-name">Tanya Brooks</div>
+                <div class="lc-hw-trust">Trust Score: 76 ✓</div>
+              </div>
+            </div>
+            <div class="lc-actions">
+              <a href="customer-profile.html" class="btn btn-sm">👤 Profile</a>
+              <a href="messages.html" class="btn btn-sm">💬 Message</a>
+              <button class="btn btn-sm btn-red" onclick="openQuoteModal('Tanya Brooks', 'Full kitchen remodel')">Send quote →</button>
+              <button class="unsave-btn" onclick="unsaveLead(this, 'Kitchen remodel')" title="Remove from saved">🔖</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEAD 3 — EXPIRING -->
+        <div class="lead-card expiring" data-type="expiring" data-search="driveway resurfacing paving james">
+          <div class="lc-header">
+            <div class="lc-icon" style="background:var(--amber-light)">🛣️</div>
+            <div class="lc-main">
+              <div class="lc-top">
+                <div class="lc-title">Asphalt driveway resurfacing — 80ft two-car</div>
+                <div class="lc-badges">
+                  <span class="badge badge-expiring">⏰ Closes in 4 days</span>
+                  <span class="badge badge-trade">🛣️ Driveways</span>
+                </div>
+              </div>
+              <div class="lc-meta">
+                <span>📍 Your area</span>
+                <span>📅 Posted Apr 14</span>
+                <span>👥 3 pros quoted</span>
+                <span>🕐 Saved 5 days ago</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-desc">
+            80ft two-car driveway heavily cracked and heaving. Looking for full resurfacing. Concrete or asphalt — open to recommendations. Want 2–3 quotes before deciding. <span class="lc-budget">💰 $2,000–$4,500</span>
+          </div>
+          <div class="lc-note" onclick="openNote(this, 'driveway')">
+            <div class="lc-note-label">📝 Your note</div>
+            Click to add a note...
+          </div>
+          <div class="lc-tags">
+            <span class="lc-tag">Asphalt or concrete</span>
+            <span class="lc-tag">Comparing quotes</span>
+            <span class="lc-tag">Free estimate ok</span>
+          </div>
+          <div class="lc-footer">
+            <div class="lc-homeowner">
+              <div class="lc-hw-avatar" style="background:#059669">JW</div>
+              <div>
+                <div class="lc-hw-name">James Whitfield</div>
+                <div class="lc-hw-trust">Trust Score: 88 ✓</div>
+              </div>
+            </div>
+            <div class="lc-actions">
+              <a href="customer-profile.html" class="btn btn-sm">👤 Profile</a>
+              <a href="messages.html" class="btn btn-sm">💬 Message</a>
+              <button class="btn btn-sm btn-red" onclick="openQuoteModal('James Whitfield', 'Driveway resurfacing')">Send quote →</button>
+              <button class="unsave-btn" onclick="unsaveLead(this, 'Driveway resurfacing')" title="Remove from saved">🔖</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEAD 4 — NEW, ALREADY QUOTED -->
+        <div class="lead-card new-lead" data-type="new-lead" data-search="retaining wall masonry david">
+          <div class="lc-header">
+            <div class="lc-icon" style="background:var(--purple-light)">🧱</div>
+            <div class="lc-main">
+              <div class="lc-top">
+                <div class="lc-title">Stone retaining wall — backyard slope, 40 ft</div>
+                <div class="lc-badges">
+                  <span class="badge badge-new">🆕 New</span>
+                  <span class="badge badge-trade">🧱 Masonry</span>
+                  <span style="font-size:10px;font-weight:800;background:var(--green-light);color:#166534;padding:3px 9px;border-radius:999px">✓ Quoted</span>
+                </div>
+              </div>
+              <div class="lc-meta">
+                <span>📍 Your area</span>
+                <span>📅 Posted Apr 19</span>
+                <span>👥 2 pros quoted</span>
+                <span>🕐 Saved yesterday</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-desc">
+            Stone retaining wall along a sloped backyard. Approximately 40 linear feet, 3–4 ft high. Natural stone preferred. Flexible timing within 30 days. <span class="lc-budget">💰 $2,500–$5,000</span>
+          </div>
+          <div class="lc-note" onclick="openNote(this, 'wall')">
+            <div class="lc-note-label">📝 Your note</div>
+            Already sent quote at $4,200. Waiting on homeowner response.
+          </div>
+          <div class="lc-tags">
+            <span class="lc-tag">Natural stone</span>
+            <span class="lc-tag">Dry-stack</span>
+            <span class="lc-tag">Flexible timing</span>
+          </div>
+          <div class="lc-footer">
+            <div class="lc-homeowner">
+              <div class="lc-hw-avatar" style="background:#1d4ed8">DL</div>
+              <div>
+                <div class="lc-hw-name">David Lim</div>
+                <div class="lc-hw-trust">Trust Score: 91 ✓</div>
+              </div>
+            </div>
+            <div class="lc-actions">
+              <a href="customer-profile.html" class="btn btn-sm">👤 Profile</a>
+              <a href="messages.html" class="btn btn-sm">💬 Message</a>
+              <a href="quotes.html" class="btn btn-sm" style="color:var(--green);border-color:#bbf7d0">✓ View sent quote</a>
+              <button class="unsave-btn" onclick="unsaveLead(this, 'Stone retaining wall')" title="Remove from saved">🔖</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEAD 5 — HOT -->
+        <div class="lead-card hot" data-type="hot" data-search="deck build wood outdoor rosa">
+          <div class="lc-header">
+            <div class="lc-icon" style="background:var(--amber-light)">🌿</div>
+            <div class="lc-main">
+              <div class="lc-top">
+                <div class="lc-title">Backyard deck build — 400 sq ft composite wood</div>
+                <div class="lc-badges">
+                  <span class="badge badge-hot">🔥 Hot lead</span>
+                  <span class="badge badge-trade">🔨 General</span>
+                </div>
+              </div>
+              <div class="lc-meta">
+                <span>📍 Your area</span>
+                <span>📅 Posted Apr 21</span>
+                <span>👥 1 pro quoted</span>
+                <span>🕐 Saved today</span>
+              </div>
+            </div>
+          </div>
+          <div class="lc-desc">
+            New backyard deck build — approx 400 sq ft, composite decking preferred (Trex or similar). Includes stairs and railing. Permit pulled by homeowner. Flexible timing in May. <span class="lc-budget">💰 $8,000–$14,000</span>
+          </div>
+          <div class="lc-note" onclick="openNote(this, 'deck')">
+            <div class="lc-note-label">📝 Your note</div>
+            Click to add a note...
+          </div>
+          <div class="lc-tags">
+            <span class="lc-tag">Composite decking</span>
+            <span class="lc-tag">Trex preferred</span>
+            <span class="lc-tag">Stairs & railing</span>
+            <span class="lc-tag">Permit ready</span>
+          </div>
+          <div class="lc-footer">
+            <div class="lc-homeowner">
+              <div class="lc-hw-avatar" style="background:#b45309">RM</div>
+              <div>
+                <div class="lc-hw-name">Rosa Mendez</div>
+                <div class="lc-hw-trust">Trust Score: 82 ✓</div>
+              </div>
+            </div>
+            <div class="lc-actions">
+              <a href="customer-profile.html" class="btn btn-sm">👤 Profile</a>
+              <a href="messages.html" class="btn btn-sm">💬 Message</a>
+              <button class="btn btn-sm btn-red" onclick="openQuoteModal('Rosa Mendez', 'Backyard deck build')">Send quote →</button>
+              <button class="unsave-btn" onclick="unsaveLead(this, 'Deck build')" title="Remove from saved">🔖</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" id="empty-state" style="display:none">
+        <div class="empty-icon">🔖</div>
+        <div class="empty-title">No saved leads</div>
+        <div class="empty-sub">Bookmark leads from My Leads or Browse Projects to save them here for later. Great for high-value jobs you want to come back to.</div>
+        <a href="leads.html" class="btn btn-red">Browse open projects →</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- QUOTE MODAL -->
+  <div class="modal-overlay" id="quote-modal" onclick="if(event.target===this)closeQuote()">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Send a quote</div>
+          <div class="modal-sub" id="quote-modal-sub">To homeowner</div>
+        </div>
+        <button class="modal-close" onclick="closeQuote()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--green-light);border:1px solid #bbf7d0;border-radius:10px;padding:11px 14px;font-size:13px;font-weight:700;color:#166534;margin-bottom:16px">
+          💡 Quotes with a personal message get accepted 3× more often.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your price</label>
+          <input class="form-input" type="text" placeholder="e.g. $4,200" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quote type</label>
+          <select class="form-input">
+            <option>Fixed price</option>
+            <option>Estimate (may vary)</option>
+            <option>Starting from</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estimated duration</label>
+          <select class="form-input">
+            <option>Half a day</option>
+            <option>1 day</option>
+            <option selected>2–3 days</option>
+            <option>3–5 days</option>
+            <option>1–2 weeks</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Earliest start date</label>
+          <input class="form-input" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Personal message</label>
+          <textarea class="form-input" placeholder="Hi! I reviewed your project and I'm confident we can get this done right..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="closeQuote()">Cancel</button>
+        <button class="btn btn-sm btn-red" onclick="sendQuote()">Send quote →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTE MODAL -->
+  <div class="modal-overlay" id="note-modal" onclick="if(event.target===this)closeNote()">
+    <div class="modal" style="max-width:400px">
+      <div class="modal-header">
+        <div class="modal-title">Edit note</div>
+        <button class="modal-close" onclick="closeNote()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--gray);font-weight:700;margin-bottom:12px">Private — only visible to you</p>
+        <textarea class="form-input" id="note-input" style="min-height:100px" placeholder="e.g. High-value job, contact before May..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="closeNote()">Cancel</button>
+        <button class="btn btn-sm btn-red" onclick="saveNote()">Save note</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeNoteEl = null;
+
+    // FILTER
+    function filterLeads(type, el) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.lead-card').forEach(card => {
+        card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
+      });
+      checkEmpty();
+    }
+
+    function searchLeads(q) {
+      document.querySelectorAll('.lead-card').forEach(card => {
+        card.style.display = card.dataset.search.includes(q.toLowerCase()) ? '' : 'none';
+      });
+      checkEmpty();
+    }
+
+    function checkEmpty() {
+      const visible = [...document.querySelectorAll('.lead-card')].filter(c => c.style.display !== 'none').length;
+      document.getElementById('empty-state').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    // UNSAVE
+    function unsaveLead(btn, name) {
+      if (!confirm(`Remove "${name}" from saved leads?`)) return;
+      const card = btn.closest('.lead-card');
+      card.style.transition = 'opacity .3s, transform .3s';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(.97)';
+      setTimeout(() => { card.remove(); checkEmpty(); showToast(`"${name}" removed from saved leads`); }, 300);
+    }
+
+    // QUOTE MODAL
+    function openQuoteModal(client, service) {
+      document.getElementById('quote-modal-sub').textContent = `${service} · ${client}`;
+      document.getElementById('quote-modal').classList.add('open');
+    }
+    function closeQuote() { document.getElementById('quote-modal').classList.remove('open'); }
+    function sendQuote() {
+      closeQuote();
+      showToast('✓ Quote sent! The homeowner will be notified.');
+    }
+
+    // NOTE MODAL
+    function openNote(noteEl) {
+      activeNoteEl = noteEl;
+      const curr = noteEl.childNodes[1]?.textContent?.trim() || '';
+      document.getElementById('note-input').value = curr === 'Click to add a note...' ? '' : curr;
+      document.getElementById('note-modal').classList.add('open');
+    }
+    function closeNote() { document.getElementById('note-modal').classList.remove('open'); activeNoteEl = null; }
+    function saveNote() {
+      const val = document.getElementById('note-input').value.trim();
+      if (activeNoteEl) {
+        const label = activeNoteEl.querySelector('.lc-note-label').outerHTML;
+        activeNoteEl.innerHTML = label + (val || 'Click to add a note...');
+      }
+      closeNote();
+      showToast('✓ Note saved');
+    }
+
+    // TOAST
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#111827;color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:toastSlide .3s ease';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2500);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeQuote(); closeNote(); }
+    });
+
+    (function() {
+      const read = localStorage.getItem('pp_pro_notifs_read') === 'true';
+      const badge = document.getElementById('pro-notif-badge');
+      if (badge && !read) { badge.style.display = 'inline-flex'; badge.textContent = '5'; }
+    })();
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

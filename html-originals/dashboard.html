@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Property Pros Pro</title>
+  <meta name="description" content="Your Property Pros contractor dashboard — manage leads, quotes, schedule, and grow your business." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { background: #7f1d1d; height: 60px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .hw-brand { display: flex; align-items: center; gap: 10px; }
+    .hw-logo { width: 32px; height: 32px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; flex-shrink: 0; }
+    .hw-brand-name { font-size: 17px; font-weight: 900; color: #fff; }
+    .hw-brand-name span { color: #f87171; }
+    .hw-header-right { display: flex; align-items: center; gap: 6px; }
+    .hw-bell { position: relative; width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #9ca3af; cursor: pointer; transition: all .15s; }
+    .hw-bell:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .hw-bell-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--red); border-radius: 50%; border: 2px solid var(--dark); }
+    .hw-avatar-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; cursor: pointer; border: 2px solid rgba(255,255,255,.15); transition: border-color .15s; }
+    .hw-avatar-btn:hover { border-color: rgba(255,255,255,.4); }
+    .hw-hamburger { width: 38px; height: 38px; border-radius: 9px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; background: transparent; border: none; transition: background .15s; }
+    .hw-hamburger:hover { background: rgba(255,255,255,.08); }
+    .hw-hamburger span { display: block; width: 20px; height: 2px; background: #9ca3af; border-radius: 2px; transition: all .25s; }
+    .hw-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: #fff; }
+    .hw-hamburger.open span:nth-child(2) { opacity: 0; }
+    .hw-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: #fff; }
+
+    /* ── DRAWER ── */
+    .hw-drawer { display: none; position: fixed; top: 60px; right: 0; width: 280px; bottom: 0; background: #7f1d1d; border-left: 1px solid rgba(255,255,255,.07); z-index: 99; flex-direction: column; padding: 12px; box-shadow: -8px 0 32px rgba(0,0,0,.3); overflow-y: auto; }
+    .hw-drawer.open { display: flex; }
+    .hw-drawer-section { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #4b5563; padding: 10px 10px 4px; }
+    .hw-drawer-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; color: #9ca3af; transition: all .15s; margin-bottom: 2px; }
+    .hw-drawer-link:hover, .hw-drawer-link.active { background: rgba(255,255,255,.06); color: #fff; }
+    .hw-drawer-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 4px; }
+    .hw-drawer-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+    .hw-drawer-user { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+    .hw-drawer-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--red); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .hw-drawer-username { font-size: 13px; font-weight: 800; color: #fff; }
+    .hw-drawer-role { font-size: 11px; color: #6b7280; }
+    .hw-drawer-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; color: #f87171; transition: all .15s; }
+    .hw-drawer-logout:hover { background: rgba(220,38,38,.1); }
+    .hw-overlay { display: none; position: fixed; inset: 0; top: 60px; background: rgba(0,0,0,.4); z-index: 98; }
+    .hw-overlay.open { display: block; }
+
+    /* ── WELCOME STRIP ── */
+    .welcome-strip { background: #7f1d1d; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .welcome-left .welcome-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #6b7280; margin-bottom: 6px; }
+    .welcome-left .welcome-name { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .welcome-left .welcome-sub { font-size: 13px; color: #9ca3af; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .verified-badge { background: var(--green); color: #fff; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+    .welcome-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .w-btn { padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; }
+    .w-btn-red { background: var(--red); color: #fff; }
+    .w-btn-red:hover { background: var(--red-dark); }
+    .w-btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.15) !important; }
+    .w-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── STATS STRIP ── */
+    .stats-strip { background: var(--white); border-bottom: 1px solid var(--border); display: flex; overflow-x: auto; }
+    .stat-cell { flex: 1; text-align: center; padding: 14px 16px; border-right: 1px solid var(--border); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell-num { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 3px; }
+    .stat-cell-label { font-size: 11px; font-weight: 700; color: var(--gray); }
+
+    /* ── LAYOUT ── */
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 60px - 54px - 60px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { background: #7f1d1d; border-right:none; padding: 16px 10px; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+    .sb-section { margin-bottom: 22px; }
+    .sb-label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color:#dc2626; padding: 4px 10px 8px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--gray); transition: all .15s; margin-bottom: 2px; }
+    .nav-item:hover { background: var(--bg); color: var(--dark); }
+    .nav-item.active { background: var(--red-light); color: var(--red); font-weight: 800; }
+    .nav-count { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 999px; }
+    .nav-item.active .nav-count { background: var(--red); }
+
+    /* ── MAIN CONTENT ── */
+    .content { padding: 22px 24px 60px; min-width: 0; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 14px; }
+    .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 14px; font-weight: 900; }
+    .card-link { font-size: 12px; font-weight: 800; color: var(--red); }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 14px; }
+    .qa { background: var(--white); border: 1px solid var(--border); border-radius: 13px; padding: 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; transition: all .15s; cursor: pointer; }
+    .qa:hover { border-color: var(--red); background: var(--red-light); }
+    .qa-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .qa-label { font-size: 12px; font-weight: 900; color: var(--dark); }
+    .qa-sub { font-size: 11px; color: var(--gray); font-weight: 700; }
+
+    /* ── EARNINGS CARD ── */
+    .earnings-card { background: var(--dark); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .earnings-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 140px; height: 140px; border-radius: 50%; background: rgba(220,38,38,.1); }
+    .ec-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #6b7280; margin-bottom: 6px; }
+    .ec-amount { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; margin-bottom: 4px; }
+    .ec-sub { font-size: 12px; color: #9ca3af; font-weight: 700; margin-bottom: 16px; }
+    .ec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .ec-stat { background: rgba(255,255,255,.06); border-radius: 10px; padding: 12px; }
+    .ec-stat-num { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 3px; }
+    .ec-stat-label { font-size: 10px; color: #6b7280; font-weight: 700; }
+
+    /* ── LEAD ROW ── */
+    .lead-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; transition: background .15s; }
+    .lead-row:last-child { border-bottom: none; }
+    .lead-row:hover { background: #f9fafb; }
+    .lead-icon { font-size: 22px; flex-shrink: 0; }
+    .lead-info { flex: 1; min-width: 0; }
+    .lead-title { font-size: 13px; font-weight: 900; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .lead-meta { font-size: 11px; color: var(--gray); font-weight: 700; display: flex; gap: 8px; }
+    .lead-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .lead-budget { font-size: 13px; font-weight: 900; color: var(--dark); }
+    .badge-hot { background: var(--red-light); color: #991b1b; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .badge-new { background: var(--blue-light); color: var(--blue); font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .badge-first { background: var(--green-light); color: var(--green); font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .btn-quote { padding: 6px 14px; border-radius: 8px; background: var(--red); color: #fff; border: none; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: background .15s; white-space: nowrap; }
+    .btn-quote:hover { background: var(--red-dark); }
+
+    /* ── QUOTE ROW ── */
+    .quote-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; transition: background .15s; }
+    .quote-row:last-child { border-bottom: none; }
+    .quote-row:hover { background: #f9fafb; }
+    .qr-icon { font-size: 20px; flex-shrink: 0; }
+    .qr-info { flex: 1; min-width: 0; }
+    .qr-title { font-size: 13px; font-weight: 900; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .qr-meta { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .qr-amount { font-size: 13px; font-weight: 900; color: var(--dark); flex-shrink: 0; }
+    .qr-status { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
+    .qs-pending  { background: var(--gold-light); color: var(--gold); }
+    .qs-accepted { background: var(--green-light); color: var(--green); }
+    .qs-viewed   { background: var(--blue-light); color: var(--blue); }
+
+    /* ── SCHEDULE ROW ── */
+    .sched-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; }
+    .sched-row:last-child { border-bottom: none; }
+    .sched-date { width: 44px; height: 44px; border-radius: 11px; background: var(--red-light); display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+    .sched-day { font-size: 16px; font-weight: 900; color: var(--red); line-height: 1; }
+    .sched-mon { font-size: 10px; font-weight: 800; color: var(--red); text-transform: uppercase; }
+    .sched-info { flex: 1; min-width: 0; }
+    .sched-title { font-size: 13px; font-weight: 900; color: var(--dark); margin-bottom: 2px; }
+    .sched-meta { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .sched-time { font-size: 12px; font-weight: 800; color: var(--dark); flex-shrink: 0; }
+
+    /* ── PROFILE PROGRESS ── */
+    .progress-bar { height: 6px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 10px 0 6px; }
+    .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--red), #f87171); transition: width .6s; }
+    .progress-item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: var(--gray); padding: 4px 0; }
+    .progress-item i { flex-shrink: 0; }
+    .progress-item.done { color: var(--green); }
+    .progress-item.todo { color: var(--dark3); }
+
+    /* ── REVIEW ROW ── */
+    .review-row { padding: 12px 18px; border-bottom: 1px solid #f9fafb; }
+    .review-row:last-child { border-bottom: none; }
+    .rr-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+    .rr-name { font-size: 13px; font-weight: 900; color: var(--dark); }
+    .rr-stars { color: #f59e0b; font-size: 13px; letter-spacing: 1px; }
+    .rr-text { font-size: 12px; color: var(--gray); font-weight: 700; line-height: 1.5; }
+    .rr-date { font-size: 11px; color: #9ca3af; font-weight: 700; margin-top: 4px; }
+
+    /* ── ONBOARDING CHECKLIST ── */
+    .ob-card { background: var(--dark); border-radius: 16px; padding: 18px 20px; margin-bottom: 14px; }
+    .ob-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .ob-title { font-size: 14px; font-weight: 900; color: #fff; }
+    .ob-pct { font-size: 13px; font-weight: 900; color: #f87171; }
+    .ob-progress { height: 6px; background: rgba(255,255,255,.1); border-radius: 999px; margin-bottom: 14px; overflow: hidden; }
+    .ob-fill { height: 100%; background: linear-gradient(90deg, var(--red), #f87171); border-radius: 999px; width: 60%; }
+    .ob-items { display: flex; flex-direction: column; gap: 8px; }
+    .ob-item { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; }
+    .ob-dot { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; flex-shrink: 0; }
+    .ob-dot.done { background: var(--green); color: #fff; }
+    .ob-dot.todo { background: rgba(255,255,255,.1); color: #6b7280; }
+    .ob-item.done { color: #9ca3af; }
+    .ob-item.todo { color: #e5e7eb; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .quick-grid { grid-template-columns: repeat(3, 1fr); }
+      .ec-grid { grid-template-columns: repeat(3, 1fr); }
+      .welcome-strip { padding: 20px; }
+    }
+    @media (max-width: 600px) {
+      .quick-grid { grid-template-columns: repeat(3, 1fr); }
+      .stat-cell-num { font-size: 18px; }
+      .ec-amount { font-size: 26px; }
+    }
+  
+    /* dark-sidebar link palette (scoped) */
+    .sidebar .nav-item { color: rgba(255,255,255,.65); }
+    .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+    .sidebar .nav-item.active { background: var(--red); color:#fff; }
+    .sidebar .nav-item.active .nav-count { background:#fff; color:var(--red); }
+    .sidebar .nav-section, .sidebar .nav-label { color: #fca5a5; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="dashboard.html" class="hw-brand">
+    <div class="hw-logo">PP</div>
+    <div class="hw-brand-name"><span>Property</span> Pros</div>
+  </a>
+  <div class="hw-header-right">
+    <a href="notifications.html" class="hw-bell">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div class="hw-bell-dot"></div>
+    </a>
+    <div class="hw-avatar-btn" onclick="toggleHwMenu()">KH</div>
+    <button class="hw-hamburger" id="hw-hamburger" onclick="toggleHwMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- OVERLAY -->
+<div class="hw-overlay" id="hw-overlay" onclick="closeHwMenu()"></div>
+
+<!-- DRAWER -->
+<div class="hw-drawer" id="hw-drawer">
+  <div class="hw-drawer-section">Main</div>
+  <a href="dashboard.html" class="hw-drawer-link active"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+  <a href="leads.html" class="hw-drawer-link"><i data-lucide="zap" size="15"></i> Leads</a>
+  <a href="quick-jobs-pro.html" class="hw-drawer-link"><i data-lucide="bolt" size="15"></i> Quick Jobs</a>
+  <a href="quotes.html" class="hw-drawer-link"><i data-lucide="send" size="15"></i> My Quotes</a>
+  <a href="messages.html" class="hw-drawer-link"><i data-lucide="message-circle" size="15"></i> Messages</a>
+  <a href="schedule.html" class="hw-drawer-link"><i data-lucide="calendar" size="15"></i> Schedule</a>
+  <div class="hw-drawer-divider"></div>
+  <div class="hw-drawer-section">Account</div>
+  <a href="billing.html" class="hw-drawer-link"><i data-lucide="credit-card" size="15"></i> Billing</a>
+  <a href="settings.html" class="hw-drawer-link"><i data-lucide="settings" size="15"></i> Settings</a>
+  <a href="notification-preferences.html" class="hw-drawer-link"><i data-lucide="bell-ring" size="15"></i> Notification Prefs</a>
+  <div class="hw-drawer-divider"></div>
+  <div class="hw-drawer-section">Help</div>
+  <a href="contractor-guide.html" class="hw-drawer-link"><i data-lucide="book" size="15"></i> Contractor Guide</a>
+  <a href="contact.html" class="hw-drawer-link"><i data-lucide="life-buoy" size="15"></i> Support</a>
+  <div class="hw-drawer-footer">
+    <div class="hw-drawer-user">
+      <div class="hw-drawer-avatar">KH</div>
+      <div>
+        <div class="hw-drawer-username">Kevin Hernandez</div>
+        <div class="hw-drawer-role">Pro · Apex Roofing Group</div>
+      </div>
+    </div>
+    <a href="index.html" class="hw-drawer-logout"><i data-lucide="log-out" size="15"></i> Log out</a>
+  </div>
+</div>
+
+<!-- ── WELCOME STRIP ── -->
+<div class="welcome-strip">
+  <div class="welcome-left">
+    <div class="welcome-eyebrow">Welcome back</div>
+    <div class="welcome-name">Kevin Hernandez</div>
+    <div class="welcome-sub">
+      Apex Roofing Group · Cranston, RI
+      <span class="verified-badge"><i data-lucide="shield-check" style="width:10px;height:10px"></i> Licensed & Insured</span>
+    </div>
+  </div>
+  <div class="welcome-actions">
+    <a href="leads.html" class="w-btn w-btn-red"><i data-lucide="zap" style="width:15px;height:15px"></i> Browse leads</a>
+    <a href="quotes.html" class="w-btn w-btn-ghost"><i data-lucide="send" style="width:15px;height:15px"></i> My quotes</a>
+  </div>
+</div>
+
+<!-- ── STATS STRIP ── -->
+<div class="stats-strip">
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--red)">4</div>
+    <div class="stat-cell-label">New leads</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:#ea580c">2</div>
+    <div class="stat-cell-label">Quick Job requests</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--gold)">7</div>
+    <div class="stat-cell-label">Quotes pending</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--green)">2</div>
+    <div class="stat-cell-label">Jobs this week</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num">3</div>
+    <div class="stat-cell-label">New messages</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--gold)">⭐ 4.9</div>
+    <div class="stat-cell-label">Your rating</div>
+  </div>
+</div>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Main</div>
+      <a href="dashboard.html" class="nav-item active"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+      <a href="leads.html" class="nav-item"><i data-lucide="zap" size="15"></i> Leads <span class="nav-count">4</span></a>
+      <a href="quick-jobs-pro.html" class="nav-item"><i data-lucide="bolt" size="15"></i> Quick Jobs <span class="nav-count" style="background:#ea580c">2</span></a>
+      <a href="quotes.html" class="nav-item"><i data-lucide="send" size="15"></i> My quotes <span class="nav-count">7</span></a>
+      <a href="messages.html" class="nav-item"><i data-lucide="message-circle" size="15"></i> Messages <span class="nav-count">3</span></a>
+      <a href="schedule.html" class="nav-item"><i data-lucide="calendar" size="15"></i> Schedule</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Business</div>
+      <a href="billing.html" class="nav-item"><i data-lucide="credit-card" size="15"></i> Billing</a>
+      <a href="settings.html" class="nav-item"><i data-lucide="settings" size="15"></i> Settings</a>
+      <a href="notification-preferences.html" class="nav-item"><i data-lucide="bell-ring" size="15"></i> Notifications</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Help</div>
+      <a href="contractor-guide.html" class="nav-item"><i data-lucide="book" size="15"></i> Contractor guide</a>
+      <a href="contact.html" class="nav-item"><i data-lucide="life-buoy" size="15"></i> Support</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- ONBOARDING CHECKLIST (dismissible) -->
+    <div class="ob-card" id="ob-card">
+      <div class="ob-header">
+        <div class="ob-title">Complete your profile — 60%</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="ob-pct">3 of 5 done</span>
+          <button onclick="document.getElementById('ob-card').style.display='none'" style="background:none;border:none;color:#6b7280;cursor:pointer;font-size:18px;line-height:1">×</button>
+        </div>
+      </div>
+      <div class="ob-progress"><div class="ob-fill"></div></div>
+      <div class="ob-items">
+        <div class="ob-item done"><div class="ob-dot done">✓</div> Profile created and email verified</div>
+        <div class="ob-item done"><div class="ob-dot done">✓</div> Licensed & Insured badge earned</div>
+        <div class="ob-item done"><div class="ob-dot done">✓</div> Service area set — Cranston, RI + 25 mi radius</div>
+        <div class="ob-item todo"><div class="ob-dot todo">4</div> <a href="settings.html" style="color:#e5e7eb;font-weight:800">Upload 5+ portfolio photos</a> — get 3× more quote views</div>
+        <div class="ob-item todo"><div class="ob-dot todo">5</div> <a href="leads.html" style="color:#e5e7eb;font-weight:800">Send your first quote</a> — start winning jobs</div>
+      </div>
+    </div>
+
+    <!-- EARNINGS CARD -->
+    <div class="earnings-card">
+      <div class="ec-label">This month — May 2026</div>
+      <div class="ec-amount">$8,450</div>
+      <div class="ec-sub">↑ 23% vs last month ($6,870)</div>
+      <div class="ec-grid">
+        <div class="ec-stat">
+          <div class="ec-stat-num">$31,200</div>
+          <div class="ec-stat-label">Year to date</div>
+        </div>
+        <div class="ec-stat">
+          <div class="ec-stat-num">12</div>
+          <div class="ec-stat-label">Jobs completed</div>
+        </div>
+        <div class="ec-stat">
+          <div class="ec-stat-num">38%</div>
+          <div class="ec-stat-label">Quote win rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-grid">
+      <a href="leads.html" class="qa">
+        <div class="qa-icon" style="background:#fef2f2"><i data-lucide="zap" style="width:20px;height:20px;color:var(--red)"></i></div>
+        <div class="qa-label">Browse Leads</div>
+        <div class="qa-sub">4 new today</div>
+      </a>
+      <a href="quotes.html" class="qa">
+        <div class="qa-icon" style="background:#eff6ff"><i data-lucide="send" style="width:20px;height:20px;color:var(--blue)"></i></div>
+        <div class="qa-label">My Quotes</div>
+        <div class="qa-sub">7 pending reply</div>
+      </a>
+      <a href="schedule.html" class="qa">
+        <div class="qa-icon" style="background:var(--green-light)"><i data-lucide="calendar" style="width:20px;height:20px;color:var(--green)"></i></div>
+        <div class="qa-label">Schedule</div>
+        <div class="qa-sub">2 jobs this week</div>
+      </a>
+      <a href="quick-jobs-pro.html" class="qa">
+        <div class="qa-icon" style="background:#fff7ed"><i data-lucide="bolt" style="width:20px;height:20px;color:#ea580c"></i></div>
+        <div class="qa-label">Quick Jobs</div>
+        <div class="qa-sub">2 requests</div>
+      </a>
+      <a href="messages.html" class="qa">
+        <div class="qa-icon" style="background:var(--gold-light)"><i data-lucide="message-circle" style="width:20px;height:20px;color:var(--gold)"></i></div>
+        <div class="qa-label">Messages</div>
+        <div class="qa-sub">3 unread</div>
+      </a>
+    </div>
+
+
+    <!-- QUICK JOBS CARD -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">⚡ Quick Jobs near you</div>
+        <a href="quick-jobs-pro.html" class="card-link">View all 6 →</a>
+      </div>
+
+      <!-- Post 1 — Junk removal -->
+      <div class="lead-row" style="align-items:flex-start;gap:12px">
+        <div style="width:52px;height:52px;border-radius:9px;overflow:hidden;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&q=80" style="width:100%;height:100%;object-fit:cover">
+        </div>
+        <div class="lead-info" style="flex:1;min-width:0">
+          <div class="lead-title">Full garage cleanout — furniture &amp; boxes</div>
+          <div class="lead-meta">
+            <span>📍 Cranston, RI · 2.1 mi</span>
+            <span>🕐 20 min ago</span>
+            <span>📸 3 photos</span>
+          </div>
+          <div style="margin-top:4px;font-size:11px;font-weight:800;color:#ea580c">🔥 Be first to respond · 0 prices sent</div>
+        </div>
+        <a href="quick-jobs-pro.html">
+          <button class="btn-quote" style="background:var(--red);flex-shrink:0;white-space:nowrap">Send price</button>
+        </a>
+      </div>
+
+      <!-- Post 2 — Cleaning -->
+      <div class="lead-row" style="align-items:flex-start;gap:12px">
+        <div style="width:52px;height:52px;border-radius:9px;overflow:hidden;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1527515637462-cff94edd1b27?w=120&q=80" style="width:100%;height:100%;object-fit:cover">
+        </div>
+        <div class="lead-info" style="flex:1;min-width:0">
+          <div class="lead-title">Deep clean — 3 bed 2 bath, move-out</div>
+          <div class="lead-meta">
+            <span>📍 Warwick, RI · 4.8 mi</span>
+            <span>🕐 1 hr ago</span>
+            <span>📸 2 photos</span>
+          </div>
+          <div style="margin-top:4px;font-size:11px;font-weight:800;color:#2563eb">💬 1 pro already responded</div>
+        </div>
+        <a href="quick-jobs-pro.html">
+          <button class="btn-quote" style="background:var(--red);flex-shrink:0;white-space:nowrap">Send price</button>
+        </a>
+      </div>
+
+      <!-- Post 3 — Roofing -->
+      <div class="lead-row" style="align-items:flex-start;gap:12px">
+        <div style="width:52px;height:52px;border-radius:9px;overflow:hidden;flex-shrink:0">
+          <img src="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=120&q=80" style="width:100%;height:100%;object-fit:cover">
+        </div>
+        <div class="lead-info" style="flex:1;min-width:0">
+          <div class="lead-title">Shingles lifting near chimney — possible leak</div>
+          <div class="lead-meta">
+            <span>📍 Providence, RI · 6.4 mi</span>
+            <span>🕐 3 hrs ago</span>
+            <span>📸 1 photo</span>
+          </div>
+          <div style="margin-top:4px;font-size:11px;font-weight:800;color:#6b7280">💬 2 pros responded</div>
+        </div>
+        <a href="quick-jobs-pro.html">
+          <button class="btn-quote" style="background:var(--red);flex-shrink:0;white-space:nowrap">Send price</button>
+        </a>
+      </div>
+
+      <!-- Stats row -->
+      <div style="display:flex;gap:0;border-top:1px solid var(--border);background:var(--bg)">
+        <div style="flex:1;text-align:center;padding:12px 8px;border-right:1px solid var(--border)">
+          <div style="font-size:16px;font-weight:900;color:var(--red)">6</div>
+          <div style="font-size:10px;font-weight:700;color:var(--gray)">New posts near you</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:12px 8px;border-right:1px solid var(--border)">
+          <div style="font-size:16px;font-weight:900;color:var(--green)">$1,240</div>
+          <div style="font-size:10px;font-weight:700;color:var(--gray)">QJ earnings this month</div>
+        </div>
+        <div style="flex:1;text-align:center;padding:12px 8px">
+          <div style="font-size:16px;font-weight:900;color:var(--green)">67%</div>
+          <div style="font-size:10px;font-weight:700;color:var(--gray)">Win rate</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ── PENDING REVIEWS ── -->
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header">
+        <div class="card-title">⭐ Rate your client</div>
+        <span style="font-size:11px;font-weight:900;padding:2px 9px;border-radius:999px;background:#fef3c7;color:#b45309;border:1px solid #fde68a">1 pending</span>
+      </div>
+      <div style="padding:16px 18px">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:10px" id="pro-review-prompt-1">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+            <div style="width:42px;height:42px;border-radius:50%;background:#7c3aed;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0">MS</div>
+            <div>
+              <div style="font-size:14px;font-weight:900;color:var(--dark)">Maria Santos</div>
+              <div style="font-size:12px;font-weight:700;color:var(--gray)">Full roof replacement · Cranston, RI · Completed Apr 22</div>
+            </div>
+            <div style="margin-left:auto;font-size:12px;font-weight:700;color:var(--gray)">7 days left</div>
+          </div>
+          <!-- Star selector -->
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;font-weight:800;color:var(--dark);margin-bottom:6px">How was Maria as a client?</div>
+            <div style="display:flex;gap:6px" id="pro-stars-1">
+              <span class="pro-star" onclick="setProStars(1,1)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+              <span class="pro-star" onclick="setProStars(1,2)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+              <span class="pro-star" onclick="setProStars(1,3)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+              <span class="pro-star" onclick="setProStars(1,4)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+              <span class="pro-star" onclick="setProStars(1,5)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+            </div>
+          </div>
+          <textarea id="pro-comment-1" placeholder="Was she easy to communicate with? Did she pay on time? Any issues with access or scope changes?" style="width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:var(--font);min-height:80px;resize:vertical;margin-bottom:10px;background:var(--white);color:var(--dark)"></textarea>
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;font-weight:800;color:var(--dark);margin-bottom:6px">Would you work with this homeowner again?</div>
+            <div style="display:flex;gap:8px">
+              <button class="pro-yn-btn" onclick="setProYN(this, 'yes')" style="padding:8px 20px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);background:var(--white);color:var(--dark);transition:all .15s">👍 Yes</button>
+              <button class="pro-yn-btn" onclick="setProYN(this, 'no')" style="padding:8px 20px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);background:var(--white);color:var(--dark);transition:all .15s">👎 No</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="submitProReview(1)" style="padding:9px 20px;background:var(--red);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font)">Submit review</button>
+            <button onclick="skipProReview(1)" style="padding:9px 16px;background:var(--white);color:var(--gray);border:1px solid var(--border);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font)">Skip for now</button>
+          </div>
+        </div>
+        <div style="font-size:12px;font-weight:700;color:#9ca3af;display:flex;align-items:center;gap:5px">
+          <i data-lucide="lock" style="width:12px;height:12px"></i>
+          Client reviews are private — only visible to other pros when reviewing a lead or quote.
+        </div>
+      </div>
+    </div>
+
+    <!-- HOT LEADS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🔥 Hot leads near you</div>
+        <a href="leads.html" class="card-link">View all leads →</a>
+      </div>
+      <div class="lead-row">
+        <div class="lead-icon">🏠</div>
+        <div class="lead-info">
+          <div class="lead-title">Full roof replacement — asphalt shingles</div>
+          <div class="lead-meta"><span>📍 Cranston, RI</span><span>🕐 18 min ago</span><span>2 quotes sent</span></div>
+        </div>
+        <div class="lead-right">
+          <span class="badge-hot">🔥 Hot</span>
+          <div class="lead-budget">$4k–$7k</div>
+          <a href="leads.html"><button class="btn-quote">Quote</button></a>
+        </div>
+      </div>
+      <div class="lead-row">
+        <div class="lead-icon">🚛</div>
+        <div class="lead-info">
+          <div class="lead-title">Full basement cleanout — estate</div>
+          <div class="lead-meta"><span>📍 Warwick, RI</span><span>🕐 3 hrs ago</span><span>0 quotes — be first!</span></div>
+        </div>
+        <div class="lead-right">
+          <span class="badge-first">Be first</span>
+          <div class="lead-budget">$400–$800</div>
+          <a href="leads.html"><button class="btn-quote">Quote</button></a>
+        </div>
+      </div>
+      <div class="lead-row">
+        <div class="lead-icon">🧱</div>
+        <div class="lead-info">
+          <div class="lead-title">Stone retaining wall — backyard slope</div>
+          <div class="lead-meta"><span>📍 Pawtucket, RI</span><span>🕐 5 hrs ago</span><span>1 quote sent</span></div>
+        </div>
+        <div class="lead-right">
+          <span class="badge-new">New</span>
+          <div class="lead-budget">$2.5k–$5k</div>
+          <a href="leads.html"><button class="btn-quote">Quote</button></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUOTES NEEDING ATTENTION -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Quotes needing attention</div>
+        <a href="quotes.html" class="card-link">View all →</a>
+      </div>
+      <div class="quote-row">
+        <div class="qr-icon">🏠</div>
+        <div class="qr-info">
+          <div class="qr-title">Full roof replacement — Maria Santos</div>
+          <div class="qr-meta">Sent Apr 18 · Viewed · Awaiting reply</div>
+        </div>
+        <div class="qr-amount">$4,200</div>
+        <span class="qr-status qs-viewed">Viewed</span>
+        <a href="messages.html" style="font-size:12px;font-weight:800;color:var(--red)">Follow up →</a>
+      </div>
+      <div class="quote-row">
+        <div class="qr-icon">🛣️</div>
+        <div class="qr-info">
+          <div class="qr-title">Driveway resurfacing — James Whitfield</div>
+          <div class="qr-meta">Sent Apr 18 · Not yet viewed</div>
+        </div>
+        <div class="qr-amount">$1,850</div>
+        <span class="qr-status qs-pending">Pending</span>
+        <a href="messages.html" style="font-size:12px;font-weight:800;color:var(--gray)">Message →</a>
+      </div>
+      <div class="quote-row">
+        <div class="qr-icon">🏡</div>
+        <div class="qr-info">
+          <div class="qr-title">Interior painting — Tanya Brooks</div>
+          <div class="qr-meta">Accepted Apr 18 · Job starts Apr 22</div>
+        </div>
+        <div class="qr-amount">$2,800</div>
+        <span class="qr-status qs-accepted">✓ Accepted</span>
+        <a href="schedule.html" style="font-size:12px;font-weight:800;color:var(--green)">Schedule →</a>
+      </div>
+    </div>
+
+    <!-- UPCOMING JOBS + RECENT REVIEWS side by side -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <!-- UPCOMING JOBS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Upcoming jobs</div>
+          <a href="schedule.html" class="card-link">Full schedule →</a>
+        </div>
+        <div class="sched-row">
+          <div class="sched-date"><div class="sched-day">22</div><div class="sched-mon">Apr</div></div>
+          <div class="sched-info">
+            <div class="sched-title">Roof replacement — Maria Santos</div>
+            <div class="sched-meta">📍 Cranston, RI · $4,200</div>
+          </div>
+          <div class="sched-time">8:00 AM</div>
+        </div>
+        <div class="sched-row">
+          <div class="sched-date"><div class="sched-day">23</div><div class="sched-mon">Apr</div></div>
+          <div class="sched-info">
+            <div class="sched-title">Deck staining — Kevin Hart</div>
+            <div class="sched-meta">📍 E. Providence, RI · $850</div>
+          </div>
+          <div class="sched-time">9:30 AM</div>
+        </div>
+        <div class="sched-row">
+          <div class="sched-date" style="background:var(--gold-light)"><div class="sched-day" style="color:var(--gold)">28</div><div class="sched-mon" style="color:var(--gold)">Apr</div></div>
+          <div class="sched-info">
+            <div class="sched-title">Interior painting — Tanya Brooks</div>
+            <div class="sched-meta">📍 Warwick, RI · $2,800</div>
+          </div>
+          <div class="sched-time">8:00 AM</div>
+        </div>
+      </div>
+
+      <!-- RECENT REVIEWS -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Recent reviews</div>
+          <a href="pro-profile.html" class="card-link">View profile →</a>
+        </div>
+        <div class="review-row">
+          <div class="rr-top">
+            <div class="rr-name">James Whitfield</div>
+            <div class="rr-stars">★★★★★</div>
+          </div>
+          <div class="rr-text">"Kevin showed up on time, did clean work, and the driveway looks brand new. Would hire again."</div>
+          <div class="rr-date">Apr 17, 2026</div>
+        </div>
+        <div class="review-row">
+          <div class="rr-top">
+            <div class="rr-name">Linda Chen</div>
+            <div class="rr-stars">★★★★★</div>
+          </div>
+          <div class="rr-text">"Quick, professional, and fair price. Gutters are completely clear now."</div>
+          <div class="rr-date">Apr 12, 2026</div>
+        </div>
+        <div class="review-row">
+          <div class="rr-top">
+            <div class="rr-name">Rosa Mendez</div>
+            <div class="rr-stars">★★★★★</div>
+          </div>
+          <div class="rr-text">"The patio looks incredible. Exceeded my expectations — highly recommend."</div>
+          <div class="rr-date">Jan 2026</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PROFILE COMPLETION -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Boost your profile</div>
+        <a href="settings.html" class="card-link">Edit profile →</a>
+      </div>
+      <div style="padding:16px 18px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:13px;font-weight:800;color:var(--dark)">Profile strength</span>
+          <span style="font-size:13px;font-weight:900;color:var(--red)">60%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:8px">
+          <div class="progress-item done"><i data-lucide="check-circle" style="width:14px;height:14px;color:var(--green)"></i> Bio written</div>
+          <div class="progress-item done"><i data-lucide="check-circle" style="width:14px;height:14px;color:var(--green)"></i> License verified</div>
+          <div class="progress-item done"><i data-lucide="check-circle" style="width:14px;height:14px;color:var(--green)"></i> Service area set</div>
+          <div class="progress-item todo"><i data-lucide="circle" style="width:14px;height:14px;color:var(--border)"></i> <a href="settings.html" style="color:var(--dark);font-weight:800">Add portfolio photos</a></div>
+          <div class="progress-item todo"><i data-lucide="circle" style="width:14px;height:14px;color:var(--border)"></i> <a href="settings.html" style="color:var(--dark);font-weight:800">List all services</a></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 13px;background:#fef3c7;border-radius:10px;font-size:12px;font-weight:700;color:#92400e;border:1px solid #fde68a">
+          💡 Profiles with 5+ photos get <strong>3× more quote acceptances</strong>. Upload yours in Settings.
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleHwMenu() {
+  const drawer = document.getElementById('hw-drawer');
+  const burger = document.getElementById('hw-hamburger');
+  const overlay = document.getElementById('hw-overlay');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  burger.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').classList.remove('open');
+  document.getElementById('hw-hamburger').classList.remove('open');
+  document.getElementById('hw-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.addEventListener('resize', () => { if (window.innerWidth > 1100) closeHwMenu(); });
+document.querySelectorAll('.hw-drawer-link, .hw-drawer-logout').forEach(el => {
+  el.addEventListener('click', closeHwMenu);
+});
+</script>
+<script>lucide.createIcons();</script>
+
+  <script>
+  let proStarRatings = {};
+  let proYNChoices = {};
+
+  function setProStars(reviewId, rating) {
+    proStarRatings[reviewId] = rating;
+    const stars = document.querySelectorAll('#pro-stars-' + reviewId + ' .pro-star');
+    stars.forEach((s, i) => {
+      s.style.filter = i < rating ? 'grayscale(0)' : 'grayscale(1)';
+      s.style.transform = i < rating ? 'scale(1.1)' : 'scale(1)';
+    });
+  }
+
+  function setProYN(btn, choice) {
+    proYNChoices[1] = choice;
+    document.querySelectorAll('.pro-yn-btn').forEach(b => {
+      b.style.background = 'var(--white)';
+      b.style.borderColor = 'var(--border)';
+      b.style.color = 'var(--dark)';
+    });
+    btn.style.background = choice === 'yes' ? '#f0fdf4' : '#fef2f2';
+    btn.style.borderColor = choice === 'yes' ? '#86efac' : '#fecaca';
+    btn.style.color = choice === 'yes' ? '#16a34a' : '#dc2626';
+  }
+
+  function submitProReview(reviewId) {
+    const rating = proStarRatings[reviewId];
+    if (!rating) { alert('Please select a star rating before submitting.'); return; }
+    const prompt = document.getElementById('pro-review-prompt-' + reviewId);
+    prompt.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <div style="width:36px;height:36px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:18px">✓</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#16a34a">Client review submitted!</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray)">Visible to other pros when they view this homeowner's leads. Hidden from the homeowner.</div>
+        </div>
+      </div>`;
+  }
+
+  function skipProReview(reviewId) {
+    const prompt = document.getElementById('pro-review-prompt-' + reviewId);
+    prompt.style.opacity = '0';
+    prompt.style.transition = 'opacity .3s';
+    setTimeout(() => prompt.remove(), 300);
+  }
+  </script>
+</body>
+</html>

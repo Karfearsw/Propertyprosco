@@ -5,20 +5,59 @@ import type { RealtorClient } from '@prisma/client'
 
 const CATEGORIES = ['Roofing','Plumbing','Electrical','Painting','Landscaping','Remodeling','HVAC','Windows','Flooring','Masonry','Driveways','Fencing','Deck / Patio','Handyman','Gutters','Other']
 
-export default function RealtorPostProjectForm({ clients }: { clients: RealtorClient[] }) {
+export default function RealtorPostProjectForm({
+  clients,
+  initialClientId,
+}: {
+  clients: RealtorClient[]
+  initialClientId?: string
+}) {
   const router = useRouter()
-  const [form, setForm] = useState({ title:'', description:'', category:'', budget:'', zipCode:'', address:'', urgent:false })
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    category: '',
+    budget: '',
+    zipCode: '',
+    address: '',
+    urgent: false,
+    realtorClientId: initialClientId && clients.some((client) => client.id === initialClientId) ? initialClientId : '',
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState('')
+  const selectedClient = clients.find((client) => client.id === form.realtorClientId)
 
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => setForm(f=>({...f,[k]:e.target.value}))
 
   async function submit(e: React.FormEvent) {
-    e.preventDefault(); setError(''); setLoading(true)
-    const res  = await fetch('/api/projects', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(form) })
-    const json = await res.json()
-    if (!res.ok) { setError(json.error ?? 'Failed'); setLoading(false); return }
-    router.push('/realtor/dashboard')
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    try {
+      const res = await fetch('/api/projects', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(form),
+      })
+      const json = await res.json()
+
+      if (!res.ok) {
+        setError(json.error ?? 'Failed')
+        return
+      }
+
+      if (json.realtorClientId) {
+        router.push(`/realtor/clients?clientId=${json.realtorClientId}`)
+        return
+      }
+
+      router.push('/realtor/dashboard')
+    } catch {
+      setError('Failed to create project')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -28,10 +67,15 @@ export default function RealtorPostProjectForm({ clients }: { clients: RealtorCl
         {clients.length > 0 && (
           <div>
             <label className="block text-[11px] font-black uppercase tracking-[0.8px] text-pp-dark-2 mb-1.5">For client (optional)</label>
-            <select className="w-full px-3.5 py-3 border border-pp-border rounded-xl text-[14px] outline-none focus:border-pp-gold bg-white">
+            <select value={form.realtorClientId} onChange={set('realtorClientId')} className="w-full px-3.5 py-3 border border-pp-border rounded-xl text-[14px] outline-none focus:border-pp-gold bg-white">
               <option value="">Posting for myself / general</option>
               {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
+            <p className="mt-2 text-[12px] font-bold text-pp-gray">
+              {selectedClient
+                ? `This project will be linked to ${selectedClient.name} in your Realtor workspace.`
+                : 'Select a saved client to keep project follow-up tied to that record.'}
+            </p>
           </div>
         )}
         <div><label className="block text-[11px] font-black uppercase tracking-[0.8px] text-pp-dark-2 mb-1.5">Project title *</label><input value={form.title} onChange={set('title')} required placeholder="Replace roof shingles" className="w-full px-3.5 py-3 border border-pp-border rounded-xl text-[14px] outline-none focus:border-pp-gold"/></div>

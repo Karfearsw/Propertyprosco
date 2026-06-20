@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog & Resources — Property Pros</title>
+  <meta name="description" content="Home improvement guides, contractor tips, and cost estimates for Rhode Island homeowners. Real advice from Property Pros." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--red:#dc2626;--red-dark:#b91c1c;--dark:#111827;--dark2:#1f2937;--gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--green:#16a34a;--font:'Manrope',sans-serif;--display:'Playfair Display',serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--dark)}
+    a{text-decoration:none;color:inherit}
+    header{background:var(--dark);padding:0 48px;height:66px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+    .brand-name{font-size:18px;font-weight:900;color:#fff}.brand-name span{color:#f87171}
+    .nav-links{display:flex;gap:24px}.nav-link{font-size:13px;font-weight:700;color:#9ca3af;transition:color .15s}.nav-link:hover,.nav-link.active{color:#fff}
+    .hdr-btns{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+    .btn-ghost{border-color:rgba(255,255,255,.2);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.08)}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark)}
+    .hero{background:var(--dark);padding:52px 48px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,38,38,.13) 0%,transparent 60%)}
+    .hero-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:14px}
+    .hero h1{font-family:var(--display);font-size:42px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:12px}
+    .hero-sub{font-size:15px;color:#9ca3af;line-height:1.7;font-weight:700}
+    .main{max-width:1100px;margin:0 auto;padding:40px 48px 80px;display:grid;grid-template-columns:1fr 300px;gap:32px}
+    /* FEATURED */
+    .featured-post{background:var(--white);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;display:grid;grid-template-columns:1fr 1fr}
+    .feat-img{background:linear-gradient(135deg,#111827,#1f2937);display:flex;align-items:center;justify-content:center;font-size:80px;min-height:260px}
+    .feat-body{padding:28px}
+    .feat-cat{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin-bottom:10px}
+    .feat-title{font-family:var(--display);font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:10px;color:var(--dark)}
+    .feat-title:hover{color:var(--red)}
+    .feat-desc{font-size:13px;color:var(--gray);line-height:1.7;font-weight:700;margin-bottom:16px}
+    .feat-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--gray);font-weight:700}
+    .feat-read{font-size:13px;font-weight:800;color:var(--red);margin-top:14px;display:inline-flex;align-items:center;gap:5px}
+    /* POSTS GRID */
+    .posts-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .post-card{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .2s}
+    .post-card:hover{border-color:#d1d5db;box-shadow:0 6px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
+    .post-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:48px}
+    .post-body{padding:16px}
+    .post-cat{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin-bottom:7px}
+    .post-title{font-size:14px;font-weight:900;line-height:1.35;margin-bottom:6px;color:var(--dark)}
+    .post-title:hover{color:var(--red)}
+    .post-desc{font-size:12px;color:var(--gray);line-height:1.6;font-weight:600;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .post-meta{font-size:11px;color:var(--gray);font-weight:700;display:flex;align-items:center;gap:8px}
+    /* SIDEBAR */
+    .sidebar{}
+    .scard{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px}
+    .scard-title{font-size:13px;font-weight:900;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+    .cat-list{display:flex;flex-direction:column;gap:8px}
+    .cat-item{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:700;color:var(--dark2);padding:4px 0;cursor:pointer}
+    .cat-item:hover{color:var(--red)}
+    .cat-count{font-size:11px;font-weight:800;color:var(--gray)}
+    .top-read{display:flex;flex-direction:column;gap:12px}
+    .tr-item{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+    .tr-num{width:24px;height:24px;border-radius:7px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--gray);flex-shrink:0}
+    .tr-title{font-size:12px;font-weight:800;line-height:1.4;color:var(--dark)}
+    .tr-title:hover{color:var(--red)}
+    .sub-form{display:flex;flex-direction:column;gap:10px}
+    .sub-input{padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:var(--font);color:var(--dark)}
+    .sub-input:focus{outline:none;border-color:var(--red)}
+    .sub-btn{padding:11px;border-radius:9px;background:var(--red);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:background .15s}
+    .sub-btn:hover{background:var(--red-dark)}
+    .cta-card{background:var(--dark);border-radius:14px;padding:20px;text-align:center}
+    .cta-card h3{font-size:15px;font-weight:900;color:#fff;margin-bottom:6px}
+    .cta-card p{font-size:12px;color:#9ca3af;font-weight:700;margin-bottom:14px}
+    .cta-card a{display:block;padding:10px;background:var(--red);color:#fff;border-radius:9px;font-size:13px;font-weight:800;transition:background .15s}
+    .cta-card a:hover{background:var(--red-dark)}
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--white);border-radius:20px;max-width:680px;width:100%;padding:36px;position:relative}
+    .modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center}
+    .modal-cat{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--red);margin-bottom:10px}
+    .modal-title{font-family:var(--display);font-size:28px;font-weight:700;letter-spacing:-0.8px;line-height:1.15;margin-bottom:12px}
+    .modal-meta{font-size:12px;color:var(--gray);font-weight:700;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .modal-body{font-size:14px;color:var(--dark2);line-height:1.8;font-weight:600}
+    .modal-body h3{font-size:16px;font-weight:900;margin:20px 0 8px}
+    .modal-body p{margin-bottom:12px}
+    .modal-body ul{padding-left:20px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+    .modal-body li{color:var(--dark2)}
+    .modal-cta{margin-top:24px;padding:14px;background:var(--red);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font);width:100%;transition:background .15s}
+    .modal-cta:hover{background:var(--red-dark)}
+    footer{background:var(--dark);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fl{display:flex;gap:18px;flex-wrap:wrap}.fl a{font-size:13px;font-weight:700;color:#4b5563;transition:color .15s}.fl a:hover{color:#fff}
+    .fc{font-size:12px;color:#374151}
+    @media(max-width:900px){.main{grid-template-columns:1fr;padding:24px}.featured-post{grid-template-columns:1fr}.feat-img{min-height:160px}.posts-grid{grid-template-columns:1fr}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}.hero{padding:36px 18px}.hero h1{font-size:30px}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="brand"><div class="logo">PP</div><div class="brand-name"><span>Property</span> Pros</div></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="find-a-pro.html" class="nav-link">Find a Pro</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="pricing.html" class="nav-link">Pricing</a>
+    <a href="blog.html" class="nav-link active">Blog</a>
+  </div>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="post-project.html" class="btn btn-red">Post a project</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Resources & Blog</div>
+    <h1>Home improvement guides for Rhode Island homeowners</h1>
+    <p class="hero-sub">Real cost estimates, hiring advice, and project guides — written for RI homeowners.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div>
+    <!-- FEATURED -->
+    <div class="featured-post">
+      <div class="feat-img">🛣️</div>
+      <div class="feat-body">
+        <div class="feat-cat">Cost Guide</div>
+        <div class="feat-title" style="cursor:pointer" onclick="openModal('driveway')">How Much Does a New Driveway Cost in Rhode Island? (2026 Guide)</div>
+        <div class="feat-desc">Asphalt, concrete, or pavers — we break down the real costs for RI homeowners with local contractor data, what affects your price, and how to avoid overpaying.</div>
+        <div class="feat-meta">
+          <i data-lucide="clock" size="13"></i> 7 min read
+          <span>·</span> Updated May 2026
+          <span>·</span> Cranston, RI
+        </div>
+        <div class="feat-read" onclick="openModal('driveway')" style="cursor:pointer">Read the full guide <i data-lucide="arrow-right" size="14"></i></div>
+      </div>
+    </div>
+
+    <!-- POSTS GRID -->
+    <div class="posts-grid">
+      <div class="post-card" onclick="openModal('roofer')">
+        <div class="post-img" style="background:linear-gradient(135deg,#1e3a5f,#2563eb)">🏠</div>
+        <div class="post-body">
+          <div class="post-cat">Hiring Guide</div>
+          <div class="post-title">How to Find a Trustworthy Roofer in RI (And Avoid the Scams)</div>
+          <div class="post-desc">Storm chasers, unlicensed subs, and too-good-to-be-true prices — here's how to protect yourself and hire a roofer you can trust.</div>
+          <div class="post-meta"><i data-lucide="clock" size="12"></i> 6 min read · April 2026</div>
+        </div>
+      </div>
+      <div class="post-card" onclick="openModal('roofcost')">
+        <div class="post-img" style="background:linear-gradient(135deg,#7c2d12,#ea580c)">💰</div>
+        <div class="post-body">
+          <div class="post-cat">Cost Guide</div>
+          <div class="post-title">Roof Replacement Cost in Rhode Island: What to Expect in 2026</div>
+          <div class="post-desc">The average RI homeowner pays $9,000–$16,000 for a full roof replacement. Here's what drives the price and how to get a fair quote.</div>
+          <div class="post-meta"><i data-lucide="clock" size="12"></i> 5 min read · March 2026</div>
+        </div>
+      </div>
+      <div class="post-card" onclick="openModal('inspection')">
+        <div class="post-img" style="background:linear-gradient(135deg,#14532d,#16a34a)">📋</div>
+        <div class="post-body">
+          <div class="post-cat">Buying & Selling</div>
+          <div class="post-title">How to Handle Inspection Repair Requests Without Losing the Deal</div>
+          <div class="post-desc">A home inspection report doesn't have to kill your deal. Here's how buyers, sellers, and realtors navigate repair negotiations effectively.</div>
+          <div class="post-meta"><i data-lucide="clock" size="12"></i> 8 min read · February 2026</div>
+        </div>
+      </div>
+      <div class="post-card" onclick="openModal('spring')">
+        <div class="post-img" style="background:linear-gradient(135deg,#365314,#65a30d)">🌿</div>
+        <div class="post-body">
+          <div class="post-cat">Maintenance</div>
+          <div class="post-title">Spring Home Maintenance Checklist for Rhode Island Homeowners</div>
+          <div class="post-desc">After a RI winter, your home needs attention. This 12-point checklist covers everything from gutters to grading before summer hits.</div>
+          <div class="post-meta"><i data-lucide="clock" size="12"></i> 4 min read · January 2026</div>
+        </div>
+      </div>
+      <div class="post-card" onclick="openModal('quotes')">
+        <div class="post-img" style="background:linear-gradient(135deg,#4c1d95,#7c3aed)">📊</div>
+        <div class="post-body">
+          <div class="post-cat">Hiring Guide</div>
+          <div class="post-title">How to Compare Contractor Quotes the Right Way (It's Not Just Price)</div>
+          <div class="post-desc">Getting 3 quotes is good advice — but comparing them correctly is what actually saves you money and headaches. Here's the full framework.</div>
+          <div class="post-meta"><i data-lucide="clock" size="12"></i> 5 min read · December 2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="scard">
+      <div class="scard-title">Browse by Category</div>
+      <div class="cat-list">
+        <div class="cat-item">Cost Guides <span class="cat-count">8 articles</span></div>
+        <div class="cat-item">Hiring Guides <span class="cat-count">6 articles</span></div>
+        <div class="cat-item">Maintenance Tips <span class="cat-count">5 articles</span></div>
+        <div class="cat-item">Buying & Selling <span class="cat-count">4 articles</span></div>
+        <div class="cat-item">Contractor Tips <span class="cat-count">7 articles</span></div>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-title">Most Read This Month</div>
+      <div class="top-read">
+        <div class="tr-item" onclick="openModal('driveway')"><div class="tr-num">1</div><div class="tr-title">Driveway Cost in RI: 2026 Guide</div></div>
+        <div class="tr-item" onclick="openModal('roofcost')"><div class="tr-num">2</div><div class="tr-title">Roof Replacement Cost in Rhode Island</div></div>
+        <div class="tr-item" onclick="openModal('roofer')"><div class="tr-num">3</div><div class="tr-title">How to Find a Trustworthy Roofer in RI</div></div>
+        <div class="tr-item" onclick="openModal('quotes')"><div class="tr-num">4</div><div class="tr-title">Comparing Contractor Quotes the Right Way</div></div>
+        <div class="tr-item" onclick="openModal('inspection')"><div class="tr-num">5</div><div class="tr-title">Handling Inspection Repair Requests</div></div>
+      </div>
+    </div>
+    <div class="scard">
+      <div class="scard-title">Get new guides in your inbox</div>
+      <div class="sub-form">
+        <input class="sub-input" type="email" placeholder="your@email.com" />
+        <button class="sub-btn" onclick="showSubToast()">Subscribe free →</button>
+      </div>
+    </div>
+    <div class="cta-card">
+      <h3>Ready to start a project?</h3>
+      <p>Get quotes from verified RI contractors in hours.</p>
+      <a href="post-project.html">Post my project free →</a>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalIfOutside(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModal()"><i data-lucide="x" size="16"></i></button>
+    <div class="modal-cat" id="mcategory"></div>
+    <div class="modal-title" id="mtitle"></div>
+    <div class="modal-meta" id="mmeta"></div>
+    <div class="modal-body" id="mbody"></div>
+    <a href="post-project.html"><button class="modal-cta">Get quotes from local pros →</button></a>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a><a href="find-a-pro.html">Find a Pro</a>
+    <a href="blog.html">Blog</a><a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a>
+         <a href="community-fund.html">Community Fund</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+
+<script>
+const ARTICLES = {
+  driveway:{cat:'Cost Guide',title:'How Much Does a New Driveway Cost in Rhode Island? (2026 Guide)',meta:'7 min read · Updated May 2026 · Property Pros Research',body:`<p>If you're getting quotes for a new driveway in Rhode Island, you're probably seeing a wide range of prices. Here's the real breakdown.</p><h3>Average costs in RI (2026)</h3><ul><li><strong>Asphalt driveway:</strong> $8–$15 per sq ft. A typical 600 sq ft driveway runs $4,800–$9,000.</li><li><strong>Concrete driveway:</strong> $10–$20 per sq ft. Same 600 sq ft driveway runs $6,000–$12,000.</li><li><strong>Paver driveway:</strong> $18–$35 per sq ft. Higher end — $10,800–$21,000 for the same size.</li></ul><h3>What drives the price?</h3><p>Size is the biggest factor, but it's not the only one. Slope and grading difficulty can add 15–25% to the cost. Demolition of your existing driveway adds $1–$3 per sq ft. Drainage issues, tree roots, and utilities near the surface all increase complexity.</p><h3>How to avoid overpaying</h3><ul><li>Get at least 3 quotes and compare them line by line — not just the total</li><li>Ask what's included: base prep, grading, edging, cleanup</li><li>Hire a contractor who is licensed and insured for your town in RI</li><li>Avoid cash-only deals or contractors who want more than 30% upfront</li></ul><p>A good asphalt driveway with proper base prep should last 20–30 years in the RI climate. Sealcoating every 3–5 years extends the life significantly.</p>`},
+  roofer:{cat:'Hiring Guide',title:'How to Find a Trustworthy Roofer in RI (And Avoid the Scams)',meta:'6 min read · April 2026 · Property Pros Research',body:`<p>After a major storm, unlicensed contractors flood Rhode Island neighborhoods looking for quick work. Here's how to protect yourself.</p><h3>Red flags to watch for</h3><ul><li>Shows up unsolicited after a storm offering a "free inspection"</li><li>Can only be reached by cell phone — no business address or website</li><li>Asks for full payment upfront before work starts</li><li>Can't provide proof of RI contractor license and insurance</li><li>Offers a price dramatically lower than everyone else</li></ul><h3>What to verify before hiring</h3><p>In Rhode Island, roofers must be licensed through the Contractors' Registration and Licensing Board (CRLB). You can verify any contractor's license at crb.ri.gov. Always ask for a certificate of insurance showing general liability and workers' comp — not just a verbal assurance.</p><h3>How to hire the right way</h3><ul><li>Get 3 written quotes from licensed contractors</li><li>Check reviews on multiple platforms</li><li>Never pay more than 30% upfront for materials</li><li>Get the full scope of work in writing before signing</li><li>Take photos before work begins</li></ul>`},
+  roofcost:{cat:'Cost Guide',title:'Roof Replacement Cost in Rhode Island: What to Expect in 2026',meta:'5 min read · March 2026 · Property Pros Research',body:`<p>The average Rhode Island homeowner pays between $9,000 and $16,000 for a full roof replacement — but the range is wide depending on your home's size, existing roof condition, and the materials you choose.</p><h3>Cost by material type</h3><ul><li><strong>Architectural asphalt shingles:</strong> $8,000–$13,000 for a typical 1,500–2,000 sq ft RI home. Most common choice — good balance of cost and durability.</li><li><strong>Metal roofing (standing seam):</strong> $15,000–$28,000. Higher upfront, but can last 50+ years and handles RI snow loads very well.</li><li><strong>Slate:</strong> $20,000–$45,000. Very long-lasting. Popular on older New England homes.</li></ul><h3>What's included in the quote?</h3><p>A complete roof replacement quote should include: tear-off and disposal of old shingles, ice and water shield installation (required in RI), new decking if damaged, all flashing at valleys, chimneys, and vents, and the shingles themselves with manufacturer warranty.</p><h3>How to get a fair price</h3><p>Get three quotes from licensed RI contractors. Verify each contractor's CRLB license. Ask specifically about the decking — hidden rot can add $500–$2,000 to the final cost if not disclosed upfront.</p>`},
+  inspection:{cat:'Buying & Selling',title:'How to Handle Inspection Repair Requests Without Losing the Deal',meta:'8 min read · February 2026 · Property Pros Research',body:`<p>A home inspection report can feel like a deal-killer — but in most cases it doesn't have to be. The key is knowing what to fight for and what to let go.</p><h3>For buyers: what to ask for</h3><p>Not every inspection item is worth negotiating. Focus on safety issues (faulty wiring, structural problems, roof failure), big-ticket items over $1,500, and anything affecting habitability. Cosmetic issues, minor wear and tear, and items that were visible during your showing are generally not worth fighting over.</p><h3>For sellers: how to respond</h3><ul><li>Get your own quotes before agreeing to the buyer's repair estimates</li><li>Offer a price credit instead of doing the repairs — it's often faster and cheaper</li><li>For licensed trade work (electrical, roofing), only use licensed contractors — document everything</li><li>Know your legal disclosure obligations in RI</li></ul><h3>For realtors: keeping deals together</h3><p>Speed matters. If the buyer needs three repairs completed before closing in 30 days, you need quotes within 48 hours. Property Pros lets you post inspection repair requests and receive quotes from verified contractors the same day — keeping your timeline on track.</p>`},
+  spring:{cat:'Maintenance',title:'Spring Home Maintenance Checklist for Rhode Island Homeowners',meta:'4 min read · January 2026 · Property Pros Research',body:`<p>RI winters are hard on homes. Ice dams, freeze-thaw cycles, and high winds leave their mark. Use this checklist every April to catch issues before they become expensive repairs.</p><h3>Exterior — check these first</h3><ul><li><strong>Roof:</strong> Look for lifted, cracked, or missing shingles. Check flashing around chimney and vents.</li><li><strong>Gutters:</strong> Clear any winter debris and check for sagging or separation from fascia.</li><li><strong>Driveway and walkways:</strong> Freeze-thaw cycles crack asphalt and concrete. Patch cracks before they grow.</li><li><strong>Foundation:</strong> Walk the perimeter and look for new cracks. Check that soil grades away from the foundation.</li><li><strong>Siding:</strong> Look for warped, cracked, or missing pieces — especially on the north side.</li></ul><h3>Interior checks</h3><ul><li>Test all smoke and CO detectors — replace batteries</li><li>Run water in any infrequently used fixtures</li><li>Check basement for signs of water intrusion</li><li>Schedule HVAC tune-up before summer cooling season</li></ul><p>Catching these issues in spring — before contractors are fully booked for summer — typically saves 15–20% on repair costs.</p>`},
+  quotes:{cat:'Hiring Guide',title:'How to Compare Contractor Quotes the Right Way (It\'s Not Just Price)',meta:'5 min read · December 2025 · Property Pros Research',body:`<p>Getting multiple quotes is standard advice, but most homeowners compare them wrong — they just look at the total and pick the lowest number. That's how you end up with problems.</p><h3>What to compare line by line</h3><ul><li><strong>Scope of work:</strong> Are all three quotes for the exact same job? One may include demolition and cleanup while another doesn't.</li><li><strong>Materials:</strong> Brand and grade of materials matters. "Asphalt shingles" can mean a 25-year architectural shingle or a 15-year three-tab. Ask specifically.</li><li><strong>Timeline:</strong> How long will the job take? Will they be there every day or finishing up "when they can"?</li><li><strong>Warranty:</strong> What does the workmanship warranty cover and for how long?</li><li><strong>Payment terms:</strong> A reasonable deposit is 10–30%. Full payment upfront is a red flag.</li></ul><h3>The lowest quote isn't always the best deal</h3><p>A contractor who bids 40% below the others is either planning to cut corners on materials, underestimating the job, or will come back asking for more money mid-project. The best value quote is typically the second or third lowest — from a licensed, insured contractor with strong reviews who clearly understood the scope of work.</p><h3>What to ask each contractor</h3><ul><li>Can I see your RI contractor license number?</li><li>Do you carry general liability and workers' comp?</li><li>Who specifically will be doing the work — you or subs?</li><li>What happens if the job runs over budget?</li></ul>`},
+};
+function openModal(id){
+  const a=ARTICLES[id];if(!a)return;
+  document.getElementById('mcategory').textContent=a.cat;
+  document.getElementById('mtitle').textContent=a.title;
+  document.getElementById('mmeta').textContent=a.meta;
+  document.getElementById('mbody').innerHTML=a.body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');document.body.style.overflow='';}
+function closeModalIfOutside(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+function showSubToast(){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:#16a34a;color:#fff;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:800;font-family:Manrope,sans-serif;z-index:200';
+  t.textContent='✓ Subscribed! New guides straight to your inbox.';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),4000);
+}
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

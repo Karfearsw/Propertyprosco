@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Log in or sign up for Property Pros — the flat-rate marketplace for home services in Rhode Island." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; display: flex; align-items: stretch; }
+    .page { display: none; width: 100%; }
+    .page.active { display: flex; }
+    .split { display: flex; width: 100%; min-height: 100vh; }
+
+    /* LEFT */
+    .left-panel { width: 42%; background: var(--dark); display: flex; flex-direction: column; padding: 40px 48px; position: relative; overflow: hidden; flex-shrink: 0; }
+    .left-panel::before { content: ''; position: absolute; top: -80px; right: -80px; width: 320px; height: 320px; border-radius: 50%; background: rgba(220,38,38,.12); }
+    .left-panel::after { content: ''; position: absolute; bottom: -100px; left: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(220,38,38,.07); }
+    .left-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 60px; position: relative; z-index: 1; }
+    .left-logo { width: 42px; height: 42px; border-radius: 12px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; color: #fff; }
+    .left-brand-name { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .left-brand-name span { color: #f87171; }
+    .left-content { flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
+    .left-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #f87171; margin-bottom: 14px; }
+    .left-title { font-size: 34px; font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 14px; }
+    .left-sub { font-size: 15px; color: #9ca3af; line-height: 1.7; max-width: 340px; margin-bottom: 32px; }
+    .left-features { display: flex; flex-direction: column; gap: 14px; }
+    .left-feat { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #d1d5db; font-weight: 700; }
+    .feat-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .left-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 48px; position: relative; z-index: 1; }
+    .left-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 14px; }
+    .left-stat-num { font-size: 20px; font-weight: 900; color: #fff; }
+    .left-stat-label { font-size: 11px; color: #6b7280; font-weight: 700; margin-top: 3px; }
+
+    /* RIGHT */
+    .right-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 32px; background: var(--white); overflow-y: auto; }
+    .form-box { width: 100%; max-width: 440px; }
+    .form-header { margin-bottom: 24px; }
+    .form-title { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .form-sub { font-size: 14px; color: var(--gray); }
+    .form-sub a { color: var(--red); font-weight: 800; text-decoration: none; cursor: pointer; }
+    .form-sub a:hover { text-decoration: underline; }
+
+    .social-btns { display: flex; gap: 10px; margin-bottom: 18px; }
+    .social-btn { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid var(--border); background: var(--white); font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all .15s; color: var(--dark); }
+    .social-btn:hover { background: var(--bg); border-color: var(--dark); }
+    .divider { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; font-size: 12px; font-weight: 700; color: var(--gray); }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark2); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: var(--font); color: var(--dark); background: var(--white); transition: all .15s; }
+    .form-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+    .form-input.gi:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(180,83,9,.08); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; color: var(--gray); }
+
+    /* ROLE CARDS */
+    .role-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 24px; }
+    .role-card { padding: 16px 10px; border: 2px solid var(--border); border-radius: 14px; cursor: pointer; transition: all .18s; text-align: center; }
+    .role-card:hover { border-color: var(--dark3); }
+    .role-card.sel-hw { border-color: var(--green); background: var(--green-light); }
+    .role-card.sel-pro { border-color: var(--red); background: var(--red-light); }
+    .role-card.sel-rt { border-color: var(--gold); background: var(--gold-light); }
+    .role-icon { font-size: 26px; margin-bottom: 8px; }
+    .role-name { font-size: 13px; font-weight: 900; margin-bottom: 3px; }
+    .role-price { font-size: 11px; font-weight: 800; margin-top: 8px; }
+
+    /* STEPS */
+    .steps-bar { display: flex; align-items: center; margin-bottom: 24px; }
+    .step { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 800; }
+    .step-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; flex-shrink: 0; transition: all .2s; }
+    .step.done .step-num { background: var(--green); color: #fff; }
+    .step.active .step-num { background: var(--red); color: #fff; }
+    .step.active-g .step-num { background: var(--gold); color: #fff; }
+    .step.pending .step-num { background: var(--border); color: var(--gray); }
+    .step-label { color: var(--gray); }
+    .step.active .step-label, .step.active-g .step-label { color: var(--dark); font-weight: 900; }
+    .step.done .step-label { color: var(--green); }
+    .step-line { flex: 1; height: 2px; background: var(--border); margin: 0 8px; transition: background .3s; }
+    .step-line.done { background: var(--green); }
+
+    .form-step { display: none; }
+    .form-step.active { display: block; }
+
+    /* BUTTONS */
+    .submit-btn { width: 100%; padding: 14px; border-radius: 12px; background: var(--red); color: #fff; border: none; font-size: 15px; font-weight: 900; cursor: pointer; font-family: var(--font); transition: all .15s; margin-top: 4px; }
+    .submit-btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+    .submit-btn.dark { background: var(--dark); }
+    .submit-btn.dark:hover { background: var(--dark2); }
+    .submit-btn.gold { background: var(--gold); }
+    .submit-btn.gold:hover { background: #92400e; }
+    .submit-btn.green { background: var(--green); }
+    .submit-btn.green:hover { background: #15803d; }
+    .btn-row { display: flex; gap: 10px; }
+    .btn-back { flex-shrink: 0; padding: 14px 18px; border-radius: 12px; background: var(--dark); color: #fff; border: none; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); }
+    .btn-back:hover { background: var(--dark2); }
+    .btn-back.gold { background: var(--gold); }
+    .btn-back.gold:hover { background: #92400e; }
+
+    .card-section { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .card-section-title { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark2); margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .card-icons { display: flex; gap: 5px; }
+    .cip { font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 4px; color: #fff; }
+    .ci-visa { background: #1a1f71; font-style: italic; }
+    .ci-mc { background: #eb001b; }
+    .ci-amex { background: #007bc1; }
+
+    .terms { font-size: 11px; color: var(--gray); text-align: center; margin-top: 14px; line-height: 1.7; }
+    .terms a { color: var(--red); text-decoration: none; font-weight: 700; }
+    .forgot-link { font-size: 13px; color: var(--red); font-weight: 800; cursor: pointer; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .trial-badge { background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 16px; font-size: 13px; font-weight: 700; color: var(--green); margin-bottom: 14px; text-align: center; }
+    .trial-badge.g { background: var(--gold-light); border-color: #fde68a; color: var(--gold); }
+
+    .info-box { border-radius: 11px; padding: 12px 14px; font-size: 13px; font-weight: 700; margin-bottom: 14px; line-height: 1.6; }
+    .info-box.blue { background: var(--blue-light); border: 1px solid #bfdbfe; color: #1e40af; }
+    .info-box.gold { background: var(--gold-light); border: 1px solid #fde68a; color: #92400e; }
+    .info-box.green { background: var(--green-light); border: 1px solid #bbf7d0; color: #166534; }
+
+    .success-box { text-align: center; padding: 20px 0; }
+    .success-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 18px; border: 3px solid #bbf7d0; animation: popIn .4s ease; }
+    .success-icon.g { background: var(--gold-light); border-color: #fde68a; }
+    @keyframes popIn { 0%{transform:scale(.5);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+    .success-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: var(--gray); line-height: 1.7; max-width: 340px; margin: 0 auto 24px; }
+
+    .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+    .svc-card { padding: 11px 12px; border: 2px solid var(--border); border-radius: 11px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 800; }
+    .svc-card:hover { border-color: var(--red); }
+    .svc-card.on { border-color: var(--red); background: var(--red-light); color: var(--red); }
+
+    @media (max-width: 860px) { .left-panel { display: none; } .right-panel { padding: 28px 20px; } }
+    @media (max-width: 480px) { .role-grid { grid-template-columns: 1fr; } .form-row { grid-template-columns: 1fr; } .svc-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <div class="page active" id="page-login">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">Welcome back</div>
+          <div class="left-title">Your next job is waiting.</div>
+          <div class="left-sub">Log in to manage your leads, messages, clients, and schedule — all in one place.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="home"></i></div> New leads in your area today</div>
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="message-circle"></i></div> Messages waiting for your reply</div>
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="calendar"></i></div> Jobs scheduled this week</div>
+          </div>
+        </div>
+        <div class="left-stats">
+          <div class="left-stat"><div class="left-stat-num">100%</div><div class="left-stat-label">Vetted pros</div></div>
+          <div class="left-stat"><div class="left-stat-num">2-way</div><div class="left-stat-label">Reviews</div></div>
+          <div class="left-stat"><div class="left-stat-num">RI</div><div class="left-stat-label">Now live</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="form-header">
+            <div class="form-title">Log in to your account</div>
+            <div class="form-sub">New here? <a onclick="showPage('page-choose')">Create a free account</a></div>
+          </div>
+          <div class="social-btns">
+            <button class="social-btn">🌐 Google</button>
+            <button class="social-btn">🍎 Apple</button>
+          </div>
+          <div class="divider">or continue with email</div>
+          <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" placeholder="you@example.com" /></div>
+          <div class="form-group">
+            <label class="form-label" style="display:flex;justify-content:space-between;align-items:center">Password <a class="forgot-link">Forgot password?</a></label>
+            <div class="input-wrap"><input class="form-input" type="password" placeholder="••••••••" id="login-pw" /><span class="input-icon" onclick="togglePw('login-pw')">👁</span></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px"><input type="checkbox" id="remember" style="width:16px;height:16px;cursor:pointer" /><label for="remember" style="font-size:13px;font-weight:700;color:var(--gray);cursor:pointer">Keep me logged in</label></div>
+          <div style="text-align:right;margin-bottom:12px"><a href="forgot-password.html" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:none">Forgot password?</a></div>
+          <button class="submit-btn" onclick="showPage('page-choose')">Log in</button>
+          <div class="terms">By logging in you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHOOSE ACCOUNT TYPE -->
+  <div class="page" id="page-choose">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">Get started</div>
+          <div class="left-title">Choose how you use Property Pros.</div>
+          <div class="left-sub">Three types of accounts — each built for a different role in the home services world.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="home"></i></div> Property Owners post projects free — always</div>
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="hammer"></i></div> Service pros get unlimited leads for $9.99/mo</div>
+            <div class="left-feat"><div class="feat-icon"><i data-lucide="briefcase"></i></div> Realtors manage clients & contractors for $24.99/mo</div>
+          </div>
+        </div>
+        <div class="left-stats">
+          <div class="left-stat"><div class="left-stat-num">Free</div><div class="left-stat-label">Property Owners</div></div>
+          <div class="left-stat"><div class="left-stat-num">$9.99</div><div class="left-stat-label">Pros / month</div></div>
+          <div class="left-stat"><div class="left-stat-num">$24.99</div><div class="left-stat-label">Realtors / mo</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="form-header">
+            <div class="form-title">Who are you signing up as?</div>
+            <div class="form-sub">Already have an account? <a onclick="showPage('page-login')">Log in</a></div>
+          </div>
+          <div class="role-grid">
+            <div class="role-card" id="role-homeowner" onclick="selectRole('homeowner')">
+              <div class="role-icon"><i data-lucide="home"></i></div>
+              <div class="role-name">Property Owners</div>
+              <div style="font-size:11px;color:var(--gray);font-weight:700;line-height:1.4">I need a trusted pro for my home</div>
+              <div class="role-price" style="color:var(--green)">✓ Free forever</div>
+            </div>
+            <div class="role-card" id="role-pro" onclick="selectRole('pro')">
+              <div class="role-icon"><i data-lucide="hammer"></i></div>
+              <div class="role-name">Service Pro</div>
+              <div style="font-size:11px;color:var(--gray);font-weight:700;line-height:1.4">I offer home improvement services</div>
+              <div class="role-price" style="color:var(--red)">$9.99 / month</div>
+            </div>
+            <div class="role-card" id="role-realtor" onclick="selectRole('realtor')">
+              <div class="role-icon"><i data-lucide="briefcase"></i></div>
+              <div class="role-name">Realtor</div>
+              <div style="font-size:11px;color:var(--gray);font-weight:700;line-height:1.4">I manage contractors for clients</div>
+              <div class="role-price" style="color:var(--gold)">$29.99 / month</div>
+            </div>
+          </div>
+          <button class="submit-btn" id="choose-btn" onclick="goToSignup()" style="opacity:.4;pointer-events:none">Continue →</button>
+          <div class="terms" style="margin-top:14px">By continuing you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOMEOWNER SIGNUP -->
+  <div class="page" id="page-signup-homeowner">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">Property Owner signup</div>
+          <div class="left-title">Find your next trusted pro.</div>
+          <div class="left-sub">Create your free account in under 2 minutes. Post your first project today and start receiving quotes from verified local contractors.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon">📋</div> Post unlimited projects for free</div>
+            <div class="left-feat"><div class="feat-icon">💬</div> Compare quotes and message pros directly</div>
+            <div class="left-feat"><div class="feat-icon">⭐</div> Read real verified ratings from completed jobs</div>
+          </div>
+        </div>
+        <div class="left-stats">
+          <div class="left-stat"><div class="left-stat-num">$0</div><div class="left-stat-label">Cost to join</div></div>
+          <div class="left-stat"><div class="left-stat-num">2 hrs</div><div class="left-stat-label">Avg. first quote</div></div>
+          <div class="left-stat"><div class="left-stat-num">4.8★</div><div class="left-stat-label">Avg. pro rating</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="form-header">
+            <div class="form-title">Create your free account</div>
+            <div class="form-sub">Already have an account? <a onclick="showPage('page-login')">Log in</a></div>
+          </div>
+          <div class="info-box green">🏠 Homeowner accounts are always free. No credit card, no subscription, no catch.</div>
+          <div class="social-btns">
+            <button class="social-btn">🌐 Continue with Google</button>
+            <button class="social-btn">🍎 Continue with Apple</button>
+          </div>
+          <div class="divider">or sign up with email</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First name</label><input class="form-input" placeholder="Maria" /></div>
+            <div class="form-group"><label class="form-label">Last name</label><input class="form-input" placeholder="Santos" /></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" placeholder="you@example.com" /></div>
+          <div class="form-group"><label class="form-label">Phone-Number </label><input class="form-input" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"placeholder="401-500-5555"/></div>
+          <div class="form-group"><label class="form-label">Zip code</label><input class="form-input"  placeholder="Your zip code" /></div>
+          <div class="form-group"><label class="form-label">Password</label><div class="input-wrap"><input class="form-input" type="password" placeholder="Min 8 characters" id="hw-pw" /><span class="input-icon" onclick="togglePw('hw-pw')">👁</span></div></div>
+          <button class="submit-btn green" onclick="goToVerify('homeowner')">Create free account →</button>
+          <div class="terms">By signing up you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.<br><br><a onclick="showPage('page-choose')" style="color:var(--gray)">← Choose a different account type</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRO SIGNUP (4 STEPS) -->
+  <div class="page" id="page-signup-pro">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">Service Pro signup</div>
+          <div class="left-title">Grow your business with better leads.</div>
+          <div class="left-sub">$9.99/month flat. Unlimited leads. Every feature included. No per-lead charges, no tiers, ever.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon">⚡</div> Unlimited leads in your service area</div>
+            <div class="left-feat"><div class="feat-icon">✅</div> Verified badge with license review</div>
+            <div class="left-feat"><div class="feat-icon">📊</div> Full dashboard — quotes, scheduling, analytics</div>
+          </div>
+        </div>
+        <div class="left-stats">
+          <div class="left-stat"><div class="left-stat-num">$9.99</div><div class="left-stat-label">Flat monthly</div></div>
+          <div class="left-stat"><div class="left-stat-num">14 days</div><div class="left-stat-label">Free trial</div></div>
+          <div class="left-stat"><div class="left-stat-num">$0</div><div class="left-stat-label">Per lead</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="steps-bar">
+            <div class="step active" id="p-s1"><div class="step-num">1</div><div class="step-label">Account</div></div>
+            <div class="step-line" id="p-l1"></div>
+            <div class="step pending" id="p-s2"><div class="step-num">2</div><div class="step-label">Business</div></div>
+            <div class="step-line" id="p-l2"></div>
+            <div class="step pending" id="p-s3"><div class="step-num">3</div><div class="step-label">Services</div></div>
+            <div class="step-line" id="p-l3"></div>
+            <div class="step pending" id="p-s4"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+          </div>
+
+          <!-- Step 1 -->
+          <div class="form-step active" id="p-c1">
+            <div class="form-header"><div class="form-title">Create your account</div><div class="form-sub">Already have one? <a onclick="showPage('page-login')">Log in</a></div></div>
+            <div class="social-btns"><button class="social-btn">🌐 Google</button><button class="social-btn">🍎 Apple</button></div>
+            <div class="divider">or sign up with email</div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">First name</label><input class="form-input" placeholder="Kevin" /></div>
+              <div class="form-group"><label class="form-label">Last name</label><input class="form-input" placeholder="Hernandez" /></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="you@example.com" /></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="form-input" type="tel" placeholder="(555) 000-0000" /></div>
+            <div class="form-group"><label class="form-label">Password</label><div class="input-wrap"><input class="form-input" type="password" placeholder="Min 8 characters" id="pro-pw" /><span class="input-icon" onclick="togglePw('pro-pw')">👁</span></div></div>
+            <button class="submit-btn" onclick="goProStep(2)">Continue →</button>
+            <div class="terms"><a onclick="showPage('page-choose')" style="color:var(--gray)">← Choose a different account type</a></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="form-step" id="p-c2">
+            <div class="form-header"><div class="form-title">Your business</div><div class="form-sub">Tell homeowners who you are and where you work.</div></div>
+            <div class="form-group"><label class="form-label">Business name</label><input class="form-input" placeholder="e.g. Hernandez Roofing LLC" /></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">City</label><input class="form-input" placeholder="Your city" /></div>
+              <div class="form-group"><label class="form-label">State</label><input class="form-input" placeholder="State" /></div>
+            </div>
+            <div class="form-group"><label class="form-label">Zip code</label><input class="form-input" placeholder="Your zip" /></div>
+            <div class="form-group"><label class="form-label">Service radius</label><select class="form-input"><option>Within 10 miles</option><option>Within 25 miles</option><option selected>Within 50 miles</option><option>Within 100 miles</option><option>Statewide</option></select></div>
+            <div class="form-group"><label class="form-label">Years in business</label><select class="form-input"><option>Less than 1 year</option><option>1–2 years</option><option selected>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
+            <div class="btn-row"><button class="btn-back" onclick="goProStep(1)">← Back</button><button class="submit-btn" onclick="goProStep(3)" style="flex:1">Continue →</button></div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="form-step" id="p-c3">
+            <div class="form-header"><div class="form-title">Your services</div><div class="form-sub">Select every trade you offer — you'll only receive matching leads.</div></div>
+            <div class="svc-grid">
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🏠</span> Roofing</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🛣️</span> Driveways & Paving</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🛠️</span> Remodeling</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🧱</span> Masonry</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🎨</span> Painting</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🌿</span> Landscaping</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>⚡</span> Electrical</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🚿</span> Plumbing</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>🚛</span> Junk Removal</div>
+              <div class="svc-card" onclick="this.classList.toggle('on')"><span>⚙️</span> Other</div>
+            </div>
+            <div class="btn-row"><button class="btn-back" onclick="goProStep(2)">← Back</button><button class="submit-btn" onclick="goProStep(4)" style="flex:1">Continue →</button></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="form-step" id="p-c4">
+            <div class="form-header"><div class="form-title">Start your free trial</div><div class="form-sub">14 days free — no charge until your trial ends.</div></div>
+            <div class="trial-badge">🔒 First charge: <strong>$9.99 in 14 days</strong> — cancel anytime before then</div>
+            <div class="info-box blue">💡 <strong>$9.99/month flat</strong> — unlimited leads, every feature, no per-lead fees. One price, no surprises.</div>
+            <div class="card-section">
+              <div class="card-section-title">Card details <div class="card-icons"><div class="cip ci-visa">VISA</div><div class="cip ci-mc">MC</div><div class="cip ci-amex">AMEX</div></div></div>
+              <div class="form-group"><label class="form-label">Cardholder name</label><input class="form-input" placeholder="Kevin Hernandez" /></div>
+              <div class="form-group"><label class="form-label">Card number</label><input class="form-input" placeholder="1234 5678 9012 3456" /></div>
+              <div class="form-row"><div class="form-group"><label class="form-label">Expiry</label><input class="form-input" placeholder="MM / YY" /></div><div class="form-group"><label class="form-label">CVC</label><input class="form-input" placeholder="•••" /></div></div>
+              <div class="form-group"><label class="form-label">Billing zip</label><input class="form-input" placeholder="Zip code" /></div>
+            </div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:14px">🔒 256-bit SSL encryption. Your payment info is never stored on our servers.</div>
+            <div class="btn-row"><button class="btn-back" onclick="goProStep(3)">← Back</button><button class="submit-btn" onclick="goToVerify('pro')" style="flex:1">Start free trial →</button></div>
+            <div class="terms">By starting your trial you agree to our <a href="terms.html">Terms</a>. Cancel before day 14 and you pay nothing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REALTOR SIGNUP (4 STEPS) -->
+  <div class="page" id="page-signup-realtor">
+    <div class="split">
+      <div class="left-panel" style="position:relative">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,83,9,.2) 0%,transparent 55%);pointer-events:none;z-index:0"></div>
+        <div class="left-brand" style="position:relative;z-index:1"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content" style="position:relative;z-index:1">
+          <div class="left-eyebrow" style="color:#fcd34d">🏡 Realtor Pro signup</div>
+          <div class="left-title">Your contractor network, organized.</div>
+          <div class="left-sub">Post-inspection repairs, pre-listing prep, closing gift referral links — all in one professional dashboard for $29.99/month.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">🔍</div> Post-inspection repair tracker</div>
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">👥</div> Full client management dashboard</div>
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">🎁</div> Personalized closing gift referral links</div>
+          </div>
+        </div>
+        <div class="left-stats" style="position:relative;z-index:1">
+          <div class="left-stat"><div class="left-stat-num" style="color:#fcd34d">$29.99</div><div class="left-stat-label">Flat monthly</div></div>
+          <div class="left-stat"><div class="left-stat-num">14 days</div><div class="left-stat-label">Free trial</div></div>
+          <div class="left-stat"><div class="left-stat-num" style="color:#fcd34d">$3/mo</div><div class="left-stat-label">Referral credit</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="steps-bar">
+            <div class="step active-g" id="r-s1"><div class="step-num">1</div><div class="step-label">Account</div></div>
+            <div class="step-line" id="r-l1"></div>
+            <div class="step pending" id="r-s2"><div class="step-num">2</div><div class="step-label">Brokerage</div></div>
+            <div class="step-line" id="r-l2"></div>
+            <div class="step pending" id="r-s3"><div class="step-num">3</div><div class="step-label">License</div></div>
+            <div class="step-line" id="r-l3"></div>
+            <div class="step pending" id="r-s4"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+          </div>
+
+          <!-- Step 1 -->
+          <div class="form-step active" id="r-c1">
+            <div class="form-header"><div class="form-title">Create your account</div><div class="form-sub">Already have one? <a onclick="showPage('page-login')">Log in</a></div></div>
+            <div class="social-btns"><button class="social-btn">🌐 Continue with Google</button><button class="social-btn">🍎 Continue with Apple</button></div>
+            <div class="divider">or sign up with email</div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">First name</label><input class="form-input gi" placeholder="Sarah" /></div>
+              <div class="form-group"><label class="form-label">Last name</label><input class="form-input gi" placeholder="Rivera" /></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input gi" type="email" placeholder="sarah@brokerage.com" /></div>
+            <div class="form-group"><label class="form-label">Phone</label><input class="form-input gi" type="tel" placeholder="(555) 000-0000" /></div>
+            <div class="form-group"><label class="form-label">Password</label><div class="input-wrap"><input class="form-input gi" type="password" placeholder="Min 8 characters" id="rt-pw" /><span class="input-icon" onclick="togglePw('rt-pw')">👁</span></div></div>
+            <button class="submit-btn gold" onclick="goRealtorStep(2)">Continue →</button>
+            <div class="terms"><a onclick="showPage('page-choose')" style="color:var(--gray)">← Choose a different account type</a></div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="form-step" id="r-c2">
+            <div class="form-header"><div class="form-title">Your brokerage</div><div class="form-sub">Shown on your public realtor profile and projects you post.</div></div>
+            <div class="form-group"><label class="form-label">Brokerage name</label><input class="form-input gi" placeholder="e.g. Keller Williams, RE/MAX, Coldwell Banker" /></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Office city</label><input class="form-input gi" placeholder="City" /></div>
+              <div class="form-group"><label class="form-label">State</label><input class="form-input gi" placeholder="State" /></div>
+            </div>
+            <div class="form-group"><label class="form-label">Years in real estate</label><select class="form-input gi"><option>Less than 1 year</option><option>1–2 years</option><option selected>3–5 years</option><option>5–10 years</option><option>10+ years</option></select></div>
+            <div class="form-group"><label class="form-label">Primary service areas</label><input class="form-input gi" placeholder="e.g. Bristol RI, Round Rock TX, Cedar Park TX" /><div style="font-size:11px;color:var(--gray);margin-top:5px;font-weight:600">Separate cities with commas</div></div>
+            <div class="btn-row"><button class="btn-back gold" onclick="goRealtorStep(1)">← Back</button><button class="submit-btn gold" onclick="goRealtorStep(3)" style="flex:1">Continue →</button></div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="form-step" id="r-c3">
+            <div class="form-header"><div class="form-title">Your license</div><div class="form-sub">Required for the Realtor Pro verified badge on your profile.</div></div>
+            <div class="info-box gold">🏡 Your license is verified within 24 hours. You have full access immediately while we review.</div>
+            <div class="form-group"><label class="form-label">License number</label><input class="form-input gi" placeholder="e.g. TX-RE-0041882" /></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">License state</label><input class="form-input gi" placeholder="State" /></div>
+              <div class="form-group"><label class="form-label">Expiry date</label><input class="form-input gi" type="date" /></div>
+            </div>
+            <div class="form-group"><label class="form-label">License type</label><select class="form-input gi"><option>Licensed sales agent</option><option>Licensed broker</option><option>Broker / owner</option></select></div>
+            <div class="btn-row"><button class="btn-back gold" onclick="goRealtorStep(2)">← Back</button><button class="submit-btn gold" onclick="goRealtorStep(4)" style="flex:1">Continue →</button></div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="form-step" id="r-c4">
+            <div class="form-header"><div class="form-title">Start your free trial</div><div class="form-sub">14 days free — no charge until your trial ends.</div></div>
+            <div class="trial-badge g">🔒 First charge: <strong>$24.99 in 14 days</strong> — cancel anytime before then</div>
+            <div class="info-box gold">💡 Earn <strong>$3/month credit</strong> for every active client you refer. Enough referrals and your subscription pays for itself.</div>
+            <div class="card-section">
+              <div class="card-section-title">Card details <div class="card-icons"><div class="cip ci-visa">VISA</div><div class="cip ci-mc">MC</div><div class="cip ci-amex">AMEX</div></div></div>
+              <div class="form-group"><label class="form-label">Cardholder name</label><input class="form-input gi" placeholder="Sarah Rivera" /></div>
+              <div class="form-group"><label class="form-label">Card number</label><input class="form-input gi" placeholder="1234 5678 9012 3456" /></div>
+              <div class="form-row"><div class="form-group"><label class="form-label">Expiry</label><input class="form-input gi" placeholder="MM / YY" /></div><div class="form-group"><label class="form-label">CVC</label><input class="form-input gi" placeholder="•••" /></div></div>
+              <div class="form-group"><label class="form-label">Billing zip</label><input class="form-input gi" placeholder="Zip code" /></div>
+            </div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:14px">🔒 256-bit SSL encryption. Your payment info is never stored on our servers.</div>
+            <div class="btn-row"><button class="btn-back gold" onclick="goRealtorStep(3)">← Back</button><button class="submit-btn gold" onclick="goToVerify('realtor')" style="flex:1">Start free trial →</button></div>
+            <div class="terms">By starting your trial you agree to our <a href="terms.html">Terms</a>. Cancel before day 14 and you pay nothing.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOMEOWNER SUCCESS -->
+  <div class="page" id="page-homeowner-success">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">You're all set!</div>
+          <div class="left-title">Ready to find your next trusted pro.</div>
+          <div class="left-sub">Post your first project in under 2 minutes and start receiving quotes from verified local contractors.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon">📋</div> Post a project — completely free</div>
+            <div class="left-feat"><div class="feat-icon">💬</div> Message pros before you hire anyone</div>
+            <div class="left-feat"><div class="feat-icon">⭐</div> Check real ratings from verified jobs</div>
+          </div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="success-box">
+            <div class="success-icon">🎉</div>
+            <div class="success-title">Welcome to Property Pros!</div>
+            <div class="success-sub">Your free homeowner account is ready. Post your first project and start getting quotes from verified pros — usually within hours.</div>
+            <div class="trial-badge" style="background:var(--green-light);border-color:#bbf7d0;color:var(--green)">✓ Free account activated — no subscription needed</div>
+            <button class="submit-btn green" onclick="window.location='post-project.html'">Post my first project →</button>
+            <div class="terms" style="margin-top:16px"><a onclick="window.location='homeowner-dashboard.html'" style="cursor:pointer;color:var(--gray)">Browse pros in my area first →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRO SUCCESS -->
+  <div class="page" id="page-pro-success">
+    <div class="split">
+      <div class="left-panel">
+        <div class="left-brand"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content">
+          <div class="left-eyebrow">You're live!</div>
+          <div class="left-title">Your pro profile is active.</div>
+          <div class="left-sub">Matched leads in your service area will start appearing in your dashboard right away. Go win some jobs.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon">⚡</div> Leads waiting in your area now</div>
+            <div class="left-feat"><div class="feat-icon">✅</div> Your verified badge is live</div>
+            <div class="left-feat"><div class="feat-icon">📅</div> 14-day free trial has started</div>
+          </div>
+        </div>
+        <div class="left-stats">
+          <div class="left-stat"><div class="left-stat-num">14 days</div><div class="left-stat-label">Free trial</div></div>
+          <div class="left-stat"><div class="left-stat-num">$0</div><div class="left-stat-label">Charged today</div></div>
+          <div class="left-stat"><div class="left-stat-num">$9.99</div><div class="left-stat-label">After trial</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="success-box">
+            <div class="success-icon">🎉</div>
+            <div class="success-title">Welcome to Property Pros!</div>
+            <div class="success-sub">Your Pro account is active and your 14-day free trial has started. No charge for 14 days — cancel anytime before then, no questions asked.</div>
+            <div class="trial-badge">✓ Verified pro badge is now live on your profile</div>
+            <button class="submit-btn" onclick="window.location='dashboard.html'">Go to my dashboard →</button>
+            <div class="terms" style="margin-top:16px"><a onclick="window.location='leads.html'" style="cursor:pointer;color:var(--gray)">Browse open projects first →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REALTOR SUCCESS -->
+  <div class="page" id="page-realtor-success">
+    <div class="split">
+      <div class="left-panel" style="position:relative">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(180,83,9,.2) 0%,transparent 55%);pointer-events:none;z-index:0"></div>
+        <div class="left-brand" style="position:relative;z-index:1"><div class="left-logo">PP</div><div class="left-brand-name"><span>Property</span> Pros</div></div>
+        <div class="left-content" style="position:relative;z-index:1">
+          <div class="left-eyebrow" style="color:#fcd34d">You're live!</div>
+          <div class="left-title">Your Realtor Pro account is ready.</div>
+          <div class="left-sub">Add your first client, post your first inspection project, and generate your personalized referral link — all in one place.</div>
+          <div class="left-features">
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">👥</div> Add clients and start tracking projects</div>
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">🔗</div> Your referral link is live and ready to share</div>
+            <div class="left-feat"><div class="feat-icon" style="background:rgba(180,83,9,.25)">🔍</div> Inspection tracker is set up and waiting</div>
+          </div>
+        </div>
+        <div class="left-stats" style="position:relative;z-index:1">
+          <div class="left-stat"><div class="left-stat-num" style="color:#fcd34d">14 days</div><div class="left-stat-label">Free trial</div></div>
+          <div class="left-stat"><div class="left-stat-num">$0</div><div class="left-stat-label">Charged today</div></div>
+          <div class="left-stat"><div class="left-stat-num">$29.99</div><div class="left-stat-label">After trial</div></div>
+        </div>
+      </div>
+      <div class="right-panel">
+        <div class="form-box">
+          <div class="success-box">
+            <div class="success-icon g">🏡</div>
+            <div class="success-title">Welcome to Property Pros!</div>
+            <div class="success-sub">Your Realtor Pro account is active and your 14-day free trial has started. Your license will be verified within 24 hours — you have full access in the meantime.</div>
+            <div class="trial-badge g">✓ Realtor Pro active — license verification in progress</div>
+            <button class="submit-btn gold" onclick="window.location='realtor-dashboard.html'">Go to my dashboard →</button>
+            <div class="terms" style="margin-top:16px"><a onclick="window.location='realtor-clients.html'" style="cursor:pointer;color:var(--gold)">Add my first client →</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedRole = null;
+
+    function goToVerify(type) {
+      // Get email from the appropriate signup form
+      const emailMap = {
+        homeowner: document.getElementById('hw-email'),
+        pro: document.getElementById('pro-email-1'),
+        realtor: document.getElementById('rt-email-1'),
+      };
+      const emailEl = emailMap[type];
+      const email = emailEl ? emailEl.value.trim() : 'your@email.com';
+      window.location.href = `verify-email.html?type=${type}&email=${encodeURIComponent(email)}`;
+    }
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('role-homeowner').className = 'role-card' + (role === 'homeowner' ? ' sel-hw' : '');
+      document.getElementById('role-pro').className = 'role-card' + (role === 'pro' ? ' sel-pro' : '');
+      document.getElementById('role-realtor').className = 'role-card' + (role === 'realtor' ? ' sel-rt' : '');
+      const btn = document.getElementById('choose-btn');
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+      // Update button color to match role
+      btn.className = 'submit-btn' + (role === 'homeowner' ? ' green' : role === 'realtor' ? ' gold' : '');
+    }
+
+    function goToSignup() {
+      if (!selectedRole) return;
+      const map = { homeowner: 'page-signup-homeowner', pro: 'page-signup-pro', realtor: 'page-signup-realtor' };
+      showPage(map[selectedRole]);
+    }
+
+    // PRO STEPS
+    function goProStep(step) {
+      document.querySelectorAll('[id^="p-c"]').forEach(s => s.classList.remove('active'));
+      document.getElementById('p-c' + step).classList.add('active');
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('p-s' + i);
+        el.className = 'step ' + (i < step ? 'done' : i === step ? 'active' : 'pending');
+        el.querySelector('.step-num').textContent = i < step ? '✓' : i;
+        const line = document.getElementById('p-l' + i);
+        if (line) line.classList.toggle('done', i < step);
+      }
+      window.scrollTo(0, 0);
+    }
+
+    // REALTOR STEPS
+    function goRealtorStep(step) {
+      document.querySelectorAll('[id^="r-c"]').forEach(s => s.classList.remove('active'));
+      document.getElementById('r-c' + step).classList.add('active');
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('r-s' + i);
+        el.className = 'step ' + (i < step ? 'done' : i === step ? 'active-g' : 'pending');
+        el.querySelector('.step-num').textContent = i < step ? '✓' : i;
+        const line = document.getElementById('r-l' + i);
+        if (line) line.classList.toggle('done', i < step);
+      }
+      window.scrollTo(0, 0);
+    }
+
+    function togglePw(id) {
+      const input = document.getElementById(id);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+  </script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

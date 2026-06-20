@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contractor Guide — Property Pros</title>
+  <meta name="description" content="Everything you need to know to succeed on Property Pros. Profile setup, verification, winning quotes, and growing your business." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--red:#dc2626;--red-dark:#b91c1c;--dark:#111827;--dark2:#1f2937;--gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--green:#16a34a;--amber:#d97706;--font:'Manrope',sans-serif;--display:'Playfair Display',serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--dark)}
+    a{text-decoration:none;color:inherit}
+    header{background:var(--dark);padding:0 48px;height:66px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+    .brand-name{font-size:18px;font-weight:900;color:#fff}.brand-name span{color:#f87171}
+    .nav-links{display:flex;gap:24px}.nav-link{font-size:13px;font-weight:700;color:#9ca3af;transition:color .15s}.nav-link:hover{color:#fff}
+    .hdr-btns{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+    .btn-ghost{border-color:rgba(255,255,255,.2);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.08)}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark)}
+    .hero{background:var(--dark);padding:56px 48px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(220,38,38,.12) 0%,transparent 60%)}
+    .hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:14px}
+    .hero h1{font-family:var(--display);font-size:42px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:14px}
+    .hero-sub{font-size:15px;color:#9ca3af;line-height:1.7;font-weight:700;margin-bottom:24px}
+    .hero-cta{display:flex;gap:10px;flex-wrap:wrap}
+    .hbtn{padding:12px 22px;border-radius:11px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:7px;border:none}
+    .hbtn-red{background:var(--red);color:#fff}.hbtn-red:hover{background:var(--red-dark)}
+    .hbtn-outline{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)!important}.hbtn-outline:hover{background:rgba(255,255,255,.14)}
+    .stat-pills{display:flex;flex-direction:column;gap:10px}
+    .stat-pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;text-align:center;min-width:130px}
+    .stat-num{font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px}
+    .stat-label{font-size:11px;color:#9ca3af;font-weight:700;margin-top:2px}
+    /* BODY LAYOUT */
+    .body-wrap{max-width:1100px;margin:0 auto;padding:40px 48px 80px;display:grid;grid-template-columns:220px 1fr;gap:32px}
+    .toc{position:sticky;top:86px;height:fit-content}
+    .toc-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--gray);margin-bottom:12px}
+    .toc-links{display:flex;flex-direction:column;gap:4px}
+    .toc-link{font-size:13px;font-weight:700;color:var(--gray);padding:6px 10px;border-radius:8px;cursor:pointer;transition:all .15s;border-left:2px solid transparent}
+    .toc-link:hover,.toc-link.active{color:var(--dark);background:var(--white);border-color:var(--red)}
+    .content{min-width:0}
+    .gsection{background:var(--white);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px;scroll-margin-top:100px}
+    .gsec-head{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+    .gsec-icon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .gsec-num{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--gray);margin-bottom:4px}
+    .gsec-title{font-size:19px;font-weight:900;letter-spacing:-0.4px}
+    .gsec-body{font-size:13px;color:var(--gray);line-height:1.75;font-weight:700;margin-bottom:16px}
+    .tip-box{background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+    .tip-box-title{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .tip-list{display:flex;flex-direction:column;gap:6px}
+    .tip-li{display:flex;align-items:flex-start;gap:8px;font-size:13px;font-weight:700;color:var(--dark2)}
+    .tip-dot{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;flex-shrink:0;margin-top:2px}
+    .highlight{border-left:3px solid var(--red);padding:12px 16px;background:#fef2f2;border-radius:0 10px 10px 0;font-size:13px;font-weight:700;color:var(--dark2);margin:14px 0}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+    .mini-card{background:var(--bg);border-radius:12px;padding:14px;border:1px solid var(--border)}
+    .mini-card-title{font-size:12px;font-weight:900;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+    .mini-card-body{font-size:12px;color:var(--gray);line-height:1.6;font-weight:600}
+    .badge-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+    .bdg{padding:6px 14px;border-radius:999px;font-size:12px;font-weight:800}
+    .bdg-li{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+    .bdg-v{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+    .cta-section{background:var(--dark);border-radius:20px;padding:32px;text-align:center;margin-top:8px}
+    .cta-section h2{font-size:22px;font-weight:900;color:#fff;margin-bottom:8px}
+    .cta-section p{font-size:14px;color:#9ca3af;font-weight:700;margin-bottom:20px}
+    .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    .cta-btn{padding:12px 24px;border-radius:11px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);display:inline-flex;align-items:center;gap:7px;border:none;transition:all .15s}
+    .cta-red{background:var(--red);color:#fff}.cta-red:hover{background:var(--red-dark)}
+    .cta-outline{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15)!important}
+    footer{background:var(--dark);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fl{display:flex;gap:18px;flex-wrap:wrap}.fl a{font-size:13px;font-weight:700;color:#4b5563;transition:color .15s}.fl a:hover{color:#fff}
+    .fc{font-size:12px;color:#374151}
+    @media(max-width:900px){.body-wrap{grid-template-columns:1fr;padding:24px}.toc{position:static}.hero-inner{grid-template-columns:1fr}.stat-pills{flex-direction:row}.hero{padding:36px 20px}.hero h1{font-size:30px}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}.two-col{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="brand"><div class="logo">PP</div><div class="brand-name"><span>Property</span> Pros</div></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="find-a-pro.html" class="nav-link">Find a Pro</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="pricing.html" class="nav-link">Pricing</a>
+    <a href="pro-landing.html" class="nav-link">For Contractors</a>
+  </div>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="login.html" class="btn btn-red">Start free trial</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Contractor Guide</div>
+      <h1>Everything you need to succeed on Property Pros</h1>
+      <p class="hero-sub">A complete guide to setting up your profile, getting verified, winning quotes, and growing your business on the platform.</p>
+      <div class="hero-cta">
+        <a href="login.html" class="hbtn hbtn-red"><i data-lucide="arrow-right" size="15"></i> Start free trial</a>
+        <a href="dashboard.html" class="hbtn hbtn-outline"><i data-lucide="layout-dashboard" size="15"></i> Go to dashboard</a>
+      </div>
+    </div>
+    <div class="stat-pills">
+      <div class="stat-pill"><div class="stat-num">3x</div><div class="stat-label">more quotes won with photos</div></div>
+      <div class="stat-pill"><div class="stat-num">5+</div><div class="stat-label">avg. reviews before trust spike</div></div>
+      <div class="stat-pill"><div class="stat-num">40%</div><div class="stat-label">higher win rate when Verified</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="body-wrap">
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">In this guide</div>
+    <div class="toc-links">
+      <a class="toc-link active" href="#profile">1. Profile setup</a>
+      <a class="toc-link" href="#verification">2. Verification tiers</a>
+      <a class="toc-link" href="#portfolio">3. Portfolio photos</a>
+      <a class="toc-link" href="#service-area">4. Service area</a>
+      <a class="toc-link" href="#leads">5. How leads work</a>
+      <a class="toc-link" href="#quotes">6. Winning quotes</a>
+      <a class="toc-link" href="#ratings">7. Building ratings</a>
+      <a class="toc-link" href="#billing">8. Billing & trial</a>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <div class="gsection" id="profile">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#fef2f2"><i data-lucide="user-circle" size="22" style="color:#dc2626"></i></div>
+        <div><div class="gsec-num">Section 1</div><div class="gsec-title">Setting up your profile</div></div>
+      </div>
+      <div class="gsec-body">Your profile is your storefront. Homeowners review it before accepting a quote. A complete, professional profile gets significantly more responses than one with missing information.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#dc2626">Profile checklist</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> Business name and professional photo or logo</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> Bio: describe your experience, specialties, and what makes you different (3–5 sentences minimum)</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> Services offered: be specific — list every trade you do</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> Years in business and any certifications</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> At least 5 portfolio photos (see Section 3)</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">✓</div> Response time commitment — set expectations</div>
+        </div>
+      </div>
+      <div class="highlight">💡 Profiles with a bio over 3 sentences receive 2x more quote views than bare-minimum profiles.</div>
+    </div>
+
+    <div class="gsection" id="verification">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#fef3c7"><i data-lucide="shield-check" size="22" style="color:#b45309"></i></div>
+        <div><div class="gsec-num">Section 2</div><div class="gsec-title">Verification tiers</div></div>
+      </div>
+      <div class="gsec-body">Property Pros has two verification tiers. The tier you're in depends on your trade. Both tiers show a badge on your profile — but the Licensed & Insured badge is more trusted by homeowners and is required for certain projects.</div>
+      <div class="two-col">
+        <div class="mini-card" style="border-color:#bfdbfe">
+          <div class="mini-card-title" style="color:#1e40af"><i data-lucide="shield" size="14"></i> Licensed & Insured</div>
+          <div class="mini-card-body">Required for: Roofing, Electrical, Plumbing, HVAC, General Contracting, Structural Masonry. Upload your state license number and a current certificate of insurance. Manual review in 1–2 business days.</div>
+          <div class="badge-row"><span class="bdg bdg-li">Licensed & Insured</span></div>
+        </div>
+        <div class="mini-card" style="border-color:#bbf7d0">
+          <div class="mini-card-title" style="color:#16a34a"><i data-lucide="check-circle" size="14"></i> Verified</div>
+          <div class="mini-card-body">For all other trades: Landscaping, Painting, Junk Removal, Handyman, Cleaning, and more. Requires a confirmed email and phone number only. Automatic — no documents, no waiting.</div>
+          <div class="badge-row"><span class="bdg bdg-v">Verified</span></div>
+        </div>
+      </div>
+      <div class="highlight">📈 Verified pros win approximately 40% more quotes than unverified profiles. Get your badge before you start quoting.</div>
+    </div>
+
+    <div class="gsection" id="portfolio">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#eff6ff"><i data-lucide="image" size="22" style="color:#2563eb"></i></div>
+        <div><div class="gsec-num">Section 3</div><div class="gsec-title">Portfolio photos</div></div>
+      </div>
+      <div class="gsec-body">Photos are the single most powerful thing on your profile. Homeowners want to see your actual work, not just read about it. Aim for at least 10 high-quality photos showing a variety of jobs.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#2563eb">What makes a great portfolio photo</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Before and after pairs — these are the most compelling</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Natural lighting when possible — avoid flash glare</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Wide shot showing the full scope of work</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Close-up detail shots showing quality of craftsmanship</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Caption each photo with the trade, material, and city</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#2563eb">✓</div> Horizontal (landscape) orientation photographs better on the platform</div>
+        </div>
+      </div>
+      <div class="highlight">📸 Profiles with 5+ photos receive 3x more quote acceptances. Even photos from your phone are fine — quality matters more than equipment.</div>
+    </div>
+
+    <div class="gsection" id="service-area">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#f0fdf4"><i data-lucide="map-pin" size="22" style="color:#16a34a"></i></div>
+        <div><div class="gsec-num">Section 4</div><div class="gsec-title">Setting your service area</div></div>
+      </div>
+      <div class="gsec-body">Your service area determines which projects you see. Set it accurately — being matched to a project 50 miles away that you won't do wastes everyone's time and hurts your response rate metric.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#16a34a">Service area tips</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#16a34a">✓</div> Start with a realistic radius from your base — typically 15–30 miles</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#16a34a">✓</div> You can set different radii for different services (e.g. bigger for roofing, smaller for handyman)</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#16a34a">✓</div> Expand your area once you've built a solid review count</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#16a34a">✓</div> Update your area seasonally if you have slow months in certain zones</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gsection" id="leads">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#f5f3ff"><i data-lucide="inbox" size="22" style="color:#7c3aed"></i></div>
+        <div><div class="gsec-num">Section 5</div><div class="gsec-title">How leads work</div></div>
+      </div>
+      <div class="gsec-body">When a homeowner posts a project that matches your trade and service area, it appears in your Leads dashboard. You'll get a notification. From there you can view the details, save the lead for later, or send a quote immediately.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#7c3aed">Lead types</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">🔥</div> Hot leads — posted recently, high budget match, few quotes sent. Quote these first.</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#7c3aed">★</div> Matched leads — strong match to your trade and area. High probability projects.</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#6b7280">📋</div> All leads — every project in your service area across all match levels.</div>
+        </div>
+      </div>
+      <div class="highlight">⚡ Pros who respond to a lead within 2 hours are 3x more likely to win the job than those who respond the next day. Enable push notifications.</div>
+    </div>
+
+    <div class="gsection" id="quotes">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#fef2f2"><i data-lucide="send" size="22" style="color:#dc2626"></i></div>
+        <div><div class="gsec-num">Section 6</div><div class="gsec-title">Writing a winning quote</div></div>
+      </div>
+      <div class="gsec-body">Your quote is your first impression. A generic one-line quote with a number rarely wins. A personalized, specific quote that references the homeowner's project shows you actually read the details.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#dc2626">Quote formula that works</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">1</div> Reference something specific from their project (e.g. "I saw you mentioned a 10-year-old asphalt driveway...")</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">2</div> Describe exactly what you'll do — include materials, process, and cleanup</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">3</div> Give your price with a clear breakdown — labor vs. materials if possible</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">4</div> State your availability and estimated timeline</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#dc2626">5</div> Invite them to ask questions — keep the conversation going</div>
+        </div>
+      </div>
+      <div class="highlight">💬 Quotes that end with a question or invitation to chat have a 60% higher response rate. Don't just send a number and wait.</div>
+    </div>
+
+    <div class="gsection" id="ratings">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#fef3c7"><i data-lucide="star" size="22" style="color:#b45309"></i></div>
+        <div><div class="gsec-num">Section 7</div><div class="gsec-title">Building your rating</div></div>
+      </div>
+      <div class="gsec-body">Reviews are your most valuable long-term asset on the platform. Pros with 10+ reviews consistently win more quotes than equally priced competitors with fewer reviews. Start asking from day one.</div>
+      <div class="tip-box">
+        <div class="tip-box-title" style="color:#b45309">How to get more reviews</div>
+        <div class="tip-list">
+          <div class="tip-li"><div class="tip-dot" style="background:#b45309">✓</div> Ask in person at job completion — "Would you mind leaving a quick review on Property Pros?"</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#b45309">✓</div> Send a follow-up message through the platform a day after the job</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#b45309">✓</div> Respond to every review — both positive and negative — professionally</div>
+          <div class="tip-li"><div class="tip-dot" style="background:#b45309">✓</div> Fix issues that appear in reviews before they become a pattern</div>
+        </div>
+      </div>
+      <div class="highlight">⭐ Your first 5 reviews matter most. Getting to a 4.5+ rating with 5+ reviews puts you in the top results for most search and filter combinations.</div>
+    </div>
+
+    <div class="gsection" id="billing">
+      <div class="gsec-head">
+        <div class="gsec-icon" style="background:#f0fdf4"><i data-lucide="credit-card" size="22" style="color:#16a34a"></i></div>
+        <div><div class="gsec-num">Section 8</div><div class="gsec-title">Billing and your free trial</div></div>
+      </div>
+      <div class="gsec-body">Property Pros costs $9.99/month after your 14-day free trial. No per-lead fees, no hidden charges. Cancel anytime from your billing settings — no phone calls, no retention attempts.</div>
+      <div class="two-col">
+        <div class="mini-card">
+          <div class="mini-card-title"><i data-lucide="check" size="14" style="color:#16a34a"></i> What's included</div>
+          <div class="mini-card-body">Unlimited lead browsing · Unlimited quote sending · Full messaging · Full business dashboard · Schedule management · Billing management · Portfolio hosting · Verified badge</div>
+        </div>
+        <div class="mini-card">
+          <div class="mini-card-title"><i data-lucide="info" size="14" style="color:#6b7280"></i> Free trial details</div>
+          <div class="mini-card-body">14 days free · No credit card to start · Full access to all features · We'll remind you before trial ends · Cancel during trial with no charge · Monthly billing after trial</div>
+        </div>
+      </div>
+      <div class="highlight">💡 The math: if you win one $500 job per month through Property Pros, you've returned 50x your subscription cost. One job per quarter still returns 12x.</div>
+    </div>
+
+    <div class="cta-section">
+      <h2>Ready to start winning work?</h2>
+      <p>14-day free trial. $9.99/month after. Cancel anytime.</p>
+      <div class="cta-btns">
+        <a href="login.html" class="cta-btn cta-red"><i data-lucide="arrow-right" size="15"></i> Start free trial</a>
+        <a href="pro-landing.html" class="cta-btn cta-outline">See full pricing comparison</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a><a href="find-a-pro.html">Find a Pro</a>
+    <a href="pro-landing.html">For Contractors</a><a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+<script>lucide.createIcons();</script>
+</body>
+</html>

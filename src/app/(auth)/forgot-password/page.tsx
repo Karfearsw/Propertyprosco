@@ -8,13 +8,13 @@ export default function ForgotPasswordPage() {
   const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [resetUrl, setResetUrl] = useState<string | null>(null)
+  const [deliveryMode, setDeliveryMode] = useState<'smtp' | 'console' | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
-    setResetUrl(null)
+    setDeliveryMode(null)
 
     try {
       const res = await fetch('/api/auth/password-reset', {
@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
         return
       }
 
-      setResetUrl(json.resetUrl ?? null)
+      setDeliveryMode(json.delivery ?? null)
       setSent(true)
     } catch {
       setError('Unable to send reset instructions right now.')
@@ -74,17 +74,12 @@ export default function ForgotPasswordPage() {
             <div className="w-16 h-16 rounded-full bg-pp-green-light border-2 border-green-200 flex items-center justify-center text-3xl mx-auto mb-5">✉️</div>
             <h2 className="text-[22px] font-black text-pp-dark mb-3">Check your inbox</h2>
             <p className="text-[14px] text-pp-gray leading-relaxed mb-6">We sent a password reset link to <strong>{email}</strong>. It expires in 1 hour.</p>
-            {resetUrl && (
-              <div className="mb-5 rounded-2xl border border-blue-200 bg-blue-50 p-4 text-left text-[13px] leading-relaxed text-blue-900">
-                <div className="font-black uppercase tracking-[0.8px] text-[11px] text-blue-700">Local verification link</div>
-                <p className="mt-2">
-                  Email delivery is not configured here, so you can continue the recovery flow directly.
-                </p>
-                <Link href={resetUrl} className="mt-3 inline-flex rounded-xl bg-pp-dark px-4 py-2.5 text-[13px] font-black text-white">
-                  Open reset page
-                </Link>
-              </div>
-            )}
+            <div className="mb-5 rounded-2xl border border-pp-border bg-pp-bg p-4 text-left text-[13px] leading-relaxed text-pp-gray">
+              For security, the reset link is delivered by email instead of being exposed in the browser.
+              {deliveryMode === 'console' && (
+                <span> Local development fallback is active, so check the server logs for the delivered link.</span>
+              )}
+            </div>
             <Link href="/login" className="inline-block px-6 py-3 rounded-xl bg-pp-dark text-white text-[14px] font-black">Return to login</Link>
           </div>
         )}

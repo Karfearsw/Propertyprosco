@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sitemap — Property Pros</title>
+  <meta name="description" content="Full sitemap of all pages on Property Pros — the Rhode Island home services marketplace." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- ============================================================
+    TO UPDATE THIS SITEMAP: only edit the PAGES array below.
+
+    Each page entry has:
+      file     — the .html filename
+      label    — display name
+      section  — which card it goes in (see SECTIONS object)
+      icon     — any lucide icon name  lucide.dev/icons
+      status   — 'live' | 'new' | 'updated' | 'auth' | 'deprecate'
+      note     — optional note, shown in the change log if set
+
+    ADD a page    → add one object to the array
+    REMOVE a page → delete its object
+    CHANGE status → update the status field
+    The page count, stats bar, and change log all update automatically.
+  ============================================================ -->
+  <script>
+  const PAGES = [
+    // MARKETING & INFO
+    { file:'index.html',               label:'Homepage',              section:'marketing',  icon:'home',            status:'live' },
+    { file:'about.html',               label:'About Us',              section:'marketing',  icon:'info',            status:'live' },
+    { file:'pricing.html',             label:'Pricing',               section:'marketing',  icon:'tag',             status:'live', note:'Need to re-align the property pro plus in the top of the screen'},  
+    { file:'how-it-works.html',        label:'How It Works',          section:'marketing',  icon:'help-circle',     status:'new',     note:'3-tab page: Homeowner / Contractor / Realtor flows, FAQs' },
+    { file:'find-a-pro.html',          label:'Find a Pro',            section:'marketing',  icon:'search',          status:'new',     note:'Pro directory: live search, filters, 12 demo RI pros' },
+    { file:'blog.html',                label:'Blog',                  section:'marketing',  icon:'book-open',       status:'new',     note:'Featured post + grid + sidebar, 5 full RI articles in modal' },
+    { file:'press.html',               label:'Press & Media',         section:'marketing',  icon:'newspaper',       status:'new',     note:'Stats, key facts, brand assets, press@propertypros.com' },
+    { file:'contact.html',             label:'Contact',               section:'marketing',  icon:'mail',            status:'updated' },
+    { file:'waitlist.html',            label:'Waitlist',              section:'marketing',  icon:'clock',           status:'updated', note:'Charity section added: Habitat RI, Food Bank, After School' },
+    { file:'articles.html',            label:'Articles',              section:'marketing',  icon:'file-text',       status:'live' },
+    // LANDING PAGES
+    { file:'homeowner-landing.html',   label:'For Homeowners',        section:'landing',    icon:'home',            status:'live' },
+    { file:'pro-landing.html',         label:'For Contractors',       section:'landing',    icon:'wrench',          status:'live' },
+    { file:'realtor-landing.html',     label:'For Realtors',          section:'landing',    icon:'key',             status:'updated', note:'Price updated to $24.99/year' },
+    { file:'plus.html',                label:'Plus™ Membership',      section:'landing',    icon:'star',            status:'live' },
+    { file:'quick-jobs.html',          label:'Quick Jobs',            section:'landing',    icon:'zap',             status:'live' },
+    // LEGAL & SUPPORT
+    { file:'terms.html',               label:'Terms of Service',      section:'legal',      icon:'file-text',       status:'live' },
+    { file:'privacy.html',             label:'Privacy Policy',        section:'legal',      icon:'shield',          status:'live' },
+    { file:'dispute-resolution.html',  label:'Dispute Resolution',    section:'legal',      icon:'alert-circle',    status:'new',     note:'5-step process, can/cannot grid, RI escalation links' },
+    { file:'contractor-guide.html',    label:'Contractor Guide',      section:'legal',      icon:'book',            status:'new',     note:'8-section onboarding: profile, verification, leads, quotes' },
+    { file:'sitemap.html',             label:'Sitemap',               section:'legal',      icon:'map',             status:'updated', note:'Now self-updating via JS config array' },
+    { file:'404.html',                 label:'404 Page',              section:'legal',      icon:'alert-triangle',  status:'live' },
+    // AUTHENTICATION
+    { file:'login.html',               label:'Log In / Sign Up',      section:'auth',       icon:'log-in',          status:'auth' },
+    { file:'verify-email.html',        label:'Verify Email',          section:'auth',       icon:'mail',            status:'auth' },
+    { file:'email-verified.html',      label:'Email Verified',        section:'auth',       icon:'check-circle',    status:'auth' },
+    { file:'forgot-password.html',     label:'Forgot Password',       section:'auth',       icon:'key',             status:'auth' },
+    { file:'reset-password.html',      label:'Reset Password',        section:'auth',       icon:'refresh-cw',      status:'auth' },
+    // HOMEOWNER DASHBOARD
+    { file:'homeowner-dashboard.html',     label:'Dashboard',             section:'homeowner',  icon:'layout-dashboard', status:'updated' },
+    { file:'homeowner-projects.html',      label:'My Projects',           section:'homeowner',  icon:'briefcase',        status:'live' },
+    { file:'post-project.html',            label:'Post a Project',        section:'homeowner',  icon:'plus',             status:'live' },
+    { file:'homeowner-messages.html',      label:'Messages',              section:'homeowner',  icon:'message-circle',   status:'live' },
+    { file:'saved-pros.html',              label:'Saved Pros',            section:'homeowner',  icon:'bookmark',         status:'live' },
+    { file:'quick-jobs-booking.html',      label:'Quick Job Booking',     section:'homeowner',  icon:'zap',              status:'live' },
+    { file:'homeowner-notifications.html', label:'Notifications',         section:'homeowner',  icon:'bell',             status:'live' },
+    { file:'homeowner-settings.html',      label:'Settings',              section:'homeowner',  icon:'settings',         status:'live' },
+    { file:'homeowner-billing.html',       label:'Billing & Plus™',       section:'homeowner',  icon:'credit-card',      status:'new',  note:'Plus billing: free/subscriber states, charity, payment, history' },
+    { file:'notification-preferences.html',label:'Notification Prefs',   section:'homeowner',  icon:'bell-ring',        status:'new',  note:'Standalone prefs: channels, quiet hours, per-item toggles' },
+    { file:'homeowner-profile.html',       label:'Profile',               section:'homeowner',  icon:'user',             status:'live' },
+    // CONTRACTOR DASHBOARD
+    { file:'dashboard.html',           label:'Dashboard',             section:'contractor', icon:'layout-dashboard', status:'live' },
+    { file:'leads.html',               label:'Leads',                 section:'contractor', icon:'inbox',            status:'live' },
+    { file:'leads.html',     label:'Browse Projects',       section:'contractor', icon:'search',           status:'live' },
+    { file:'quotes.html',              label:'My Quotes',             section:'contractor', icon:'send',             status:'live' },
+    { file:'saved-leads.html',         label:'Saved Leads',           section:'contractor', icon:'bookmark',         status:'live' },
+    { file:'quick-jobs-pro.html',      label:'Quick Jobs',            section:'contractor', icon:'zap',              status:'live' },
+    { file:'messages.html',            label:'Messages',              section:'contractor', icon:'message-circle',   status:'live' },
+    { file:'schedule.html',            label:'Schedule',              section:'contractor', icon:'calendar',         status:'live' },
+    { file:'billing.html',             label:'Billing',               section:'contractor', icon:'credit-card',      status:'live' },
+    { file:'settings.html',            label:'Settings',              section:'contractor', icon:'settings',         status:'updated', note:'Updated with new quick jobs settings' },
+    { file:'notifications.html',       label:'Notifications',         section:'contractor', icon:'bell',             status:'live' },
+    // REALTOR DASHBOARD
+    { file:'realtor-dashboard.html',       label:'Dashboard',             section:'realtor',    icon:'layout-dashboard', status:'live' },
+    { file:'realtor-clients.html',         label:'My Clients',            section:'realtor',    icon:'users',            status:'live' },
+    { file:'realtor-post-project.html',    label:'Post a Project',        section:'realtor',    icon:'file-plus',        status:'live' },
+    { file:'realtor-referrals.html',       label:'Referrals',             section:'realtor',    icon:'share-2',          status:'updated', note:'Price updated to $24.99/year' },
+    { file:'realtor-messages.html',        label:'Messages',              section:'realtor',    icon:'message-circle',   status:'live' },
+    { file:'realtor-notifications.html',   label:'Notifications',         section:'realtor',    icon:'bell',             status:'updated', note:'Price updated to $24.99/year' },
+    { file:'realtor-settings.html',        label:'Settings',              section:'realtor',    icon:'settings',         status:'updated', note:'Price updated to $24.99/year' },
+    { file:'realtor-billing.html',         label:'Plan & Billing',        section:'realtor',    icon:'credit-card',      status:'new',     note:'Annual billing: plan hero, referral credits, invoices, pause/cancel' },
+    { file:'notification-preferences.html',label:'Notification Prefs',   section:'realtor',    icon:'bell-ring',        status:'new',     note:'Shared page — all 3 user types, sidebar switches automatically' },
+    // SHARED & PROFILES
+    { file:'pro-profile.html',         label:'Pro Profile (public)',  section:'shared',     icon:'user-circle',      status:'live' },
+    { file:'customer-profile.html',    label:'Customer Profile',      section:'shared',     icon:'user-check',       status:'live' },
+    { file:'referral.html',            label:'Referral Page',         section:'shared',     icon:'share-2',          status:'live' },
+    { file:'email-notification.html',  label:'Email Template',        section:'shared',     icon:'mail',             status:'live' },
+    { file:'project-questionnaire.html',label:'Project Questionnaire', section:'shared',    icon:'clipboard-list',   status:'live' },
+    // DEV TOOLS
+    { file:'qa-checklist-v2.html',     label:'QA Checklist v2',       section:'dev',        icon:'check-square',     status:'live' },
+    { file:'qa-checklist.html',        label:'QA Checklist v1',       section:'dev',        icon:'list',             status:'live' },
+    
+  ];
+
+  const SECTIONS = {
+    marketing:  { label:'Marketing & Info',       color:'#fef2f2', iconColor:'#dc2626', icon:'globe' },
+    landing:    { label:'Landing Pages',           color:'#f0fdf4', iconColor:'#16a34a', icon:'layout' },
+    legal:      { label:'Legal & Support',         color:'#fef3c7', iconColor:'#b45309', icon:'scale' },
+    auth:       { label:'Authentication',          color:'#eff6ff', iconColor:'#2563eb', icon:'lock' },
+    homeowner:  { label:'Homeowner Dashboard',     color:'#f0fdf4', iconColor:'#16a34a', icon:'home' },
+    contractor: { label:'Contractor Dashboard',    color:'#fef2f2', iconColor:'#dc2626', icon:'wrench' },
+    realtor:    { label:'Realtor Dashboard',       color:'#fef3c7', iconColor:'#b45309', icon:'key' },
+    shared:     { label:'Shared & Profiles',       color:'#f5f3ff', iconColor:'#7c3aed', icon:'user' },
+    dev:        { label:'Dev Tools',               color:'#f3f4f6', iconColor:'#6b7280', icon:'tool' },
+  };
+
+  const PRICING = [
+    { user:'Homeowner',       price:'$0',     period:'always free',  note:'Post · Quote · Message',               color:'#fff' },
+    { user:'Homeowner Plus™', price:'$9.99',  period:'per year',     note:'AI · Discounts · Priority · Charity',  color:'#fcd34d' },
+    { user:'Contractor',      price:'$9.99',  period:'per month',    note:'Unlimited leads · 14-day trial',       color:'#f87171' },
+    { user:'Realtor Pro',     price:'$24.99', period:'per year',     note:'Client mgmt · Referrals · 14-day trial',color:'#fcd34d' },
+  ];
+  </script>
+
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--red:#dc2626;--dark:#111827;--dark2:#1f2937;--gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--green:#16a34a;--gold:#b45309;--blue:#2563eb;--purple:#7c3aed;--font:'Manrope',sans-serif;--display:'Playfair Display',serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--dark)}
+    a{text-decoration:none;color:inherit}
+    header{background:var(--dark);padding:0 48px;height:66px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+    .brand-name{font-size:18px;font-weight:900;color:#fff}.brand-name span{color:#f87171}
+    .nav-links{display:flex;gap:24px}.nav-link{font-size:13px;font-weight:700;color:#9ca3af;transition:color .15s}.nav-link:hover{color:#fff}
+    .hdr-btns{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+    .btn-ghost{border-color:rgba(255,255,255,.2);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.08)}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#b91c1c}
+    .hero{background:var(--dark);padding:48px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,38,38,.1) 0%,transparent 60%)}
+    .hero-inner{position:relative;z-index:1}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:12px}
+    .hero h1{font-family:var(--display);font-size:38px;font-weight:900;color:#fff;letter-spacing:-1.5px;margin-bottom:10px}
+    .hero-sub{font-size:14px;color:#9ca3af;font-weight:700}
+    .stats-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 48px;display:flex;gap:28px;flex-wrap:wrap}
+    .stat{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--gray)}
+    .stat strong{color:var(--dark);font-weight:900}
+    .stat-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .main{max-width:1200px;margin:0 auto;padding:36px 48px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    .smap{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+    .smap.span3{grid-column:span 3}
+    .smap-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+    .sh-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .sh-title{font-size:13px;font-weight:900;flex:1}
+    .sh-count{font-size:11px;font-weight:800;color:var(--gray);background:var(--bg);padding:3px 9px;border-radius:999px}
+    .smap-body{padding:8px 10px}
+    .smap-link{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;font-size:13px;font-weight:700;color:var(--dark2);transition:all .15s}
+    .smap-link:hover{background:var(--bg);color:var(--dark)}
+    .smap-link svg{color:var(--gray);flex-shrink:0}
+    .smap-link:hover svg{color:var(--red)}
+    .filename{font-size:10px;font-weight:700;color:#9ca3af;margin-left:auto;font-family:monospace}
+    .bdg{font-size:9px;font-weight:900;padding:2px 6px;border-radius:999px;flex-shrink:0;white-space:nowrap}
+    .sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+    .sum-stat{background:rgba(255,255,255,.06);border-radius:11px;padding:14px;text-align:center}
+    .sum-num{font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px;margin-bottom:4px}
+    .sum-label{font-size:11px;color:#6b7280;font-weight:700}
+    .pricing-table{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .pt-col{background:rgba(255,255,255,.05);border-radius:11px;padding:14px;border:1px solid rgba(255,255,255,.07)}
+    .pt-user{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px}
+    .pt-price{font-size:20px;font-weight:900;letter-spacing:-0.5px;margin-bottom:2px}
+    .pt-period{font-size:11px;color:#9ca3af;font-weight:700}
+    .pt-note{font-size:11px;color:#4b5563;font-weight:700;margin-top:6px}
+    .cl-row{display:flex;align-items:flex-start;gap:12px;padding:9px 4px;border-bottom:1px solid #f9fafb}
+    .cl-row:last-child{border-bottom:none}
+    .cl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+    .cl-file{font-size:12px;font-weight:900;color:var(--dark);min-width:210px}
+    .cl-desc{font-size:12px;font-weight:700;color:var(--gray);flex:1}
+    .cl-badge{font-size:9px;font-weight:900;padding:2px 7px;border-radius:999px;flex-shrink:0}
+    footer{background:var(--dark);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fl{display:flex;gap:18px;flex-wrap:wrap}.fl a{font-size:13px;font-weight:700;color:#4b5563;transition:color .15s}.fl a:hover{color:#fff}
+    .fc{font-size:12px;color:#374151}
+    @media(max-width:1000px){.main{grid-template-columns:1fr 1fr;padding:24px}.smap.span3{grid-column:span 2}.sum-grid,.pricing-table{grid-template-columns:1fr 1fr}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}.hero{padding:36px 18px}.hero h1{font-size:28px}.main{grid-template-columns:1fr;padding:16px}.smap.span3{grid-column:span 1}.stats-bar{padding:12px 18px;gap:14px}.sum-grid,.pricing-table{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="brand"><div class="logo">PP</div><div class="brand-name"><span>Property</span> Pros</div></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="find-a-pro.html" class="nav-link">Find a Pro</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="pricing.html" class="nav-link">Pricing</a>
+    <a href="about.html" class="nav-link">About</a>
+  </div>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="post-project.html" class="btn btn-red">Post a project</a>
+  </div>
+</header>
+<div class="hero"><div class="hero-inner"><div class="eyebrow">Sitemap</div><h1 id="hero-title">Loading…</h1><p class="hero-sub">Every page organized by section · Updated May 2026</p></div></div>
+<div class="stats-bar" id="stats-bar"></div>
+<div class="main" id="main"></div>
+<footer>
+  <div class="fl"><a href="index.html">Home</a><a href="find-a-pro.html">Find a Pro</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+
+<script>
+const BADGE = {
+  live:      null,
+  new:       { label:'new',       bg:'#f0fdf4', color:'#16a34a', border:'#bbf7d0', dot:'#16a34a' },
+  updated:   { label:'updated',   bg:'#eff6ff', color:'#2563eb', border:'#bfdbfe', dot:'#2563eb' },
+  auth:      { label:'auth',      bg:'#fef3c7', color:'#b45309', border:'#fde68a', dot:'#b45309' },
+  deprecate: { label:'deprecate', bg:'#fef2f2', color:'#dc2626', border:'#fecaca', dot:'#9ca3af' },
+};
+
+function badge(status) {
+  const b = BADGE[status];
+  if (!b) return '';
+  return `<span class="bdg" style="background:${b.bg};color:${b.color};border:1px solid ${b.border}">${b.label}</span>`;
+}
+
+function render() {
+  const total      = PAGES.length;
+  const newCount   = PAGES.filter(p => p.status === 'new').length;
+  const updCount   = PAGES.filter(p => p.status === 'updated').length;
+  const depCount   = PAGES.filter(p => p.status === 'deprecate').length;
+
+  document.getElementById('hero-title').textContent = `All ${total} pages on Property Pros`;
+
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-dot" style="background:#111827"></div><strong>${total}</strong>&nbsp;total pages</div>
+    <div class="stat"><div class="stat-dot" style="background:#16a34a"></div><strong>${newCount}</strong>&nbsp;new</div>
+    <div class="stat"><div class="stat-dot" style="background:#2563eb"></div><strong>${updCount}</strong>&nbsp;updated</div>
+    ${depCount ? `<div class="stat"><div class="stat-dot" style="background:#dc2626"></div><strong>${depCount}</strong>&nbsp;to deprecate</div>` : ''}
+  `;
+
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+
+  // Section cards
+  Object.entries(SECTIONS).forEach(([key, sec]) => {
+    const pages = PAGES.filter(p => p.section === key);
+    if (!pages.length) return;
+    const card = document.createElement('div');
+    card.className = 'smap';
+    card.innerHTML = `
+      <div class="smap-head">
+        <div class="sh-icon" style="background:${sec.color}"><i data-lucide="${sec.icon}" style="color:${sec.iconColor};width:17px;height:17px"></i></div>
+        <div class="sh-title">${sec.label}</div>
+        <div class="sh-count">${pages.length}</div>
+      </div>
+      <div class="smap-body">
+        ${pages.map(p => `
+          <a href="${p.file}" class="smap-link">
+            <i data-lucide="${p.icon}" style="width:13px;height:13px"></i>
+            ${p.label}
+            ${badge(p.status)}
+            <span class="filename">${p.file}</span>
+          </a>`).join('')}
+      </div>`;
+    main.appendChild(card);
+  });
+
+  // Summary
+  const sum = document.createElement('div');
+  sum.className = 'smap span3';
+  sum.style.cssText = 'background:var(--dark);border-color:rgba(255,255,255,.08)';
+  sum.innerHTML = `
+    <div style="padding:24px">
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin-bottom:16px">Platform summary</div>
+      <div class="sum-grid">
+        <div class="sum-stat"><div class="sum-num">${total}</div><div class="sum-label">Total pages</div></div>
+        <div class="sum-stat"><div class="sum-num" style="color:#f87171">${newCount}</div><div class="sum-label">New this session</div></div>
+        <div class="sum-stat"><div class="sum-num" style="color:#60a5fa">${updCount}</div><div class="sum-label">Updated</div></div>
+        <div class="sum-stat"><div class="sum-num" style="color:#fcd34d">${Object.keys(SECTIONS).length}</div><div class="sum-label">Sections</div></div>
+      </div>
+      <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin-bottom:12px">Confirmed pricing</div>
+      <div class="pricing-table">
+        ${PRICING.map(p => `
+          <div class="pt-col">
+            <div class="pt-user">${p.user}</div>
+            <div class="pt-price" style="color:${p.color}">${p.price}</div>
+            <div class="pt-period">${p.period}</div>
+            <div class="pt-note">${p.note}</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  main.appendChild(sum);
+
+  // Change log
+  const noted = PAGES.filter(p => p.note);
+  if (noted.length) {
+    const log = document.createElement('div');
+    log.className = 'smap span3';
+    log.innerHTML = `
+      <div class="smap-head">
+        <div class="sh-icon" style="background:var(--bg)"><i data-lucide="git-commit" style="color:var(--gray);width:17px;height:17px"></i></div>
+        <div class="sh-title">Changes & notes (${noted.length} pages)</div>
+        <span style="font-size:11px;font-weight:700;color:var(--gray);margin-left:auto">May 2026</span>
+      </div>
+      <div style="padding:12px 16px">
+        ${noted.map(p => {
+          const b = BADGE[p.status] || BADGE.new;
+          return `<div class="cl-row">
+            <div class="cl-dot" style="background:${b.dot}"></div>
+            <div class="cl-file">${p.file}</div>
+            <div class="cl-desc">${p.note}</div>
+            <span class="cl-badge" style="background:${b.bg};color:${b.color};border:1px solid ${b.border}">${b.label}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    main.appendChild(log);
+  }
+
+  lucide.createIcons();
+}
+
+render();
+</script>
+</body>
+</html>

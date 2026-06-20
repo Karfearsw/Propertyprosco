@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your Property Pros notifications — project updates, new quotes, and messages." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed; --purple-light: #f5f3ff;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header { background: var(--dark); padding: 0 32px; height: 62px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .header-nav { display: flex; gap: 24px; align-items: center; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .header-link:hover, .header-link.active { color: #fff; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    /* BELL */
+    .bell-wrap { position: relative; cursor: pointer; }
+    .bell-icon { font-size: 20px; color: #9ca3af; padding: 4px; display: block; transition: color .15s; }
+    .bell-wrap:hover .bell-icon { color: #fff; }
+    .bell-badge { position: absolute; top: -2px; right: -4px; width: 18px; height: 18px; background: var(--red); border-radius: 50%; font-size: 10px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 2px solid var(--dark); }
+
+    /* USER PILL */
+    .user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.08); border-radius: 999px; padding: 5px 12px 5px 5px; cursor: pointer; position: relative; }
+    .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; }
+    .user-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .user-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 6px; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 100; }
+    .dd-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--dark); transition: background .12s; }
+    .dd-item:hover { background: var(--bg); }
+    .dd-item.danger { color: var(--red); }
+    .dd-item.danger:hover { background: var(--red-light); }
+    .dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* PAGE */
+    .page { max-width: 720px; margin: 0 auto; padding: 32px 24px 60px; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .mark-all { font-size: 13px; font-weight: 800; color: var(--red); cursor: pointer; border: none; background: none; font-family: var(--font); }
+    .mark-all:hover { text-decoration: underline; }
+
+    /* FILTER TABS */
+    .filter-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+    .ftab { padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .15s; }
+    .ftab:hover { border-color: var(--dark); color: var(--dark); }
+    .ftab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .ftab-count { font-size: 10px; font-weight: 800; background: rgba(0,0,0,.12); padding: 1px 5px; border-radius: 999px; margin-left: 4px; }
+    .ftab.active .ftab-count { background: rgba(255,255,255,.2); }
+
+    /* NOTIFICATION GROUP */
+    .notif-group { margin-bottom: 24px; }
+    .notif-group-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 10px; padding-left: 4px; }
+
+    /* NOTIFICATION ITEM */
+    .notif-item { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; margin-bottom: 8px; display: flex; gap: 14px; align-items: flex-start; cursor: pointer; transition: all .15s; position: relative; }
+    .notif-item:hover { border-color: #d1d5db; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+    .notif-item.unread { border-left: 3px solid var(--red); background: #fffcfc; }
+    .notif-item.unread::before { content: ''; position: absolute; top: 18px; left: -6px; width: 10px; height: 10px; background: var(--red); border-radius: 50%; border: 2px solid var(--white); display: none; }
+
+    .notif-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .notif-body { flex: 1; min-width: 0; }
+    .notif-title { font-size: 14px; font-weight: 800; color: var(--dark); margin-bottom: 3px; line-height: 1.4; }
+    .notif-item.unread .notif-title { color: var(--dark); }
+    .notif-sub { font-size: 13px; color: var(--gray); font-weight: 700; line-height: 1.5; }
+    .notif-meta { display: flex; gap: 10px; align-items: center; margin-top: 8px; flex-wrap: wrap; }
+    .notif-time { font-size: 11px; font-weight: 800; color: var(--gray); }
+    .notif-tag { font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
+    .notif-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+    .unread-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; }
+    .notif-cta { font-size: 12px; font-weight: 800; color: var(--red); white-space: nowrap; }
+
+    /* PREFERENCES PANEL */
+    .pref-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px; margin-top: 32px; }
+    .pref-title { font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+    .pref-sub { font-size: 13px; color: var(--gray); font-weight: 700; margin-bottom: 18px; }
+    .pref-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .pref-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .pref-label { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .pref-desc { font-size: 12px; color: var(--gray); font-weight: 600; margin-top: 2px; }
+    .toggle { width: 44px; height: 24px; background: var(--green); border-radius: 999px; position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0; }
+    .toggle.off { background: var(--border); }
+    .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+    .toggle:not(.off)::after { transform: translateX(20px); }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 52px; margin-bottom: 16px; }
+    .empty-title { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+    .empty-sub { font-size: 14px; color: var(--gray); line-height: 1.7; }
+
+    @media (max-width: 600px) { .header-nav { display: none; } }
+  
+  .hw-rail{} @media(max-width:640px){.hw-rail{display:none!important}}
+</style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header style="background:#14532d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.1)">
+    <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#86efac">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="homeowner-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid #14532d"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">MS</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+
+  <!-- PAGE -->
+  <div style="background:var(--dark2);border-bottom:1px solid rgba(255,255,255,.06);padding:8px 24px;display:flex;gap:16px;align-items:center;font-size:12px;color:#6b7280;font-weight:700">
+    <span>🛠 Demo:</span>
+    <a onclick="resetNotifDemo()" style="color:#f87171;cursor:pointer;font-weight:800">Simulate new notifications arriving</a>
+    <a href="email-notification.html" style="color:#60a5fa;font-weight:800">Preview email templates →</a>
+  </div>
+
+  <div class="hw-layout" style="display:flex;align-items:flex-start">
+    <aside class="hw-rail" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+    <div style="flex:1;min-width:0"><div class="page">
+
+    <div class="page-header">
+      <div>
+        <div class="page-title">Notifications</div>
+        <div class="page-sub">Stay up to date on your projects and quotes</div>
+      </div>
+      <button class="mark-all" onclick="markAllRead()">Mark all as read</button>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <div class="ftab active" onclick="filterNotifs('all', this)">All <span class="ftab-count" id="count-all">7</span></div>
+      <div class="ftab" onclick="filterNotifs('quote', this)">Quotes <span class="ftab-count" id="count-quote">3</span></div>
+      <div class="ftab" onclick="filterNotifs('message', this)">Messages <span class="ftab-count" id="count-message">2</span></div>
+      <div class="ftab" onclick="filterNotifs('project', this)">Projects <span class="ftab-count" id="count-project">2</span></div>
+    </div>
+
+    <!-- TODAY -->
+    <div class="notif-group" data-group="today">
+      <div class="notif-group-label">Today</div>
+
+      <!-- NEW QUOTE - Unread -->
+      <div class="notif-item unread" data-type="quote" onclick="window.location='homeowner-projects.html'">
+        <div class="notif-icon" style="background:#eff6ff">💰</div>
+        <div class="notif-body">
+          <div class="notif-title">New quote on your roof replacement project</div>
+          <div class="notif-sub">Apex Roofing Group sent you a quote of <strong>$4,200</strong> — fixed price, 2–3 day job. ⭐ 4.9 rating, 214 reviews.</div>
+          <div class="notif-meta">
+            <span class="notif-time">9:42 AM</span>
+            <span class="notif-tag" style="background:var(--blue-light);color:#1e40af">💰 New quote</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="unread-dot"></div>
+          <div class="notif-cta">View quote →</div>
+        </div>
+      </div>
+
+      <!-- NEW QUOTE - Unread -->
+      <div class="notif-item unread" data-type="quote" onclick="window.location='homeowner-projects.html'">
+        <div class="notif-icon" style="background:#eff6ff">💰</div>
+        <div class="notif-body">
+          <div class="notif-title">New quote on your roof replacement project</div>
+          <div class="notif-sub">NE Roofing Co. sent you a quote of <strong>$3,850</strong> — this is your lowest quote so far.</div>
+          <div class="notif-meta">
+            <span class="notif-time">8:15 AM</span>
+            <span class="notif-tag" style="background:var(--blue-light);color:#1e40af">💰 New quote</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="unread-dot"></div>
+          <div class="notif-cta">View quote →</div>
+        </div>
+      </div>
+
+      <!-- MESSAGE - Unread -->
+      <div class="notif-item unread" data-type="message" onclick="window.location='homeowner-messages.html'">
+        <div class="notif-icon" style="background:var(--purple-light)">💬</div>
+        <div class="notif-body">
+          <div class="notif-title">New message from Kev Hernandez Contracting</div>
+          <div class="notif-sub">"Hi Maria, I reviewed your project details and I'm confident we can get this done right. Are you available for a free estimate this week?"</div>
+          <div class="notif-meta">
+            <span class="notif-time">7:30 AM</span>
+            <span class="notif-tag" style="background:var(--purple-light);color:var(--purple)">💬 Message</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="unread-dot"></div>
+          <div class="notif-cta">Reply →</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- YESTERDAY -->
+    <div class="notif-group" data-group="yesterday">
+      <div class="notif-group-label">Yesterday</div>
+
+      <!-- QUOTE READ -->
+      <div class="notif-item" data-type="quote" onclick="window.location='homeowner-projects.html'">
+        <div class="notif-icon" style="background:var(--green-light)">💰</div>
+        <div class="notif-body">
+          <div class="notif-title">New quote on your driveway resurfacing project</div>
+          <div class="notif-sub">Premier Paving & Masonry sent you a quote of <strong>$3,200</strong>. ⭐ 4.9 · 210 reviews.</div>
+          <div class="notif-meta">
+            <span class="notif-time">Apr 19 · 3:22 PM</span>
+            <span class="notif-tag" style="background:var(--green-light);color:#166534">💰 Quote</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="notif-cta">View →</div>
+        </div>
+      </div>
+
+      <!-- MESSAGE READ -->
+      <div class="notif-item" data-type="message" onclick="window.location='homeowner-messages.html'">
+        <div class="notif-icon" style="background:var(--purple-light)">💬</div>
+        <div class="notif-body">
+          <div class="notif-title">New message from Premier Paving & Masonry</div>
+          <div class="notif-sub">"Thanks for posting your project! We can do the full resurfacing in one day. Happy to come by for a free estimate first."</div>
+          <div class="notif-meta">
+            <span class="notif-time">Apr 19 · 2:10 PM</span>
+            <span class="notif-tag" style="background:var(--purple-light);color:var(--purple)">💬 Message</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="notif-cta">View →</div>
+        </div>
+      </div>
+
+      <!-- PROJECT MATCH -->
+      <div class="notif-item" data-type="project" onclick="window.location='homeowner-projects.html'">
+        <div class="notif-icon" style="background:var(--amber-light)">📋</div>
+        <div class="notif-body">
+          <div class="notif-title">Your painting project has been matched to 14 pros</div>
+          <div class="notif-sub">Your interior painting project is live. We've notified 14 verified painters in your area. Expect your first quote within 2–4 hours.</div>
+          <div class="notif-meta">
+            <span class="notif-time">Apr 19 · 11:05 AM</span>
+            <span class="notif-tag" style="background:var(--amber-light);color:#92400e">📋 Project update</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="notif-cta">View project →</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- OLDER -->
+    <div class="notif-group" data-group="older">
+      <div class="notif-group-label">Earlier</div>
+
+      <!-- PROJECT POSTED -->
+      <div class="notif-item" data-type="project" onclick="window.location='homeowner-projects.html'">
+        <div class="notif-icon" style="background:var(--green-light)">✅</div>
+        <div class="notif-body">
+          <div class="notif-title">Project posted successfully — roof replacement</div>
+          <div class="notif-sub">Your project is live and visible to verified roofing contractors in your area. You'll be notified when quotes arrive.</div>
+          <div class="notif-meta">
+            <span class="notif-time">Apr 18 · 9:00 AM</span>
+            <span class="notif-tag" style="background:var(--green-light);color:#166534">✅ Posted</span>
+          </div>
+        </div>
+        <div class="notif-right">
+          <div class="notif-cta">View →</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NOTIFICATION PREFERENCES -->
+    <div class="pref-card">
+      <div class="pref-title">Notification preferences</div>
+      <div class="pref-sub">Choose how you want to be notified</div>
+
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">New quote received</div>
+          <div class="pref-desc">Email + in-app when a pro sends you a quote</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">New message</div>
+          <div class="pref-desc">Email + in-app when a pro messages you</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Project updates</div>
+          <div class="pref-desc">When your project is matched, expiring, or closed</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Pro confirmed job</div>
+          <div class="pref-desc">When a hired pro confirms the start date</div>
+        </div>
+        <div class="toggle" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Weekly summary</div>
+          <div class="pref-desc">A digest of your active projects every Monday</div>
+        </div>
+        <div class="toggle off" onclick="this.classList.toggle('off')"></div>
+      </div>
+      <div class="pref-row">
+        <div>
+          <div class="pref-label">Tips & platform updates</div>
+          <div class="pref-desc">Occasional tips on getting better quotes faster</div>
+        </div>
+        <div class="toggle off" onclick="this.classList.toggle('off')"></div>
+      </div>
+    </div>
+
+  </div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:28px 32px;margin-top:40px">
+    <div style="max-width:720px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+        <div style="font-size:15px;font-weight:900;color:#fff"><span style="color:#86efac">Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="homeowner-dashboard.html" style="font-size:13px;font-weight:700;color:#6b7280">Find a pro</a>
+        <a href="pricing.html" style="font-size:13px;font-weight:700;color:#6b7280">Pricing</a>
+        <a href="about.html" style="font-size:13px;font-weight:700;color:#6b7280">About</a>
+        <a href="terms.html" style="font-size:13px;font-weight:700;color:#6b7280">Terms</a>
+        <a href="privacy.html" style="font-size:13px;font-weight:700;color:#6b7280">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    const NOTIF_KEY = 'pp_hw_notifs_read';
+
+    // Auto-mark all as read when visiting the notifications page
+    localStorage.setItem(NOTIF_KEY, 'true');
+    document.getElementById('header-bell-badge').style.display = 'none';
+
+    // Demo: reset notifications (simulate new unread ones arriving)
+    function resetNotifDemo() {
+      localStorage.removeItem(NOTIF_KEY);
+      document.querySelectorAll('.notif-item:nth-child(-n+3)').forEach(i => {
+        i.classList.add('unread');
+        if (!i.querySelector('.unread-dot')) {
+          const dot = document.createElement('div');
+          dot.className = 'unread-dot';
+          i.querySelector('.notif-right').prepend(dot);
+        }
+      });
+      const badge = document.getElementById('header-bell-badge');
+      badge.style.display = 'flex';
+      badge.textContent = '3';
+    }
+
+    // FILTER
+    function filterNotifs(type, el) {
+      document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.notif-item').forEach(item => {
+        item.style.display = (type === 'all' || item.dataset.type === type) ? '' : 'none';
+      });
+      // Hide empty groups
+      document.querySelectorAll('.notif-group').forEach(g => {
+        const visible = [...g.querySelectorAll('.notif-item')].some(i => i.style.display !== 'none');
+        g.style.display = visible ? '' : 'none';
+      });
+    }
+
+    // MARK ALL READ
+    function markAllRead() {
+      document.querySelectorAll('.notif-item.unread').forEach(item => {
+        item.classList.remove('unread');
+        const dot = item.querySelector('.unread-dot');
+        if (dot) dot.remove();
+      });
+      document.getElementById('header-bell-badge').style.display = 'none';
+      // Save to localStorage
+      localStorage.setItem(NOTIF_KEY, 'true');
+      updateCounts();
+    }
+
+    function updateCounts() {
+      const unread = document.querySelectorAll('.notif-item.unread').length;
+      const badge = document.getElementById('header-bell-badge');
+      if (badge) { badge.textContent = unread; badge.style.display = unread > 0 ? 'flex' : 'none'; }
+    }
+
+    // Click notif = mark read
+    document.querySelectorAll('.notif-item').forEach(item => {
+      item.addEventListener('click', () => {
+        item.classList.remove('unread');
+        const dot = item.querySelector('.unread-dot');
+        if (dot) dot.remove();
+        updateCounts();
+      });
+    });
+
+    // Check saved read state
+    if (localStorage.getItem(NOTIF_KEY) === 'true') {
+      document.querySelectorAll('.notif-item.unread').forEach(i => {
+        i.classList.remove('unread');
+        const dot = i.querySelector('.unread-dot');
+        if (dot) dot.remove();
+      });
+      document.getElementById('header-bell-badge').style.display = 'none';
+    }
+
+    // Close dropdown on outside click
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.user-pill')) {
+        document.querySelectorAll('.user-dropdown').forEach(d => d.style.display = 'none');
+      }
+    });
+  </script>
+
+
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

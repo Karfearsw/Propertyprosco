@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Book a Quick Job on Property Pros — instant booking for small home service tasks." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmed — Property Pros Quick Jobs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --orange: #ea580c; --orange-light: #fff7ed;
+      --font: 'Manrope', sans-serif; --display: 'Playfair Display', serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; display: flex; flex-direction: column; }
+    a { text-decoration: none; color: inherit; }
+
+    header { background: var(--dark); padding: 0 32px; height: 62px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+    .confirm-wrap { width: 100%; max-width: 560px; }
+
+    /* SUCCESS CARD */
+    .success-card { background: var(--dark); border-radius: 24px; padding: 40px; text-align: center; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .success-card-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 0%, rgba(234,88,12,.2) 0%, transparent 60%); }
+    .success-icon { width: 88px; height: 88px; border-radius: 50%; background: rgba(22,163,74,.15); border: 3px solid rgba(22,163,74,.3); display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 20px; position: relative; z-index: 1; animation: popIn .5s cubic-bezier(.175,.885,.32,1.275); }
+    @keyframes popIn { 0% { transform:scale(0);opacity:0; } 80% { transform:scale(1.1); } 100% { transform:scale(1);opacity:1; } }
+    .success-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #fb923c; margin-bottom: 10px; position: relative; z-index: 1; }
+    .success-title { font-family: var(--display); font-size: 30px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 8px; position: relative; z-index: 1; }
+    .success-sub { font-size: 15px; color: #9ca3af; line-height: 1.7; position: relative; z-index: 1; margin-bottom: 28px; }
+    .booking-ref { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; padding: 14px 20px; display: inline-flex; align-items: center; gap: 10px; position: relative; z-index: 1; }
+    .booking-ref-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; }
+    .booking-ref-num { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: 1px; }
+
+    /* DETAIL CARD */
+    .detail-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 24px; margin-bottom: 16px; }
+    .dc-section { margin-bottom: 20px; }
+    .dc-section:last-child { margin-bottom: 0; }
+    .dc-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+    .dc-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 14px; font-weight: 700; color: var(--dark3); border-bottom: 1px solid var(--border); }
+    .dc-row:last-child { border-bottom: none; }
+    .dc-row strong { color: var(--dark); font-weight: 900; }
+    .dc-row.total { font-size: 16px; border-top: 2px solid var(--border); padding-top: 12px; margin-top: 4px; }
+    .dc-row.total strong { color: var(--green); }
+
+    /* PRO CARD */
+    .pro-card { display: flex; gap: 14px; align-items: center; background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px; margin-bottom: 16px; }
+    .pro-avatar { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; color: #fff; flex-shrink: 0; background: var(--green); }
+    .pro-name { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .pro-meta { font-size: 12px; color: var(--gray); font-weight: 700; margin-bottom: 4px; }
+    .pro-rating { font-size: 13px; color: var(--amber); font-weight: 700; }
+    .pro-badge { font-size: 11px; font-weight: 800; background: var(--green-light); color: #166534; padding: 2px 8px; border-radius: 999px; border: 1px solid #bbf7d0; display: inline-block; margin-top: 4px; }
+
+    /* WHAT NEXT */
+    .what-next { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 24px; margin-bottom: 16px; }
+    .wn-title { font-size: 16px; font-weight: 900; margin-bottom: 16px; }
+    .wn-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+    .wn-item:last-child { margin-bottom: 0; }
+    .wn-num { width: 28px; height: 28px; border-radius: 50%; background: var(--orange); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; flex-shrink: 0; }
+    .wn-text { font-size: 14px; font-weight: 700; color: var(--dark); padding-top: 4px; line-height: 1.5; }
+    .wn-text span { color: var(--gray); font-size: 12px; display: block; margin-top: 2px; font-weight: 600; }
+
+    /* GUARANTEE */
+    .guarantee { background: var(--orange-light); border: 1px solid #fed7aa; border-radius: 16px; padding: 18px 20px; margin-bottom: 20px; display: flex; gap: 14px; }
+    .guarantee-icon { font-size: 28px; flex-shrink: 0; }
+    .guarantee-title { font-size: 14px; font-weight: 900; color: var(--orange); margin-bottom: 4px; }
+    .guarantee-text { font-size: 13px; font-weight: 700; color: var(--dark3); line-height: 1.6; }
+
+    /* ACTIONS */
+    .actions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .btn { padding: 14px 24px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 8px; border: none; text-align: center; }
+    .btn-orange { background: var(--orange); color: #fff; }
+    .btn-orange:hover { background: #c2410c; }
+    .btn-outline { background: var(--white); color: var(--dark); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--bg); }
+
+    footer { background: var(--dark2); padding: 24px 32px; border-top: 1px solid rgba(255,255,255,.06); text-align: center; }
+    .footer-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+    .footer-link { font-size: 12px; font-weight: 700; color: #6b7280; }
+    .footer-link:hover { color: #fff; }
+    .footer-copy { font-size: 12px; color: #4b5563; }
+
+    /* CONFETTI */
+    .confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+    .confetti-piece { position: absolute; border-radius: 2px; animation: fall linear both; }
+    @keyframes fall { 0% { transform:translateY(-20px) rotate(0); opacity:1; } 100% { transform:translateY(100vh) rotate(720deg); opacity:0; } }
+  </style>
+</head>
+<body>
+
+  <div class="confetti-wrap" id="confetti"></div>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <a href="quick-jobs.html" style="font-size:13px;font-weight:800;color:#9ca3af">← Browse more Quick Jobs</a>
+  </header>
+
+  <div class="main">
+    <div class="confirm-wrap">
+
+      <!-- SUCCESS -->
+      <div class="success-card">
+        <div class="success-card-bg"></div>
+        <div class="success-icon">✅</div>
+        <div class="success-eyebrow">⚡ Quick Job booked</div>
+        <div class="success-title">You're all set!</div>
+        <div class="success-sub">Your booking is confirmed. A verified pro has been assigned and will show up at your selected time.</div>
+        <div class="booking-ref">
+          <div>
+            <div class="booking-ref-label">Booking reference</div>
+            <div class="booking-ref-num" id="booking-ref">QJ-2026-4821</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ASSIGNED PRO -->
+      <div class="pro-card">
+        <div class="pro-avatar" id="pro-avatar">KH</div>
+        <div>
+          <div class="pro-name" id="pro-name">Kev's Junk Removal</div>
+          <div class="pro-meta" id="pro-meta">Verified pro · 312 quick jobs completed · Your area</div>
+          <div class="pro-rating">★★★★★ 4.9</div>
+          <div class="pro-badge">✓ License & insurance verified</div>
+        </div>
+        <a href="messages.html" style="margin-left:auto;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:12px;font-weight:800;color:var(--dark);flex-shrink:0">💬 Message pro</a>
+      </div>
+
+      <!-- BOOKING DETAILS -->
+      <div class="detail-card">
+        <div class="dc-section">
+          <div class="dc-label">Booking details</div>
+          <div class="dc-row"><span>Service</span><strong id="detail-service">Small load removal</strong></div>
+          <div class="dc-row"><span>Date</span><strong id="detail-date">Tuesday, Apr 22</strong></div>
+          <div class="dc-row"><span>Time</span><strong id="detail-time">10:00 AM</strong></div>
+          <div class="dc-row"><span>Address</span><strong>Your area</strong></div>
+          <div class="dc-row"><span>Est. duration</span><strong>30–60 minutes</strong></div>
+        </div>
+        <div class="dc-section">
+          <div class="dc-label">Payment summary</div>
+          <div class="dc-row"><span>Base price</span><strong id="detail-base">$149</strong></div>
+          <div class="dc-row"><span>Booking fee</span><strong style="color:var(--green)">$0</strong></div>
+          <div class="dc-row total"><span>Total charged</span><strong id="detail-total">$149</strong></div>
+        </div>
+      </div>
+
+      <!-- WHAT HAPPENS NEXT -->
+      <div class="what-next">
+        <div class="wn-title">What happens next</div>
+        <div class="wn-item">
+          <div class="wn-num">1</div>
+          <div class="wn-text">You'll receive a confirmation email shortly
+            <span>Check your inbox — it includes your booking reference and pro contact details</span>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-num">2</div>
+          <div class="wn-text">The pro will message you to confirm access details
+            <span>Expect a message within 1 hour from Kev's Junk Removal</span>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-num">3</div>
+          <div class="wn-text">Pro shows up at your scheduled time
+            <span>You'll get a reminder notification 30 minutes before arrival</span>
+          </div>
+        </div>
+        <div class="wn-item">
+          <div class="wn-num">4</div>
+          <div class="wn-text">After the job — leave a review
+            <span>Your rating helps other homeowners and rewards great pros</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUARANTEE -->
+      <div class="guarantee">
+        <div class="guarantee-icon">🛡️</div>
+        <div>
+          <div class="guarantee-title">Property Pros Quick Jobs Guarantee</div>
+          <div class="guarantee-text">If the pro doesn't show up or the work doesn't meet our standard, we'll reschedule you with another verified pro at no extra charge — no questions asked.</div>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="actions">
+        <a href="homeowner-dashboard.html" class="btn btn-orange">← Back to my dashboard</a>
+        <a href="quick-jobs.html" class="btn btn-outline">Book another Quick Job</a>
+        <a href="homeowner-projects.html" class="btn btn-outline">View all my projects</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-links">
+      <a href="homeowner-dashboard.html" class="footer-link">Dashboard</a>
+      <a href="quick-jobs.html" class="footer-link">Quick Jobs</a>
+      <a href="contact.html" class="footer-link">Support</a>
+      <a href="terms.html" class="footer-link">Terms</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 Property Pros, LLC · All rights reserved</div>
+  </footer>
+
+  <script>
+    // Read URL params
+    const params = new URLSearchParams(window.location.search);
+    const serviceKey = params.get('service') || 'junk-small';
+    const date = params.get('date') || 'Tuesday, Apr 22';
+    const time = params.get('time') || '10:00 AM';
+
+    const serviceNames = {
+      'junk-small': { name: 'Small load removal', price: 149, proInit: 'KH', proName: "Kev's Junk Removal" },
+      'junk-medium': { name: 'Medium load removal', price: 249, proInit: 'KH', proName: "Kev's Junk Removal" },
+      'junk-full': { name: 'Full truck removal', price: 399, proInit: 'KH', proName: "Kev's Junk Removal" },
+      'appliance': { name: 'Appliance pickup', price: 89, proInit: 'AR', proName: 'Apex Removal Services' },
+      'furniture': { name: 'Furniture removal', price: 119, proInit: 'KH', proName: "Kev's Junk Removal" },
+      'yard-waste': { name: 'Yard waste removal', price: 99, proInit: 'GS', proName: 'GreenScape Crew' },
+      'lawn-small': { name: 'Lawn mowing — small lot', price: 49, proInit: 'GS', proName: 'GreenScape Crew' },
+      'lawn-medium': { name: 'Lawn mowing — medium lot', price: 79, proInit: 'GS', proName: 'GreenScape Crew' },
+      'spring-cleanup': { name: 'Spring lawn cleanup', price: 199, proInit: 'GS', proName: 'GreenScape Crew' },
+      'mulching': { name: 'Mulch delivery & install', price: 149, proInit: 'GS', proName: 'GreenScape Crew' },
+      'fall-cleanup': { name: 'Fall leaf cleanup', price: 149, proInit: 'GS', proName: 'GreenScape Crew' },
+      'hedge-trim': { name: 'Hedge & shrub trimming', price: 129, proInit: 'GS', proName: 'GreenScape Crew' },
+      'post-construction': { name: 'Post-construction cleanup', price: 299, proInit: 'SC', proName: 'Sparkle Clean Pro' },
+      'move-out': { name: 'Move-out deep clean', price: 249, proInit: 'SC', proName: 'Sparkle Clean Pro' },
+      'gutter-clean': { name: 'Gutter cleaning', price: 149, proInit: 'AR', proName: 'Apex Removal Services' },
+      'power-wash': { name: 'Pressure washing', price: 149, proInit: 'PW', proName: 'PowerWash Pro' },
+      'tv-mount': { name: 'TV mounting', price: 99, proInit: 'HF', proName: 'HandyFix Pro' },
+      'furniture-assembly': { name: 'Furniture assembly', price: 79, proInit: 'HF', proName: 'HandyFix Pro' },
+      'door-repair': { name: 'Door repair & adjustment', price: 89, proInit: 'HF', proName: 'HandyFix Pro' },
+      'picture-hanging': { name: 'Picture & art hanging', price: 79, proInit: 'HF', proName: 'HandyFix Pro' },
+      'single-room': { name: 'Single room painting', price: 299, proInit: 'PP', proName: 'PrimePaint Pros' },
+      'accent-wall': { name: 'Accent wall', price: 149, proInit: 'PP', proName: 'PrimePaint Pros' },
+      'fence-painting': { name: 'Fence painting or staining', price: 199, proInit: 'PP', proName: 'PrimePaint Pros' },
+    };
+
+    const s = serviceNames[serviceKey] || serviceNames['junk-small'];
+    document.getElementById('detail-service').textContent = s.name;
+    document.getElementById('detail-date').textContent = date;
+    document.getElementById('detail-time').textContent = time;
+    document.getElementById('detail-base').textContent = '$' + s.price;
+    document.getElementById('detail-total').textContent = '$' + s.price;
+    document.getElementById('pro-avatar').textContent = s.proInit;
+    document.getElementById('pro-name').textContent = s.proName;
+    document.getElementById('booking-ref').textContent = 'QJ-2026-' + Math.floor(Math.random() * 9000 + 1000);
+
+    // Confetti
+    const colors = ['#ea580c','#16a34a','#2563eb','#d97706','#7c3aed','#dc2626'];
+    const wrap = document.getElementById('confetti');
+    for (let i = 0; i < 50; i++) {
+      const p = document.createElement('div');
+      p.className = 'confetti-piece';
+      p.style.cssText = `left:${Math.random()*100}vw;width:${Math.random()*8+6}px;height:${Math.random()*8+6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*2+2}s;animation-delay:${Math.random()*1.5}s`;
+      wrap.appendChild(p);
+    }
+    setTimeout(() => wrap.remove(), 5000);
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

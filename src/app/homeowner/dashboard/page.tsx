@@ -4,6 +4,7 @@ import { formatCurrency, formatDate } from '@/lib/utils'
 import EmptyState from '@/components/brand/EmptyState'
 import { requireRole } from '@/lib/auth-guards'
 import { getHomeownerSnapshot } from '@/lib/dashboard-data'
+import { getProjectWorkflowLabel, quoteStatusClasses, quoteStatusLabel } from '@/lib/quote-workflow'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -159,9 +160,10 @@ export default async function HomeownerDashboardPage() {
                     <span className="text-[13px] font-black text-pp-dark shrink-0">{formatCurrency(quote.amount)}</span>
                   </div>
                   <div className="mt-2 flex items-center gap-2 text-[10px] font-black">
-                    <span className={`rounded-full px-2 py-0.5 ${quote.status === 'ACCEPTED' ? 'bg-pp-green-light text-pp-green' : quote.status === 'VIEWED' ? 'bg-pp-blue-light text-pp-blue' : 'bg-pp-gold-light text-pp-gold'}`}>
-                      {quote.status.charAt(0) + quote.status.slice(1).toLowerCase()}
+                    <span className={`rounded-full px-2 py-0.5 ${quoteStatusClasses[quote.status]}`}>
+                      {quoteStatusLabel[quote.status]}
                     </span>
+                    <span className="text-pp-gray">{getProjectWorkflowLabel(quote.project.status)}</span>
                     <span className="text-pp-gray">Received {formatDate(quote.createdAt)}</span>
                   </div>
                 </div>

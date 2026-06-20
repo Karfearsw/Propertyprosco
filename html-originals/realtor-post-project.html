@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Prep to Sell · Property Pros</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --dark:#111827; --gray:#6b7280; --border:#e5e7eb; --bg:#f3f4f6; --white:#fff;
+    --gold:#b45309; --gold-light:#fef3c7; --brown:#1c1007; --accent:#fcd34d;
+    --green:#16a34a; --green-light:#f0fdf4; --blue:#2563eb; --blue-light:#eff6ff; --red:#dc2626;
+    --font:'Manrope',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh}
+  a{text-decoration:none;color:inherit}
+  .shell{display:flex}
+  .sidebar{width:224px;min-height:100vh;background:var(--brown);position:sticky;top:0;height:100vh;flex-shrink:0;display:flex;flex-direction:column;padding:14px 12px}
+  .side-brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
+  .side-brand .logo{width:30px;height:30px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#fff}
+  .side-brand .name{font-size:15px;font-weight:900;color:#fff}
+  .side-brand .name span{color:var(--accent)}
+  .nav-label{font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--accent);padding:14px 8px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);cursor:pointer;margin-bottom:2px}
+  .nav-item i{width:17px;height:17px}
+  .nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+  .nav-item.active{background:var(--gold);color:#fff}
+  .main{flex:1;min-width:0}
+  header{background:var(--brown);height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+  .h-right{display:flex;align-items:center;gap:6px}
+  .h-icon{position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#cbb8a8}
+  .h-icon .dot{position:absolute;top:7px;right:8px;width:8px;height:8px;background:var(--gold);border-radius:50%;border:2px solid var(--brown)}
+  .h-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+  .hamb{display:none;width:38px;height:38px;border-radius:9px;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none}
+  .hamb span{display:block;width:20px;height:2px;background:#cbb8a8;border-radius:2px}
+
+  .wrap{max-width:760px;margin:0 auto;padding:28px 24px 80px}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--gray);font-size:13px;font-weight:700;margin-bottom:14px}
+  .back i{width:15px;height:15px}
+  .page-title{font-size:26px;font-weight:900;letter-spacing:-.02em}
+  .page-sub{color:var(--gray);font-size:14px;margin-top:4px;line-height:1.5;max-width:520px}
+
+  .card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .card-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--gray);margin-bottom:12px}
+  .field{margin-bottom:6px}
+  .field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}
+  .field select,.field input{width:100%;padding:12px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);background:var(--white);outline:none}
+  .field select:focus,.field input:focus{border-color:var(--gold)}
+
+  .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .svc{display:flex;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:13px;cursor:pointer;transition:all .15s;align-items:flex-start}
+  .svc:hover{border-color:var(--gold);background:#fffdf8}
+  .svc.sel{border-color:var(--gold);background:#fffdf8}
+  .svc .ic{width:40px;height:40px;border-radius:11px;background:var(--gold-light);color:var(--gold);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .svc .ic i{width:19px;height:19px}
+  .svc .t{font-size:14px;font-weight:800}
+  .svc .d{font-size:12px;color:var(--gray);font-weight:600;margin-top:2px;line-height:1.35}
+  .svc .check{width:21px;height:21px;border-radius:7px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:auto}
+  .svc.sel .check{background:var(--gold);border-color:var(--gold);color:#fff}
+  .svc .check i{width:13px;height:13px;opacity:0}
+  .svc.sel .check i{opacity:1}
+
+  .bar{position:sticky;bottom:0;margin-top:20px;background:var(--white);border:1px solid var(--border);border-radius:14px;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 -4px 20px rgba(0,0,0,.06)}
+  .bar .sum{font-size:13px;font-weight:700;color:var(--gray)}
+  .bar .sum b{color:var(--dark);font-size:15px}
+  .send-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font);white-space:nowrap}
+  .send-btn:hover{background:#92400e}
+  .send-btn:disabled{opacity:.5;cursor:not-allowed}
+  .send-btn i{width:17px;height:17px}
+
+  /* dispatch / responses */
+  .dispatch{text-align:center;padding:50px 20px}
+  .dispatch .pulse-ring{width:70px;height:70px;border-radius:50%;background:var(--gold-light);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:pr 1.4s infinite}
+  @keyframes pr{0%,100%{box-shadow:0 0 0 0 rgba(180,83,9,.3)}50%{box-shadow:0 0 0 16px rgba(180,83,9,0)}}
+  .dispatch .pulse-ring i{width:30px;height:30px;color:var(--gold)}
+  .dispatch .dt{font-size:18px;font-weight:900}
+  .dispatch .ds{font-size:13.5px;color:var(--gray);font-weight:600;margin-top:5px}
+  .pro-resp{display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--border);border-radius:13px;margin-bottom:10px}
+  .pro-resp .pav{width:42px;height:42px;border-radius:11px;background:#7f1d1d;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+  .pro-resp .pname{font-size:14px;font-weight:800}
+  .pro-resp .pmeta{font-size:12px;color:var(--gray);font-weight:600;margin-top:1px}
+  .pro-resp .pprice{font-size:17px;font-weight:900;color:var(--gold)}
+  .btn{padding:9px 15px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);border:none}
+  .btn-gold{background:var(--gold);color:#fff}
+  .btn-ghost{background:var(--bg);color:var(--dark);border:1px solid var(--border)}
+  .done-box{text-align:center;padding:40px 20px}
+  .done-box .dc{width:60px;height:60px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  .done-box .dc i{width:30px;height:30px}
+
+  .drawer{display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:var(--brown);border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto}
+  .drawer.on{display:flex}
+  .drawer .nav-item{color:rgba(255,255,255,.7)}
+  @media(max-width:760px){ .sidebar{display:none} .hamb{display:flex} .svc-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px">
+    <div style="width:32px;height:32px;border-radius:9px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+    <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:var(--accent)">Property</span> Pros</div>
+  </a>
+  <div class="h-right">
+    <a href="realtor-notifications.html" class="h-icon"><i data-lucide="bell"></i><span class="dot"></span></a>
+    <div class="h-avatar" onclick="toggleHwMenu()">SR</div>
+    <button class="hamb" onclick="toggleHwMenu()"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- PROPOSED CANONICAL NAV -->
+  <aside class="sidebar">
+    <div class="side-brand"><div class="logo">PP</div><div class="name"><span>Property</span> Pros</div></div>
+    <div class="nav-label">Workspace</div>
+    <a href="realtor-dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+    <a href="realtor-clients.html" class="nav-item"><i data-lucide="users"></i> Clients</a>
+    <a href="realtor-messages.html" class="nav-item"><i data-lucide="message-square"></i> Messages</a>
+    <a href="realtor-notifications.html" class="nav-item"><i data-lucide="bell"></i> Notifications</a>
+    <div class="nav-label">Account</div>
+    <a href="realtor-billing.html" class="nav-item"><i data-lucide="credit-card"></i> Plan &amp; Billing</a>
+    <a href="realtor-settings.html" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+  </aside>
+
+  <main class="main">
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+
+<div class="drawer" id="hw-drawer">
+  <a href="realtor-dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+  <a href="realtor-clients.html" class="nav-item"><i data-lucide="users"></i> Clients</a>
+  <a href="realtor-messages.html" class="nav-item"><i data-lucide="message-square"></i> Messages</a>
+  <a href="realtor-notifications.html" class="nav-item"><i data-lucide="bell"></i> Notifications</a>
+  <a href="realtor-billing.html" class="nav-item"><i data-lucide="credit-card"></i> Plan &amp; Billing</a>
+  <a href="realtor-settings.html" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+</div>
+
+<script>
+const CLIENTS = [
+  {name:'Ana Martinez', addr:'17 Oak Ave, Providence, RI'},
+  {name:'Robert Kim', addr:'23 Pine St, Pawtucket, RI'},
+  {name:'James Carter', addr:'24 Maple St, Cranston, RI'},
+];
+const SERVICES = [
+  {id:'clean', name:'Deep clean', desc:'Move-in ready, top to bottom', icon:'sparkles'},
+  {id:'paint', name:'Interior paint', desc:'Neutral, buyer-friendly tones', icon:'paint-roller'},
+  {id:'stage', name:'Staging', desc:'Furnish & style the key rooms', icon:'sofa'},
+  {id:'photo', name:'Photography', desc:'Listing-quality photos', icon:'camera'},
+  {id:'land', name:'Landscaping', desc:'Curb appeal & yard cleanup', icon:'trees'},
+  {id:'repair', name:'Minor repairs', desc:'Fix the little things buyers notice', icon:'wrench'},
+];
+let picked = new Set();
+
+function renderForm(){
+  document.getElementById('view').innerHTML = `
+    <a href="realtor-clients.html" class="back"><i data-lucide="arrow-left"></i> Back to clients</a>
+    <div class="page-title">Prep a home to sell</div>
+    <div class="page-sub">Pick the services to get your client's home market-ready. Property Pros sends the request to local pros and they respond with quotes — on demand.</div>
+
+    <div class="card">
+      <div class="card-label">Whose home?</div>
+      <div class="field"><label>Client</label>
+        <select id="client">
+          ${CLIENTS.map(c=>`<option value="${c.addr}">${c.name} — ${c.addr}</option>`).join('')}
+          <option value="__new">+ New property / address…</option>
+        </select>
+      </div>
+      <div class="field" id="newAddrWrap" style="display:none;margin-top:10px"><label>Property address</label><input id="newAddr" placeholder="e.g. 5 Cove Rd, Bristol, RI" /></div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">What does it need?</div>
+      <div class="svc-grid">
+        ${SERVICES.map(s=>`
+          <div class="svc ${picked.has(s.id)?'sel':''}" data-id="${s.id}" onclick="toggle('${s.id}')">
+            <div class="ic"><i data-lucide="${s.icon}"></i></div>
+            <div style="flex:1"><div class="t">${s.name}</div><div class="d">${s.desc}</div></div>
+            <div class="check"><i data-lucide="check"></i></div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Timing</div>
+      <div class="field"><label>Target list date (optional)</label><input id="listdate" type="date" /></div>
+    </div>
+
+    <div class="bar">
+      <div class="sum" id="sum">Select services to send</div>
+      <button class="send-btn" id="send" onclick="dispatch()" disabled><i data-lucide="send"></i> Send to Property Pros</button>
+    </div>`;
+  lucide.createIcons();
+  document.getElementById('client').addEventListener('change', e=>{
+    document.getElementById('newAddrWrap').style.display = e.target.value==='__new' ? 'block' : 'none';
+  });
+  updateBar();
+}
+function toggle(id){ picked.has(id)?picked.delete(id):picked.add(id);
+  document.querySelector(`.svc[data-id="${id}"]`).classList.toggle('sel'); updateBar(); }
+function updateBar(){
+  const n=picked.size;
+  document.getElementById('sum').innerHTML = n? `<b>${n}</b> service${n>1?'s':''} · est. <b>$${(n*800).toLocaleString()}</b>` : 'Select services to send';
+  document.getElementById('send').disabled = n===0;
+}
+
+function dispatch(){
+  const sel=document.getElementById('client');
+  const addr = sel.value==='__new' ? (document.getElementById('newAddr').value||'the property') : sel.value;
+  const area=(addr.split(',')[1]||'your area').trim();
+  document.getElementById('view').innerHTML = `
+    <div class="dispatch">
+      <div class="pulse-ring"><i data-lucide="radar"></i></div>
+      <div class="dt">Finding pros near ${area}…</div>
+      <div class="ds">Sending your prep request to verified local pros.</div>
+    </div>`;
+  lucide.createIcons();
+  setTimeout(()=>showResponses(addr), 2300);
+}
+function showResponses(addr){
+  const base=picked.size*800;
+  const pros=[
+    {name:'BrightHome Services', initials:'BH', rating:'4.9', eta:'Can start this week', price:'$'+base.toLocaleString()},
+    {name:'Coastal Pro Painters', initials:'CP', rating:'4.8', eta:'Start Monday', price:'$'+(base+450).toLocaleString()},
+    {name:'GreenLeaf Exterior', initials:'GL', rating:'4.7', eta:'Available now', price:'$'+(base+820).toLocaleString()},
+  ];
+  document.getElementById('view').innerHTML = `
+    <a href="javascript:void(0)" class="back" onclick="renderForm()"><i data-lucide="arrow-left"></i> Edit request</a>
+    <div class="page-title">3 pros responded</div>
+    <div class="page-sub">For ${addr} · ${picked.size} service${picked.size>1?'s':''}. Accept one to book and move toward listing.</div>
+    <div class="card">
+      ${pros.map((p,i)=>`
+        <div class="pro-resp">
+          <div class="pav">${p.initials}</div>
+          <div style="flex:1;min-width:0"><div class="pname">${p.name}</div><div class="pmeta">★ ${p.rating} · ${p.eta}</div></div>
+          <div style="text-align:right"><div class="pprice">${p.price}</div>
+            <button class="btn btn-gold" style="margin-top:5px;padding:6px 13px;font-size:12px" onclick="accept('${p.name}')">Accept</button></div>
+        </div>`).join('')}
+    </div>`;
+  lucide.createIcons();
+}
+function accept(pro){
+  document.getElementById('view').innerHTML = `
+    <div class="done-box">
+      <div class="dc"><i data-lucide="check"></i></div>
+      <div class="page-title" style="font-size:22px">Booked with ${pro}</div>
+      <div class="page-sub" style="margin:6px auto 0">The prep work is scheduled. You'll see this client move toward "Ready to list" on your dashboard.</div>
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center">
+        <a href="realtor-clients.html"><button class="btn btn-gold">Go to clients</button></a>
+        <a href="javascript:void(0)" onclick="picked=new Set();renderForm()"><button class="btn btn-ghost">Prep another home</button></a>
+      </div>
+    </div>`;
+  lucide.createIcons();
+}
+function toggleHwMenu(){ document.getElementById('hw-drawer').classList.toggle('on'); }
+function closeHwMenu(){ document.getElementById('hw-drawer').classList.remove('on'); }
+
+renderForm();
+</script>
+</body>
+</html>

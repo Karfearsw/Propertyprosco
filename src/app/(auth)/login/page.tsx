@@ -6,7 +6,11 @@ import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
 
-function authErrorMessage(errorCode: string | null) {
+function authErrorMessage(errorCode: string | null, credentialsCode: string | null) {
+  if (errorCode === 'CredentialsSignin' && credentialsCode === 'email_not_verified') {
+    return 'Verify your email address before logging in with your password.'
+  }
+
   switch (errorCode) {
     case 'OAuthAccountNotLinked':
       return 'This email is already associated with another sign-in method. Use your existing method to log in first.'
@@ -25,11 +29,14 @@ export default function LoginPage() {
   const router = useRouter()
   const params = useSearchParams()
   const callbackError = params.get('error')
+  const callbackCode = params.get('code')
+  const verified = params.get('verified') === '1'
+  const emailHint = params.get('email') ?? ''
 
-  const [email, setEmail]       = useState('')
+  const [email, setEmail]       = useState(emailHint)
   const [password, setPassword] = useState('')
   const [showPw, setShowPw]     = useState(false)
-  const [error, setError]       = useState(authErrorMessage(callbackError))
+  const [error, setError]       = useState(authErrorMessage(callbackError, callbackCode))
   const [loading, setLoading]   = useState(false)
 
   async function handleLogin(e: React.FormEvent) {
@@ -38,7 +45,7 @@ export default function LoginPage() {
     setLoading(true)
     const res = await signIn('credentials', { email, password, redirect: false })
     if (!res?.ok) {
-      setError('Invalid email or password.')
+      setError(authErrorMessage(res?.error ?? 'CredentialsSignin', res?.code ?? null))
       setLoading(false)
       return
     }
@@ -84,9 +91,29 @@ export default function LoginPage() {
           <h1 className="text-[24px] font-black text-pp-dark tracking-tight mb-1.5">Log in to your account</h1>
           <p className="text-[14px] text-pp-gray mb-6">New here? <Link href="/signup" className="text-pp-red font-extrabold hover:underline">Create a free account</Link></p>
 
+          {verified && (
+            <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-800 text-[13px] font-bold rounded-xl px-4 py-3 mb-5">
+              <AlertCircle size={15} className="shrink-0"/>
+              Your email is verified. You can log in now.
+            </div>
+          )}
+
           {error && (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[13px] font-bold rounded-xl px-4 py-3 mb-5">
               <AlertCircle size={15} className="shrink-0"/>{error}
+            </div>
+          )}
+
+          {(callbackCode === 'email_not_verified' || error.includes('Verify your email')) && email && (
+            <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] font-bold text-amber-800">
+              Need a fresh verification email?{' '}
+              <Link
+                href={`/verify-email?email=${encodeURIComponent(email)}`}
+                className="text-pp-red hover:underline"
+              >
+                Resend it here
+              </Link>
+              .
             </div>
           )}
 

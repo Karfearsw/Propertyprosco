@@ -145,12 +145,18 @@ export default async function RealtorDashboardPage() {
                 </div>
               ) : clients.map(c => {
                 const statusColor: Record<string,string> = { active:'bg-pp-green-light text-pp-green', pending:'bg-pp-gold-light text-pp-gold', closed:'bg-pp-bg text-pp-gray' }
+                const latestProject = c.projects[0]
                 return (
                   <div key={c.id} className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
                     <div className="w-9 h-9 rounded-full bg-pp-gold flex items-center justify-center text-[11px] font-black text-white shrink-0">{c.name.slice(0,2).toUpperCase()}</div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[13px] font-black text-pp-dark">{c.name}</div>
                       <div className="text-[11px] font-bold text-pp-gray truncate">{c.address ?? c.email ?? '—'}</div>
+                      <div className="text-[11px] font-bold text-pp-gray/80">
+                        {c._count.projects > 0
+                          ? `${c._count.projects} linked project${c._count.projects !== 1 ? 's' : ''}${latestProject ? ` · Latest: ${latestProject.title}` : ''}`
+                          : 'No linked projects yet'}
+                      </div>
                     </div>
                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${statusColor[c.status] ?? 'bg-pp-bg text-pp-gray'}`}>{c.status}</span>
                   </div>
@@ -248,8 +254,20 @@ export default async function RealtorDashboardPage() {
                 <div className="flex-1 min-w-0">
                   <div className="text-[13px] font-black text-pp-dark truncate">{p.title}</div>
                   <div className="text-[11px] font-bold text-pp-gray">{p.category} · {formatDate(p.createdAt)}</div>
+                  <div className="text-[11px] font-bold text-pp-gray/80">
+                    {p.realtorClient
+                      ? `Linked client: ${p.realtorClient.name}`
+                      : 'General Realtor project'}
+                  </div>
                 </div>
-                <span className="text-[12px] font-black text-pp-gold shrink-0">{p._count.quotes} quote{p._count.quotes!==1?'s':''}</span>
+                <div className="shrink-0 text-right">
+                  <span className="block text-[12px] font-black text-pp-gold">{p._count.quotes} quote{p._count.quotes!==1?'s':''}</span>
+                  {p.realtorClient ? (
+                    <Link href={`/realtor/clients?clientId=${p.realtorClient.id}`} className="text-[11px] font-extrabold text-pp-gold hover:underline">
+                      View client
+                    </Link>
+                  ) : null}
+                </div>
               </div>
             ))}
           </div>

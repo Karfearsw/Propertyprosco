@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan & Billing — Property Pros Realtor</title>
+  <meta name="description" content="Manage your Realtor Pro subscription, referral credits, payment method, and billing history on Property Pros." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --gold: #b45309; --gold-dark: #92400e; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+      --display: 'Playfair Display', serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); display: block; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width: 224px; min-height: 100vh; background: #1c1007; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0; overflow-y: auto; }
+    .sb-brand { padding: 18px 16px 12px; display: flex; align-items: center; gap: 10px; }
+    .sb-logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0; }
+    .sb-title { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .sb-title span { color: #f87171; }
+    .sb-badge { display: flex; align-items: center; gap: 8px; padding: 6px 16px 12px; }
+    .sb-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+    .sb-badge-text { font-size: 11px; font-weight: 800; color: #fcd34d; }
+    .sb-nav { padding: 0 8px; flex: 1; }
+    .sb-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #4b5563; font-weight: 800; padding: 10px 8px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #9ca3af; cursor: pointer; margin-bottom: 2px; text-decoration: none; transition: all .15s; }
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: rgba(180,83,9,.25); color: #fcd34d; }
+    .nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px; }
+    .sb-footer { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,.07); display: flex; align-items: center; gap: 10px; }
+    .sb-avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,#b45309,#92400e); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; flex-shrink: 0; }
+    .sb-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .sb-role { font-size: 11px; color: #6b7280; }
+
+    /* ── MAIN ── */
+    .main { flex: 1; min-width: 0; padding: 32px 36px 80px; max-width: 860px; }
+    .topbar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: var(--gray); font-weight: 700; }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+    .btn-sm { padding: 7px 13px; font-size: 12px; border-radius: 8px; }
+    .btn-xs { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
+    .btn-outline { border-color: var(--border); background: var(--white); color: var(--dark); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-gold { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .btn-gold:hover { background: var(--gold-dark); }
+    .btn-ghost-red { border-color: #fca5a5; color: var(--red); background: var(--red-light); }
+    .btn-ghost-red:hover { background: #fecaca; }
+    .btn-ghost-gold { border-color: #fde68a; color: var(--gold); background: var(--gold-light); }
+    .btn-ghost-gold:hover { background: #fde68a; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 16px; overflow: hidden; }
+    .card-header { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .card-title { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .card-sub { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .card-body { padding: 20px 22px; }
+
+    /* ── PLAN HERO ── */
+    .plan-hero { background: linear-gradient(135deg, #1c1007, #2d1a00, #1c1007); border: 1px solid rgba(180,83,9,.3); border-radius: 20px; padding: 28px; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .plan-hero::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; border-radius: 50%; background: rgba(180,83,9,.12); }
+    .plan-hero::after { content: ''; position: absolute; bottom: -30px; left: 60px; width: 120px; height: 120px; border-radius: 50%; background: rgba(251,191,36,.05); }
+    .plan-hero-inner { position: relative; z-index: 1; }
+    .plan-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+    .plan-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(180,83,9,.3); border: 1px solid rgba(251,191,36,.3); color: #fcd34d; font-size: 11px; font-weight: 900; padding: 4px 12px; border-radius: 999px; letter-spacing: .5px; margin-bottom: 10px; }
+    .plan-name { font-size: 24px; font-weight: 900; color: #fff; letter-spacing: -0.8px; margin-bottom: 4px; }
+    .plan-price-row { display: flex; align-items: baseline; gap: 4px; }
+    .plan-price-num { font-family: var(--display); font-size: 38px; font-weight: 900; color: #fff; letter-spacing: -1.5px; }
+    .plan-price-period { font-size: 14px; color: #9ca3af; font-weight: 700; }
+    .plan-renews { font-size: 12px; color: #6b7280; font-weight: 700; margin-top: 4px; }
+
+    /* CREDIT PILL */
+    .credit-pill { background: rgba(22,163,74,.15); border: 1px solid rgba(22,163,74,.3); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+    .credit-amount { font-size: 22px; font-weight: 900; color: #4ade80; letter-spacing: -0.5px; }
+    .credit-label { font-size: 12px; font-weight: 700; color: #86efac; line-height: 1.5; }
+    .credit-btn { margin-left: auto; padding: 7px 14px; background: rgba(22,163,74,.2); border: 1px solid rgba(22,163,74,.3); color: #4ade80; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; white-space: nowrap; }
+    .credit-btn:hover { background: rgba(22,163,74,.3); }
+
+    /* PLAN STATS */
+    .plan-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+    .pstat { background: rgba(255,255,255,.06); border-radius: 11px; padding: 12px; }
+    .pstat-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 5px; }
+    .pstat-val { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 2px; }
+    .pstat-sub { font-size: 11px; color: #9ca3af; font-weight: 700; }
+
+    /* PLAN ACTIONS */
+    .plan-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .pab { padding: 8px 16px; border-radius: 9px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; border: none; display: inline-flex; align-items: center; gap: 6px; }
+    .pab-gold { background: rgba(251,191,36,.15); color: #fcd34d; border: 1px solid rgba(251,191,36,.25) !important; }
+    .pab-gold:hover { background: rgba(251,191,36,.25); }
+    .pab-green { background: rgba(22,163,74,.15); color: #4ade80; border: 1px solid rgba(22,163,74,.25) !important; }
+    .pab-green:hover { background: rgba(22,163,74,.25); }
+    .pab-danger { background: rgba(239,68,68,.1); color: #f87171; border: 1px solid rgba(239,68,68,.2) !important; }
+    .pab-danger:hover { background: rgba(239,68,68,.18); }
+
+    /* ── REFERRAL CREDITS CARD ── */
+    .credits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .credit-stat { background: var(--bg); border-radius: 12px; padding: 16px; text-align: center; }
+    .cs-num { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+    .cs-label { font-size: 12px; font-weight: 700; color: var(--gray); }
+    .referral-history { display: flex; flex-direction: column; }
+    .ref-row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f9fafb; }
+    .ref-row:last-child { border-bottom: none; }
+    .ref-avatar { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .ref-info { flex: 1; }
+    .ref-name { font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .ref-meta { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .ref-credit { font-size: 13px; font-weight: 900; color: var(--green); }
+    .ref-status { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .rs-active { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .rs-pending { background: var(--gold-light); color: var(--gold); border: 1px solid #fde68a; }
+    .ref-link-box { background: var(--bg); border: 1px solid var(--border); border-radius: 11px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+    .ref-link-url { font-size: 12px; font-weight: 700; color: var(--dark2); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ref-link-copy { padding: 6px 13px; border-radius: 7px; background: var(--dark); color: #fff; border: none; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font); white-space: nowrap; transition: background .15s; }
+    .ref-link-copy:hover { background: var(--gold); }
+
+    /* ── PAYMENT METHOD ── */
+    .pm-card { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f9fafb; }
+    .pm-card:last-child { border-bottom: none; }
+    .pm-icon { width: 46px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; letter-spacing: .5px; }
+    .pm-icon.visa { background: #1a1f71; }
+    .pm-info { flex: 1; }
+    .pm-name { font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .pm-detail { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .pm-badge { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .pm-default { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .pm-actions { display: flex; gap: 6px; }
+
+    /* NEXT BILL BANNER */
+    .next-bill { background: var(--gold-light); border: 1px solid #fde68a; border-radius: 12px; padding: 14px 18px; margin-top: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .nb-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--gold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .nb-info { flex: 1; }
+    .nb-title { font-size: 13px; font-weight: 900; color: var(--gold-dark); margin-bottom: 3px; }
+    .nb-sub { font-size: 12px; color: var(--gold); font-weight: 700; }
+    .nb-amount { font-size: 18px; font-weight: 900; color: var(--gold-dark); }
+
+    /* ── BILLING HISTORY ── */
+    .inv-row { display: flex; align-items: center; gap: 12px; padding: 13px 0; border-bottom: 1px solid #f9fafb; }
+    .inv-row:last-child { border-bottom: none; }
+    .inv-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .inv-num { font-size: 12px; font-weight: 800; color: var(--gray); width: 80px; flex-shrink: 0; }
+    .inv-desc { flex: 1; }
+    .inv-desc-main { font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .inv-desc-sub { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .inv-amount { font-size: 14px; font-weight: 900; color: var(--dark); width: 64px; text-align: right; flex-shrink: 0; }
+    .inv-status { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
+    .is-paid { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .is-credit { background: var(--gold-light); color: var(--gold); border: 1px solid #fde68a; }
+    .is-free { background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; }
+    .inv-dl { color: var(--gray); cursor: pointer; transition: color .15s; flex-shrink: 0; }
+    .inv-dl:hover { color: var(--red); }
+    .inv-note { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f9fafb; }
+
+    /* ── PLAN FEATURES ── */
+    .feat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .feat-item { display: flex; align-items: flex-start; gap: 10px; padding: 12px; background: var(--bg); border-radius: 11px; }
+    .feat-icon { width: 34px; height: 34px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .feat-title { font-size: 12px; font-weight: 900; color: var(--dark); margin-bottom: 3px; }
+    .feat-desc { font-size: 11px; color: var(--gray); font-weight: 700; line-height: 1.5; }
+
+    /* ── CANCEL ZONE ── */
+    .cancel-zone { background: var(--red-light); border: 1px solid #fecaca; border-radius: 16px; padding: 20px 22px; }
+    .cz-title { font-size: 14px; font-weight: 900; color: #7f1d1d; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .cz-desc { font-size: 12px; color: #991b1b; font-weight: 700; line-height: 1.6; margin-bottom: 12px; }
+    .cz-lose { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 14px; }
+    .cz-lose-item { font-size: 12px; font-weight: 700; color: #991b1b; display: flex; align-items: center; gap: 6px; }
+
+    /* ── MODALS ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 80; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; max-width: 480px; width: 100%; padding: 28px; }
+    .modal h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: var(--gray); font-weight: 700; line-height: 1.6; margin-bottom: 18px; }
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+    .form-group { margin-bottom: 13px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: var(--dark2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .form-group input, .form-group select { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 13px; font-family: var(--font); color: var(--dark); background: var(--white); }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--gold); }
+    .form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--dark); color: #fff; padding: 13px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 200; display: flex; align-items: center; gap: 8px; transform: translateY(20px); opacity: 0; transition: all .25s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { padding: 20px 18px 80px; }
+      .plan-stats { grid-template-columns: 1fr 1fr; }
+      .credits-grid { grid-template-columns: 1fr; }
+      .feat-grid { grid-template-columns: 1fr; }
+      .cz-lose { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .plan-stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width:768px) { aside { display:none !important; } }
+  
+    /* dark-sidebar link palette (scoped) */
+    .sidebar .nav-item { color: rgba(255,255,255,.65); }
+    .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+    .sidebar .nav-item.active { background: #b45309; color:#fff; }
+    .sidebar .nav-item.active .nav-count { background:#fff; color:#b45309; }
+    .sidebar .nav-section, .sidebar .nav-label { color: #fcd34d; }
+  </style>
+</head>
+<body>
+  <header style="background:#1c1007;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+    <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#b45309;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#fcd34d">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="realtor-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#b45309;border-radius:50%;border:2px solid #111827"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#b45309;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">SR</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#1c1007;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Workspace</div>
+      <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i> Dashboard</a>
+      <a href="realtor-clients.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="users" style="width:17px;height:17px"></i> Clients</a>
+      <a href="realtor-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-square" style="width:17px;height:17px"></i> Messages</a>
+      <a href="realtor-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:17px;height:17px"></i> Notifications</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Account</div>
+      <a href="realtor-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#b45309;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:17px;height:17px"></i> Plan &amp; Billing</a>
+      <a href="realtor-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+  </div>
+
+<!-- ── SIDEBAR ── -->
+
+<div style="display:flex;min-height:calc(100vh - 60px)">
+        <aside style="width:224px;flex-shrink:0;background:#1c1007;padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Workspace</div>
+      <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i> Dashboard</a>
+      <a href="realtor-clients.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="users" style="width:17px;height:17px"></i> Clients</a>
+      <a href="realtor-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-square" style="width:17px;height:17px"></i> Messages</a>
+      <a href="realtor-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:17px;height:17px"></i> Notifications</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Account</div>
+      <a href="realtor-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#b45309;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:17px;height:17px"></i> Plan &amp; Billing</a>
+      <a href="realtor-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+    </aside>
+  <div style="flex:1;min-width:0">
+
+    <div style="max-width:760px;margin:0 auto;padding:28px 24px 80px">
+      <div style="font-size:26px;font-weight:900;letter-spacing:-.02em">Plan & Billing</div>
+      <div style="color:#6b7280;font-size:14px;font-weight:600;margin:3px 0 24px">Manage your Realtor Pro subscription, payment method, and invoices.</div>
+
+      <div style="background:#1c1007;border-radius:16px;padding:24px;margin-bottom:16px">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#fcd34d">Realtor Pro</div>
+        <div style="font-size:38px;font-weight:900;color:#fff;letter-spacing:-1.5px;margin-top:4px">$29<span style="font-size:16px;color:#9ca3af;font-weight:700">.99 / year</span></div>
+        <div style="font-size:12.5px;color:#9ca3af;font-weight:700;margin-top:6px">Renews May 15, 2026 · Card ending 4242</div>
+        <div style="font-size:13px;font-weight:800;color:#fcd34d;margin-top:10px">✓ $87.00 in referral credits — next renewal: $0</div>
+        <div style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap">
+          <button onclick="openModal('cancel-plan')" style="padding:9px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid rgba(255,255,255,.15);color:#d1d5db;background:rgba(255,255,255,.08);font-family:inherit">Cancel subscription</button>
+          <button onclick="openModal('apply-credits')" style="padding:9px 16px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid rgba(180,83,9,.4);background:rgba(180,83,9,.3);color:#fcd34d;font-family:inherit">Apply credits →</button>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px 22px;margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:15px;font-weight:800">Payment method</div>
+          <button onclick="openModal('add-card')" style="padding:7px 13px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid #e5e7eb;background:#f3f4f6;color:#111827;font-family:inherit">+ Add card</button>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="color:#6b7280;font-weight:700">Card</span><span style="font-weight:800">Visa ending in 4242</span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="color:#6b7280;font-weight:700">Expiry</span><span style="font-weight:800">08 / 2028</span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="color:#6b7280;font-weight:700">Billing name</span><span style="font-weight:800">Sarah Rivera</span></div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;font-size:13px"><span style="color:#6b7280;font-weight:700">Status</span><span style="font-weight:800;color:#16a34a">✓ Active</span></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button onclick="openModal('edit-card')" style="padding:8px 14px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid #e5e7eb;background:#f3f4f6;color:#111827;font-family:inherit">Edit card</button>
+          <button onclick="showToast('Card removed')" style="padding:8px 14px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;font-family:inherit">Remove</button>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:20px 22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="font-size:15px;font-weight:800">Invoice history</div>
+          <button onclick="showToast('Exporting invoices…')" style="padding:7px 13px;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid #e5e7eb;background:#f3f4f6;color:#111827;font-family:inherit">Export all</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="font-weight:700;color:#6b7280;width:80px">INV-0041</span><span style="color:#6b7280;flex:1">Apr 15, 2026</span><span style="font-weight:900">$0.00</span><span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#92400e">Credits</span><button onclick="showToast('Downloading PDF')" style="padding:4px 10px;font-size:11px;font-weight:800;border-radius:7px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-family:inherit">PDF</button></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f3f4f6;font-size:13px"><span style="font-weight:700;color:#6b7280;width:80px">INV-0038</span><span style="color:#6b7280;flex:1">Mar 15, 2026</span><span style="font-weight:900">$29.99</span><span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#166534">Paid</span><button onclick="showToast('Downloading PDF')" style="padding:4px 10px;font-size:11px;font-weight:800;border-radius:7px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-family:inherit">PDF</button></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 0;font-size:13px"><span style="font-weight:700;color:#6b7280;width:80px">INV-0034</span><span style="color:#6b7280;flex:1">Feb 15, 2026</span><span style="font-weight:900">$29.99</span><span style="font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;background:#f0fdf4;color:#166534">Paid</span><button onclick="showToast('Downloading PDF')" style="padding:4px 10px;font-size:11px;font-weight:800;border-radius:7px;border:1px solid #e5e7eb;background:#fff;cursor:pointer;font-family:inherit">PDF</button></div>
+      </div>
+    </div>
+<!-- /main -->
+
+<!-- ════════════════════════════════════ -->
+<!-- MODALS                              -->
+<!-- ════════════════════════════════════ -->
+
+<!-- APPLY CREDITS -->
+<div class="modal-overlay" id="modal-apply-credits" onclick="closeModal('apply-credits')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Apply referral credits</h3>
+    <p>You have <strong>$87.00</strong> in referral credits. Credits are applied automatically to your next invoice. Your January 15, 2027 bill will be <strong>$0.00</strong> — fully covered.</p>
+    <div style="background:var(--green-light);border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;font-weight:700;color:#14532d;display:flex;align-items:center;gap:8px">
+      <i data-lucide="check-circle" size="16" style="color:var(--green)"></i>
+      Credits will auto-apply to your next 2–3 annual billing until balance reaches $0.
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('apply-credits')">Close</button>
+      <button class="btn btn-green" onclick="closeModal('apply-credits');showToast('Credits will auto-apply on June 16')">Got it</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD CARD -->
+<div class="modal-overlay" id="modal-add-card" onclick="closeModal('add-card')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Add a payment method</h3>
+    <p>This card will be billed once annually for your Realtor Pro subscription.</p>
+    <div class="form-group"><label>Name on card</label><input type="text" placeholder="Sarah Rivera" /></div>
+    <div class="form-group"><label>Card number</label><input type="text" placeholder="•••• •••• •••• ••••" /></div>
+    <div class="form-row-2">
+      <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" /></div>
+      <div class="form-group"><label>CVC</label><input type="text" placeholder="•••" /></div>
+    </div>
+    <div class="form-group"><label>Billing zip code</label><input type="text" placeholder="02910" /></div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('add-card')">Cancel</button>
+      <button class="btn btn-gold" onclick="closeModal('add-card');showToast('Card added successfully')">Save card</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT CARD -->
+<div class="modal-overlay" id="modal-edit-card" onclick="closeModal('edit-card')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Update payment method</h3>
+    <p>Update the billing details for your Visa ending in 4242.</p>
+    <div class="form-group"><label>Name on card</label><input type="text" value="Sarah Rivera" /></div>
+    <div class="form-row-2">
+      <div class="form-group"><label>Expiry</label><input type="text" value="08/2028" /></div>
+      <div class="form-group"><label>Billing zip</label><input type="text" value="02910" /></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('edit-card')">Cancel</button>
+      <button class="btn btn-gold" onclick="closeModal('edit-card');showToast('Payment method updated')">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAUSE PLAN -->
+<div class="modal-overlay" id="modal-pause-plan" onclick="closeModal('pause-plan')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Pause your subscription</h3>
+    <p>Pausing stops future charges for up to 3 months. Your profile and client data are preserved. Referral credits are frozen during the pause.</p>
+    <div class="form-group">
+      <label>Pause for</label>
+      <select>
+        <option>1 month (pause billing · access continues)</option>
+        <option>2 months (pause billing · access continues)</option>
+        <option>3 months (pause billing · access continues)</option>
+      </select>
+    </div>
+    <div style="background:var(--gold-light);border:1px solid #fde68a;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;font-weight:700;color:var(--gold-dark)">
+      During the pause, new client projects cannot be posted. Existing projects and messages remain accessible.
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('pause-plan')">Cancel</button>
+      <button class="btn btn-gold" onclick="closeModal('pause-plan');showToast('Subscription paused — your annual access is unaffected')">Pause subscription</button>
+    </div>
+  </div>
+</div>
+
+<!-- CANCEL -->
+<div class="modal-overlay" id="modal-cancel-plan" onclick="closeModal('cancel-plan')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Cancel Realtor Pro?</h3>
+    <p>Your access continues until <strong>January 15, 2027</strong>. After that, your account downgrades to a free homeowner account. Your <strong>$87.00 in referral credits will be forfeited</strong> — they cannot be refunded or transferred.</p>
+    <div style="background:var(--red-light);border:1px solid #fecaca;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;font-weight:700;color:#7f1d1d">
+      Before cancelling — consider pausing instead. You keep your credits and data while stopping charges for up to 3 months.
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('cancel-plan')">Keep my plan</button>
+      <button class="btn btn-outline" onclick="closeModal('cancel-plan');openModal('pause-plan')" style="border-color:var(--gold);color:var(--gold)">Pause instead</button>
+      <button class="btn btn-ghost-red" onclick="closeModal('cancel-plan');showToast('Subscription cancelled — access until Jan 15, 2027')">Yes, cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast">
+  <i data-lucide="check-circle" size="16" style="color:var(--green)"></i>
+  <span id="toast-msg">Done</span>
+</div>
+
+<script>
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+  lucide.createIcons();
+}
+function closeModal(id) {
+  document.getElementById('modal-' + id).classList.remove('open');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function copyRefLink() {
+  navigator.clipboard.writeText('https://propertypros.com/join?ref=sarah-rivera-kw')
+    .then(() => showToast('Referral link copied to clipboard'))
+    .catch(() => showToast('Link: propertypros.com/join?ref=sarah-rivera-kw'));
+}
+</script>
+<script>lucide.createIcons();</script>
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+  </div>
+</div>
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+</body>
+</html>

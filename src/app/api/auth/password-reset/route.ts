@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { assertAuthEmailDeliveryReady, sendPasswordResetEmail } from '@/lib/auth-mailer'
 import {
   issuePasswordResetToken,
   resetPasswordWithToken,
@@ -46,16 +47,27 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
+    const origin = new URL(req.url).origin
 
     if (typeof body?.email === 'string') {
+      assertAuthEmailDeliveryReady(origin)
+
       const { email } = requestSchema.parse(body)
       const result = await issuePasswordResetToken(email)
+      const delivery =
+        result.issued && result.rawToken
+          ? await sendPasswordResetEmail({
+              email: result.email,
+              fallbackOrigin: origin,
+              token: result.rawToken,
+            })
+          : null
 
       return NextResponse.json({
         success: true,
         email: result.email,
         expiresAt: result.expiresAt,
-        resetUrl: result.resetUrl,
+        delivery: delivery?.mode ?? null,
       })
     }
 

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your saved contractors on Property Pros — pros you've bookmarked for future projects." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saved Pros — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed; --purple-light: #f5f3ff;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; display:flex;flex-direction:column;min-height:100vh;}
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header { background: #14532d; padding: 0 32px; height: 62px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .header-nav { display: flex; gap: 24px; align-items: center; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .header-link:hover { color: #fff; }
+    .header-link.active { color: #fff; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .bell-wrap { position: relative; cursor: pointer; }
+    .bell-icon { font-size: 20px; color: #9ca3af; padding: 4px; display: block; }
+    .bell-badge { position: absolute; top: -2px; right: -4px; width: 18px; height: 18px; background: var(--red); border-radius: 50%; font-size: 10px; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; border: 2px solid var(--dark); }
+    .user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.08); border-radius: 999px; padding: 5px 12px 5px 5px; cursor: pointer; position: relative; }
+    .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; }
+    .user-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .user-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 6px; min-width: 190px; box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 100; }
+    .dd-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--dark); transition: background .12s; }
+    .dd-item:hover { background: var(--bg); }
+    .dd-item.danger { color: var(--red); }
+    .dd-item.danger:hover { background: var(--red-light); }
+    .dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* PAGE */
+    .page { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 14px; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--white); color: var(--dark); }
+    .btn:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-green { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* STATS */
+    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
+    .stat-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--gray); margin-bottom: 8px; }
+    .stat-num { font-size: 26px; font-weight: 900; letter-spacing: -1px; }
+    .stat-sub { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 4px; }
+    .stat-sub.green { color: var(--green); }
+
+    /* FILTER BAR */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .filter-tab { padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .15s; }
+    .filter-tab:hover { border-color: var(--dark); color: var(--dark); }
+    .filter-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .filter-right { margin-left: auto; }
+    .search-input { padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-family: var(--font); color: var(--dark); width: 220px; }
+    .search-input:focus { outline: none; border-color: var(--red); }
+
+    /* PRO CARDS GRID */
+    .pros-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+    /* PRO CARD */
+    .pro-card { background: var(--white); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; transition: all .2s; }
+    .pro-card:hover { border-color: #d1d5db; box-shadow: 0 6px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+
+    /* CARD TOP */
+    .pc-top { padding: 20px 20px 0; display: flex; gap: 14px; align-items: flex-start; }
+    .pc-avatar { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #fff; flex-shrink: 0; }
+    .pc-info { flex: 1; min-width: 0; }
+    .pc-name { font-size: 15px; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 3px; }
+    .pc-trade { font-size: 12px; color: var(--gray); font-weight: 700; margin-bottom: 5px; }
+    .pc-rating { font-size: 12px; color: var(--amber); font-weight: 700; display: flex; align-items: center; gap: 5px; }
+    .pc-reviews { color: var(--gray); }
+    .pc-heart { background: none; border: 1px solid #fecaca; border-radius: 8px; padding: 6px 10px; font-size: 16px; cursor: pointer; color: var(--red); transition: all .15s; flex-shrink: 0; }
+    .pc-heart:hover { background: var(--red-light); }
+
+    /* BADGES */
+    .pc-badges { padding: 12px 20px 0; display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+    .badge-verified { background: var(--green-light); color: #166534; }
+    .badge-trade { background: var(--bg); color: var(--dark3); border: 1px solid var(--border); }
+    .badge-quick { background: #fff7ed; color: #c2410c; }
+
+    /* STATS ROW */
+    .pc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; padding: 14px 20px; border-top: 1px solid var(--border); margin-top: 14px; }
+    .pc-stat { text-align: center; }
+    .pc-stat:not(:last-child) { border-right: 1px solid var(--border); }
+    .pc-stat-num { font-size: 16px; font-weight: 900; }
+    .pc-stat-label { font-size: 10px; color: var(--gray); font-weight: 700; margin-top: 2px; text-transform: uppercase; letter-spacing: .5px; }
+
+    /* LAST ACTIVE */
+    .pc-last { padding: 0 20px 14px; font-size: 12px; color: var(--gray); font-weight: 700; }
+    .pc-last span { color: var(--green); font-weight: 800; }
+
+    /* NOTE */
+    .pc-note { margin: 0 20px 14px; background: var(--bg); border-radius: 10px; padding: 10px 12px; font-size: 12px; color: var(--dark3); font-weight: 700; line-height: 1.5; font-style: italic; cursor: pointer; transition: background .15s; }
+    .pc-note:hover { background: #e5e7eb; }
+    .pc-note-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: var(--gray); margin-bottom: 4px; }
+
+    /* ACTIONS */
+    .pc-actions { padding: 0 20px 20px; display: flex; gap: 8px; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 80px 20px; }
+    .empty-icon { font-size: 64px; margin-bottom: 20px; }
+    .empty-title { font-size: 22px; font-weight: 900; margin-bottom: 10px; }
+    .empty-sub { font-size: 15px; color: var(--gray); line-height: 1.7; max-width: 400px; margin: 0 auto 28px; }
+
+    /* NOTE MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,.2); }
+    .modal-header { padding: 20px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 16px; font-weight: 900; }
+    .modal-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--gray); }
+    .modal-body { padding: 20px 22px; }
+    .modal-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; background: var(--bg); border-radius: 0 0 20px 20px; }
+    textarea { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-family: var(--font); color: var(--dark); resize: vertical; min-height: 100px; }
+    textarea:focus { outline: none; border-color: var(--red); }
+
+    /* FOOTER */
+    footer { background: var(--dark2); padding: 28px 32px; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-inner { max-width: 1060px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .footer-link { font-size: 13px; font-weight: 700; color: #6b7280; }
+    .footer-link:hover { color: #fff; }
+
+    @keyframes toastSlide { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    @media (max-width: 900px) { .pros-grid { grid-template-columns: 1fr 1fr; } .stats-strip { grid-template-columns: 1fr 1fr; } .header-nav { display: none; } }
+    @media (max-width: 560px) { .pros-grid { grid-template-columns: 1fr; } }
+  
+  .hw-rail{} @media(max-width:640px){.hw-rail{display:none!important}}
+</style>
+</head>
+<body>
+
+<header style="background:#14532d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+  <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+    <div style="width:32px;height:32px;border-radius:9px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+    <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#86efac">Property</span> Pros</div>
+  </a>
+  <div style="display:flex;align-items:center;gap:6px">
+    <a href="homeowner-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#16a34a;border-radius:50%;border:2px solid #111827"></div>
+    </a>
+    <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">MS</div>
+    <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+    </button>
+  </div>
+</header>
+
+<div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+
+<div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+
+<div style="flex:1;background:var(--bg)">
+  <!-- PAGE -->
+  <div class="hw-layout" style="display:flex;align-items:flex-start">
+    <aside class="hw-rail" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+    <div style="flex:1;min-width:0"><div class="page">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="page-title">♥ Saved Pros</div>
+        <div class="page-sub">Contractors you've bookmarked — ready to hire when you need them</div>
+      </div>
+      <a href="homeowner-dashboard.html" class="btn btn-red">+ Find more pros</a>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-label">Saved pros</div>
+        <div class="stat-num">6</div>
+        <div class="stat-sub">across 4 trades</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Hired before</div>
+        <div class="stat-num">3</div>
+        <div class="stat-sub green">All 5-star experiences</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg. rating</div>
+        <div class="stat-num">4.9★</div>
+        <div class="stat-sub">your saved list</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Quick Jobs ready</div>
+        <div class="stat-num">4</div>
+        <div class="stat-sub">available for instant booking</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-tab active" onclick="filterPros('all', this)">All <span style="font-size:11px;background:rgba(255,255,255,.2);padding:1px 6px;border-radius:999px;margin-left:4px">6</span></div>
+      <div class="filter-tab" onclick="filterPros('roofing', this)">🏠 Roofing</div>
+      <div class="filter-tab" onclick="filterPros('driveways', this)">🛣️ Driveways</div>
+      <div class="filter-tab" onclick="filterPros('masonry', this)">🧱 Masonry</div>
+      <div class="filter-tab" onclick="filterPros('landscaping', this)">🌿 Landscaping</div>
+      <div class="filter-right">
+        <input class="search-input" type="text" placeholder="🔍 Search saved pros..." oninput="searchPros(this.value)" />
+      </div>
+    </div>
+
+    <!-- PROS GRID -->
+    <div class="pros-grid" id="pros-grid">
+
+      <!-- PRO 1 — Apex Roofing -->
+      <div class="pro-card" data-trade="roofing" data-name="apex roofing">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#111827">AR</div>
+          <div class="pc-info">
+            <div class="pc-name">Apex Roofing Group</div>
+            <div class="pc-trade">Roofing · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.9</span> <span class="pc-reviews">· 214 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'Apex Roofing Group')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🏠 Roofing</span>
+          <span class="badge badge-quick">⚡ Quick Jobs</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Quoted $4,200 for roof replacement — very professional, showed up on time for estimate.
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$4,200</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">3×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">2 hrs</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>today</span> · Typically responds within 2 hours</div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+      <!-- PRO 2 — Premier Paving -->
+      <div class="pro-card" data-trade="driveways" data-name="premier paving">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#b45309">PM</div>
+          <div class="pc-info">
+            <div class="pc-name">Premier Paving & Masonry</div>
+            <div class="pc-trade">Driveways · Masonry · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.9</span> <span class="pc-reviews">· 210 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'Premier Paving & Masonry')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🛣️ Driveways</span>
+          <span class="badge badge-trade">🧱 Masonry</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Did my driveway resurfacing — excellent work, finished in one day. Would hire again.
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$3,200</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">1×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">1 hr</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>2 days ago</span> · Typically responds within 1 hour</div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+      <!-- PRO 3 — StoneLine -->
+      <div class="pro-card" data-trade="masonry" data-name="stoneline outdoor">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#7c3aed">SL</div>
+          <div class="pc-info">
+            <div class="pc-name">StoneLine Outdoor</div>
+            <div class="pc-trade">Masonry · Landscaping · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.9</span> <span class="pc-reviews">· 132 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'StoneLine Outdoor')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🧱 Masonry</span>
+          <span class="badge badge-quick">⚡ Quick Jobs</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Click to add a note about this pro...
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$4,200</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">1×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">3 hrs</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>today</span> · Typically responds within 3 hours</div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+      <!-- PRO 4 — NE Roofing -->
+      <div class="pro-card" data-trade="roofing" data-name="ne roofing">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#059669">NR</div>
+          <div class="pc-info">
+            <div class="pc-name">NE Roofing Co.</div>
+            <div class="pc-trade">Roofing · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.7</span> <span class="pc-reviews">· 98 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'NE Roofing Co.')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🏠 Roofing</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Lowest quote on roof job — $3,850. Need to compare with Apex before deciding.
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$3,850</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">0×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">4 hrs</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>3 days ago</span></div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+      <!-- PRO 5 — GreenScape -->
+      <div class="pro-card" data-trade="landscaping" data-name="greenscape crew">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#16a34a">GS</div>
+          <div class="pc-info">
+            <div class="pc-name">GreenScape Crew</div>
+            <div class="pc-trade">Landscaping · Lawn care · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.8</span> <span class="pc-reviews">· 178 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'GreenScape Crew')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🌿 Landscaping</span>
+          <span class="badge badge-quick">⚡ Quick Jobs</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Did spring cleanup and mulching — great price, in and out in one morning.
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$550</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">2×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">1 hr</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>today</span> · Quick Jobs available</div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+      <!-- PRO 6 — Kev Hernandez -->
+      <div class="pro-card" data-trade="roofing" data-name="kev hernandez">
+        <div class="pc-top">
+          <div class="pc-avatar" style="background:#1d4ed8">KH</div>
+          <div class="pc-info">
+            <div class="pc-name">Kev Hernandez Contracting</div>
+            <div class="pc-trade">Roofing · General · Your area</div>
+            <div class="pc-rating">★★★★★ <span style="color:var(--dark)">4.8</span> <span class="pc-reviews">· 168 reviews</span></div>
+          </div>
+          <button class="pc-heart" onclick="unsavePro(this, 'Kev Hernandez Contracting')" title="Remove from saved">♥</button>
+        </div>
+        <div class="pc-badges">
+          <span class="badge badge-verified">✓ Verified</span>
+          <span class="badge badge-trade">🏠 Roofing</span>
+          <span class="badge badge-quick">⚡ Quick Jobs</span>
+        </div>
+        <div class="pc-note" onclick="openNote(this)">
+          <div class="pc-note-label">Your note</div>
+          Click to add a note about this pro...
+        </div>
+        <div class="pc-stats">
+          <div class="pc-stat">
+            <div class="pc-stat-num">$4,600</div>
+            <div class="pc-stat-label">Last quote</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">0×</div>
+            <div class="pc-stat-label">Hired by you</div>
+          </div>
+          <div class="pc-stat">
+            <div class="pc-stat-num">2 hrs</div>
+            <div class="pc-stat-label">Response time</div>
+          </div>
+        </div>
+        <div class="pc-last">Last active <span>1 day ago</span></div>
+        <div class="pc-actions">
+          <a href="post-project.html" class="btn btn-red btn-sm" style="flex:1;justify-content:center">Get quote</a>
+          <a href="homeowner-messages.html" class="btn btn-sm" style="flex:1;justify-content:center">💬 Message</a>
+          <a href="pro-profile.html" class="btn btn-sm">👤</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EMPTY STATE (hidden by default) -->
+    <div class="empty-state" id="empty-state" style="display:none">
+      <div class="empty-icon">♡</div>
+      <div class="empty-title">No saved pros yet</div>
+      <div class="empty-sub">When you find a pro you like, tap the ♡ heart on their card to save them here for quick access later.</div>
+      <a href="homeowner-dashboard.html" class="btn btn-red">Browse verified pros →</a>
+    </div>
+
+  </div></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo">PP</div>
+        <div class="brand-name" style="color:#fff"><span>Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="homeowner-dashboard.html" class="footer-link">Find a pro</a>
+        <a href="pricing.html" class="footer-link">Pricing</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="terms.html" class="footer-link">Terms</a>
+        <a href="privacy.html" class="footer-link">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC</div>
+    </div>
+  </footer>
+
+  <!-- NOTE MODAL -->
+  <div class="modal-overlay" id="note-modal" onclick="if(event.target===this)closeNote()">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Add a note</div>
+        <button class="modal-close" onclick="closeNote()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:13px;color:var(--gray);font-weight:700;margin-bottom:12px">Private note — only visible to you</p>
+        <textarea id="note-input" placeholder="e.g. Quoted $4,200 — very professional. Would hire again for the gutters."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="closeNote()">Cancel</button>
+        <button class="btn btn-sm btn-red" onclick="saveNote()">Save note</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeNoteEl = null;
+
+    // FILTER BY TRADE
+    function filterPros(trade, el) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.pro-card').forEach(card => {
+        card.style.display = (trade === 'all' || card.dataset.trade === trade) ? '' : 'none';
+      });
+      checkEmpty();
+    }
+
+    // SEARCH
+    function searchPros(q) {
+      document.querySelectorAll('.pro-card').forEach(card => {
+        card.style.display = card.dataset.name.includes(q.toLowerCase()) ? '' : 'none';
+      });
+      checkEmpty();
+    }
+
+    function checkEmpty() {
+      const visible = [...document.querySelectorAll('.pro-card')].filter(c => c.style.display !== 'none').length;
+      document.getElementById('empty-state').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    // UNSAVE PRO
+    function unsavePro(btn, name) {
+      if (!confirm(`Remove ${name} from your saved pros?`)) return;
+      const card = btn.closest('.pro-card');
+      card.style.transition = 'opacity .3s, transform .3s';
+      card.style.opacity = '0';
+      card.style.transform = 'scale(.95)';
+      setTimeout(() => {
+        card.remove();
+        checkEmpty();
+        showToast(`${name} removed from saved pros`);
+      }, 300);
+    }
+
+    // NOTE MODAL
+    function openNote(noteEl) {
+      activeNoteEl = noteEl;
+      const current = noteEl.childNodes[1]?.textContent?.trim() || '';
+      document.getElementById('note-input').value = current === 'Click to add a note about this pro...' ? '' : current;
+      document.getElementById('note-modal').classList.add('open');
+    }
+
+    function closeNote() {
+      document.getElementById('note-modal').classList.remove('open');
+      activeNoteEl = null;
+    }
+
+    function saveNote() {
+      const val = document.getElementById('note-input').value.trim();
+      if (activeNoteEl) {
+        const label = activeNoteEl.querySelector('.pc-note-label').outerHTML;
+        activeNoteEl.innerHTML = label + (val || 'Click to add a note about this pro...');
+      }
+      closeNote();
+      showToast('✓ Note saved');
+    }
+
+    // TOAST
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#111827;color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:toastSlide .3s ease';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2500);
+    }
+
+    // Bell badge
+    (function() {
+      const read = localStorage.getItem('pp_hw_notifs_read') === 'true';
+      const badge = document.getElementById('hw-bell-badge');
+      if (badge && !read) { badge.style.display = 'flex'; badge.textContent = '3'; }
+    })();
+
+    // Close dropdown
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.user-pill')) {
+        document.querySelectorAll('.user-dropdown').forEach(d => d.style.display = 'none');
+      }
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeNote(); });
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+  </div>
+
+<script>
+function toggleHwMenu() {
+  const drawer = document.getElementById('hw-drawer');
+  const overlay = document.getElementById('hw-overlay');
+  const isOpen = drawer.style.display === 'flex';
+  drawer.style.display = isOpen ? 'none' : 'flex';
+  overlay.style.display = isOpen ? 'none' : 'block';
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').style.display = 'none';
+  document.getElementById('hw-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

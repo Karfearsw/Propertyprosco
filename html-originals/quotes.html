@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Quotes — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed; --purple-light: #f5f3ff;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); display: block; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── SIDEBAR ── */
+
+
+    .sb-logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .sb-title { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; color: #fff; }
+    .sb-title .red { color: #f87171; }
+
+    .sb-section-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #4b5563; font-weight: 800; padding: 10px 8px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #9ca3af; cursor: pointer; margin-bottom: 2px; text-decoration: none; transition: all .15s; }
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px; }
+    .nav-item.active .nav-badge { background: rgba(255,255,255,.25); }
+
+
+
+
+    /* ── MAIN ── */
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+    /* ── TOPBAR ── */
+    .topbar { padding: 20px 28px; border-bottom: 1px solid var(--border); background: var(--white); display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .page-title { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--white); color: var(--dark); }
+    .btn:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-green { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* ── CONTENT ── */
+    .content { padding: 24px 28px; }
+
+    /* ── STATS STRIP ── */
+    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; transition: border-color .2s; }
+    .stat-card:hover { border-color: var(--red); }
+    .stat-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--gray); margin-bottom: 8px; }
+    .stat-num { font-size: 28px; font-weight: 900; letter-spacing: -1px; }
+    .stat-sub { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 4px; }
+    .stat-sub.green { color: var(--green); }
+    .stat-sub.red { color: var(--red); }
+    .stat-sub.amber { color: var(--amber); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .filter-tab { padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .15s; }
+    .filter-tab:hover { border-color: var(--dark); color: var(--dark); }
+    .filter-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .filter-count { font-size: 11px; font-weight: 800; background: rgba(0,0,0,.12); padding: 1px 6px; border-radius: 999px; margin-left: 4px; }
+    .filter-tab.active .filter-count { background: rgba(255,255,255,.2); }
+    .filter-right { margin-left: auto; }
+
+    /* ── QUOTE CARD ── */
+    .quote-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 12px; overflow: hidden; transition: all .2s; }
+    .quote-card:hover { border-color: #d1d5db; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .quote-card.accepted { border-left: 4px solid var(--green); }
+    .quote-card.pending { border-left: 4px solid var(--blue); }
+    .quote-card.declined { border-left: 4px solid var(--red); opacity: .75; }
+    .quote-card.withdrawn { border-left: 4px solid var(--gray); opacity: .6; }
+
+    /* CARD HEADER */
+    .qc-header { padding: 18px 20px; display: flex; gap: 16px; align-items: flex-start; }
+    .qc-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .qc-main { flex: 1; min-width: 0; }
+    .qc-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 5px; }
+    .qc-project-title { font-size: 15px; font-weight: 900; letter-spacing: -0.3px; }
+    .qc-status { font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+    .qc-status.accepted { background: var(--green-light); color: #166534; }
+    .qc-status.pending { background: var(--blue-light); color: #1e40af; }
+    .qc-status.declined { background: var(--red-light); color: #991b1b; }
+    .qc-status.withdrawn { background: var(--bg); color: var(--gray); border: 1px solid var(--border); }
+    .qc-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: var(--gray); }
+
+    /* CARD BODY */
+    .qc-body { padding: 0 20px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .qc-field { }
+    .qc-field-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--gray); margin-bottom: 4px; }
+    .qc-field-value { font-size: 14px; font-weight: 900; color: var(--dark); }
+    .qc-field-value.green { color: var(--green); }
+    .qc-field-value.red { color: var(--red); }
+    .qc-field-value.blue { color: var(--blue); }
+
+    /* CARD MESSAGE */
+    .qc-message { margin: 0 20px 14px; background: var(--bg); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--dark3); line-height: 1.6; font-style: italic; border-left: 3px solid var(--border); }
+    .qc-message.accepted { border-left-color: var(--green); }
+
+    /* CARD FOOTER */
+    .qc-footer { padding: 12px 20px; border-top: 1px solid var(--border); background: var(--bg); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .qc-footer-left { display: flex; gap: 8px; align-items: center; }
+    .qc-homeowner { display: flex; gap: 8px; align-items: center; }
+    .qc-homeowner-avatar { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; color: #fff; flex-shrink: 0; }
+    .qc-homeowner-name { font-size: 12px; font-weight: 800; color: var(--dark); }
+    .qc-homeowner-trust { font-size: 11px; font-weight: 700; color: var(--green); }
+    .qc-footer-right { display: flex; gap: 8px; }
+
+    /* WIN BADGE */
+    .win-badge { display: flex; gap: 10px; align-items: center; background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 12px; padding: 12px 16px; margin: 0 20px 16px; }
+    .win-badge-text { font-size: 13px; font-weight: 800; color: #166534; }
+    .win-badge-sub { font-size: 12px; color: #16a34a; font-weight: 700; margin-top: 2px; }
+
+    /* DECLINED REASON */
+    .declined-reason { display: flex; gap: 10px; align-items: center; background: var(--red-light); border: 1px solid #fecaca; border-radius: 12px; padding: 12px 16px; margin: 0 20px 16px; font-size: 13px; font-weight: 700; color: #991b1b; }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 80px 20px; }
+    .empty-icon { font-size: 56px; margin-bottom: 16px; }
+    .empty-title { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+    .empty-sub { font-size: 15px; color: var(--gray); line-height: 1.7; max-width: 420px; margin: 0 auto 24px; }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,.2); }
+    .modal-header { padding: 22px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; }
+    .modal-title { font-size: 17px; font-weight: 900; }
+    .modal-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray); }
+    .modal-body { padding: 20px 24px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--bg); display: flex; justify-content: flex-end; gap: 10px; border-radius: 0 0 20px 20px; }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark3); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-family: var(--font); color: var(--dark); transition: all .15s; }
+    .form-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+
+    /* TOAST */
+    @keyframes toastSlide { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ── STEP TRACKER CARDS ── */
+    .quote-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 12px; transition: all .2s; }
+    .quote-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.07); border-color: #d1d5db; }
+    .quote-card.accepted { border-left: 3px solid var(--green); }
+    .quote-card.pending  { border-left: 3px solid #f59e0b; }
+    .quote-card.declined { border-left: 3px solid var(--gray); opacity: .8; }
+    .quote-card.withdrawn { border-left: 3px solid #d1d5db; opacity: .7; }
+    .quote-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px; }
+    .quote-client { font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+    .quote-service { font-size: 13px; color: var(--gray); font-weight: 700; }
+    .quote-amount { font-size: 15px; font-weight: 900; text-align: right; margin-bottom: 4px; white-space: nowrap; }
+    .quote-amount span { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .quote-steps { display: flex; align-items: center; margin-bottom: 16px; }
+    .quote-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; position: relative; }
+    .quote-step:not(:last-child)::after { content: ''; position: absolute; top: 12px; left: 50%; width: 100%; height: 2px; background: var(--border); z-index: 0; }
+    .step-dot { width: 24px; height: 24px; border-radius: 50%; background: var(--border); color: var(--gray); font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; z-index: 1; position: relative; }
+    .step-dot.done   { background: var(--green); color: #fff; }
+    .step-dot.active { background: var(--red); color: #fff; }
+    .step-label { font-size: 10px; font-weight: 700; color: var(--gray); text-align: center; }
+    .step-label.done   { color: var(--green); }
+    .step-label.active { color: var(--red); font-weight: 900; }
+    .quote-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 14px; border-top: 1px solid var(--border); gap: 12px; flex-wrap: wrap; }
+    .quote-date { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .lead-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm { padding: 7px 14px; font-size: 12px; font-weight: 800; border-radius: 8px; border: 1px solid var(--border); background: var(--white); color: var(--dark); cursor: pointer; font-family: var(--font); transition: all .15s; }
+    .btn-sm:hover { background: var(--bg); }
+    .btn-sm.dark { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .btn-sm.dark:hover { background: var(--dark2); }
+    .badge-hot    { background: var(--red-light); color: #991b1b; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 3px 10px; }
+    .badge-quoted { background: #fef3c7; color: #92400e; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 3px 10px; }
+    .badge-won    { background: var(--green-light); color: #166534; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 3px 10px; }
+
+    /* ── QUOTE DELETE ── */
+    .btn-delete { padding: 6px 11px; font-size: 11px; font-weight: 800; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: #9ca3af; cursor: pointer; font-family: var(--font); transition: all .2s; }
+    .btn-delete:hover { background: #fef2f2; color: var(--red); border-color: #fecaca; }
+    .quote-card.removing { opacity: 0; transform: translateX(24px); transition: all .3s ease; pointer-events: none; max-height: 0; overflow: hidden; }
+    .undo-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--dark); color: #fff; padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 200; display: flex; align-items: center; gap: 12px; transition: transform .3s ease; white-space: nowrap; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .undo-toast.show { transform: translateX(-50%) translateY(0); }
+    .undo-btn { padding: 5px 12px; border-radius: 7px; border: 1px solid rgba(255,255,255,.25); background: transparent; color: #fff; font-size: 12px; font-weight: 900; cursor: pointer; font-family: var(--font); transition: background .15s; }
+    .undo-btn:hover { background: rgba(255,255,255,.12); }
+    .quotes-empty { text-align: center; padding: 56px 20px; }
+    .quotes-empty-icon { font-size: 40px; margin-bottom: 12px; }
+    .quotes-empty-title { font-size: 16px; font-weight: 900; color: var(--dark); margin-bottom: 6px; }
+    .quotes-empty-sub { font-size: 13px; font-weight: 700; color: var(--gray); }
+      .trust-score { display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:900;padding:2px 8px;border-radius:999px; }
+    .trust-high { background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0; }
+    .trust-mid  { background:#fef3c7;color:#b45309;border:1px solid #fde68a; }
+    @media (max-width:768px) { aside { display:none !important; } }
+  </style>
+</head>
+<body>
+  <header style="background:#7f1d1d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#f87171">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid #111827"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">KH</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#7f1d1d;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Main</div>
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+    <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="zap" size="15"></i> Leads</a>
+    <a href="quick-jobs-pro.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="bolt" size="15"></i> Quick Jobs</a>
+    <a href="quotes.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.06);text-decoration:none;margin-bottom:2px;transition:background .15s"><i data-lucide="send" size="15"></i> My Quotes</a>
+    <a href="messages.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="message-circle" size="15"></i> Messages</a>
+    <a href="schedule.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="calendar" size="15"></i> Schedule</a>
+    <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="search" size="15"></i> Browse Projects</a>
+    <div style="height:1px;background:rgba(255,255,255,.07);margin:8px 4px"></div>
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Business</div>
+    <a href="billing.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="credit-card" size="15"></i> Billing</a>
+    <a href="settings.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="settings" size="15"></i> Settings</a>
+    <a href="notification-preferences.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="bell-ring" size="15"></i> Notification Prefs</a>
+    <div style="height:1px;background:rgba(255,255,255,.07);margin:8px 4px"></div>
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Help</div>
+    <a href="contractor-guide.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="book" size="15"></i> Contractor Guide</a>
+    <a href="contact.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="life-buoy" size="15"></i> Support</a>
+    <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px">
+        <div style="width:36px;height:36px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff">KH</div>
+        <div><div style="font-size:13px;font-weight:800;color:#fff">Kevin Hernandez</div><div style="font-size:11px;color:#6b7280">Pro · Apex Roofing Group</div></div>
+      </div>
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:800;color:#f87171;text-decoration:none;transition:background .15s" onmouseover="this.style.background='rgba(220,38,38,.1)'" onmouseout="this.style.background='transparent'"><i data-lucide="log-out" size="15"></i> Log out</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="page-title">My Quotes</div>
+        <div class="page-sub">Track every quote you've sent — filter by status to focus on what needs attention</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn" onclick="window.location='leads.html'">🔍 Browse projects</button>
+        <button class="btn btn-red" onclick="window.location='leads.html'">+ Send new quote</button>
+      </div>
+    </div>
+
+    
+<div style="display:flex;min-height:calc(100vh - 60px)">
+    <aside style="width:220px;flex-shrink:0;background:#fff;border-right:1px solid #e5e7eb;border-top:3px solid #dc2626;padding:20px 14px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto">
+      <div style="margin-bottom:20px">
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Main</div>
+        <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="layout-dashboard" style="width:16px;height:16px;flex-shrink:0"></i> Dashboard</a>
+        <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="zap" style="width:16px;height:16px;flex-shrink:0"></i> Leads<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">4</span></a>
+        <a href="quick-jobs-pro.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="bolt" style="width:16px;height:16px;flex-shrink:0"></i> Quick Jobs<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">2</span></a>
+        <a href="quotes.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;background:#fef2f2;color:#dc2626;font-weight:800;text-decoration:none;margin-bottom:2px"><i data-lucide="send" style="width:16px;height:16px;flex-shrink:0"></i> My Quotes<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">7</span></a>
+        <a href="messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="message-circle" style="width:16px;height:16px;flex-shrink:0"></i> Messages<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">3</span></a>
+        <a href="schedule.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="calendar" style="width:16px;height:16px;flex-shrink:0"></i> Schedule</a>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Business</div>
+        <a href="billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:16px;height:16px;flex-shrink:0"></i> Billing</a>
+        <a href="settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="settings" style="width:16px;height:16px;flex-shrink:0"></i> Settings</a>
+        <a href="notification-preferences.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="bell-ring" style="width:16px;height:16px;flex-shrink:0"></i> Notifications Prefs</a>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Help</div>
+        <a href="contractor-guide.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="book" style="width:16px;height:16px;flex-shrink:0"></i> Contractor guide</a>
+        <a href="contact.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="life-buoy" style="width:16px;height:16px;flex-shrink:0"></i> Support</a>
+      </div>
+    </aside>
+  <div style="flex:1;min-width:0">
+<div class="content">
+
+      <!-- STATS STRIP -->
+      <div class="stats-strip">
+        <div class="stat-card">
+          <div class="stat-label">Sent this month</div>
+          <div class="stat-num">12</div>
+          <div class="stat-sub">quotes total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Acceptance rate</div>
+          <div class="stat-num">33%</div>
+          <div class="stat-sub green">4 of 12 accepted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Average quote value</div>
+          <div class="stat-num">$3,840</div>
+          <div class="stat-sub">across all quotes</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Earnings from quotes</div>
+          <div class="stat-num">$16,200</div>
+          <div class="stat-sub green">From accepted quotes</div>
+        </div>
+      </div>
+
+      <!-- FILTER TABS -->
+      <div class="filter-bar">
+        <div class="filter-tab active" onclick="filterQuotes('all', this)">All <span class="filter-count">12</span></div>
+        <div class="filter-tab" onclick="filterQuotes('pending', this)">Pending <span class="filter-count">5</span></div>
+        <div class="filter-tab" onclick="filterQuotes('accepted', this)">Accepted <span class="filter-count">4</span></div>
+        <div class="filter-tab" onclick="filterQuotes('declined', this)">Declined <span class="filter-count">2</span></div>
+        <div class="filter-tab" onclick="filterQuotes('withdrawn', this)">Withdrawn <span class="filter-count">1</span></div>
+        <div class="filter-right">
+          <select class="btn btn-sm" style="cursor:pointer;border:1px solid var(--border)">
+            <option>Newest first</option>
+            <option>Oldest first</option>
+            <option>Highest value</option>
+            <option>Lowest value</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ══ QUOTE CARDS ══ -->
+      <div id="quotes-list">
+        <!-- QUOTE 1 — Accepted, starts Apr 22 -->
+        <div class="quote-card accepted" data-status="accepted">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Maria Santos</div>
+              <div class="quote-service">Full roof replacement — Cranston, RI</div>
+            </div>
+            <div>
+              <div class="quote-amount">$4,200 <span>quoted</span></div>
+              <span class="badge badge-won" style="float:right;margin-top:6px">Accepted ✓</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Reply</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot active">5</div><div class="step-label active">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Accepted Apr 18 &bull; Job starts Apr 22</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='messages.html'">Message</button>
+              <button class="btn-sm dark" onclick="window.location='schedule.html'">View schedule</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 2 — Completed -->
+        <div class="quote-card accepted" data-status="accepted">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">James Whitfield</div>
+              <div class="quote-service">Asphalt driveway resurfacing — Providence, RI</div>
+            </div>
+            <div>
+              <div class="quote-amount">$3,200 <span>quoted</span></div>
+              <span class="badge badge-won" style="float:right;margin-top:6px">Completed ✓</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Reply</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Completed Apr 17 &bull; ⭐ 5.0 review received</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='messages.html'">Message</button>
+              <button class="btn-sm">View review</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 3 — Pending -->
+        <div class="quote-card pending" data-status="pending">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Tanya Brooks</div>
+              <div class="quote-service">Interior painting — 3 bedroom colonial, full interior</div>
+            </div>
+            <div>
+              <div class="quote-amount">$2,800 <span>quoted</span></div>
+              <span class="badge badge-hot" style="float:right;margin-top:6px">Awaiting reply</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot active">3</div><div class="step-label active">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Sent Apr 19 &bull; Viewed &bull; 4 other quotes sent</div>
+            <div class="lead-actions">
+              <button class="btn-sm dark" onclick="window.location='messages.html'">Follow up</button>
+              <button class="btn-sm">Edit quote</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 4 — Pending -->
+        <div class="quote-card pending" data-status="pending">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">David Lim</div>
+              <div class="quote-service">Stone retaining wall — backyard slope, 40 ft</div>
+            </div>
+            <div>
+              <div class="quote-amount">$4,200 <span>quoted</span></div>
+              <span class="badge badge-quoted" style="float:right;margin-top:6px">Under review</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot active">2</div><div class="step-label active">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot">3</div><div class="step-label">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Sent Apr 19 &bull; Viewed Apr 19</div>
+            <div class="lead-actions">
+              <button class="btn-sm dark" onclick="window.location='messages.html'">Message</button>
+              <button class="btn-sm">Edit quote</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 5 — Pending -->
+        <div class="quote-card pending" data-status="pending">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Rosa Mendez</div>
+              <div class="quote-service">Spring lawn cleanup & mulching — front and back yard</div>
+            </div>
+            <div>
+              <div class="quote-amount">$550 <span>quoted</span></div>
+              <span class="badge badge-hot" style="float:right;margin-top:6px">Awaiting reply</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot active">2</div><div class="step-label active">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot">3</div><div class="step-label">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Sent Apr 20 &bull; Viewed 2 hours ago</div>
+            <div class="lead-actions">
+              <button class="btn-sm dark" onclick="window.location='messages.html'">Follow up</button>
+              <button class="btn-sm">Edit quote</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 6 — Pending -->
+        <div class="quote-card pending" data-status="pending">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Carlos Rivera</div>
+              <div class="quote-service">Basement waterproofing — full perimeter drain</div>
+            </div>
+            <div>
+              <div class="quote-amount">$6,800 <span>quoted</span></div>
+              <span class="badge badge-hot" style="float:right;margin-top:6px">Awaiting reply</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot active">2</div><div class="step-label active">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot">3</div><div class="step-label">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Sent Apr 20 &bull; Not yet viewed</div>
+            <div class="lead-actions">
+              <button class="btn-sm dark" onclick="window.location='messages.html'">Follow up</button>
+              <button class="btn-sm">Edit quote</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 7 — Declined -->
+        <div class="quote-card declined" data-status="declined">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Sam Rivera</div>
+              <div class="quote-service">Electrical panel upgrade — 100A to 200A service</div>
+            </div>
+            <div>
+              <div class="quote-amount">$2,400 <span>quoted</span></div>
+              <span class="badge" style="float:right;margin-top:6px;background:var(--bg);color:var(--gray);border-radius:999px;font-size:11px;font-weight:900;padding:3px 10px">Declined</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Reply</div></div>
+            <div class="quote-step"><div class="step-dot" style="background:#fecaca;color:#dc2626">✕</div><div class="step-label" style="color:var(--red)">Declined</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Declined Apr 16 &bull; Went with another pro</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='leads.html'">Find similar leads</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 8 — Declined -->
+        <div class="quote-card declined" data-status="declined">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Priya Patel</div>
+              <div class="quote-service">Kitchen backsplash tile — full install</div>
+            </div>
+            <div>
+              <div class="quote-amount">$1,600 <span>quoted</span></div>
+              <span class="badge" style="float:right;margin-top:6px;background:var(--bg);color:var(--gray);border-radius:999px;font-size:11px;font-weight:900;padding:3px 10px">Declined</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot" style="background:#fecaca;color:#dc2626">✕</div><div class="step-label" style="color:var(--red)">Declined</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Declined Apr 13 &bull; Project cancelled</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='leads.html'">Find similar leads</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 9 — Accepted -->
+        <div class="quote-card accepted" data-status="accepted">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Kevin Hart</div>
+              <div class="quote-service">Deck pressure washing & staining — 400 sq ft</div>
+            </div>
+            <div>
+              <div class="quote-amount">$850 <span>quoted</span></div>
+              <span class="badge badge-won" style="float:right;margin-top:6px">Accepted ✓</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Reply</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot active">5</div><div class="step-label active">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Accepted Apr 16 &bull; Job: Apr 23</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='messages.html'">Message</button>
+              <button class="btn-sm dark" onclick="window.location='schedule.html'">View schedule</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 10 — Accepted -->
+        <div class="quote-card accepted" data-status="accepted">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Linda Chen</div>
+              <div class="quote-service">Gutter cleaning & downspout flush — full home</div>
+            </div>
+            <div>
+              <div class="quote-amount">$320 <span>quoted</span></div>
+              <span class="badge badge-won" style="float:right;margin-top:6px">Completed ✓</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Reply</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Completed Apr 12 &bull; ⭐ 4.8 review received</div>
+            <div class="lead-actions">
+              <button class="btn-sm">View review</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 11 — Withdrawn -->
+        <div class="quote-card withdrawn" data-status="withdrawn">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Tom Bradley</div>
+              <div class="quote-service">HVAC replacement — central air system</div>
+            </div>
+            <div>
+              <div class="quote-amount">$8,400 <span>quoted</span></div>
+              <span class="badge" style="float:right;margin-top:6px;background:var(--bg);color:var(--gray);border-radius:999px;font-size:11px;font-weight:900;padding:3px 10px">Withdrawn</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot" style="background:var(--gray);color:#fff">—</div><div class="step-label">Withdrawn</div></div>
+            <div class="quote-step"><div class="step-dot">3</div><div class="step-label">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Withdrawn Apr 10 &bull; Outside service area</div>
+            <div class="lead-actions">
+              <button class="btn-sm" onclick="window.location='leads.html'">Find similar leads</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE 12 — Pending -->
+        <div class="quote-card pending" data-status="pending">
+          <div class="quote-header">
+            <div>
+              <div class="quote-client">Angela Moore</div>
+              <div class="quote-service">Fence installation — vinyl privacy, 80 ft</div>
+            </div>
+            <div>
+              <div class="quote-amount">$3,600 <span>quoted</span></div>
+              <span class="badge badge-quoted" style="float:right;margin-top:6px">Under review</span>
+            </div>
+          </div>
+          <div class="quote-steps">
+            <div class="quote-step"><div class="step-dot done">✓</div><div class="step-label done">Sent</div></div>
+            <div class="quote-step"><div class="step-dot active">2</div><div class="step-label active">Viewed</div></div>
+            <div class="quote-step"><div class="step-dot">3</div><div class="step-label">Reply</div></div>
+            <div class="quote-step"><div class="step-dot">4</div><div class="step-label">Accepted</div></div>
+            <div class="quote-step"><div class="step-dot">5</div><div class="step-label">Hired</div></div>
+          </div>
+          <div class="quote-footer">
+            <div class="quote-date">Sent Apr 21 &bull; Viewed just now</div>
+            <div class="lead-actions">
+              <button class="btn-sm dark" onclick="window.location='messages.html'">Follow up</button>
+              <button class="btn-sm">Edit quote</button>
+              <button class="btn-delete" onclick="deleteQuote(this)">✕</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- EDIT QUOTE MODAL -->
+  <div class="modal-overlay" id="edit-modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Edit quote</div>
+          <div class="modal-sub" id="edit-modal-sub">Update your price or message</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--amber-light);border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:13px;font-weight:700;color:#92400e;margin-bottom:18px">
+          ⚠️ The homeowner will be notified when you update your quote.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Updated price</label>
+          <input class="form-input" type="text" id="edit-price" placeholder="e.g. $2,600" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Duration</label>
+          <select class="form-input">
+            <option>Half a day</option>
+            <option>1 day</option>
+            <option selected>2–3 days</option>
+            <option>3–5 days</option>
+            <option>1–2 weeks</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Updated message</label>
+          <textarea class="form-input" rows="4" placeholder="Update your message to the homeowner..."></textarea>
+        </div>
+        <div style="background:var(--green-light);border:1px solid #bbf7d0;border-radius:10px;padding:11px 14px;font-size:12px;font-weight:700;color:#166534">
+          💡 Updating your message when editing gives you a second chance to connect. Pros who include personal notes get accepted more.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-sm btn-red" onclick="saveEdit()">Save updated quote →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // FILTER
+    function filterQuotes(status, el) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.quote-card').forEach(card => {
+        card.style.display = (status === 'all' || card.dataset.status === status) ? '' : 'none';
+      });
+    }
+
+    // EDIT MODAL
+    function openEditModal(project, price) {
+      document.getElementById('edit-modal-sub').textContent = project;
+      document.getElementById('edit-price').value = price;
+      document.getElementById('edit-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('edit-modal').classList.remove('open');
+    }
+
+    function saveEdit() {
+      closeModal();
+      showToast('✓ Quote updated! The homeowner has been notified.', '#16a34a');
+    }
+
+    // WITHDRAW
+    function withdrawQuote(btn) {
+      if (confirm('Are you sure you want to withdraw this quote? This cannot be undone.')) {
+        const card = btn.closest('.quote-card');
+        card.classList.remove('pending');
+        card.classList.add('withdrawn');
+        card.dataset.status = 'withdrawn';
+        const badge = card.querySelector('.qc-status');
+        badge.className = 'qc-status withdrawn';
+        badge.textContent = '— Withdrawn';
+        btn.closest('.qc-footer-right').innerHTML = '<div style="font-size:12px;color:var(--gray);font-weight:700">Quote withdrawn</div>';
+        showToast('Quote withdrawn.', '#374151');
+      }
+    }
+
+    // MARK COMPLETE
+    function markComplete() {
+      showToast('✓ Job marked complete! Leave a review to help your reputation.', '#16a34a');
+    }
+
+    // TOAST
+    function showToast(msg, color) {
+      const t = document.createElement('div');
+      t.style.cssText = `position:fixed;bottom:28px;right:28px;background:${color||'#111827'};color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:toastSlide .3s ease`;
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => t.remove(), 300); }, 3000);
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Notification badge
+    (function() {
+      const read = localStorage.getItem('pp_pro_notifs_read') === 'true';
+      const badge = document.getElementById('pro-notif-badge');
+      if (badge && !read) { badge.style.display = 'inline-flex'; badge.textContent = '5'; }
+    })();
+  </script>
+
+  <!-- UNDO TOAST -->
+  <div class="undo-toast" id="undo-toast">
+    <span>Quote removed</span>
+    <button class="undo-btn" onclick="undoDelete()">Undo</button>
+  </div>
+
+  <script>
+  let lastDeleted = null;
+  let undoTimer = null;
+
+  function deleteQuote(btn) {
+    const card = btn.closest('.quote-card');
+    lastDeleted = { card, next: card.nextElementSibling, parent: card.parentElement };
+    card.classList.add('removing');
+    setTimeout(() => { card.remove(); updateCounts(); checkEmpty(); }, 300);
+    clearTimeout(undoTimer);
+    document.getElementById('undo-toast').classList.add('show');
+    undoTimer = setTimeout(() => {
+      document.getElementById('undo-toast').classList.remove('show');
+      lastDeleted = null;
+    }, 5000);
+  }
+
+  function undoDelete() {
+    if (!lastDeleted) return;
+    clearTimeout(undoTimer);
+    const { card, next, parent } = lastDeleted;
+    card.classList.remove('removing');
+    next ? parent.insertBefore(card, next) : parent.appendChild(card);
+    updateCounts();
+    document.getElementById('undo-toast').classList.remove('show');
+    lastDeleted = null;
+  }
+
+  function updateCounts() {
+    const all = document.querySelectorAll('#quotes-list .quote-card');
+    const counts = { all: all.length, pending: 0, accepted: 0, declined: 0, withdrawn: 0 };
+    all.forEach(c => { if (counts[c.dataset.status] !== undefined) counts[c.dataset.status]++; });
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      const fn = tab.getAttribute('onclick') || '';
+      const m = fn.match(/filterQuotes\('(\w+)'/);
+      if (m && counts[m[1]] !== undefined) {
+        const badge = tab.querySelector('.filter-count');
+        if (badge) badge.textContent = counts[m[1]];
+      }
+    });
+  }
+
+  function checkEmpty() {
+    const list = document.getElementById('quotes-list');
+    if (!list.querySelector('.quote-card')) {
+      list.innerHTML = `<div class="quotes-empty">
+        <div class="quotes-empty-icon">📭</div>
+        <div class="quotes-empty-title">No quotes here</div>
+        <div class="quotes-empty-sub">Head to <a href="leads.html" style="color:var(--red);font-weight:800">Leads</a> to find new projects to quote.</div>
+      </div>`;
+    }
+  }
+  </script>
+  </div>
+</div>
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

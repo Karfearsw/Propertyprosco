@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Press & Media — Property Pros</title>
+  <meta name="description" content="Press kit, brand assets, and media information for Property Pros — Rhode Island's home services marketplace." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--red:#dc2626;--red-dark:#b91c1c;--dark:#111827;--dark2:#1f2937;--gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--font:'Manrope',sans-serif;--display:'Playfair Display',serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--dark)}
+    a{text-decoration:none;color:inherit}
+    header{background:var(--dark);padding:0 48px;height:66px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+    .brand-name{font-size:18px;font-weight:900;color:#fff}.brand-name span{color:#f87171}
+    .nav-links{display:flex;gap:24px}.nav-link{font-size:13px;font-weight:700;color:#9ca3af;transition:color .15s}.nav-link:hover{color:#fff}
+    .hdr-btns{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+    .btn-ghost{border-color:rgba(255,255,255,.2);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.08)}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark)}
+    .hero{background:var(--dark);padding:56px 48px;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 60% 50%,rgba(220,38,38,.12) 0%,transparent 60%)}
+    .hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:14px}
+    .hero h1{font-family:var(--display);font-size:42px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.08;margin-bottom:12px}
+    .hero-sub{font-size:15px;color:#9ca3af;line-height:1.7;font-weight:700;max-width:480px}
+    .contact-pill{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px 24px;flex-shrink:0}
+    .cp-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:6px}
+    .cp-email{font-size:16px;font-weight:900;color:#f87171}
+    .cp-resp{font-size:12px;color:#6b7280;font-weight:700;margin-top:4px}
+    .main{max-width:1100px;margin:0 auto;padding:40px 48px 80px}
+    .section{margin-bottom:48px}
+    .sec-title{font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--gray);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .stat{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center}
+    .stat-num{font-family:var(--display);font-size:32px;font-weight:900;color:var(--dark);letter-spacing:-1px;margin-bottom:4px}
+    .stat-label{font-size:12px;font-weight:700;color:var(--gray)}
+    /* FACTS */
+    .facts-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .fact{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;gap:13px}
+    .fact-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fef2f2}
+    .fact-title{font-size:13px;font-weight:900;margin-bottom:4px}
+    .fact-desc{font-size:12px;color:var(--gray);line-height:1.6;font-weight:600}
+    /* ABOUT */
+    .about-card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:28px;font-size:14px;color:var(--dark2);line-height:1.8;font-weight:700}
+    .about-card p{margin-bottom:12px}.about-card p:last-child{margin-bottom:0}
+    /* BRAND ASSETS */
+    .assets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .asset-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+    .asset-preview{height:120px;display:flex;align-items:center;justify-content:center;font-size:36px}
+    .asset-body{padding:14px}
+    .asset-name{font-size:13px;font-weight:900;margin-bottom:4px}
+    .asset-desc{font-size:12px;color:var(--gray);font-weight:600;margin-bottom:10px}
+    .asset-btn{padding:8px 14px;border-radius:8px;background:var(--dark);color:#fff;border:none;font-size:12px;font-weight:800;cursor:pointer;font-family:var(--font);transition:background .15s;display:inline-flex;align-items:center;gap:5px}
+    .asset-btn:hover{background:var(--red)}
+    footer{background:var(--dark);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fl{display:flex;gap:18px;flex-wrap:wrap}.fl a{font-size:13px;font-weight:700;color:#4b5563;transition:color .15s}.fl a:hover{color:#fff}
+    .fc{font-size:12px;color:#374151}
+    @media(max-width:900px){.stats-grid{grid-template-columns:1fr 1fr}.facts-grid{grid-template-columns:1fr}.assets-grid{grid-template-columns:1fr 1fr}.main{padding:24px}.hero{padding:36px 20px}.hero h1{font-size:30px}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}.stats-grid{grid-template-columns:1fr 1fr}.assets-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="brand"><div class="logo">PP</div><div class="brand-name"><span>Property</span> Pros</div></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="blog.html" class="nav-link">Blog</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="waitlist.html" class="btn btn-red">Join waitlist</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Press & Media</div>
+      <h1>Property Pros in the media</h1>
+      <p class="hero-sub">We're building Rhode Island's first flat-rate home services marketplace. Here's everything you need for a story.</p>
+    </div>
+    <div class="contact-pill">
+      <div class="cp-label">Press contact</div>
+      <a href="mailto:press@propertypros.com" class="cp-email">press@propertypros.com</a>
+      <div class="cp-resp">Typically respond within 24 hours</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- COMPANY STATS -->
+  <div class="section">
+    <div class="sec-title">Company at a glance</div>
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-num">2026</div><div class="stat-label">Founded</div></div>
+      <div class="stat"><div class="stat-num">RI</div><div class="stat-label">Headquartered in Rhode Island</div></div>
+      <div class="stat"><div class="stat-num">$9.99</div><div class="stat-label">Monthly pro subscription</div></div>
+      <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Cost to homeowners — always free</div></div>
+    </div>
+  </div>
+
+  <!-- KEY FACTS -->
+  <div class="section">
+    <div class="sec-title">Key facts for reporters</div>
+    <div class="facts-grid">
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="map-pin" size="20" style="color:#dc2626"></i></div>
+        <div><div class="fact-title">Rhode Island first</div><div class="fact-desc">Launching in Rhode Island in Summer 2026, with Massachusetts expansion planned within 6 months of launch. Building local before going national.</div></div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="dollar-sign" size="20" style="color:#16a34a"></i></div>
+        <div><div class="fact-title">Flat rate vs. pay-per-lead</div><div class="fact-desc">Competitors like Thumbtack and HomeAdvisor charge $25–$80 per lead. Property Pros charges $9.99/month flat — unlimited leads, no per-quote fees.</div></div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="shield-check" size="20" style="color:#2563eb"></i></div>
+        <div><div class="fact-title">Two-tier verification</div><div class="fact-desc">Licensed trades (roofing, electrical, plumbing, HVAC) require state license and insurance certificate. Other trades are verified by phone and email.</div></div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="home" size="20" style="color:#b45309"></i></div>
+        <div><div class="fact-title">Three user types</div><div class="fact-desc">Built for homeowners (free), service contractors ($9.99/mo), and real estate agents ($29.99/mo) who need to coordinate repair work for clients.</div></div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="star" size="20" style="color:#dc2626"></i></div>
+        <div><div class="fact-title">Two-way rating system</div><div class="fact-desc">Homeowners rate contractors, and contractors rate homeowners. This creates accountability on both sides and helps pros identify serious clients.</div></div>
+      </div>
+      <div class="fact">
+        <div class="fact-icon"><i data-lucide="heart" size="20" style="color:#e11d48"></i></div>
+        <div><div class="fact-title">Plus™ gives back</div><div class="fact-desc">Homeowners who subscribe to Plus™ ($9.99/year) can direct 50% of their fee to a local nonprofit including Habitat for Humanity RI and the RI Community Food Bank.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="sec-title">About Property Pros</div>
+    <div class="about-card">
+      <p>Property Pros is a Rhode Island-based home services marketplace built to fix a problem that affects every homeowner: finding a reliable, fairly priced local contractor is too hard, and the existing platforms put the cost of that difficulty on the contractor in the form of per-lead fees.</p>
+      <p>Founded in 2026, Property Pros charges service professionals a flat monthly subscription — $9.99/month — rather than charging per lead. This means contractors can quote every project that fits their trade without financial risk, and homeowners receive more and better quotes as a result.</p>
+      <p>The platform serves three audiences: homeowners who need to find and hire contractors, service professionals who want a sustainable way to grow their business without paying per-lead fees, and real estate agents who regularly coordinate repair work for buyers and sellers navigating transactions.</p>
+      <p>Property Pros is launching in Rhode Island in Summer 2026 with a focus on building a high-quality local marketplace before expanding to Massachusetts and beyond.</p>
+    </div>
+  </div>
+
+  <!-- BRAND ASSETS -->
+  <div class="section">
+    <div class="sec-title">Brand assets</div>
+    <div class="assets-grid">
+      <div class="asset-card">
+        <div class="asset-preview" style="background:#111827">
+          <div style="background:#dc2626;width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#fff;font-family:Manrope,sans-serif">PP</div>
+        </div>
+        <div class="asset-body">
+          <div class="asset-name">Logo — Dark background</div>
+          <div class="asset-desc">Primary logo on dark. PNG with transparency.</div>
+          <button class="asset-btn" onclick="showDownloadToast()"><i data-lucide="download" size="13"></i> Download PNG</button>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview" style="background:#f3f4f6">
+          <div style="background:#dc2626;width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#fff;font-family:Manrope,sans-serif">PP</div>
+        </div>
+        <div class="asset-body">
+          <div class="asset-name">Logo — Light background</div>
+          <div class="asset-desc">Primary logo on white/light. PNG with transparency.</div>
+          <button class="asset-btn" onclick="showDownloadToast()"><i data-lucide="download" size="13"></i> Download PNG</button>
+        </div>
+      </div>
+      <div class="asset-card">
+        <div class="asset-preview" style="background:#111827;flex-direction:column;gap:8px">
+          <div style="color:#fff;font-family:'Playfair Display',serif;font-size:22px;font-weight:900">Property Pros</div>
+          <div style="display:flex;gap:8px">
+            <div style="width:24px;height:24px;border-radius:4px;background:#dc2626"></div>
+            <div style="width:24px;height:24px;border-radius:4px;background:#111827;border:1px solid rgba(255,255,255,.2)"></div>
+            <div style="width:24px;height:24px;border-radius:4px;background:#f87171"></div>
+          </div>
+        </div>
+        <div class="asset-body">
+          <div class="asset-name">Brand guide</div>
+          <div class="asset-desc">Colors, typography, usage rules. PDF format.</div>
+          <button class="asset-btn" onclick="showDownloadToast()"><i data-lucide="download" size="13"></i> Download PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a><a href="about.html">About</a>
+    <a href="blog.html">Blog</a><a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+
+<script>
+function showDownloadToast(){
+  const t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:24px;right:24px;background:#111827;color:#fff;padding:14px 20px;border-radius:12px;font-size:13px;font-weight:800;font-family:Manrope,sans-serif;z-index:200;border:1px solid rgba(255,255,255,.1)';
+  t.textContent='Brand assets coming soon — email press@propertypros.com';
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),4000);
+}
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

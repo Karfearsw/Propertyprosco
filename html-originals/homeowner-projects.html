@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your home improvement projects on Property Pros — track quotes, status, and messages." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Projects — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed; --purple-light: #f5f3ff;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { background: var(--dark); padding: 0 32px; display: flex; align-items: center; justify-content: space-between; height: 62px; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .header-nav { display: flex; gap: 24px; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .header-link:hover { color: #fff; }
+    .header-link.active { color: #fff; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .user-pill { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,.08); border-radius: 999px; padding: 5px 12px 5px 5px; cursor: pointer; position: relative; }
+    .user-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--purple); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; }
+    .user-name { font-size: 13px; font-weight: 700; color: #fff; }
+    .user-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 6px; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.12); z-index: 100; }
+    .dd-item { display: flex; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--dark); transition: background .12s; }
+    .dd-item:hover { background: var(--bg); }
+    .dd-item.danger { color: var(--red); }
+    .dd-item.danger:hover { background: var(--red-light); }
+    .dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* ── PAGE ── */
+    .page { max-width: 1060px; margin: 0 auto; padding: 28px 24px 60px; }
+
+    /* ── TOPBAR ── */
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; flex-wrap: wrap; gap: 14px; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; }
+
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--white); color: var(--dark); }
+    .btn:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-green { background: var(--green); color: #fff; border-color: var(--green); }
+    .btn-green:hover { background: #15803d; }
+    .btn-outline { background: var(--white); color: var(--dark); border-color: var(--border); }
+
+    /* ── STATS STRIP ── */
+    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; transition: border-color .2s; }
+    .stat-card:hover { border-color: var(--red); }
+    .stat-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--gray); margin-bottom: 8px; }
+    .stat-num { font-size: 28px; font-weight: 900; letter-spacing: -1px; color: var(--dark); }
+    .stat-sub { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 4px; }
+    .stat-sub.green { color: var(--green); }
+    .stat-sub.amber { color: var(--amber); }
+    .stat-sub.red { color: var(--red); }
+
+    /* ── FILTER BAR ── */
+    .filter-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-tab { padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; border: 1px solid var(--border); background: var(--white); color: var(--gray); cursor: pointer; transition: all .15s; }
+    .filter-tab:hover { border-color: var(--dark); color: var(--dark); }
+    .filter-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .filter-count { font-size: 11px; font-weight: 800; background: rgba(0,0,0,.12); padding: 1px 6px; border-radius: 999px; margin-left: 4px; }
+    .filter-tab.active .filter-count { background: rgba(255,255,255,.2); }
+    .filter-right { margin-left: auto; display: flex; gap: 8px; }
+
+    /* ── PROJECT CARD ── */
+    .project-card { background: var(--white); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 16px; overflow: hidden; transition: all .2s; }
+    .project-card:hover { border-color: #d1d5db; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .project-card.has-quotes { border-color: #bfdbfe; }
+
+    /* CARD HEADER */
+    .pc-header { padding: 20px 22px 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+    .pc-left { flex: 1; min-width: 0; }
+    .pc-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .badge { font-size: 10px; font-weight: 800; padding: 3px 9px; border-radius: 999px; display: inline-block; }
+    .badge-open { background: var(--blue-light); color: #1e40af; }
+    .badge-quotes { background: var(--green-light); color: #166534; }
+    .badge-inprogress { background: var(--purple-light); color: var(--purple); }
+    .badge-completed { background: var(--bg); color: var(--gray); border: 1px solid var(--border); }
+    .badge-cancelled { background: var(--red-light); color: #991b1b; }
+    .badge-category { background: var(--bg); color: var(--dark3); border: 1px solid var(--border); }
+    .badge-urgent { background: var(--red-light); color: #991b1b; }
+    .pc-title { font-size: 17px; font-weight: 900; color: var(--dark); margin-bottom: 5px; letter-spacing: -0.3px; }
+    .pc-meta { font-size: 13px; color: var(--gray); font-weight: 700; display: flex; gap: 14px; flex-wrap: wrap; }
+    .pc-right { text-align: right; flex-shrink: 0; }
+    .pc-budget { font-size: 18px; font-weight: 900; color: var(--dark); letter-spacing: -0.5px; }
+    .pc-budget-label { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 1px; }
+    .pc-date { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 6px; }
+
+    /* CARD DESC */
+    .pc-desc { padding: 12px 22px; font-size: 14px; color: var(--dark3); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* QUOTE PROGRESS */
+    .pc-quotes-bar { margin: 0 22px 16px; background: var(--bg); border-radius: 12px; padding: 14px 16px; }
+    .qb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .qb-title { font-size: 13px; font-weight: 800; color: var(--dark); }
+    .qb-action { font-size: 12px; font-weight: 800; color: var(--red); cursor: pointer; }
+    .qb-action:hover { text-decoration: underline; }
+    .quote-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .quote-pill { display: flex; gap: 8px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: all .15s; flex: 1; min-width: 160px; }
+    .quote-pill:hover { border-color: var(--dark); }
+    .quote-pill.recommended { border-color: var(--green); background: var(--green-light); }
+    .qp-avatar { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; color: #fff; flex-shrink: 0; }
+    .qp-name { font-size: 12px; font-weight: 800; color: var(--dark); }
+    .qp-price { font-size: 13px; font-weight: 900; color: var(--dark); }
+    .qp-rating { font-size: 10px; color: var(--amber); font-weight: 700; }
+    .qp-badge { font-size: 9px; font-weight: 900; padding: 2px 7px; border-radius: 999px; margin-top: 2px; }
+    .qp-badge.best { background: var(--green-light); color: #166534; }
+    .qp-badge.new { background: var(--blue-light); color: #1e40af; }
+
+    /* CARD FOOTER */
+    .pc-footer { padding: 14px 22px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--bg); }
+    .pc-footer-left { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pc-tag { font-size: 11px; font-weight: 800; background: var(--white); border: 1px solid var(--border); padding: 4px 10px; border-radius: 999px; color: var(--dark3); }
+    .pc-footer-right { display: flex; gap: 8px; }
+
+    /* STATUS CARD */
+    .pc-status-bar { display: flex; gap: 0; padding: 12px 22px; border-top: 1px solid var(--border); }
+    .status-step { flex: 1; text-align: center; position: relative; }
+    .status-step::before { content: ''; position: absolute; top: 10px; left: 50%; right: -50%; height: 2px; background: var(--border); z-index: 0; }
+    .status-step:last-child::before { display: none; }
+    .status-step.done::before { background: var(--green); }
+    .status-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; margin: 0 auto 5px; position: relative; z-index: 1; }
+    .status-step.done .status-dot { background: var(--green); color: #fff; }
+    .status-step.active .status-dot { background: var(--red); color: #fff; box-shadow: 0 0 0 3px rgba(220,38,38,.2); }
+    .status-step.pending .status-dot { background: var(--border); color: var(--gray); }
+    .status-label { font-size: 10px; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: .5px; }
+    .status-step.done .status-label { color: var(--green); }
+    .status-step.active .status-label { color: var(--red); }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 52px; margin-bottom: 16px; }
+    .empty-title { font-size: 20px; font-weight: 900; margin-bottom: 8px; }
+    .empty-sub { font-size: 15px; color: var(--gray); line-height: 1.7; max-width: 400px; margin: 0 auto 24px; }
+
+    /* ── QUOTE DETAIL MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto; box-shadow: 0 25px 60px rgba(0,0,0,.2); }
+    .modal-header { padding: 22px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+    .modal-title { font-size: 18px; font-weight: 900; }
+    .modal-sub { font-size: 13px; color: var(--gray); margin-top: 3px; font-weight: 700; }
+    .modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray); padding: 4px; }
+    .modal-body { padding: 20px 24px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--bg); border-radius: 0 0 20px 20px; }
+
+    .quote-detail-card { border: 1px solid var(--border); border-radius: 14px; padding: 18px; margin-bottom: 14px; cursor: pointer; transition: all .15s; }
+    .quote-detail-card:hover { border-color: var(--dark); }
+    .quote-detail-card.selected { border-color: var(--green); border-width: 2px; background: var(--green-light); }
+    .qdc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .qdc-pro { display: flex; gap: 12px; align-items: center; }
+    .qdc-avatar { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff; flex-shrink: 0; }
+    .qdc-name { font-size: 14px; font-weight: 900; }
+    .qdc-rating { font-size: 12px; color: var(--amber); font-weight: 700; margin-top: 2px; }
+    .qdc-verified { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 2px; }
+    .qdc-price { text-align: right; }
+    .qdc-amount { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .qdc-type { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+    .qdc-msg { background: var(--bg); border-radius: 10px; padding: 12px; font-size: 13px; color: var(--dark3); line-height: 1.7; margin-bottom: 12px; font-style: italic; }
+    .qdc-details { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: var(--gray); margin-bottom: 14px; }
+    .qdc-actions { display: flex; gap: 8px; }
+
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark3); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-family: var(--font); color: var(--dark); }
+    .form-input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+
+    @media (max-width: 860px) { .stats-strip { grid-template-columns: repeat(2, 1fr); } .header-nav { display: none; } }
+    @media (max-width: 560px) { .stats-strip { grid-template-columns: 1fr 1fr; } .pc-header { flex-direction: column; } .pc-right { text-align: left; } }
+    @media (max-width:768px) { aside { display:none !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header style="background:#14532d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.1)">
+    <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#86efac">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="homeowner-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid #14532d"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">MS</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+
+  <!-- PAGE WRAPPER -->
+  <div style="display:flex;min-height:calc(100vh - 60px)">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+
+    <!-- PAGE CONTENT -->
+    <div style="flex:1;min-width:0">
+  <div class="page">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <div>
+        <div class="page-title">My Projects</div>
+        <div class="page-sub">All the projects you've posted and their current status</div>
+      </div>
+      <a href="post-project.html" class="btn btn-red">+ Post A New Project</a>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="stat-card">
+        <div class="stat-label">Active projects</div>
+        <div class="stat-num">3</div>
+        <div class="stat-sub amber">2 have new quotes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Quotes received</div>
+        <div class="stat-num">9</div>
+        <div class="stat-sub">Across 3 projects</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">In progress</div>
+        <div class="stat-num">1</div>
+        <div class="stat-sub green">Pro hired · On track</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Completed</div>
+        <div class="stat-num">2</div>
+        <div class="stat-sub">All time</div>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-bar">
+      <div class="filter-tab active" onclick="filterProjects('all', this)">All <span class="filter-count">6</span></div>
+      <div class="filter-tab" onclick="filterProjects('open', this)">Open <span class="filter-count">2</span></div>
+      <div class="filter-tab" onclick="filterProjects('quotes', this)">Has quotes <span class="filter-count">3</span></div>
+      <div class="filter-tab" onclick="filterProjects('inprogress', this)">In progress <span class="filter-count">1</span></div>
+      <div class="filter-tab" onclick="filterProjects('completed', this)">Completed <span class="filter-count">2</span></div>
+      <div class="filter-right">
+        <select class="btn btn-sm" style="cursor:pointer">
+          <option>Newest first</option>
+          <option>Oldest first</option>
+          <option>Most quotes</option>
+          <option>Highest budget</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- ══ PROJECT CARDS ══ -->
+    <div id="projects-list">
+
+      <!-- PROJECT 1 — Has quotes, urgent -->
+      <div class="project-card has-quotes" data-status="quotes">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-quotes">4 quotes received</span>
+              <span class="badge badge-urgent">⚡ ASAP</span>
+              <span class="badge badge-category">Roofing</span>
+            </div>
+            <div class="pc-title">Full roof replacement — colonial home, 2,200 sq ft</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Posted 2 days ago</span>
+              <span>🏡 Single family</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$5,000–$10,000</div>
+            <div class="pc-budget-label">Your budget</div>
+            <div class="pc-date">Apr 18, 2026</div>
+          </div>
+        </div>
+
+        <div class="pc-desc">22-year-old colonial with active leak in the front left dormer. Looking for architectural shingles — open to recommendations. Need a licensed and insured contractor. Prior photos of damage attached.</div>
+
+        <!-- QUOTES PREVIEW -->
+        <div class="pc-quotes-bar">
+          <div class="qb-header">
+            <div class="qb-title">4 quotes received — review and accept one</div>
+            <div class="qb-action" onclick="openQuoteModal('roof')">View all quotes →</div>
+          </div>
+          <div class="quote-pills">
+            <div class="quote-pill recommended" onclick="openQuoteModal('roof')">
+              <div class="qp-avatar" style="background:#111827">AR</div>
+              <div>
+                <div class="qp-name">Apex Roofing</div>
+                <div class="qp-rating">★ 4.9</div>
+                <div class="qp-badge best">⭐ Best match</div>
+              </div>
+              <div style="margin-left:auto;text-align:right">
+                <div class="qp-price">$4,200</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700">2–3 days</div>
+              </div>
+            </div>
+            <div class="quote-pill" onclick="openQuoteModal('roof')">
+              <div class="qp-avatar" style="background:#059669">NR</div>
+              <div>
+                <div class="qp-name">NE Roofing Co.</div>
+                <div class="qp-rating">★ 4.7</div>
+                <div class="qp-badge new">New</div>
+              </div>
+              <div style="margin-left:auto;text-align:right">
+                <div class="qp-price">$3,850</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700">1–2 days</div>
+              </div>
+            </div>
+            <div class="quote-pill" onclick="openQuoteModal('roof')">
+              <div class="qp-avatar" style="background:#1d4ed8">PR</div>
+              <div>
+                <div class="qp-name">ProRoof Solutions</div>
+                <div class="qp-rating">★ 4.5</div>
+              </div>
+              <div style="margin-left:auto;text-align:right">
+                <div class="qp-price">$5,100</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700">2–3 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-STEP STATUS -->
+        <div class="pc-status-bar">
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Posted</div></div>
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Received Quotes</div></div>
+          <div class="status-step active"><div class="status-dot">→</div><div class="status-label">Review</div></div>
+          <div class="status-step pending"><div class="status-dot">4</div><div class="status-label">Hired</div></div>
+          <div class="status-step pending"><div class="status-dot">5</div><div class="status-label">Complete</div></div>
+        </div>
+
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag">Architectural shingles</span>
+            <span class="pc-tag">Free estimate ok</span>
+            <span class="pc-tag">Licensed required</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm" onclick="openQuoteModal('roof')">View 4 quotes</button>
+            <button class="btn btn-sm btn-outline" onclick="window.location='homeowner-messages.html'">Messages</button>
+            <button class="btn btn-sm btn-outline">Edit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 2 — Open, 1 quote -->
+      <div class="project-card" data-status="quotes">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-quotes">1 quote received</span>
+              <span class="badge badge-category">🛣️ Driveways</span>
+            </div>
+            <div class="pc-title">Asphalt driveway resurfacing — 60 ft two-car wide</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Posted 4 days ago</span>
+              <span>🏡 Residential</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$2,500–$5,000</div>
+            <div class="pc-budget-label">Your budget</div>
+            <div class="pc-date">Apr 16, 2026</div>
+          </div>
+        </div>
+
+        <div class="pc-desc">Existing driveway is cracked and heaving significantly. Looking for asphalt resurfacing with a new apron. Happy to get a free estimate before committing.</div>
+
+        <!-- QUOTES PREVIEW -->
+        <div class="pc-quotes-bar">
+          <div class="qb-header">
+            <div class="qb-title">1 quote received — waiting for more</div>
+            <div class="qb-action" onclick="openQuoteModal('driveway')">View quote →</div>
+          </div>
+          <div class="quote-pills">
+            <div class="quote-pill" onclick="openQuoteModal('driveway')">
+              <div class="qp-avatar" style="background:#b45309">PM</div>
+              <div>
+                <div class="qp-name">Premier Paving</div>
+                <div class="qp-rating">★ 4.9</div>
+                <div class="qp-badge new">New</div>
+              </div>
+              <div style="margin-left:auto;text-align:right">
+                <div class="qp-price">$3,200</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700">1 day</div>
+              </div>
+            </div>
+            <div style="flex:1;min-width:140px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px dashed var(--border);border-radius:10px;padding:10px;font-size:12px;font-weight:700;color:var(--gray)">
+              ⏳ Waiting for more quotes...
+            </div>
+          </div>
+        </div>
+
+        <div class="pc-status-bar">
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Posted</div></div>
+          <div class="status-step active"><div class="status-dot">→</div><div class="status-label">Received Quotes</div></div>
+          <div class="status-step pending"><div class="status-dot">3</div><div class="status-label">Review</div></div>
+          <div class="status-step pending"><div class="status-dot">4</div><div class="status-label">Hired</div></div>
+          <div class="status-step pending"><div class="status-dot">5</div><div class="status-label">Complete</div></div>
+        </div>
+
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag">Asphalt preferred</span>
+            <span class="pc-tag">Free estimate ok</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm" onclick="openQuoteModal('driveway')">View 1 quote</button>
+            <button class="btn btn-sm btn-outline" onclick="window.location='homeowner-messages.html'">Messages</button>
+            <button class="btn btn-sm btn-outline">Edit</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 3 — Open, no quotes yet -->
+      <div class="project-card" data-status="open">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-open">No quotes yet</span>
+              <span class="badge badge-category">🎨 Painting</span>
+            </div>
+            <div class="pc-title">Interior painting — 3 bedroom colonial, full interior</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Posted yesterday</span>
+              <span>🏡 ~1,800 sq ft</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$2,000–$4,000</div>
+            <div class="pc-budget-label">Your budget</div>
+            <div class="pc-date">Apr 19, 2026</div>
+          </div>
+        </div>
+
+        <div class="pc-desc">Need full interior painted — walls, ceilings, and trim throughout. 3 bedrooms, 2 bathrooms, living room, kitchen, and hallways. Client-provided colors already selected.</div>
+
+        <div style="margin: 0 22px 16px;background:var(--amber-light);border:1px solid #fde68a;border-radius:12px;padding:13px 16px;display:flex;gap:10px;align-items:center">
+          <span style="font-size:18px">⏳</span>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:#92400e">No quotes yet — usually takes 2–4 hours</div>
+            <div style="font-size:12px;color:#b45309;font-weight:700;margin-top:2px">Your project has been matched to 14 painters in your area</div>
+          </div>
+        </div>
+
+        <div class="pc-status-bar">
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Posted</div></div>
+          <div class="status-step active"><div class="status-dot">→</div><div class="status-label">Received Quotes</div></div>
+          <div class="status-step pending"><div class="status-dot">3</div><div class="status-label">Review</div></div>
+          <div class="status-step pending"><div class="status-dot">4</div><div class="status-label">Hired</div></div>
+          <div class="status-step pending"><div class="status-dot">5</div><div class="status-label">Complete</div></div>
+        </div>
+
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag">Colors provided</span>
+            <span class="pc-tag">Within a month</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm btn-outline">Edit project</button>
+            <button class="btn btn-sm" style="color:var(--red);border-color:#fecaca" onclick="confirmClose()">Close project</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 4 — In Progress -->
+      <div class="project-card" data-status="inprogress">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-inprogress">🔨 In progress</span>
+              <span class="badge badge-category">🧱 Masonry</span>
+            </div>
+            <div class="pc-title">Stone retaining wall — backyard slope, approx 40 ft</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Started Apr 15</span>
+              <span>🏡 Residential</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$4,200</div>
+            <div class="pc-budget-label">Accepted quote</div>
+            <div class="pc-date">Hired Apr 15</div>
+          </div>
+        </div>
+
+        <div class="pc-desc">Backyard slope needs a dry-stack stone retaining wall. Approx 40 ft long, 3–4 ft high. StoneLine Outdoor hired at $4,200. Work started Apr 15, expected completion Apr 22.</div>
+
+        <!-- PRO INFO WHILE IN PROGRESS -->
+        <div style="margin:0 22px 16px;background:var(--purple-light);border:1px solid #ddd6fe;border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--purple);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">SL</div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:900;color:var(--dark)">StoneLine Outdoor</div>
+            <div style="font-size:12px;color:var(--gray);font-weight:700;margin-top:2px">★ 4.9 · 132 reviews · ✓ Verified · Masonry</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;font-weight:800;color:var(--purple)">Est. completion</div>
+            <div style="font-size:14px;font-weight:900;color:var(--dark)">Apr 22, 2026</div>
+          </div>
+          <button class="btn btn-sm" onclick="window.location='homeowner-messages.html'" style="flex-shrink:0">💬 Message</button>
+        </div>
+
+        <div class="pc-status-bar">
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Posted</div></div>
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Received Quotes</div></div>
+          <div class="status-step done"><div class="status-dot">✓</div><div class="status-label">Review</div></div>
+          <div class="status-step active"><div class="status-dot">→</div><div class="status-label">In progress</div></div>
+          <div class="status-step pending"><div class="status-dot">5</div><div class="status-label">Complete</div></div>
+        </div>
+
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag">Stone dry-stack</span>
+            <span class="pc-tag">40 ft run</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm btn-outline" onclick="window.location='homeowner-messages.html'">Message pro</button>
+            <button class="btn btn-sm btn-green" onclick="openCompleteModal()">✓ Mark as complete</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 5 — Completed -->
+      <div class="project-card" data-status="completed" style="opacity:.85">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-completed">✓ Completed</span>
+              <span class="badge badge-category">🛣️ Driveways</span>
+            </div>
+            <div class="pc-title">Driveway sealcoating — full driveway</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Completed Jan 12, 2026</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$380</div>
+            <div class="pc-budget-label">Final cost</div>
+          </div>
+        </div>
+        <div class="pc-desc">Full sealcoat on 2-car driveway. Job completed in half a day. Northeast Blacktop — excellent work, showed up on time and cleaned everything up.</div>
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag" style="background:var(--green-light);border-color:#bbf7d0;color:#166534">★★★★★ 5 stars</span>
+            <span class="pc-tag">Review left</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm btn-outline" onclick="window.location='pro-profile.html'">View pro</button>
+            <button class="btn btn-sm btn-outline">Book again</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROJECT 6 — Completed -->
+      <div class="project-card" data-status="completed" style="opacity:.85">
+        <div class="pc-header">
+          <div class="pc-left">
+            <div class="pc-badges">
+              <span class="badge badge-completed">✓ Completed</span>
+              <span class="badge badge-category">🌿 Landscaping</span>
+            </div>
+            <div class="pc-title">Spring lawn cleanup & mulching — front and back</div>
+            <div class="pc-meta">
+              <span>📍 Your area</span>
+              <span>📅 Completed Mar 28, 2026</span>
+            </div>
+          </div>
+          <div class="pc-right">
+            <div class="pc-budget">$550</div>
+            <div class="pc-budget-label">Final cost</div>
+          </div>
+        </div>
+        <div class="pc-desc">Spring cleanup, edging, mulch delivery and installation on front and back beds. GreenScape Crew did a great job and were in and out in one morning.</div>
+        <div class="pc-footer">
+          <div class="pc-footer-left">
+            <span class="pc-tag" style="background:var(--green-light);border-color:#bbf7d0;color:#166534">★★★★☆ 4 stars</span>
+            <span class="pc-tag">Review left</span>
+          </div>
+          <div class="pc-footer-right">
+            <button class="btn btn-sm btn-outline" onclick="window.location='pro-profile.html'">View pro</button>
+            <button class="btn btn-sm btn-outline">Book again</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- QUOTES MODAL -->
+  <div class="modal-overlay" id="quote-modal" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="qm-title">Quotes received</div>
+          <div class="modal-sub" id="qm-sub">Review and accept the best quote for your project</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body" id="qm-body">
+        <!-- Injected by JS -->
+      </div>
+      <div class="modal-footer">
+        <div style="font-size:13px;color:var(--gray);font-weight:700;flex:1">💡 Message a pro before accepting to ask questions</div>
+        <button class="btn btn-sm" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETE PROJECT MODAL -->
+  <div class="modal-overlay" id="complete-modal" onclick="if(event.target===this)closeCompleteModal()">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Mark project as complete</div>
+          <div class="modal-sub">Stone retaining wall · StoneLine Outdoor</div>
+        </div>
+        <button class="modal-close" onclick="closeCompleteModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:var(--green-light);border:1px solid #bbf7d0;border-radius:12px;padding:14px 16px;margin-bottom:18px;font-size:13px;font-weight:700;color:#166534">
+          ✓ Confirming the job is complete will release your review for StoneLine Outdoor and close this project.
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your rating for StoneLine Outdoor</label>
+          <div style="display:flex;gap:8px;font-size:32px;cursor:pointer;margin-bottom:4px" id="star-rating">
+            <span onclick="setRating(1)">⭐</span>
+            <span onclick="setRating(2)">⭐</span>
+            <span onclick="setRating(3)">⭐</span>
+            <span onclick="setRating(4)">⭐</span>
+            <span onclick="setRating(5)">⭐</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Leave a review <span style="color:var(--gray);font-size:10px;font-weight:600;text-transform:none">(optional)</span></label>
+          <textarea class="form-input" rows="3" placeholder="Tell others about your experience with StoneLine Outdoor..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Would you hire them again?</label>
+          <div style="display:flex;gap:8px">
+            <button class="btn btn-sm" onclick="this.style.background='var(--green)';this.style.color='#fff';this.nextElementSibling.style.background=''">👍 Yes</button>
+            <button class="btn btn-sm" onclick="this.style.background='var(--red)';this.style.color='#fff';this.previousElementSibling.style.background=''">👎 No</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" onclick="closeCompleteModal()">Cancel</button>
+        <button class="btn btn-sm btn-green" onclick="submitComplete()">✓ Confirm complete & submit review</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── FILTER TABS ──
+    function filterProjects(status, el) {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.project-card').forEach(card => {
+        if (status === 'all') {
+          card.style.display = '';
+        } else {
+          card.style.display = card.dataset.status === status ? '' : 'none';
+        }
+      });
+    }
+
+    // ── QUOTE MODAL DATA ──
+    const quoteData = {
+      roof: {
+        title: 'Quotes for: Full roof replacement',
+        sub: '4 quotes received · Review and accept the best one',
+        quotes: [
+          { initials:'AR', color:'#111827', name:'Apex Roofing Group', rating:'★ 4.9 · 214 reviews', verified:true, amount:'$4,200', type:'Fixed price', duration:'2–3 days', start:'Apr 22', msg:'We reviewed your project and can start April 22. Full shingle removal, GAF Timberline HDZ architectural shingles, underlayment, flashing, and cleanup. 25-year warranty included.', best:true },
+          { initials:'NR', color:'#059669', name:'NE Roofing Co.', rating:'★ 4.7 · 98 reviews', verified:true, amount:'$3,850', type:'Fixed price', duration:'1–2 days', start:'Within 1 week', msg:'We can get this done efficiently. Removal of old shingles, installation of 30-year architectural shingles, and new drip edge.' },
+          { initials:'PR', color:'#1d4ed8', name:'ProRoof Solutions', rating:'★ 4.5 · 61 reviews', verified:true, amount:'$5,100', type:'Estimate', duration:'2–3 days', start:'Apr 28', msg:'Premium quote including Owens Corning Duration shingles (50-year warranty), ice & water shield on entire roof, and new ridge vent.' },
+          { initials:'KH', color:'#7c3aed', name:'Kev Hernandez Contracting', rating:'★ 4.8 · 168 reviews', verified:true, amount:'$4,600', type:'Fixed price', duration:'2 days', start:'Apr 25', msg:'Full replacement with GAF Timberline shingles. Price includes tear-off, disposal, felt paper, drip edge, and flashing. Family business, 15 years experience.' },
+        ]
+      },
+      driveway: {
+        title: 'Quotes for: Asphalt driveway resurfacing',
+        sub: '1 quote received · More may arrive within the next few hours',
+        quotes: [
+          { initials:'PM', color:'#b45309', name:'Premier Paving & Masonry', rating:'★ 4.9 · 210 reviews', verified:true, amount:'$3,200', type:'Fixed price', duration:'1 day', start:'Apr 24', msg:"We've done dozens of driveway resurfacing jobs in your area. Our quote covers full prep, asphalt resurfacing, and a new apron. We\'ll be in and out in one day.", best:true },
+        ]
+      }
+    };
+
+    function openQuoteModal(project) {
+      const data = quoteData[project];
+      if (!data) return;
+      document.getElementById('qm-title').textContent = data.title;
+      document.getElementById('qm-sub').textContent = data.sub;
+
+      const body = document.getElementById('qm-body');
+      body.innerHTML = data.quotes.map(q => `
+        <div class="quote-detail-card">
+          <div class="qdc-header">
+            <div class="qdc-pro">
+              <div class="qdc-avatar" style="background:${q.color}">${q.initials}</div>
+              <div>
+                <div class="qdc-name">${q.name}</div>
+                <div class="qdc-rating">${q.rating}</div>
+                ${q.verified ? '<div class="qdc-verified">✓ License & insurance verified</div>' : ''}
+                ${q.best ? '<span style="font-size:10px;font-weight:900;background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;padding:2px 8px;border-radius:999px;display:inline-block;margin-top:4px">⭐ Best match</span>' : ''}
+              </div>
+            </div>
+            <div class="qdc-price">
+              <div class="qdc-amount">${q.amount}</div>
+              <div class="qdc-type">${q.type}</div>
+            </div>
+          </div>
+          <div class="qdc-msg">"${q.msg}"</div>
+          <div class="qdc-details">
+            <span>📅 Start: ${q.start}</span>
+            <span>⏱ Duration: ${q.duration}</span>
+            <span>✓ Materials included</span>
+            <span>✓ Cleanup included</span>
+          </div>
+          <div class="qdc-actions">
+            <button class="btn btn-sm" onclick="window.location='homeowner-messages.html'">💬 Message pro</button>
+            
+            <button class="btn btn-sm btn-green" onclick="acceptQuote('${q.name}', '${q.amount}')">✓ Accept this quote</button>
+          </div>
+        </div>`).join('');
+
+      document.getElementById('quote-modal').classList.add('open');
+    }
+
+    function acceptQuote(proName, amount) {
+      closeModal();
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#16a34a;color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15)';
+      toast.textContent = `✓ Quote accepted! ${proName} — ${amount}. They'll be in touch to confirm the start date.`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    }
+
+    function closeModal() {
+      document.getElementById('quote-modal').classList.remove('open');
+    }
+
+    // ── COMPLETE MODAL ──
+    function openCompleteModal() {
+      document.getElementById('complete-modal').classList.add('open');
+    }
+
+    function closeCompleteModal() {
+      document.getElementById('complete-modal').classList.remove('open');
+    }
+
+    function setRating(stars) {
+      document.querySelectorAll('#star-rating span').forEach((s, i) => {
+        s.textContent = i < stars ? '⭐' : '☆';
+      });
+    }
+
+    function submitComplete() {
+      closeCompleteModal();
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#16a34a;color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15)';
+      toast.textContent = '✓ Project marked complete! Your review has been submitted.';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    function confirmClose() {
+      if (confirm('Are you sure you want to close this project? It will be removed from the marketplace and no more quotes will be accepted.')) {
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#374151;color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.15)';
+        toast.textContent = 'Project closed.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      }
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.user-pill')) {
+        document.querySelectorAll('.user-dropdown').forEach(d => d.style.display = 'none');
+      }
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeModal(); closeCompleteModal(); }
+    });
+  
+    // Notification bell badge
+    (function() {
+      const read = localStorage.getItem('pp_hw_notifs_read') === 'true';
+      const badge = document.getElementById('hw-bell-badge');
+      if (badge && !read) {
+        badge.style.display = 'flex';
+        badge.textContent = '3';
+      }
+    })();
+  </script>
+
+  <footer style="background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:28px 32px;margin-top:40px">
+    <div style="max-width:1060px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+        <div style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-0.5px"><span style="color:#86efac">Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="homeowner-dashboard.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Find a pro</a>
+        <a href="post-project.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Post a project</a>
+        <a href="homeowner-messages.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Messages</a>
+        <a href="pricing.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Pricing</a>
+        <a href="about.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">About</a>
+        <a href="terms.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Terms</a>
+        <a href="privacy.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+    </div>
+  </div><!-- /page wrapper -->
+
+</body>
+</html>

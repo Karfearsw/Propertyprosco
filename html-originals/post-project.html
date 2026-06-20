@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Post your home improvement project free on Property Pros and receive quotes from verified local contractors in Rhode Island." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post a Project — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; display: flex; flex-direction: column; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { background: #14532d; padding: 0 28px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; flex-shrink: 0; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 32px; height: 32px; border-radius: 8px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 11px; color: #fff; }
+    .brand-name { font-size: 15px; font-weight: 900; color: #fff; }
+    .brand-name span { color: #f87171; }
+    .exit-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #6b7280; cursor: pointer; transition: color .15s; background: none; border: none; font-family: var(--font); }
+    .exit-btn:hover { color: #fff; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { background: var(--dark2); padding: 12px 28px; position: sticky; top: 60px; z-index: 49; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .progress-steps { display: flex; align-items: center; gap: 0; max-width: 580px; margin: 0 auto; }
+    .p-step { display: flex; align-items: center; gap: 8px; flex: 1; position: relative; }
+    .p-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #374151; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #6b7280; transition: all .3s; flex-shrink: 0; background: var(--dark2); }
+    .p-dot.active { border-color: var(--red); color: var(--red); background: rgba(220,38,38,.1); }
+    .p-dot.done { border-color: var(--green); background: var(--green); color: #fff; }
+    .p-label { font-size: 11px; font-weight: 800; color: #4b5563; transition: color .3s; white-space: nowrap; }
+    .p-label.active { color: #fff; }
+    .p-label.done { color: #6b7280; }
+    .p-line { flex: 1; height: 2px; background: #374151; margin: 0 8px; transition: background .3s; }
+    .p-line.done { background: var(--green); }
+    @media (max-width:500px) { .p-label { display: none; } .progress-wrap { padding: 10px 16px; } }
+
+    /* ── MAIN ── */
+    .main { flex: 1; display: flex; justify-content: center; padding: 32px 20px 60px; }
+    .card-wrap { width: 100%; max-width: 620px; }
+
+    /* ── STEP CARD ── */
+    .step-panel { display: none; animation: fadeUp .3s ease; }
+    .step-panel.active { display: block; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    .step-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; margin-bottom: 14px; }
+    .sc-header { padding: 26px 28px 18px; }
+    .sc-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--red); margin-bottom: 8px; }
+    .sc-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 6px; }
+    .sc-sub { font-size: 14px; color: var(--gray); font-weight: 700; line-height: 1.5; }
+    .sc-body { padding: 0 28px 24px; }
+    .sc-footer { padding: 16px 28px; border-top: 1px solid var(--border); background: var(--bg); display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 11px 24px; border-radius: 11px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; white-space: nowrap; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-red:disabled { opacity: .4; cursor: not-allowed; transform: none !important; }
+    .btn-ghost { background: none; color: var(--gray); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--bg); color: var(--dark); }
+    .btn-full { width: 100%; justify-content: center; padding: 14px; font-size: 15px; border-radius: 13px; }
+
+    /* ── CATEGORY GRID ── */
+    .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .cat-card { border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 14px; cursor: pointer; transition: all .2s; background: var(--white); text-align: center; }
+    .cat-card:hover { border-color: var(--red); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,.06); }
+    .cat-card.selected { border-color: var(--red); background: var(--red-light); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+    .cat-icon { width: 48px; height: 48px; border-radius: 13px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; transition: all .2s; }
+    .cat-name { font-size: 12px; font-weight: 900; color: var(--dark); line-height: 1.3; }
+    .cat-sub { font-size: 10px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+
+    /* ── QUESTION OPTIONS ── */
+    .opt-grid { display: grid; gap: 8px; }
+    .opt-grid.c2 { grid-template-columns: 1fr 1fr; }
+    .opt-grid.c3 { grid-template-columns: repeat(3, 1fr); }
+
+    .opt-btn { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: all .15s; background: var(--white); display: flex; align-items: center; gap: 10px; font-family: var(--font); text-align: left; }
+    .opt-btn:hover { border-color: var(--red); background: var(--red-light); }
+    .opt-btn.selected { border-color: var(--red); background: var(--red-light); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+    .opt-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .opt-label { font-size: 13px; font-weight: 800; color: var(--dark); }
+    .opt-sub { font-size: 11px; color: var(--gray); margin-top: 1px; font-weight: 600; }
+    .opt-check { margin-left: auto; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
+    .opt-btn.selected .opt-check { background: var(--red); border-color: var(--red); }
+
+    /* CHIPS */
+    .chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border: 1.5px solid var(--border); border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all .15s; background: var(--white); color: var(--dark); display: flex; align-items: center; gap: 5px; }
+    .chip:hover { border-color: var(--red); }
+    .chip.selected { border-color: var(--red); background: var(--red-light); color: var(--red-dark); }
+
+    /* QUESTION META */
+    .q-block { margin-bottom: 24px; }
+    .q-label { font-size: 13px; font-weight: 900; color: var(--dark); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+    .q-optional { font-size: 11px; font-weight: 700; color: var(--gray); background: var(--bg); padding: 2px 8px; border-radius: 999px; }
+    .q-hint { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+
+    /* Q PROGRESS */
+    .q-progress { display: flex; gap: 4px; margin-bottom: 20px; }
+    .q-dot { height: 3px; border-radius: 999px; background: var(--border); flex: 1; transition: background .3s; }
+    .q-dot.done { background: var(--green); }
+    .q-dot.active { background: var(--red); }
+
+    /* ── PHOTOS STEP ── */
+    .photo-upload-area { border: 2px dashed var(--border); border-radius: 14px; padding: 32px 20px; text-align: center; cursor: pointer; transition: all .2s; background: var(--white); }
+    .photo-upload-area:hover { border-color: var(--red); background: var(--red-light); }
+    .photo-upload-area.dragover { border-color: var(--red); background: var(--red-light); }
+    .photo-upload-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--bg); display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .photo-upload-title { font-size: 15px; font-weight: 900; margin-bottom: 4px; }
+    .photo-upload-sub { font-size: 13px; color: var(--gray); font-weight: 700; }
+    .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .photo-thumb { aspect-ratio: 1; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; cursor: pointer; }
+    .photo-remove { position: absolute; top: 6px; right: 6px; width: 22px; height: 22px; border-radius: 50%; background: var(--dark); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+
+    /* DESC TEXTAREA */
+    .desc-field { width: 100%; padding: 13px 15px; border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-family: var(--font); color: var(--dark); font-weight: 600; line-height: 1.7; resize: vertical; min-height: 120px; transition: border-color .15s; }
+    .desc-field:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(220,38,38,.08); }
+
+    /* ── BUDGET STEP ── */
+    .budget-presets { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+    .budget-preset { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: all .15s; background: var(--white); font-family: var(--font); text-align: left; }
+    .budget-preset:hover { border-color: var(--red); background: var(--red-light); }
+    .budget-preset.selected { border-color: var(--red); background: var(--red-light); }
+    .bp-range { font-size: 15px; font-weight: 900; color: var(--dark); }
+    .bp-label { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+    .budget-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0; color: var(--gray); font-size: 12px; font-weight: 700; }
+    .budget-divider::before, .budget-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .budget-custom { display: flex; gap: 10px; align-items: center; }
+    .budget-input-wrap { flex: 1; position: relative; }
+    .budget-input-wrap span { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 15px; font-weight: 800; color: var(--gray); }
+    .budget-input { width: 100%; padding: 11px 13px 11px 26px; border: 1.5px solid var(--border); border-radius: 11px; font-size: 15px; font-family: var(--font); font-weight: 800; color: var(--dark); transition: border-color .15s; }
+    .budget-input:focus { outline: none; border-color: var(--red); }
+    .budget-dash { font-size: 18px; font-weight: 900; color: var(--gray); }
+
+    /* TIMELINE OPTIONS */
+    .timeline-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 4px; }
+    .tl-btn { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: all .15s; background: var(--white); font-family: var(--font); text-align: left; display: flex; align-items: center; gap: 10px; }
+    .tl-btn:hover { border-color: var(--red); background: var(--red-light); }
+    .tl-btn.selected { border-color: var(--red); background: var(--red-light); }
+    .tl-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tl-label { font-size: 13px; font-weight: 800; color: var(--dark); }
+    .tl-sub { font-size: 11px; color: var(--gray); font-weight: 600; }
+
+    /* ── CONFIRM STEP ── */
+    .confirm-summary { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 14px; }
+    .cs-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .cs-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .cs-label { color: var(--gray); font-weight: 700; white-space: nowrap; }
+    .cs-val { font-weight: 800; color: var(--dark); text-align: right; max-width: 300px; line-height: 1.5; }
+    .cs-edit { font-size: 11px; font-weight: 800; color: var(--red); cursor: pointer; white-space: nowrap; padding: 2px 8px; border-radius: 6px; border: 1px solid #fecaca; background: none; font-family: var(--font); margin-left: 8px; }
+    .cs-edit:hover { background: var(--red-light); }
+
+    /* ACCOUNT CARD */
+    .account-card { background: var(--green-light); border: 1px solid #bbf7d0; border-radius: 14px; padding: 16px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+    .ac-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; flex-shrink: 0; }
+    .ac-name { font-size: 14px; font-weight: 900; }
+    .ac-meta { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+    .ac-badge { font-size: 11px; font-weight: 800; color: var(--green); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+    /* PRIVACY NOTE */
+    .privacy-note { background: var(--blue-light); border: 1px solid #bfdbfe; border-radius: 12px; padding: 12px 15px; display: flex; gap: 9px; align-items: flex-start; font-size: 13px; font-weight: 700; color: #1e40af; line-height: 1.6; margin-bottom: 14px; }
+
+    /* SUCCESS OVERLAY */
+    .success-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+    .success-overlay.show { display: flex; }
+    .success-card { background: var(--white); border-radius: 24px; max-width: 440px; width: 100%; padding: 40px 36px; text-align: center; box-shadow: 0 28px 60px rgba(0,0,0,.2); animation: popIn .4s cubic-bezier(.175,.885,.32,1.275); }
+    @keyframes popIn { from { transform:scale(.8); opacity:0; } to { transform:scale(1); opacity:1; } }
+    .success-icon-wrap { width: 80px; height: 80px; border-radius: 50%; background: var(--green-light); border: 3px solid #bbf7d0; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .success-title { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 24px; }
+    .success-stat { display: flex; gap: 16px; justify-content: center; margin-bottom: 24px; }
+    .ss-item { background: var(--bg); border-radius: 12px; padding: 12px 16px; }
+    .ss-num { font-size: 22px; font-weight: 900; }
+    .ss-label { font-size: 11px; color: var(--gray); font-weight: 700; margin-top: 2px; }
+
+    /* CONFETTI */
+    .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 99; overflow: hidden; }
+    .confetti-piece { position: absolute; border-radius: 2px; animation: fall linear both; }
+    @keyframes fall { 0% { transform:translateY(-20px) rotate(0); opacity:1; } 100% { transform:translateY(100vh) rotate(720deg); opacity:0; } }
+
+    /* TOAST */
+    @keyframes toastSlide { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* RESPONSIVE */
+    @media (max-width:560px) {
+      .cat-grid { grid-template-columns: repeat(2, 1fr); }
+      .opt-grid.c3 { grid-template-columns: 1fr 1fr; }
+      .sc-header { padding: 20px 20px 14px; }
+      .sc-body { padding: 0 20px 20px; }
+      .sc-footer { padding: 14px 20px; }
+      .sc-title { font-size: 19px; }
+      .progress-wrap { padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONFETTI -->
+  <div class="confetti-wrap" id="confetti" style="display:none"></div>
+
+  <!-- SUCCESS OVERLAY -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-card">
+      <div class="success-icon-wrap">
+        <i data-lucide="check" style="width:36px;height:36px;color:var(--green)"></i>
+      </div>
+      <div class="success-title">Project posted! 🎉</div>
+      <div class="success-sub">Verified pros in your area have been notified. You'll receive quotes — usually within 2 hours.</div>
+      <div class="success-stat">
+        <div class="ss-item">
+          <div class="ss-num">~2hrs</div>
+          <div class="ss-label">First quote</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">$0</div>
+          <div class="ss-label">Cost to you</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">Free</div>
+          <div class="ss-label">Forever</div>
+        </div>
+      </div>
+      <a href="homeowner-projects.html" class="btn btn-red btn-full" style="margin-bottom:10px">
+        <i data-lucide="folder" style="width:16px;height:16px"></i> View my projects
+      </a>
+      <a href="homeowner-dashboard.html" class="btn btn-ghost btn-full" style="justify-content:center">
+        Find more pros
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="homeowner-dashboard.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <button class="exit-btn" onclick="confirmExit()">
+      <i data-lucide="x" style="width:15px;height:15px"></i> Exit
+    </button>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-steps" id="progress-steps">
+      <div class="p-step">
+        <div class="p-dot active" id="pd-1">1</div>
+        <div class="p-label active" id="pl-1">Category</div>
+      </div>
+      <div class="p-line" id="pline-1"></div>
+      <div class="p-step">
+        <div class="p-dot" id="pd-2">2</div>
+        <div class="p-label" id="pl-2">Questions</div>
+      </div>
+      <div class="p-line" id="pline-2"></div>
+      <div class="p-step">
+        <div class="p-dot" id="pd-3">3</div>
+        <div class="p-label" id="pl-3">Photos</div>
+      </div>
+      <div class="p-line" id="pline-3"></div>
+      <div class="p-step">
+        <div class="p-dot" id="pd-4">4</div>
+        <div class="p-label" id="pl-4">Budget</div>
+      </div>
+      <div class="p-line" id="pline-4"></div>
+      <div class="p-step">
+        <div class="p-dot" id="pd-5">5</div>
+        <div class="p-label" id="pl-5">Confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="card-wrap">
+
+      <!-- ══ STEP 1: CATEGORY ══ -->
+      <div class="step-panel active" id="step-1">
+        <div class="step-card">
+          <div class="sc-header">
+            <div class="sc-eyebrow">Step 1 of 5</div>
+            <div class="sc-title">What type of work do you need?</div>
+            <div class="sc-sub">Pick a category — we'll ask a few smart questions to help pros understand your project perfectly.</div>
+          </div>
+          <div class="sc-body">
+            <div class="cat-grid" id="cat-grid">
+
+              <div class="cat-card" onclick="selectCat('roofing', this)">
+                <div class="cat-icon" style="background:#fef2f2">
+                  <i data-lucide="house" style="width:24px;height:24px;color:#dc2626"></i>
+                </div>
+                <div class="cat-name">Roofing</div>
+                <div class="cat-sub">Repair · Replace</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('driveways', this)">
+                <div class="cat-icon" style="background:#eff6ff">
+                  <i data-lucide="road" style="width:24px;height:24px;color:#2563eb"></i>
+                </div>
+                <div class="cat-name">Driveways</div>
+                <div class="cat-sub">Paving · Resurfacing</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('painting', this)">
+                <div class="cat-icon" style="background:#fef2f2">
+                  <i data-lucide="paint-roller" style="width:24px;height:24px;color:#dc2626"></i>
+                </div>
+                <div class="cat-name">Painting</div>
+                <div class="cat-sub">Interior · Exterior</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('landscaping', this)">
+                <div class="cat-icon" style="background:#f0fdf4">
+                  <i data-lucide="leaf" style="width:24px;height:24px;color:#16a34a"></i>
+                </div>
+                <div class="cat-name">Landscaping</div>
+                <div class="cat-sub">Lawn · Cleanup · Design</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('masonry', this)">
+                <div class="cat-icon" style="background:#f5f3ff">
+                  <i data-lucide="square-stack" style="width:24px;height:24px;color:#7c3aed"></i>
+                </div>
+                <div class="cat-name">Masonry</div>
+                <div class="cat-sub">Walls · Patios · Steps</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('electrical', this)">
+                <div class="cat-icon" style="background:#fffbeb">
+                  <i data-lucide="zap" style="width:24px;height:24px;color:#d97706"></i>
+                </div>
+                <div class="cat-name">Electrical</div>
+                <div class="cat-sub">Panel · Outlets · Wiring</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('plumbing', this)">
+                <div class="cat-icon" style="background:#eff6ff">
+                  <i data-lucide="droplets" style="width:24px;height:24px;color:#2563eb"></i>
+                </div>
+                <div class="cat-name">Plumbing</div>
+                <div class="cat-sub">Leaks · Fixtures · Pipes</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('junk', this)">
+                <div class="cat-icon" style="background:#fff7ed">
+                  <i data-lucide="truck" style="width:24px;height:24px;color:#ea580c"></i>
+                </div>
+                <div class="cat-name">Junk Removal</div>
+                <div class="cat-sub">Cleanout · Haul away</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('remodeling', this)">
+                <div class="cat-icon" style="background:#fef2f2">
+                  <i data-lucide="hammer" style="width:24px;height:24px;color:#dc2626"></i>
+                </div>
+                <div class="cat-name">Remodeling</div>
+                <div class="cat-sub">Kitchen · Bath · Addition</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('handyman', this)">
+                <div class="cat-icon" style="background:#f5f3ff">
+                  <i data-lucide="wrench" style="width:24px;height:24px;color:#7c3aed"></i>
+                </div>
+                <div class="cat-name">Handyman</div>
+                <div class="cat-sub">Repairs · Installs · Tasks</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('hvac', this)">
+                <div class="cat-icon" style="background:#eff6ff">
+                  <i data-lucide="wind" style="width:24px;height:24px;color:#2563eb"></i>
+                </div>
+                <div class="cat-name">HVAC</div>
+                <div class="cat-sub">Heating · Cooling · Air</div>
+              </div>
+
+              <div class="cat-card" onclick="selectCat('other', this)">
+                <div class="cat-icon" style="background:var(--bg)">
+                  <i data-lucide="more-horizontal" style="width:24px;height:24px;color:var(--gray)"></i>
+                </div>
+                <div class="cat-name">Other</div>
+                <div class="cat-sub">Tell us what you need</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="sc-footer">
+            <div style="font-size:13px;font-weight:700;color:var(--gray);display:flex;align-items:center;gap:6px">
+              <i data-lucide="shield-check" style="width:14px;height:14px;color:var(--green)"></i>
+              Always free for Property Owners
+            </div>
+            <button class="btn btn-red" id="cat-btn" disabled onclick="goToQuestionnaire()">
+              Next <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 2: QUESTIONNAIRE ══ -->
+      <div class="step-panel" id="step-2">
+        <div class="step-card" id="q-card">
+          <div class="sc-header">
+            <div class="sc-eyebrow" id="q-eyebrow">Step 2 of 5 · Question 1</div>
+            <div class="sc-title" id="q-title">Loading...</div>
+            <div class="sc-sub" id="q-sub"></div>
+          </div>
+          <div class="sc-body">
+            <div class="q-progress" id="q-progress"></div>
+            <div id="q-body"></div>
+          </div>
+          <div class="sc-footer">
+            <button class="btn btn-ghost" onclick="qBack()">
+              <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Back
+            </button>
+            <button class="btn btn-red" id="q-next" onclick="qNext()" disabled>
+              Next <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 3: PHOTOS + DESCRIPTION ══ -->
+      <div class="step-panel" id="step-3">
+        <div class="step-card">
+          <div class="sc-header">
+            <div class="sc-eyebrow">Step 3 of 5</div>
+            <div class="sc-title">Add photos & finalize your description</div>
+            <div class="sc-sub">Photos help pros give more accurate quotes. Your description has been pre-filled from your answers — review and edit it.</div>
+          </div>
+          <div class="sc-body">
+
+            <!-- UPLOAD AREA -->
+            <div style="margin-bottom:20px">
+              <div class="q-label">
+                <i data-lucide="camera" style="width:15px;height:15px;color:var(--red)"></i>
+                Project photos
+                <span class="q-optional">Optional but recommended</span>
+              </div>
+              <div class="photo-upload-area" id="upload-area" onclick="document.getElementById('file-input').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+                <div class="photo-upload-icon">
+                  <i data-lucide="image-plus" style="width:26px;height:26px;color:var(--gray)"></i>
+                </div>
+                <div class="photo-upload-title">Tap to add photos</div>
+                <div class="photo-upload-sub">JPG, PNG · Up to 5 photos · Max 10MB each</div>
+                <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="handleFileSelect(this.files)">
+              </div>
+              <div class="photo-grid" id="photo-grid" style="display:none"></div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div>
+              <div class="q-label">
+                <i data-lucide="file-text" style="width:15px;height:15px;color:var(--red)"></i>
+                Project description
+              </div>
+              <textarea class="desc-field" id="project-desc" placeholder="Describe your project in more detail..."></textarea>
+              <div class="q-hint">
+                <i data-lucide="lightbulb" style="width:13px;height:13px;color:var(--amber)"></i>
+                The more detail you include the better — pros use this to give accurate quotes
+              </div>
+            </div>
+
+          </div>
+          <div class="sc-footer">
+            <button class="btn btn-ghost" onclick="showStep(2)">
+              <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Back
+            </button>
+            <button class="btn btn-red" onclick="goToBudget()">
+              Next <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 4: BUDGET + TIMELINE ══ -->
+      <div class="step-panel" id="step-4">
+        <div class="step-card">
+          <div class="sc-header">
+            <div class="sc-eyebrow">Step 4 of 5</div>
+            <div class="sc-title">Budget & timeline</div>
+            <div class="sc-sub">Set a realistic budget range and tell pros when you need this done. You can always negotiate — this just helps filter the right pros.</div>
+          </div>
+          <div class="sc-body">
+
+            <!-- BUDGET -->
+            <div class="q-block">
+              <div class="q-label">
+                <i data-lucide="dollar-sign" style="width:15px;height:15px;color:var(--red)"></i>
+                Budget range
+              </div>
+              <div class="budget-presets" id="budget-presets">
+                <div class="budget-preset" onclick="selectBudget('under500','Under $500',this)">
+                  <div class="bp-range">Under $500</div>
+                  <div class="bp-label">Small job or repair</div>
+                </div>
+                <div class="budget-preset" onclick="selectBudget('500-2000','$500 – $2,000',this)">
+                  <div class="bp-range">$500 – $2,000</div>
+                  <div class="bp-label">Minor project</div>
+                </div>
+                <div class="budget-preset" onclick="selectBudget('2000-5000','$2,000 – $5,000',this)">
+                  <div class="bp-range">$2,000 – $5,000</div>
+                  <div class="bp-label">Mid-size project</div>
+                </div>
+                <div class="budget-preset" onclick="selectBudget('5000-15000','$5,000 – $15,000',this)">
+                  <div class="bp-range">$5,000 – $15,000</div>
+                  <div class="bp-label">Larger project</div>
+                </div>
+                <div class="budget-preset" onclick="selectBudget('15000+','$15,000+',this)">
+                  <div class="bp-range">$15,000+</div>
+                  <div class="bp-label">Major renovation</div>
+                </div>
+                <div class="budget-preset" onclick="selectBudget('notsure','Not sure yet',this)">
+                  <div class="bp-range">Not sure yet</div>
+                  <div class="bp-label">Need quotes to decide</div>
+                </div>
+              </div>
+              <div class="budget-divider">or enter a custom range</div>
+              <div class="budget-custom">
+                <div class="budget-input-wrap">
+                  <span>$</span>
+                  <input class="budget-input" type="number" id="budget-min" placeholder="Min" oninput="clearBudgetPresets()" />
+                </div>
+                <div class="budget-dash">—</div>
+                <div class="budget-input-wrap">
+                  <span>$</span>
+                  <input class="budget-input" type="number" id="budget-max" placeholder="Max" oninput="clearBudgetPresets()" />
+                </div>
+              </div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div class="q-block" style="margin-bottom:0">
+              <div class="q-label">
+                <i data-lucide="calendar" style="width:15px;height:15px;color:var(--red)"></i>
+                When do you need this done?
+              </div>
+              <div class="timeline-grid" id="timeline-grid">
+                <div class="tl-btn" onclick="selectTimeline('ASAP — urgent', this)">
+                  <div class="tl-icon" style="background:#fef2f2">
+                    <i data-lucide="zap" style="width:18px;height:18px;color:#dc2626"></i>
+                  </div>
+                  <div>
+                    <div class="tl-label">ASAP</div>
+                    <div class="tl-sub">Emergency or urgent</div>
+                  </div>
+                </div>
+                <div class="tl-btn" onclick="selectTimeline('Within 2 weeks', this)">
+                  <div class="tl-icon" style="background:#fffbeb">
+                    <i data-lucide="calendar" style="width:18px;height:18px;color:#d97706"></i>
+                  </div>
+                  <div>
+                    <div class="tl-label">Within 2 weeks</div>
+                    <div class="tl-sub">Soon but not emergency</div>
+                  </div>
+                </div>
+                <div class="tl-btn" onclick="selectTimeline('Within a month', this)">
+                  <div class="tl-icon" style="background:#eff6ff">
+                    <i data-lucide="calendar" style="width:18px;height:18px;color:#2563eb"></i>
+                  </div>
+                  <div>
+                    <div class="tl-label">Within a month</div>
+                    <div class="tl-sub">Planned project</div>
+                  </div>
+                </div>
+                <div class="tl-btn" onclick="selectTimeline('Flexible — no hard deadline', this)">
+                  <div class="tl-icon" style="background:#f0fdf4">
+                    <i data-lucide="clock" style="width:18px;height:18px;color:#16a34a"></i>
+                  </div>
+                  <div>
+                    <div class="tl-label">Flexible</div>
+                    <div class="tl-sub">No hard deadline</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="sc-footer">
+            <button class="btn btn-ghost" onclick="showStep(3)">
+              <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Back
+            </button>
+            <button class="btn btn-red" id="budget-next-btn" disabled onclick="showStep(5)">
+              Review & confirm <i data-lucide="arrow-right" style="width:15px;height:15px"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ STEP 5: CONFIRM ══ -->
+      <div class="step-panel" id="step-5">
+        <div class="step-card">
+          <div class="sc-header">
+            <div class="sc-eyebrow">Step 5 of 5 — Almost done!</div>
+            <div class="sc-title">Review and post your project</div>
+            <div class="sc-sub">Everything looks good? Hit post and verified pros in your area will be notified immediately.</div>
+          </div>
+          <div class="sc-body">
+
+            <!-- ACCOUNT -->
+            <div class="account-card">
+              <div class="ac-avatar">MS</div>
+              <div style="flex:1">
+                <div class="ac-name">Posting as Maria Santos</div>
+                <div class="ac-meta">maria@email.com · Your area</div>
+                <div class="ac-badge">
+                  <i data-lucide="shield-check" style="width:12px;height:12px"></i>
+                  Verified Property Owner Account
+                </div>
+              </div>
+              <a href="homeowner-settings.html" style="font-size:12px;font-weight:800;color:var(--gray);border:1px solid var(--border);border-radius:8px;padding:6px 12px;white-space:nowrap;background:var(--white)">Edit</a>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="confirm-summary">
+              <div class="cs-row">
+                <div class="cs-label">Project ZIP</div>
+                <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                  <input id="projZip" inputmode="numeric" maxlength="5" placeholder="Enter ZIP" oninput="checkProjZip()"
+                         style="width:120px;text-align:right;padding:7px 10px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-weight:700;outline:none" />
+                  <div id="projZipMsg" style="font-size:11.5px;font-weight:700;line-height:1.35;max-width:200px;text-align:right"></div>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Category</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="cs-val" id="cs-category">—</div>
+                  <button class="cs-edit" onclick="showStep(1)">Edit</button>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Answers</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="cs-val" id="cs-answers">—</div>
+                  <button class="cs-edit" onclick="showStep(2)">Edit</button>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Photos</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="cs-val" id="cs-photos">No photos added</div>
+                  <button class="cs-edit" onclick="showStep(3)">Edit</button>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Description</div>
+                <div style="display:flex;align-items:flex-start;gap:8px">
+                  <div class="cs-val" id="cs-description" style="font-weight:600;color:var(--dark3)">—</div>
+                  <button class="cs-edit" onclick="showStep(3)">Edit</button>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Budget</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="cs-val" id="cs-budget" style="color:var(--green)">—</div>
+                  <button class="cs-edit" onclick="showStep(4)">Edit</button>
+                </div>
+              </div>
+              <div class="cs-row">
+                <div class="cs-label">Timeline</div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div class="cs-val" id="cs-timeline">—</div>
+                  <button class="cs-edit" onclick="showStep(4)">Edit</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRIVACY -->
+            <div class="privacy-note">
+              <i data-lucide="lock" style="width:15px;height:15px;flex-shrink:0;margin-top:1px"></i>
+              Your contact details are only shared with a pro after they submit a quote — never before.
+            </div>
+
+            <p style="font-size:12px;color:var(--gray);line-height:1.7">By posting you agree to our <a href="terms.html" style="color:var(--red);font-weight:800">Terms of Service</a> and <a href="privacy.html" style="color:var(--red);font-weight:800">Privacy Policy</a>.</p>
+
+          </div>
+          <div class="sc-footer" style="flex-direction:column;gap:10px;align-items:stretch">
+            <button class="btn btn-red btn-full" onclick="submitProject()">
+              <i data-lucide="rocket" style="width:17px;height:17px"></i>
+              Post My Project
+            </button>
+            <button class="btn btn-ghost btn-full" onclick="showStep(4)" style="justify-content:center">
+              <i data-lucide="arrow-left" style="width:15px;height:15px"></i> Back
+            </button>
+          </div>
+        </div>
+      </div> 
+
+    </div>
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────────
+    // STATE
+    // ─────────────────────────────────────────────
+    let currentStep = 1;
+    let selectedCategory = null;
+    let currentQIndex = 0;
+    let questionList = [];
+    let answers = {};
+    let photos = [];
+    let selectedBudget = null;
+    let selectedTimeline = null;
+
+    // ─────────────────────────────────────────────
+    // QUESTION BANK
+    // ─────────────────────────────────────────────
+    const QB = {
+      roofing: [
+        { id:'scope', title:'Repair or full replacement?', type:'single', required:true, cols:'c2',
+          options:[{l:'Repair',s:'Fix specific damage',i:'wrench',bg:'#eff6ff',c:'#2563eb'},{l:'Full replacement',s:'Remove & replace entire roof',i:'house',bg:'#fef2f2',c:'#dc2626'},{l:'Inspection only',s:'Assess before deciding',i:'search',bg:'#f0fdf4',c:'#16a34a'},{l:'Not sure yet',s:"Need a pro's recommendation",i:'help-circle',bg:'#f5f3ff',c:'#7c3aed'}]},
+        { id:'material', title:'What roofing material?', type:'single', required:true, cols:'c3',
+          options:[{l:'Asphalt shingles',i:'layers',bg:'#fef2f2',c:'#dc2626'},{l:'Metal',i:'square',bg:'#eff6ff',c:'#2563eb'},{l:'Flat / TPO',i:'minus',bg:'#f5f3ff',c:'#7c3aed'},{l:'Tile / Slate',i:'grid',bg:'#fffbeb',c:'#d97706'},{l:'Wood shake',i:'tree-pine',bg:'#f0fdf4',c:'#16a34a'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'home_size', title:'How large is your home?', type:'single', required:true, cols:'c2',
+          options:[{l:'Under 1,000 sq ft',i:'home',bg:'#f0fdf4',c:'#16a34a'},{l:'1,000–2,000 sq ft',i:'home',bg:'#eff6ff',c:'#2563eb'},{l:'2,000–3,500 sq ft',i:'home',bg:'#fffbeb',c:'#d97706'},{l:'3,500+ sq ft',i:'building-2',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'roof_age', title:'How old is the current roof?', type:'single', required:false, cols:'c3',
+          options:[{l:'Under 5 years',i:'clock',bg:'#f0fdf4',c:'#16a34a'},{l:'5–15 years',i:'clock',bg:'#eff6ff',c:'#2563eb'},{l:'15–25 years',i:'clock',bg:'#fffbeb',c:'#d97706'},{l:'25+ years',i:'clock',bg:'#fef2f2',c:'#dc2626'},{l:"Don't know",i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'damage', title:'Any specific damage or issues?', type:'chips', required:false, sub:'Select all that apply',
+          chips:['Active leak','Missing shingles','Storm damage','Sagging','Ice dam','Flashing damage','Gutter damage','None visible']},
+      ],
+      driveways: [
+        { id:'scope', title:'New installation or resurfacing?', type:'single', required:true, cols:'c2',
+          options:[{l:'New installation',s:'No existing driveway',i:'plus-circle',bg:'#f0fdf4',c:'#16a34a'},{l:'Resurfacing',s:'Repair existing surface',i:'refresh-cw',bg:'#eff6ff',c:'#2563eb'},{l:'Repair only',s:'Fix cracks or sections',i:'wrench',bg:'#fffbeb',c:'#d97706'},{l:'Full replacement',s:'Remove and replace',i:'trash-2',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'material', title:'Preferred material?', type:'single', required:true, cols:'c3',
+          options:[{l:'Asphalt',i:'road',bg:'#1f2937',c:'#fff'},{l:'Concrete',i:'square',bg:'#eff6ff',c:'#2563eb'},{l:'Pavers',i:'grid-3x3',bg:'#f5f3ff',c:'#7c3aed'},{l:'Gravel',i:'circle-dot',bg:'#fffbeb',c:'#d97706'},{l:'Stamped concrete',i:'layout-grid',bg:'#fef2f2',c:'#dc2626'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'size', title:'Approximate driveway length?', type:'single', required:true, cols:'c2',
+          options:[{l:'Under 40 ft',i:'move-horizontal',bg:'#f0fdf4',c:'#16a34a'},{l:'40–80 ft',i:'move-horizontal',bg:'#eff6ff',c:'#2563eb'},{l:'80–150 ft',i:'move-horizontal',bg:'#fffbeb',c:'#d97706'},{l:'150+ ft',i:'move-horizontal',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'cars', title:'How many cars wide?', type:'single', required:false, cols:'c3',
+          options:[{l:'1 car',i:'car',bg:'#eff6ff',c:'#2563eb'},{l:'2 cars',i:'car',bg:'#f0fdf4',c:'#16a34a'},{l:'3+ cars',i:'car',bg:'#fffbeb',c:'#d97706'}]},
+        { id:'remove', title:'Existing driveway to remove?', type:'single', required:false, cols:'c2',
+          options:[{l:'Yes — include removal',i:'trash-2',bg:'#fef2f2',c:'#dc2626'},{l:"Yes — I'll handle it",i:'check',bg:'#f0fdf4',c:'#16a34a'},{l:'No existing driveway',i:'minus-circle',bg:'#eff6ff',c:'#2563eb'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+      ],
+      painting: [
+        { id:'area', title:'Interior, exterior, or both?', type:'single', required:true, cols:'c3',
+          options:[{l:'Interior',s:'Inside the home',i:'home',bg:'#eff6ff',c:'#2563eb'},{l:'Exterior',s:'Outside the home',i:'sun',bg:'#fffbeb',c:'#d97706'},{l:'Both',s:'Full inside and outside',i:'layout',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'rooms', title:'How much needs to be painted?', type:'single', required:true, cols:'c2',
+          options:[{l:'1 room',i:'square',bg:'#f0fdf4',c:'#16a34a'},{l:'2–3 rooms',i:'grid-2x2',bg:'#eff6ff',c:'#2563eb'},{l:'4–6 rooms',i:'grid',bg:'#fffbeb',c:'#d97706'},{l:'Entire home',i:'home',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'surfaces', title:'What surfaces need painting?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Walls','Ceilings','Trim & baseboards','Doors','Cabinets','Deck or fence','Accent wall only']},
+        { id:'paint', title:'Will you supply the paint?', type:'single', required:false, cols:'c2',
+          options:[{l:'Yes — I have paint',i:'check-circle',bg:'#f0fdf4',c:'#16a34a'},{l:'No — pro provides',i:'shopping-bag',bg:'#eff6ff',c:'#2563eb'},{l:'Pro recommends',i:'message-circle',bg:'#f5f3ff',c:'#7c3aed'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'repairs', title:'Any wall repairs needed first?', type:'single', required:false, cols:'c2',
+          options:[{l:'Minor repairs',s:'Small holes, cracks',i:'wrench',bg:'#fffbeb',c:'#d97706'},{l:'Significant repairs',s:'Water damage, large areas',i:'alert-triangle',bg:'#fef2f2',c:'#dc2626'},{l:'None needed',s:'Surfaces are ready',i:'check',bg:'#f0fdf4',c:'#16a34a'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+      ],
+      landscaping: [
+        { id:'frequency', title:'One-time or recurring service?', type:'single', required:true, cols:'c2',
+          options:[{l:'One-time',s:'Single job or cleanup',i:'calendar',bg:'#eff6ff',c:'#2563eb'},{l:'Recurring',s:'Weekly, bi-weekly, monthly',i:'repeat',bg:'#f0fdf4',c:'#16a34a'}]},
+        { id:'work', title:'What type of work?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Lawn mowing','Spring cleanup','Fall leaf cleanup','Mulching','Hedge trimming','Planting','Landscaping design','Sod installation','Tree trimming','Stump removal','Aeration']},
+        { id:'yard_size', title:'How large is your yard?', type:'single', required:true, cols:'c2',
+          options:[{l:'Small',s:'Under 2,000 sq ft',i:'minimize-2',bg:'#f0fdf4',c:'#16a34a'},{l:'Medium',s:'2,000–5,000 sq ft',i:'square',bg:'#eff6ff',c:'#2563eb'},{l:'Large',s:'5,000–10,000 sq ft',i:'maximize-2',bg:'#fffbeb',c:'#d97706'},{l:'Very large',s:'Over 10,000 sq ft',i:'layout',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'yard_area', title:'Front, back, or both?', type:'single', required:false, cols:'c3',
+          options:[{l:'Front only',i:'arrow-up',bg:'#eff6ff',c:'#2563eb'},{l:'Back only',i:'arrow-down',bg:'#f0fdf4',c:'#16a34a'},{l:'Both',i:'move',bg:'#fef2f2',c:'#dc2626'}]},
+      ],
+      masonry: [
+        { id:'project_type', title:'What type of masonry?', type:'single', required:true, cols:'c3',
+          options:[{l:'Retaining wall',i:'square-stack',bg:'#fef2f2',c:'#dc2626'},{l:'Patio',i:'grid',bg:'#eff6ff',c:'#2563eb'},{l:'Walkway',i:'road',bg:'#f0fdf4',c:'#16a34a'},{l:'Steps',i:'arrow-up',bg:'#f5f3ff',c:'#7c3aed'},{l:'Chimney',i:'flame',bg:'#fffbeb',c:'#d97706'},{l:'Other',i:'more-horizontal',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'material', title:'Preferred material?', type:'single', required:true, cols:'c3',
+          options:[{l:'Natural stone',i:'layers',bg:'#fffbeb',c:'#d97706'},{l:'Brick',i:'grid',bg:'#fef2f2',c:'#dc2626'},{l:'Concrete block',i:'square',bg:'#eff6ff',c:'#2563eb'},{l:'Pavers',i:'layout-grid',bg:'#f5f3ff',c:'#7c3aed'},{l:'Bluestone',i:'disc',bg:'#f0fdf4',c:'#16a34a'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'scope', title:'New build or repair?', type:'single', required:true, cols:'c2',
+          options:[{l:'New build',s:'Building from scratch',i:'plus-circle',bg:'#f0fdf4',c:'#16a34a'},{l:'Repair / restore',s:'Fix existing structure',i:'wrench',bg:'#eff6ff',c:'#2563eb'},{l:'Extension',s:'Adding to existing',i:'expand',bg:'#fffbeb',c:'#d97706'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'size_text', title:'Approximate size?', type:'text', required:false, placeholder:'e.g. 40 ft wall, 4 ft high / 300 sq ft patio'},
+      ],
+      electrical: [
+        { id:'emergency', title:'Is this an emergency?', type:'single', required:true, cols:'c2',
+          options:[{l:'Yes — urgent',s:'Safety issue or power out',i:'alert-triangle',bg:'#fef2f2',c:'#dc2626'},{l:'No — planned work',s:'Not an emergency',i:'calendar',bg:'#f0fdf4',c:'#16a34a'}]},
+        { id:'work_type', title:'What type of electrical work?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Panel upgrade','New outlets','Fixture install','Ceiling fan','EV charger','Whole house rewire','Generator hookup','Outdoor lighting','Smart home','Inspection only','Other']},
+        { id:'home_age', title:'How old is your home?', type:'single', required:false, cols:'c3',
+          options:[{l:'Under 10 yrs',i:'home',bg:'#f0fdf4',c:'#16a34a'},{l:'10–30 yrs',i:'home',bg:'#eff6ff',c:'#2563eb'},{l:'30–60 yrs',i:'home',bg:'#fffbeb',c:'#d97706'},{l:'60+ yrs',i:'home',bg:'#fef2f2',c:'#dc2626'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+      ],
+      plumbing: [
+        { id:'emergency', title:'Is this an emergency?', type:'single', required:true, cols:'c2',
+          options:[{l:'Yes — active leak',s:'Need someone now',i:'alert-triangle',bg:'#fef2f2',c:'#dc2626'},{l:'No — planned work',s:'No immediate urgency',i:'calendar',bg:'#f0fdf4',c:'#16a34a'}]},
+        { id:'work_type', title:'What type of plumbing?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Leak repair','Pipe replacement','Drain cleaning','Toilet install','Faucet install','Water heater','Sump pump','Sewer line','Water softener','Other']},
+        { id:'location', title:'Which area of the home?', type:'chips', required:false, sub:'Select all that apply',
+          chips:['Kitchen','Bathroom','Basement','Laundry room','Outdoor','Whole house','Not sure']},
+      ],
+      junk: [
+        { id:'items', title:'What needs to be removed?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Furniture','Appliances','General junk','Construction debris','Electronics','Clothing & boxes','Yard waste','Exercise equipment','Mattresses','Hot tub / oversized']},
+        { id:'volume', title:'How much stuff?', type:'single', required:true, cols:'c2',
+          options:[{l:'Small load',s:'1–5 items or a few bags',i:'package',bg:'#f0fdf4',c:'#16a34a'},{l:'Medium load',s:'About half a truck',i:'package',bg:'#eff6ff',c:'#2563eb'},{l:'Full truck',s:'Full truck load',i:'truck',bg:'#fffbeb',c:'#d97706'},{l:'Full cleanout',s:'Garage, basement, estate',i:'home',bg:'#fef2f2',c:'#dc2626'}]},
+        { id:'access', title:'Any access challenges?', type:'single', required:false, cols:'c2',
+          options:[{l:'Easy access',s:'Ground floor or garage',i:'check-circle',bg:'#f0fdf4',c:'#16a34a'},{l:'Stairs involved',s:'Items need to be carried',i:'arrow-down',bg:'#fffbeb',c:'#d97706'},{l:'Narrow doorways',s:'May need disassembly',i:'minimize-2',bg:'#eff6ff',c:'#2563eb'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+      ],
+      remodeling: [
+        { id:'area', title:'Which area of the home?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['Kitchen','Bathroom','Basement','Bedroom','Living room','Whole home','Addition','Garage','Mudroom / laundry']},
+        { id:'scope', title:'What is the scope?', type:'single', required:true, cols:'c2',
+          options:[{l:'Minor update',s:'Cosmetic, fixtures',i:'edit-3',bg:'#f0fdf4',c:'#16a34a'},{l:'Full renovation',s:'Gut and rebuild',i:'refresh-cw',bg:'#eff6ff',c:'#2563eb'},{l:'Structural changes',s:'Moving walls, additions',i:'maximize-2',bg:'#fffbeb',c:'#d97706'},{l:'Not sure yet',s:"Need a pro's assessment",i:'help-circle',bg:'#f5f3ff',c:'#7c3aed'}]},
+        { id:'plans', title:'Do you have designs or plans?', type:'single', required:false, cols:'c2',
+          options:[{l:'Full plans ready',i:'file-text',bg:'#f0fdf4',c:'#16a34a'},{l:'Rough ideas',i:'image',bg:'#eff6ff',c:'#2563eb'},{l:'Open to pro suggestions',i:'message-circle',bg:'#f5f3ff',c:'#7c3aed'},{l:'Need design + build',i:'pen-tool',bg:'#fffbeb',c:'#d97706'}]},
+      ],
+      handyman: [
+        { id:'tasks', title:'What tasks do you need done?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['TV mounting','Furniture assembly','Door repair','Window repair','Drywall patch','Painting touch-up','Shelf install','Caulking','Tile repair','Light fixture','Gutter cleaning','Other']},
+        { id:'items_count', title:'How many tasks?', type:'single', required:false, cols:'c3',
+          options:[{l:'1 item',i:'hash',bg:'#f0fdf4',c:'#16a34a'},{l:'2–4 items',i:'list',bg:'#eff6ff',c:'#2563eb'},{l:'5+ items',i:'list-checks',bg:'#fffbeb',c:'#d97706'}]},
+        { id:'materials', title:'Do you have the materials?', type:'single', required:false, cols:'c2',
+          options:[{l:'Yes — I have everything',i:'check-circle',bg:'#f0fdf4',c:'#16a34a'},{l:'Partially',i:'minus-circle',bg:'#fffbeb',c:'#d97706'},{l:'No — pro provides',i:'shopping-bag',bg:'#eff6ff',c:'#2563eb'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+      ],
+      hvac: [
+        { id:'work_type', title:'What HVAC work do you need?', type:'chips', required:true, sub:'Select all that apply',
+          chips:['AC repair','Furnace repair','New AC install','New furnace','Ductwork','Thermostat install','Annual tune-up','Air quality','Mini-split / ductless','Emergency repair']},
+        { id:'system_age', title:'How old is your HVAC system?', type:'single', required:false, cols:'c3',
+          options:[{l:'Under 5 years',i:'clock',bg:'#f0fdf4',c:'#16a34a'},{l:'5–15 years',i:'clock',bg:'#eff6ff',c:'#2563eb'},{l:'15+ years',i:'clock',bg:'#fef2f2',c:'#dc2626'},{l:'Not sure',i:'help-circle',bg:'#f3f4f6',c:'#6b7280'}]},
+        { id:'home_size', title:'Home square footage?', type:'single', required:false, cols:'c2',
+          options:[{l:'Under 1,000 sq ft',i:'home',bg:'#f0fdf4',c:'#16a34a'},{l:'1,000–2,000 sq ft',i:'home',bg:'#eff6ff',c:'#2563eb'},{l:'2,000–3,500 sq ft',i:'home',bg:'#fffbeb',c:'#d97706'},{l:'3,500+ sq ft',i:'building-2',bg:'#fef2f2',c:'#dc2626'}]},
+      ],
+      other: [
+        { id:'description_text', title:'Tell us about your project', type:'textarea', required:true,
+          placeholder:'Describe what you need done — the more detail, the better your quotes will be.'},
+      ],
+    };
+
+    const CAT_NAMES = {
+      roofing:'Roofing', driveways:'Driveways & Paving', painting:'Painting',
+      landscaping:'Landscaping', masonry:'Masonry', electrical:'Electrical',
+      plumbing:'Plumbing', junk:'Junk Removal', remodeling:'Remodeling',
+      handyman:'Handyman', hvac:'HVAC', other:'General / Other'
+    };
+
+    // ─────────────────────────────────────────────
+    // STEP MANAGEMENT
+    // ─────────────────────────────────────────────
+    function showStep(n) {
+      currentStep = n;
+      document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`step-${n}`).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      updateProgress(n);
+
+      if (n === 5) buildConfirmSummary();
+    }
+
+    function updateProgress(step) {
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById(`pd-${i}`);
+        const lbl = document.getElementById(`pl-${i}`);
+        if (!dot) continue;
+        dot.classList.remove('active','done');
+        lbl.classList.remove('active','done');
+        if (i < step) { dot.classList.add('done'); lbl.classList.add('done'); dot.innerHTML = '<i data-lucide="check" style="width:12px;height:12px;color:#fff"></i>'; }
+        else if (i === step) { dot.classList.add('active'); lbl.classList.add('active'); dot.textContent = i; }
+        else { dot.textContent = i; }
+        if (i < 5) {
+          const line = document.getElementById(`pline-${i}`);
+          if (line) line.classList.toggle('done', i < step);
+        }
+      }
+      lucide.createIcons();
+    }
+
+    // ─────────────────────────────────────────────
+    // STEP 1 — CATEGORY
+    // ─────────────────────────────────────────────
+    function selectCat(cat, el) {
+      document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedCategory = cat;
+      document.getElementById('cat-btn').disabled = false;
+    }
+
+    function goToQuestionnaire() {
+      questionList = QB[selectedCategory] || QB.other;
+      currentQIndex = 0;
+      answers = {};
+      showStep(2);
+      renderQ();
+    }
+
+    // ─────────────────────────────────────────────
+    // STEP 2 — QUESTIONS
+    // ─────────────────────────────────────────────
+    function renderQ() {
+      const q = questionList[currentQIndex];
+      if (!q) { finishQuestionnaire(); return; }
+
+      document.getElementById('q-eyebrow').textContent =
+        `Step 2 of 5 · ${CAT_NAMES[selectedCategory]} · Question ${currentQIndex + 1} of ${questionList.length}`;
+      document.getElementById('q-title').textContent = q.title;
+      document.getElementById('q-sub').textContent = q.sub || '';
+
+      // Progress dots
+      const dots = questionList.map((_,i) =>
+        `<div class="q-dot ${i < currentQIndex ? 'done' : i === currentQIndex ? 'active' : ''}"></div>`
+      ).join('');
+      document.getElementById('q-progress').innerHTML = dots;
+
+      // Body
+      let html = '';
+      if (q.type === 'single') {
+        html = `<div class="opt-grid ${q.cols || 'c2'}" id="opt-grid">
+          ${q.options.map(o => `
+            <button class="opt-btn" onclick="pickOpt('${q.id}','${o.l}',this)">
+              <div class="opt-icon" style="background:${o.bg}">
+                <i data-lucide="${o.i}" style="width:18px;height:18px;color:${o.c}"></i>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div class="opt-label">${o.l}</div>
+                ${o.s ? `<div class="opt-sub">${o.s}</div>` : ''}
+              </div>
+              <div class="opt-check">
+                <i data-lucide="check" style="width:10px;height:10px;color:#fff"></i>
+              </div>
+            </button>`).join('')}
+        </div>`;
+      } else if (q.type === 'chips') {
+        html = `<div class="chips-wrap" id="chips-wrap">
+          ${q.chips.map(c => `
+            <div class="chip" onclick="toggleChip('${q.id}','${c}',this)">
+              <i data-lucide="plus" style="width:12px;height:12px" class="chip-i"></i>${c}
+            </div>`).join('')}
+        </div>
+        <div class="q-hint" style="margin-top:10px">
+          <i data-lucide="info" style="width:13px;height:13px"></i> Select all that apply then click Next
+        </div>`;
+      } else if (q.type === 'text' || q.type === 'textarea') {
+        const tag = q.type === 'textarea' ? 'textarea' : 'input type="text"';
+        html = `<${tag} class="desc-field" id="q-text-input" placeholder="${q.placeholder||''}" oninput="answers['${q.id}']=this.value;updateQNext()"></${q.type==='textarea'?'textarea':'input'}>`;
+      }
+
+      document.getElementById('q-body').innerHTML = html;
+      lucide.createIcons();
+
+      // Restore previous answer
+      const prev = answers[q.id];
+      if (prev && q.type === 'single') {
+        document.querySelectorAll('.opt-btn').forEach(b => {
+          if (b.querySelector('.opt-label')?.textContent === prev) b.classList.add('selected');
+        });
+      }
+      if (prev && q.type === 'chips') {
+        const arr = Array.isArray(prev) ? prev : [prev];
+        document.querySelectorAll('.chip').forEach(ch => {
+          if (arr.includes(ch.textContent.trim().replace(/^[+✓]\s*/,''))) {
+            ch.classList.add('selected');
+            const icon = ch.querySelector('.chip-i');
+            if (icon) { icon.setAttribute('data-lucide','check'); lucide.createIcons(); }
+          }
+        });
+      }
+      if (prev && (q.type==='text'||q.type==='textarea')) {
+        const el = document.getElementById('q-text-input');
+        if (el) el.value = prev;
+      }
+
+      // Next btn state
+      document.getElementById('q-next').disabled = q.required && !answers[q.id];
+      if (!q.required) document.getElementById('q-next').disabled = false;
+    }
+
+    function pickOpt(qId, val, btn) {
+      document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      answers[qId] = val;
+      document.getElementById('q-next').disabled = false;
+      // Auto-advance with brief delay
+      setTimeout(() => qNext(), 300);
+    }
+
+    function toggleChip(qId, val, el) {
+      el.classList.toggle('selected');
+      const icon = el.querySelector('.chip-i');
+      if (el.classList.contains('selected')) {
+        icon.setAttribute('data-lucide','check');
+        if (!Array.isArray(answers[qId])) answers[qId] = [];
+        if (!answers[qId].includes(val)) answers[qId].push(val);
+      } else {
+        icon.setAttribute('data-lucide','plus');
+        answers[qId] = (answers[qId]||[]).filter(v => v!==val);
+      }
+      lucide.createIcons();
+      const q = questionList[currentQIndex];
+      document.getElementById('q-next').disabled = q.required && (!answers[qId] || answers[qId].length === 0);
+    }
+
+    function updateQNext() {
+      const q = questionList[currentQIndex];
+      const inp = document.getElementById('q-text-input');
+      if (inp) answers[q.id] = inp.value.trim();
+      document.getElementById('q-next').disabled = q.required && !answers[q.id];
+    }
+
+    function qNext() {
+      // Capture text input
+      const inp = document.getElementById('q-text-input');
+      if (inp) answers[questionList[currentQIndex].id] = inp.value.trim();
+
+      if (currentQIndex < questionList.length - 1) {
+        currentQIndex++;
+        renderQ();
+      } else {
+        finishQuestionnaire();
+      }
+    }
+
+    function qBack() {
+      if (currentQIndex > 0) {
+        currentQIndex--;
+        renderQ();
+      } else {
+        showStep(1);
+      }
+    }
+
+    function finishQuestionnaire() {
+      // Generate description from answers
+      const desc = generateDesc();
+      document.getElementById('project-desc').value = desc;
+      showStep(3);
+    }
+
+    // ─────────────────────────────────────────────
+    // DESCRIPTION GENERATOR
+    // ─────────────────────────────────────────────
+    function generateDesc() {
+      const cat = CAT_NAMES[selectedCategory];
+      const parts = [];
+
+      const arr = v => Array.isArray(v) ? v : [v];
+      const has = key => answers[key] && (Array.isArray(answers[key]) ? answers[key].length > 0 : answers[key].trim() !== '');
+
+      // If "other" category has direct description
+      if (answers.description_text) return answers.description_text;
+
+      // Lead
+      const scope = answers.scope || answers.project_type || '';
+      const workType = answers.work_type || answers.tasks || answers.work || '';
+      const workText = Array.isArray(workType) ? workType.join(', ') : workType;
+      const scopeText = Array.isArray(scope) ? scope.join(', ') : scope;
+
+      if (workText) {
+        parts.push(`I'm looking for a ${cat.toLowerCase()} pro for: ${workText.toLowerCase()}.`);
+      } else if (scopeText) {
+        parts.push(`I need ${scopeText.toLowerCase()} work done on my property.`);
+      } else {
+        parts.push(`I'm looking for a ${cat.toLowerCase()} professional.`);
+      }
+
+      if (has('area')) parts.push(`Area: ${arr(answers.area).join(' and ')}.`);
+      if (has('material')) parts.push(`Material preference: ${answers.material}.`);
+      if (has('home_size')) parts.push(`Home size: ${answers.home_size}.`);
+      if (has('yard_size')) parts.push(`Yard size: ${answers.yard_size}.`);
+      if (has('yard_area')) parts.push(`Yard area: ${answers.yard_area}.`);
+      if (has('size')) parts.push(`Driveway length: ${answers.size}.`);
+      if (has('cars')) parts.push(`Width: ${answers.cars}.`);
+      if (has('remove')) parts.push(`Existing removal: ${answers.remove}.`);
+      if (has('rooms')) parts.push(`Scope: ${answers.rooms}.`);
+      if (has('surfaces')) parts.push(`Surfaces: ${arr(answers.surfaces).join(', ')}.`);
+      if (has('paint')) parts.push(`Paint supply: ${answers.paint}.`);
+      if (has('repairs')) parts.push(`Wall condition: ${answers.repairs}.`);
+      if (has('damage')) parts.push(`Issues: ${arr(answers.damage).join(', ')}.`);
+      if (has('roof_age')) parts.push(`Roof age: ${answers.roof_age}.`);
+      if (has('access')) parts.push(`Access: ${answers.access}.`);
+      if (has('volume')) parts.push(`Volume estimate: ${answers.volume}.`);
+      if (has('items')) parts.push(`Items: ${arr(answers.items).join(', ')}.`);
+      if (has('scope') && selectedCategory !== 'roofing') parts.push(`Project scope: ${answers.scope}.`);
+      if (has('plans')) parts.push(`Plans: ${answers.plans}.`);
+      if (has('system_age')) parts.push(`System age: ${answers.system_age}.`);
+      if (has('home_age')) parts.push(`Home age: ${answers.home_age}.`);
+      if (has('items_count')) parts.push(`Number of tasks: ${answers.items_count}.`);
+      if (has('materials')) parts.push(`Materials: ${answers.materials}.`);
+      if (has('size_text')) parts.push(`Size: ${answers.size_text}.`);
+      if (answers.emergency === 'Yes — urgent' || answers.emergency === 'Yes — active leak') {
+        parts.push('This is an urgent situation — please reach out as soon as possible.');
+      }
+      if (has('frequency')) parts.push(`Service frequency: ${answers.frequency}.`);
+      if (has('location')) parts.push(`Location: ${arr(answers.location).join(', ')}.`);
+      if (has('project_type')) parts.push(`Project type: ${answers.project_type}.`);
+
+      parts.push('Please reach out with your availability and a quote.');
+      return parts.join(' ');
+    }
+
+    // ─────────────────────────────────────────────
+    // STEP 3 — PHOTOS
+    // ─────────────────────────────────────────────
+    function goToBudget() {
+      showStep(4);
+    }
+
+    function handleFileSelect(files) {
+      [...files].slice(0, 5 - photos.length).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          photos.push({ url: e.target.result, name: file.name });
+          renderPhotoGrid();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('upload-area').classList.remove('dragover');
+      handleFileSelect(e.dataTransfer.files);
+    }
+
+    function renderPhotoGrid() {
+      const grid = document.getElementById('photo-grid');
+      if (photos.length === 0) { grid.style.display = 'none'; return; }
+      grid.style.display = 'grid';
+      grid.innerHTML = photos.map((p, i) => `
+        <div class="photo-thumb">
+          <img src="${p.url}" style="width:100%;height:100%;object-fit:cover" />
+          <button class="photo-remove" onclick="removePhoto(${i})">
+            <i data-lucide="x" style="width:11px;height:11px"></i>
+          </button>
+        </div>`).join('') +
+        (photos.length < 5 ? `<div class="photo-thumb" style="cursor:pointer" onclick="document.getElementById('file-input').click()">
+          <i data-lucide="plus" style="width:24px;height:24px;color:var(--gray)"></i>
+        </div>` : '');
+      lucide.createIcons();
+    }
+
+    function removePhoto(idx) {
+      photos.splice(idx, 1);
+      renderPhotoGrid();
+    }
+
+    // ─────────────────────────────────────────────
+    // STEP 4 — BUDGET
+    // ─────────────────────────────────────────────
+    function selectBudget(key, label, el) {
+      document.querySelectorAll('.budget-preset').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedBudget = label;
+      document.getElementById('budget-min').value = '';
+      document.getElementById('budget-max').value = '';
+      checkBudgetNext();
+    }
+
+    function clearBudgetPresets() {
+      document.querySelectorAll('.budget-preset').forEach(b => b.classList.remove('selected'));
+      selectedBudget = null;
+      const min = document.getElementById('budget-min').value;
+      const max = document.getElementById('budget-max').value;
+      if (min || max) selectedBudget = `$${min||'0'} – $${max||'open'}`;
+      checkBudgetNext();
+    }
+
+    function selectTimeline(val, el) {
+      document.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('selected'));
+      el.classList.add('selected');
+      selectedTimeline = val;
+      checkBudgetNext();
+    }
+
+    function checkBudgetNext() {
+      document.getElementById('budget-next-btn').disabled = !selectedBudget || !selectedTimeline;
+    }
+
+    // ─────────────────────────────────────────────
+    // STEP 5 — CONFIRM SUMMARY
+    // ─────────────────────────────────────────────
+    function buildConfirmSummary() {
+      document.getElementById('cs-category').textContent = CAT_NAMES[selectedCategory] || '—';
+
+      // Answers summary
+      const answerParts = Object.entries(answers).slice(0, 3).map(([k, v]) => {
+        const q = questionList.find(q => q.id === k);
+        const val = Array.isArray(v) ? v.slice(0,3).join(', ') + (v.length>3?'…':'') : v;
+        return val;
+      }).filter(Boolean);
+      document.getElementById('cs-answers').textContent = answerParts.join(' · ') || '—';
+
+      document.getElementById('cs-photos').textContent = photos.length > 0
+        ? `${photos.length} photo${photos.length > 1 ? 's' : ''} added`
+        : 'No photos added';
+
+      const desc = document.getElementById('project-desc').value;
+      document.getElementById('cs-description').textContent = desc.length > 120
+        ? desc.slice(0, 120) + '…' : desc || '—';
+
+      document.getElementById('cs-budget').textContent = selectedBudget || '—';
+      document.getElementById('cs-timeline').textContent = selectedTimeline || '—';
+    }
+
+    // ─────────────────────────────────────────────
+    // SUBMIT
+    // ─────────────────────────────────────────────
+    /* ---- Territory / market config (inline, scale-ready) ----
+       Launch a new state by changing its status from 'comingSoon' to 'live'. */
+    const PP_MARKETS=[
+      {state:'Rhode Island',abbr:'RI',status:'live',       zips:['028','029']},
+      {state:'Massachusetts',abbr:'MA',status:'comingSoon',zips:['010','011','012','013','014','015','016','017','018','019','020','021','022','023','024','025','026','027','055']},
+      {state:'Connecticut', abbr:'CT',status:'comingSoon', zips:['060','061','062','063','064','065','066','067','068','069']},
+    ];
+    function ppZip(v){return (v||'').replace(/\D/g,'').slice(0,5);}
+    function ppCheckZip(v){const z=ppZip(v);if(z.length<3)return{status:'unknown',market:null,zip:z};const m=PP_MARKETS.find(m=>m.zips.includes(z.slice(0,3)));if(!m)return{status:'unknown',market:null,zip:z};return{status:m.status,market:m,zip:z};}
+    // Live inline feedback as the homeowner types their ZIP.
+    function checkProjZip(){
+      const el=document.getElementById('projZipMsg'); if(!el)return;
+      const z=ppZip(document.getElementById('projZip').value);
+      if(z.length<5){el.textContent='';return;}
+      const chk=ppCheckZip(z);
+      if(chk.status==='live'){el.style.color='#16a34a';el.textContent='\u2713 We serve your area';}
+      else if(chk.status==='comingSoon'){el.style.color='#1d4ed8';el.textContent='Not live in '+chk.market.state+' yet \u2014 you can join the waitlist';}
+      else{el.style.color='#c2410c';el.textContent="We don't serve this ZIP yet";}
+    }
+
+    function submitProject() {
+      // Require an in-area ZIP before posting (scale-ready gate).
+      const chk=ppCheckZip(document.getElementById('projZip').value);
+      if(chk.status!=='live'){
+        if(chk.status==='comingSoon'){
+          window.location='waitlist.html?zip='+chk.zip+'&state='+chk.market.abbr; return;
+        }
+        const el=document.getElementById('projZipMsg');
+        if(el){el.style.color='#c2410c';el.textContent='Please enter a ZIP in our service area to post.';}
+        document.getElementById('projZip').focus(); return;
+      }
+      // Show confetti
+      const wrap = document.getElementById('confetti');
+      wrap.style.display = 'block';
+      const colors = ['#dc2626','#16a34a','#2563eb','#d97706','#7c3aed'];
+      for (let i = 0; i < 60; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        p.style.cssText = `left:${Math.random()*100}vw;width:${Math.random()*8+5}px;height:${Math.random()*8+5}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*2+2}s;animation-delay:${Math.random()}s`;
+        wrap.appendChild(p);
+      }
+      setTimeout(() => { wrap.style.display = 'none'; wrap.innerHTML = ''; }, 5000);
+
+      // Show success
+      document.getElementById('success-overlay').classList.add('show');
+      lucide.createIcons();
+    }
+
+    // ─────────────────────────────────────────────
+    // EXIT
+    // ─────────────────────────────────────────────
+    function confirmExit() {
+      if (currentStep > 1) {
+        if (confirm('Exit? Your progress will be lost.')) {
+          window.location.href = 'homeowner-dashboard.html';
+        }
+      } else {
+        window.location.href = 'homeowner-dashboard.html';
+      }
+    }
+
+    // ─────────────────────────────────────────────
+    // INIT
+    // ─────────────────────────────────────────────
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

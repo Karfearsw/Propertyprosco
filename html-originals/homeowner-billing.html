@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing & Membership — Property Pros</title>
+  <meta name="description" content="Manage your Property Pros Plus™ membership, payment method, and billing history." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --gold: #b45309; --gold-dark: #92400e; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+      --display: 'Playfair Display', serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── TOP HEADER (homeowner style) ── */
+    header {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 0 32px; height: 60px; display: flex; align-items: center;
+      justify-content: space-between; position: sticky; top: 0; z-index: 50;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 32px; height: 32px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: var(--dark); }
+    .brand-name span { color: var(--red); }
+    .header-nav { display: flex; gap: 4px; }
+    .header-link { padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 700; color: var(--gray); transition: all .15s; }
+    .header-link:hover { background: var(--bg); color: var(--dark); }
+    .header-link.active { background: var(--bg); color: var(--dark); font-weight: 800; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; cursor: pointer; }
+
+    /* ── PAGE LAYOUT ── */
+    .page { max-width: 860px; margin: 0 auto; padding: 32px 24px 80px; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .page-sub { font-size: 14px; color: var(--gray); font-weight: 700; margin-bottom: 28px; }
+
+    /* ── DEMO STATE SWITCHER ── */
+    .state-switch { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .ss-label { font-size: 11px; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+    .ss-opts { display: flex; gap: 6px; }
+    .ss-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); background: var(--white); color: var(--gray); transition: all .15s; }
+    .ss-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+
+    /* ── CARD ── */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 18px; margin-bottom: 16px; overflow: hidden; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .card-title { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .card-sub { font-size: 13px; color: var(--gray); font-weight: 700; }
+    .card-body { padding: 20px 24px; }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-outline { border-color: var(--border); background: var(--white); color: var(--dark); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: #15803d; }
+    .btn-gold { background: var(--gold); color: #fff; }
+    .btn-gold:hover { background: var(--gold-dark); }
+    .btn-ghost-red { border-color: #fca5a5; color: var(--red); background: var(--red-light); }
+    .btn-ghost-red:hover { background: #fecaca; }
+
+    /* ════════════════════════════ */
+    /* NON-PLUS STATE              */
+    /* ════════════════════════════ */
+    #state-free { display: block; }
+
+    .free-hero { background: linear-gradient(135deg, var(--dark) 0%, #1f2937 100%); border-radius: 20px; padding: 36px; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .free-hero::before { content: ''; position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(180,83,9,.15); }
+    .free-hero-eyebrow { font-size: 10px; font-weight: 900; letter-spacing: 2.5px; text-transform: uppercase; color: #fcd34d; margin-bottom: 12px; }
+    .free-hero h2 { font-family: var(--display); font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 10px; }
+    .free-hero h2 em { color: #fcd34d; font-style: normal; }
+    .free-hero-sub { font-size: 15px; color: #9ca3af; font-weight: 700; line-height: 1.6; margin-bottom: 24px; max-width: 480px; }
+    .free-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 24px; }
+    .free-amount { font-size: 40px; font-weight: 900; color: #fff; letter-spacing: -1.5px; }
+    .free-period { font-size: 14px; font-weight: 700; color: #9ca3af; }
+    .free-note { font-size: 12px; color: #6b7280; font-weight: 700; margin-top: 4px; }
+    .free-features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+    .ff { display: flex; align-items: flex-start; gap: 9px; }
+    .ff-dot { width: 18px; height: 18px; border-radius: 50%; background: rgba(251,191,36,.15); border: 1px solid rgba(251,191,36,.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 10px; color: #fcd34d; }
+    .ff-text { font-size: 13px; font-weight: 700; color: #d1d5db; line-height: 1.4; }
+    .free-cta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .plus-cta-btn { padding: 13px 28px; background: linear-gradient(135deg, #d97706, #b45309); color: #fff; border: none; border-radius: 12px; font-size: 14px; font-weight: 900; cursor: pointer; font-family: var(--font); transition: all .2s; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(180,83,9,.4); }
+    .plus-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(180,83,9,.5); }
+    .free-cta-note { font-size: 12px; color: #6b7280; font-weight: 700; }
+
+    .charity-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; margin-bottom: 16px; }
+    .charity-title { font-size: 14px; font-weight: 900; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .charity-sub { font-size: 12px; color: var(--gray); font-weight: 700; line-height: 1.6; margin-bottom: 14px; }
+    .charity-orgs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .charity-org { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); font-size: 12px; font-weight: 800; color: var(--dark2); }
+
+    /* ════════════════════════════ */
+    /* PLUS SUBSCRIBER STATE       */
+    /* ════════════════════════════ */
+    #state-plus { display: none; }
+
+    /* PLUS MEMBERSHIP CARD */
+    .plus-status-card { background: linear-gradient(135deg, #1c0f00, #2d1a00); border: 1px solid rgba(251,191,36,.2); border-radius: 18px; padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden; }
+    .plus-status-card::before { content: ''; position: absolute; top: -30px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(180,83,9,.1); }
+    .plus-badge-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .plus-badge { background: linear-gradient(135deg, #d97706, #b45309); color: #fff; font-size: 11px; font-weight: 900; padding: 5px 12px; border-radius: 999px; letter-spacing: .5px; display: inline-flex; align-items: center; gap: 6px; }
+    .plus-status-label { font-size: 12px; font-weight: 800; color: #fcd34d; }
+    .plus-status-name { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .plus-status-meta { font-size: 13px; color: #9ca3af; font-weight: 700; margin-bottom: 16px; }
+    .plus-details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+    .plus-detail { background: rgba(255,255,255,.06); border-radius: 11px; padding: 12px 14px; }
+    .plus-detail-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 5px; }
+    .plus-detail-val { font-size: 15px; font-weight: 900; color: #fff; }
+    .plus-detail-sub { font-size: 11px; font-weight: 700; color: #9ca3af; margin-top: 2px; }
+    .plus-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .plus-action-btn { padding: 8px 16px; border-radius: 9px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; border: none; display: inline-flex; align-items: center; gap: 6px; }
+    .pab-gold { background: rgba(251,191,36,.15); color: #fcd34d; border: 1px solid rgba(251,191,36,.2) !important; }
+    .pab-gold:hover { background: rgba(251,191,36,.25); }
+    .pab-danger { background: rgba(239,68,68,.1); color: #f87171; border: 1px solid rgba(239,68,68,.15) !important; }
+    .pab-danger:hover { background: rgba(239,68,68,.18); }
+
+    /* CHARITY SELECTION */
+    .charity-select-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; margin-bottom: 16px; }
+    .cs-title { font-size: 14px; font-weight: 900; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+    .cs-sub { font-size: 12px; color: var(--gray); font-weight: 700; line-height: 1.6; margin-bottom: 16px; }
+    .cs-highlight { font-size: 13px; font-weight: 900; color: var(--gold); background: var(--gold-light); border: 1px solid #fde68a; padding: 8px 14px; border-radius: 9px; margin-bottom: 14px; display: inline-flex; align-items: center; gap: 7px; }
+    .cs-orgs { display: flex; flex-direction: column; gap: 10px; }
+    .cs-org { border: 2px solid var(--border); border-radius: 13px; padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all .2s; }
+    .cs-org.selected { border-color: var(--gold); background: var(--gold-light); }
+    .cs-org-icon { font-size: 28px; flex-shrink: 0; }
+    .cs-org-name { font-size: 14px; font-weight: 900; color: var(--dark); margin-bottom: 3px; }
+    .cs-org-desc { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .cs-org-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); margin-left: auto; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+    .cs-org.selected .cs-org-radio { border-color: var(--gold); background: var(--gold); }
+    .cs-org.selected .cs-org-radio::after { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+
+    /* PAYMENT METHOD */
+    .pm-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f9fafb; }
+    .pm-row:last-child { border-bottom: none; }
+    .pm-card-icon { width: 44px; height: 30px; border-radius: 6px; background: var(--dark); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: #fff; flex-shrink: 0; letter-spacing: .5px; }
+    .pm-card-icon.visa { background: #1a1f71; }
+    .pm-card-icon.mc { background: #eb001b; }
+    .pm-card-icon.amex { background: #2e77bc; }
+    .pm-info { flex: 1; }
+    .pm-name { font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .pm-detail { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .pm-default { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .pm-actions { display: flex; gap: 6px; }
+
+    /* BILLING HISTORY */
+    .invoice-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid #f9fafb; }
+    .invoice-row:last-child { border-bottom: none; }
+    .invoice-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .invoice-info { flex: 1; }
+    .invoice-desc { font-size: 13px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .invoice-date { font-size: 12px; color: var(--gray); font-weight: 700; }
+    .invoice-amount { font-size: 14px; font-weight: 900; color: var(--dark); margin-right: 10px; }
+    .invoice-status { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .status-paid { background: var(--green-light); color: var(--green); border: 1px solid #bbf7d0; }
+    .status-pending { background: var(--gold-light); color: var(--gold); border: 1px solid #fde68a; }
+    .invoice-dl { color: var(--gray); cursor: pointer; transition: color .15s; }
+    .invoice-dl:hover { color: var(--red); }
+
+    /* CANCEL FLOW */
+    .cancel-card { background: var(--red-light); border: 1px solid #fecaca; border-radius: 14px; padding: 18px 20px; }
+    .cancel-title { font-size: 13px; font-weight: 900; color: #7f1d1d; margin-bottom: 5px; display: flex; align-items: center; gap: 7px; }
+    .cancel-desc { font-size: 12px; color: #991b1b; font-weight: 700; line-height: 1.6; margin-bottom: 12px; }
+    .cancel-what-lose { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .cwl-item { font-size: 12px; font-weight: 700; color: #991b1b; display: flex; align-items: center; gap: 7px; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--dark); color: #fff; padding: 13px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 100; display: flex; align-items: center; gap: 8px; transform: translateY(20px); opacity: 0; transition: all .25s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 80; align-items: center; justify-content: center; padding: 20px; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; max-width: 460px; width: 100%; padding: 28px; }
+    .modal h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: var(--gray); font-weight: 700; line-height: 1.6; margin-bottom: 20px; }
+    .modal-btns { display: flex; gap: 10px; justify-content: flex-end; }
+    .input-group { margin-bottom: 14px; }
+    .input-group label { display: block; font-size: 12px; font-weight: 800; color: var(--dark2); margin-bottom: 6px; }
+    .input-group input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 13px; font-family: var(--font); color: var(--dark); }
+    .input-group input:focus { outline: none; border-color: var(--gold); }
+    .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    @media (max-width: 640px) {
+      header { padding: 0 16px; }
+      .header-nav { display: none; }
+      .free-features { grid-template-columns: 1fr; }
+      .plus-details-grid { grid-template-columns: 1fr 1fr; }
+      .charity-orgs { flex-direction: column; }
+    }
+    body { display:flex; flex-direction:column; min-height:100vh; }
+  
+  .hw-rail{} @media(max-width:640px){.hw-rail{display:none!important}}
+</style>
+</head>
+<body>
+<header style="background:#14532d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.1)">
+  <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+    <div style="width:32px;height:32px;border-radius:9px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+    <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#86efac">Property</span> Pros</div>
+  </a>
+  <div style="display:flex;align-items:center;gap:6px">
+    <a href="homeowner-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#16a34a;border-radius:50%;border:2px solid #14532d"></div>
+    </a>
+    <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">MS</div>
+    <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+    </button>
+  </div>
+</header>
+<div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+<div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+<div style="flex:1;background:var(--bg)">
+<div class="hw-layout" style="display:flex;align-items:flex-start">
+    <aside class="hw-rail" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+    <div style="flex:1;min-width:0"><div class="page">
+  <div class="page-title">Billing & Membership</div>
+  <div class="page-sub">Manage your Plus™ subscription, payment method, and billing history.</div>
+
+  <!-- DEMO STATE SWITCHER -->
+  <div class="state-switch">
+    <span class="ss-label">Demo state:</span>
+    <div class="ss-opts">
+      <button class="ss-btn active" onclick="setState('free', this)">Free homeowner</button>
+      <button class="ss-btn" onclick="setState('plus', this)">Plus™ subscriber</button>
+    </div>
+    <span style="font-size:11px;color:var(--gray);font-weight:700">— for prototyping only</span>
+  </div>
+
+  <!-- ══════════════════════════════ -->
+  <!-- FREE / NON-PLUS STATE         -->
+  <!-- ══════════════════════════════ -->
+  <div id="state-free">
+
+    <!-- PLUS UPSELL HERO -->
+    <div class="free-hero">
+      <div class="free-hero-eyebrow">Homeowner upgrade</div>
+      <h2>Unlock <em>Plus™</em><br>for less than $1/month</h2>
+      <p class="free-hero-sub">Property Pros is free for homeowners — Plus™ gives you AI-powered tools, exclusive contractor discounts, priority support, and the ability to give back to a local Rhode Island charity.</p>
+      <div class="free-price">
+        <div class="free-amount">$9.99</div>
+        <div class="free-period">/ year</div>
+      </div>
+      <div class="free-note" style="margin-top:-18px;margin-bottom:20px">Billed once annually · Cancel anytime</div>
+      <div class="free-features">
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">AI Property Assistant — ask anything about your home</div></div>
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">Contractor discounts from verified Property Pros partners</div></div>
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">Priority support — skip the queue, get help faster</div></div>
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">Faster contractor matching — your projects shown first</div></div>
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">Advanced quote comparison tools</div></div>
+        <div class="ff"><div class="ff-dot">✦</div><div class="ff-text">50% of your fee goes to a RI charity or the Community Fund</div></div>
+      </div>
+      <div class="free-cta">
+        <button class="plus-cta-btn" onclick="openUpgradeModal()">
+          <i data-lucide="star" size="16"></i> Upgrade to Plus™ — $9.99/year
+        </button>
+        <span class="free-cta-note">Coming soon — Phase 2 · Join the waitlist to be first</span>
+      </div>
+    </div>
+
+    <!-- CHARITY PREVIEW -->
+    <div class="charity-card">
+      <div class="charity-title"><span>❤️</span> Your fee gives back</div>
+      <div class="charity-sub">When you subscribe to Plus™, $4.99 of your $9.99 annual fee goes to Rhode Island nonprofits. Use a partner charity's referral code and it goes straight to them — sign up on your own and it goes to the Property Pros Community Fund, shared among vetted local nonprofits.</div>
+      <div class="charity-orgs">
+        <div class="charity-org"><span>🏠</span> Habitat for Humanity RI</div>
+        <div class="charity-org"><span>🎓</span> Providence After School Alliance</div>
+        <div class="charity-org"><span>🥫</span> RI Community Food Bank</div>
+      </div>
+    </div>
+
+    <!-- CURRENT PLAN -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Current plan</div>
+          <div class="card-sub">You're on the free homeowner plan.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border);margin-bottom:12px">
+          <div style="width:40px;height:40px;border-radius:11px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="home" size="20" style="color:var(--gray)"></i></div>
+          <div style="flex:1">
+            <div style="font-size:14px;font-weight:900">Homeowner Free</div>
+            <div style="font-size:12px;color:var(--gray);font-weight:700">Post projects, receive quotes, message pros — all free, always.</div>
+          </div>
+          <div style="font-size:16px;font-weight:900;color:var(--green)">$0</div>
+        </div>
+        <div style="font-size:13px;color:var(--gray);font-weight:700;line-height:1.6">The core Property Pros experience is completely free for homeowners and always will be. Upgrade to Plus™ for extra tools and features.</div>
+      </div>
+    </div>
+
+    <!-- NO BILLING HISTORY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Billing history</div>
+      </div>
+      <div class="card-body" style="text-align:center;padding:36px 24px">
+        <i data-lucide="receipt" size="36" style="color:var(--border);margin-bottom:12px"></i>
+        <div style="font-size:15px;font-weight:900;color:var(--dark);margin-bottom:6px">No billing history yet</div>
+        <div style="font-size:13px;color:var(--gray);font-weight:700">Your receipts and invoices will appear here once you subscribe to Plus™.</div>
+      </div>
+    </div>
+
+  </div><!-- /state-free -->
+
+
+  <!-- ══════════════════════════════ -->
+  <!-- PLUS SUBSCRIBER STATE         -->
+  <!-- ══════════════════════════════ -->
+  <div id="state-plus" style="display:none">
+
+    <!-- PLUS STATUS CARD -->
+    <div class="plus-status-card">
+      <div class="plus-badge-row">
+        <span class="plus-badge"><i data-lucide="star" size="12"></i> Property Pros Plus™</span>
+        <span class="plus-status-label">Active</span>
+      </div>
+      <div class="plus-status-name">Maria Santos</div>
+      <div class="plus-status-meta">Member since May 16, 2026 · Annual subscription</div>
+      <div class="plus-details-grid">
+        <div class="plus-detail">
+          <div class="plus-detail-label">Plan cost</div>
+          <div class="plus-detail-val">$9.99</div>
+          <div class="plus-detail-sub">per year</div>
+        </div>
+        <div class="plus-detail">
+          <div class="plus-detail-label">Next renewal</div>
+          <div class="plus-detail-val">May 16, 2027</div>
+          <div class="plus-detail-sub">~365 days away</div>
+        </div>
+        <div class="plus-detail">
+          <div class="plus-detail-label">Giving to</div>
+          <div class="plus-detail-val" style="font-size:12px">Habitat for Humanity RI</div>
+          <div class="plus-detail-sub">$4.99 this year</div>
+        </div>
+      </div>
+      <div class="plus-actions">
+        <button class="plus-action-btn pab-gold" onclick="showToast('Invoice downloaded')"><i data-lucide="download" size="13"></i> Download receipt</button>
+        <button class="plus-action-btn pab-gold" onclick="openCharityModal()"><i data-lucide="heart" size="13"></i> Change charity</button>
+        <button class="plus-action-btn pab-danger" onclick="openCancelModal()"><i data-lucide="x" size="13"></i> Cancel Plus™</button>
+      </div>
+    </div>
+
+    <!-- CHARITY SELECTION -->
+    <div class="charity-select-card">
+      <div class="cs-title"><span>❤️</span> Your giving choice</div>
+      <div class="cs-sub">50% of your annual Plus™ fee ($4.99) is donated to the Rhode Island nonprofit you choose. You can change this once per year.</div>
+      <div class="cs-highlight"><i data-lucide="check-circle" size="14"></i> Habitat for Humanity RI — $4.99 donated on May 16, 2026</div>
+      <div class="cs-orgs" id="cs-orgs">
+        <div class="cs-org selected" onclick="selectCharity(this)">
+          <span class="cs-org-icon">🏠</span>
+          <div>
+            <div class="cs-org-name">Habitat for Humanity RI</div>
+            <div class="cs-org-desc">Building affordable homes for Rhode Island families in need</div>
+          </div>
+          <div class="cs-org-radio"></div>
+        </div>
+        <div class="cs-org" onclick="selectCharity(this)">
+          <span class="cs-org-icon">🎓</span>
+          <div>
+            <div class="cs-org-name">Providence After School Alliance</div>
+            <div class="cs-org-desc">After-school programs and safe spaces for Providence youth</div>
+          </div>
+          <div class="cs-org-radio"></div>
+        </div>
+        <div class="cs-org" onclick="selectCharity(this)">
+          <span class="cs-org-icon">🥫</span>
+          <div>
+            <div class="cs-org-name">RI Community Food Bank</div>
+            <div class="cs-org-desc">Fighting food insecurity across all of Rhode Island</div>
+          </div>
+          <div class="cs-org-radio"></div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:12px;color:var(--gray);font-weight:700">Changes apply at next renewal on May 16, 2027.</div>
+    </div>
+
+    <!-- PLUS FEATURES STATUS -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Your Plus™ features</div>
+          <div class="card-sub">Launching Phase 2 — you're on the early access list.</div>
+        </div>
+        <span style="font-size:11px;font-weight:900;padding:4px 10px;background:var(--gold-light);color:var(--gold);border-radius:999px;border:1px solid #fde68a">Phase 2</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f9fafb">
+            <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="bot" size="18" style="color:var(--gold)"></i></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:900">AI Property Assistant</div><div style="font-size:12px;color:var(--gray);font-weight:700">Ask anything about home maintenance, permits, costs in Rhode Island</div></div>
+            <span style="font-size:10px;font-weight:900;padding:3px 8px;background:var(--bg);color:var(--gray);border-radius:999px;border:1px solid var(--border)">Coming soon</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f9fafb">
+            <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="tag" size="18" style="color:var(--gold)"></i></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:900">Contractor Discounts</div><div style="font-size:12px;color:var(--gray);font-weight:700">Exclusive rates from verified Property Pros partner contractors</div></div>
+            <span style="font-size:10px;font-weight:900;padding:3px 8px;background:var(--bg);color:var(--gray);border-radius:999px;border:1px solid var(--border)">Coming soon</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f9fafb">
+            <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="zap" size="18" style="color:var(--gold)"></i></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:900">Priority Matching</div><div style="font-size:12px;color:var(--gray);font-weight:700">Your projects are shown first to verified pros in your area</div></div>
+            <span style="font-size:10px;font-weight:900;padding:3px 8px;background:var(--bg);color:var(--gray);border-radius:999px;border:1px solid var(--border)">Coming soon</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0">
+            <div style="width:36px;height:36px;border-radius:10px;background:#fef3c7;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i data-lucide="life-buoy" size="18" style="color:var(--gold)"></i></div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:900">Priority Support</div><div style="font-size:12px;color:var(--gray);font-weight:700">Skip the queue and reach our support team faster</div></div>
+            <span style="font-size:10px;font-weight:900;padding:3px 8px;background:var(--bg);color:var(--gray);border-radius:999px;border:1px solid var(--border)">Coming soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT METHOD -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="card-title">Payment method</div>
+          <div class="card-sub">Used for your annual Plus™ renewal.</div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openAddCardModal()"><i data-lucide="plus" size="13"></i> Add card</button>
+      </div>
+      <div class="card-body">
+        <div class="pm-row">
+          <div class="pm-card-icon visa">VISA</div>
+          <div class="pm-info">
+            <div class="pm-name">Visa ending in 4242</div>
+            <div class="pm-detail">Expires 08/2028 · Added May 2026</div>
+          </div>
+          <span class="pm-default">Default</span>
+          <div class="pm-actions">
+            <button class="btn btn-outline btn-sm" onclick="showToast('Card updated')">Edit</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Card removed')" style="color:var(--red)">Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BILLING HISTORY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Billing history</div>
+      </div>
+      <div class="card-body">
+        <div class="invoice-row">
+          <div class="invoice-icon"><i data-lucide="receipt" size="18" style="color:var(--gold)"></i></div>
+          <div class="invoice-info">
+            <div class="invoice-desc">Property Pros Plus™ — Annual</div>
+            <div class="invoice-date">May 16, 2026 · Visa ····4242</div>
+          </div>
+          <div class="invoice-amount">$9.99</div>
+          <span class="invoice-status status-paid">Paid</span>
+          <i data-lucide="download" size="16" class="invoice-dl" onclick="showToast('Invoice downloaded')"></i>
+        </div>
+        <div style="text-align:center;padding:16px 0;font-size:12px;color:var(--gray);font-weight:700">
+          Next charge: <strong style="color:var(--dark)">$9.99 on May 16, 2027</strong> to Visa ····4242
+        </div>
+      </div>
+    </div>
+
+    <!-- CANCEL SECTION -->
+    <div class="cancel-card">
+      <div class="cancel-title"><i data-lucide="alert-triangle" size="15"></i> Cancel Plus™ membership</div>
+      <div class="cancel-desc">You can cancel at any time. Your Plus™ benefits stay active until May 16, 2027 — the end of your current annual period. We don't offer refunds for partial years.</div>
+      <div class="cancel-what-lose">
+        <div class="cwl-item"><i data-lucide="x" size="12"></i> AI Property Assistant access</div>
+        <div class="cwl-item"><i data-lucide="x" size="12"></i> Contractor discounts</div>
+        <div class="cwl-item"><i data-lucide="x" size="12"></i> Priority matching and support</div>
+        <div class="cwl-item"><i data-lucide="x" size="12"></i> Your charity donation for next year</div>
+      </div>
+      <button class="btn btn-ghost-red btn-sm" onclick="openCancelModal()"><i data-lucide="x" size="13"></i> Cancel Plus™ membership</button>
+    </div>
+
+  </div><!-- /state-plus -->
+
+</div></div>
+  </div><!-- /page -->
+
+<!-- ── TOAST ── -->
+<div class="toast" id="toast"><i data-lucide="check-circle" size="16" style="color:var(--green)"></i> <span id="toast-msg">Done</span></div>
+
+<!-- ── UPGRADE MODAL ── -->
+<div class="modal-overlay" id="modal-upgrade" onclick="closeModal('modal-upgrade')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Upgrade to Plus™</h3>
+    <p>$9.99/year — billed annually. Your card will be charged once per year. Cancel anytime before renewal.</p>
+    <div class="input-group"><label>Name on card</label><input type="text" placeholder="Maria Santos" /></div>
+    <div class="input-group"><label>Card number</label><input type="text" placeholder="•••• •••• •••• ••••" /></div>
+    <div class="input-row">
+      <div class="input-group"><label>Expiry</label><input type="text" placeholder="MM/YY" /></div>
+      <div class="input-group"><label>CVC</label><input type="text" placeholder="•••" /></div>
+    </div>
+    <div style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:6px"><i data-lucide="lock" size="13"></i> Secure payment · You'll choose your charity on the next screen</div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-upgrade')">Cancel</button>
+      <button class="btn btn-gold" onclick="closeModal('modal-upgrade');setState('plus', document.querySelectorAll(\'.ss-btn\')[1]);showToast(\'Welcome to Plus™! 🎉\')">Subscribe — $9.99/yr</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD CARD MODAL ── -->
+<div class="modal-overlay" id="modal-add-card" onclick="closeModal('modal-add-card')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Add a payment method</h3>
+    <p>This card will be used for your next annual Plus™ renewal on May 16, 2027.</p>
+    <div class="input-group"><label>Name on card</label><input type="text" placeholder="Maria Santos" /></div>
+    <div class="input-group"><label>Card number</label><input type="text" placeholder="•••• •••• •••• ••••" /></div>
+    <div class="input-row">
+      <div class="input-group"><label>Expiry</label><input type="text" placeholder="MM/YY" /></div>
+      <div class="input-group"><label>CVC</label><input type="text" placeholder="•••" /></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-card')">Cancel</button>
+      <button class="btn btn-red" onclick="closeModal('modal-add-card');showToast('Card added successfully')">Save card</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CANCEL MODAL ── -->
+<div class="modal-overlay" id="modal-cancel" onclick="closeModal('modal-cancel')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Cancel Plus™ membership?</h3>
+    <p>Your benefits will remain active until <strong>May 16, 2027</strong>. After that date your account returns to the free plan. We don't offer partial-year refunds.</p>
+    <div style="background:var(--red-light);border:1px solid #fecaca;border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:13px;font-weight:700;color:#7f1d1d">You'll lose access to AI tools, discounts, priority matching, and your charity donation won't renew next year.</div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-cancel')">Keep Plus™</button>
+      <button class="btn btn-ghost-red" onclick="closeModal('modal-cancel');setState('free',document.querySelectorAll(\'.ss-btn\')[0]);showToast('Plus™ cancelled — active until May 16, 2027')">Yes, cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHARITY MODAL ── -->
+<div class="modal-overlay" id="modal-charity" onclick="closeModal('modal-charity')">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Change your charity</h3>
+    <p>Your new choice takes effect at renewal on May 16, 2027. $4.99 will be donated to the organization you select.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px">
+      <div class="cs-org selected" onclick="selectModalCharity(this)" style="border-radius:11px;padding:12px 14px"><span class="cs-org-icon">🏠</span><div><div class="cs-org-name" style="font-size:13px">Habitat for Humanity RI</div></div><div class="cs-org-radio"></div></div>
+      <div class="cs-org" onclick="selectModalCharity(this)" style="border-radius:11px;padding:12px 14px"><span class="cs-org-icon">🎓</span><div><div class="cs-org-name" style="font-size:13px">Providence After School Alliance</div></div><div class="cs-org-radio"></div></div>
+      <div class="cs-org" onclick="selectModalCharity(this)" style="border-radius:11px;padding:12px 14px"><span class="cs-org-icon">🥫</span><div><div class="cs-org-name" style="font-size:13px">RI Community Food Bank</div></div><div class="cs-org-radio"></div></div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal('modal-charity')">Cancel</button>
+      <button class="btn btn-gold" onclick="closeModal('modal-charity');showToast('Charity updated — applies at next renewal')">Save preference</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function setState(state, el) {
+  document.querySelectorAll('.ss-btn').forEach(b => b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  document.getElementById('state-free').style.display = state === 'free' ? 'block' : 'none';
+  document.getElementById('state-plus').style.display = state === 'plus' ? 'block' : 'none';
+}
+
+function openUpgradeModal() { document.getElementById('modal-upgrade').classList.add('open'); lucide.createIcons(); }
+function openAddCardModal() { document.getElementById('modal-add-card').classList.add('open'); lucide.createIcons(); }
+function openCancelModal() { document.getElementById('modal-cancel').classList.add('open'); lucide.createIcons(); }
+function openCharityModal() { document.getElementById('modal-charity').classList.add('open'); lucide.createIcons(); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function selectCharity(el) {
+  document.querySelectorAll('#cs-orgs .cs-org').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+function selectModalCharity(el) {
+  el.closest('.modal-overlay').querySelectorAll('.cs-org').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+document.querySelectorAll('.qh-day').forEach(d => d.addEventListener('click', () => d.classList.toggle('on')));
+</script>
+<script>lucide.createIcons();</script>
+</div>
+
+<script>
+function toggleHwMenu() {
+  const drawer = document.getElementById('hw-drawer');
+  const overlay = document.getElementById('hw-overlay');
+  const isOpen = drawer.style.display === 'flex';
+  drawer.style.display = isOpen ? 'none' : 'flex';
+  overlay.style.display = isOpen ? 'none' : 'block';
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').style.display = 'none';
+  document.getElementById('hw-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

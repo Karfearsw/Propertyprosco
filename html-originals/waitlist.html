@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join the Waitlist — Property Pros | Coming to Rhode Island</title>
+  <meta name="description" content="Property Pros is launching in Rhode Island. Join the waitlist and be first to connect homeowners with verified local contractors." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #0c0f1a; --dark2: #111827; --dark3: #1f2937;
+      --gray: #6b7280; --border: rgba(255,255,255,.08); --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --gold: #f59e0b;
+      --font: 'Manrope', sans-serif;
+      --display: 'Playfair Display', serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--dark); color: var(--white); min-height: 100vh; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: .6;
+    }
+
+    /* ── ANIMATED GRADIENT BG ── */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .mesh-1 {
+      position: absolute;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(220,38,38,.18) 0%, transparent 65%);
+      top: -300px; right: -200px;
+      animation: float1 12s ease-in-out infinite;
+    }
+    .mesh-2 {
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(22,163,74,.1) 0%, transparent 65%);
+      bottom: -200px; left: -100px;
+      animation: float2 15s ease-in-out infinite;
+    }
+    .mesh-3 {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,158,11,.08) 0%, transparent 65%);
+      top: 40%; left: 40%;
+      animation: float3 10s ease-in-out infinite;
+    }
+    @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-60px,40px) scale(1.05)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,-50px) scale(1.08)} }
+    @keyframes float3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,30px) scale(0.95)} }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      padding: 0 40px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(12,15,26,.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--red);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; color: #fff;
+    }
+    .brand-name { font-size: 17px; font-weight: 900; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .header-badge {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(220,38,38,.12);
+      border: 1px solid rgba(220,38,38,.25);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px; font-weight: 800; color: #f87171;
+      letter-spacing: .5px; text-transform: uppercase;
+    }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: #f87171; position: relative; }
+    .pulse::after {
+      content: ''; position: absolute; inset: -3px;
+      border-radius: 50%; border: 2px solid #f87171;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0;transform:scale(1.8)} }
+
+    /* ── MAIN ── */
+    main { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: flex; align-items: center;
+      padding: 60px 40px;
+    }
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto; width: 100%;
+      display: grid; grid-template-columns: 1fr 480px;
+      gap: 60px; align-items: center;
+    }
+
+    /* LEFT — COPY */
+    .hero-left {}
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 800; color: #9ca3af;
+      letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-family: var(--display);
+      font-size: clamp(42px, 5.5vw, 68px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .hero-title .line-1 { display: block; color: #fff; }
+    .hero-title .line-2 { display: block; color: #fff; }
+    .hero-title .accent {
+      color: var(--red);
+      font-style: italic;
+    }
+    .hero-title .underline-word {
+      position: relative; display: inline-block;
+    }
+    .hero-title .underline-word::after {
+      content: '';
+      position: absolute; bottom: 2px; left: 0; right: 0;
+      height: 3px; background: var(--red); border-radius: 2px;
+    }
+    .hero-sub {
+      font-size: 18px; color: #9ca3af;
+      line-height: 1.75; margin-bottom: 36px;
+      max-width: 520px;
+    }
+    .hero-sub strong { color: #e5e7eb; }
+
+    /* VALUE PROPS */
+    .value-props { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+    .vp-item {
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+    .vp-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .vp-text { flex: 1; }
+    .vp-title { font-size: 14px; font-weight: 900; color: #e5e7eb; margin-bottom: 2px; }
+    .vp-sub { font-size: 13px; color: #6b7280; font-weight: 600; line-height: 1.5; }
+
+    /* SOCIAL PROOF */
+    .social-proof {
+      display: flex; align-items: center; gap: 16px;
+      flex-wrap: wrap;
+    }
+    .sp-avatars { display: flex; }
+    .sp-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 2px solid var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 10px; color: #fff;
+      margin-right: -8px;
+    }
+    .sp-text { font-size: 13px; font-weight: 700; color: #6b7280; }
+    .sp-text strong { color: #e5e7eb; }
+
+    /* RIGHT — FORM CARD */
+    .form-card {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px;
+      padding: 36px 32px;
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,38,38,.6), transparent);
+    }
+    .form-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .form-sub { font-size: 14px; color: #6b7280; font-weight: 700; margin-bottom: 28px; line-height: 1.5; }
+
+    /* USER TYPE SELECTOR */
+    .type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 22px; }
+    .type-btn {
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      padding: 12px 8px;
+      cursor: pointer;
+      transition: all .2s;
+      background: rgba(255,255,255,.03);
+      text-align: center;
+      font-family: var(--font);
+    }
+    .type-btn:hover { border-color: rgba(220,38,38,.4); background: rgba(220,38,38,.06); }
+    .type-btn.selected { border-color: var(--red); background: rgba(220,38,38,.1); }
+    .type-btn-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .type-btn-label { font-size: 12px; font-weight: 800; color: #e5e7eb; }
+    .type-btn.selected .type-btn-label { color: #fff; }
+
+    /* FORM FIELDS */
+    .field-group { margin-bottom: 14px; }
+    .field-label {
+      display: block; font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: #6b7280; margin-bottom: 7px;
+    }
+    .field-input {
+      width: 100%;
+      padding: 13px 16px;
+      background: rgba(255,255,255,.06);
+      border: 1.5px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      font-size: 14px; font-family: var(--font);
+      color: #fff; font-weight: 700;
+      transition: all .15s;
+    }
+    .field-input::placeholder { color: #4b5563; font-weight: 600; }
+    .field-input:focus { outline: none; border-color: var(--red); background: rgba(220,38,38,.06); box-shadow: 0 0 0 3px rgba(220,38,38,.1); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    /* REFERRAL FIELD */
+    .ref-toggle {
+      font-size: 12px; font-weight: 700; color: #4b5563;
+      cursor: pointer; margin-bottom: 14px; display: flex;
+      align-items: center; gap: 6px; transition: color .15s;
+    }
+    .ref-toggle:hover { color: #9ca3af; }
+    .ref-field { display: none; margin-bottom: 14px; }
+    .ref-field.open { display: block; }
+
+    /* SUBMIT BUTTON */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--red);
+      border: none; border-radius: 13px;
+      font-size: 16px; font-weight: 900;
+      color: #fff; cursor: pointer;
+      font-family: var(--font);
+      transition: all .2s;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .submit-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.1) 0%, transparent 50%);
+    }
+    .submit-btn:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 8px 24px rgba(220,38,38,.35); }
+    .submit-btn:active { transform: translateY(0); }
+    .form-note {
+      text-align: center; margin-top: 14px;
+      font-size: 12px; color: #374151; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* COUNTER */
+    .waitlist-counter {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(22,163,74,.1);
+      border: 1px solid rgba(22,163,74,.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-top: 18px;
+    }
+    .wc-num { font-size: 22px; font-weight: 900; color: #4ade80; }
+    .wc-text { font-size: 13px; font-weight: 700; color: #6b7280; }
+    .wc-text strong { color: #4ade80; }
+
+    /* ── SUCCESS STATE ── */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 20px 0;
+      animation: fadeIn .5s ease;
+    }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .success-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: rgba(22,163,74,.15);
+      border: 2px solid rgba(22,163,74,.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      animation: popIn .5s cubic-bezier(.175,.885,.32,1.275);
+    }
+    @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+    .success-title { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
+    .success-sub { font-size: 14px; color: #6b7280; line-height: 1.7; margin-bottom: 24px; }
+    .success-position {
+      background: rgba(220,38,38,.1);
+      border: 1px solid rgba(220,38,38,.2);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+    }
+    .sp-pos-label { font-size: 11px; font-weight: 800; color: #f87171; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+    .sp-pos-num { font-size: 36px; font-weight: 900; letter-spacing: -1px; }
+    .share-row { display: flex; gap: 8px; }
+    .share-btn {
+      flex: 1; padding: 11px; border-radius: 10px;
+      font-size: 13px; font-weight: 800;
+      cursor: pointer; font-family: var(--font);
+      transition: all .15s; display: flex;
+      align-items: center; justify-content: center; gap: 7px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.05); color: #e5e7eb;
+    }
+    .share-btn:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); }
+
+    /* ── STATS SECTION ── */
+    .stats-section {
+      padding: 80px 40px;
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .stats-inner { max-width: 1060px; margin: 0 auto; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(255,255,255,.06); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,.06); }
+    .stat-item { padding: 32px 28px; background: rgba(255,255,255,.02); text-align: center; }
+    .stat-num {
+      font-family: var(--display);
+      font-size: 48px; font-weight: 900;
+      letter-spacing: -2px; line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-label { font-size: 13px; font-weight: 700; color: #6b7280; }
+
+    /* ── THREE AUDIENCES ── */
+    .audiences-section {
+      padding: 80px 40px;
+      position: relative; z-index: 1;
+    }
+    .audiences-inner { max-width: 1060px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 11px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: #f87171; margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--display);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 900; letter-spacing: -1px;
+      line-height: 1.15; margin-bottom: 48px;
+    }
+    .audience-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .audience-card {
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px;
+      padding: 28px;
+      background: rgba(255,255,255,.02);
+      position: relative;
+      overflow: hidden;
+      transition: all .2s;
+    }
+    .audience-card:hover { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.04); transform: translateY(-3px); }
+    .audience-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+    .audience-card.homeowner::before { background: var(--green); }
+    .audience-card.pro::before { background: var(--red); }
+    .audience-card.realtor::before { background: var(--gold); }
+    .audience-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+    }
+    .audience-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; }
+    .homeowner .audience-label { color: #4ade80; }
+    .pro .audience-label { color: #f87171; }
+    .realtor .audience-label { color: var(--gold); }
+    .audience-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; letter-spacing: -0.3px; }
+    .audience-body { font-size: 14px; color: #6b7280; line-height: 1.7; font-weight: 600; margin-bottom: 18px; }
+    .audience-perks { display: flex; flex-direction: column; gap: 8px; }
+    .perk { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: #9ca3af; font-weight: 700; }
+    .perk-check { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .homeowner .perk-check { background: rgba(22,163,74,.2); }
+    .pro .perk-check { background: rgba(220,38,38,.2); }
+    .realtor .perk-check { background: rgba(245,158,11,.2); }
+
+    /* ── TIMELINE ── */
+    .timeline-section {
+      padding: 80px 40px;
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .timeline-inner { max-width: 680px; margin: 0 auto; }
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 48px; }
+    .tl-item { display: flex; gap: 24px; padding-bottom: 36px; position: relative; }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-left { display: flex; flex-direction: column; align-items: center; width: 48px; flex-shrink: 0; }
+    .tl-dot {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.04);
+      color: #6b7280;
+    }
+    .tl-dot.active { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 0 0 6px rgba(220,38,38,.12); }
+    .tl-dot.done { background: var(--green); border-color: var(--green); color: #fff; }
+    .tl-line { flex: 1; width: 2px; background: rgba(255,255,255,.06); margin-top: 6px; }
+    .tl-item:last-child .tl-line { display: none; }
+    .tl-content { flex: 1; padding-top: 10px; }
+    .tl-date { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #4b5563; margin-bottom: 5px; }
+    .tl-title { font-size: 17px; font-weight: 900; margin-bottom: 6px; }
+    .tl-body { font-size: 14px; color: #6b7280; line-height: 1.7; font-weight: 600; }
+    .tl-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(220,38,38,.1); border: 1px solid rgba(220,38,38,.2); border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 800; color: #f87171; margin-top: 8px; }
+
+    /* ── FAQ ── */
+    .faq-section {
+      padding: 80px 40px;
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .faq-inner { max-width: 680px; margin: 0 auto; }
+    .faq-item { border: 1px solid rgba(255,255,255,.06); border-radius: 14px; margin-bottom: 8px; overflow: hidden; }
+    .faq-q { padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 15px; font-weight: 800; gap: 16px; transition: background .15s; }
+    .faq-q:hover { background: rgba(255,255,255,.03); }
+    .faq-arrow { color: #4b5563; font-size: 20px; flex-shrink: 0; transition: transform .2s; font-weight: 400; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--red); }
+    .faq-a { display: none; padding: 0 20px 18px; font-size: 14px; color: #6b7280; line-height: 1.8; font-weight: 600; border-top: 1px solid rgba(255,255,255,.06); padding-top: 16px; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 32px 40px;
+      border-top: 1px solid rgba(255,255,255,.06);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 14px;
+    }
+    .footer-link { font-size: 13px; font-weight: 700; color: #374151; transition: color .15s; }
+    .footer-link:hover { color: #9ca3af; }
+    .footer-copy { font-size: 12px; color: #1f2937; }
+
+    /* ── CONFETTI ── */
+    .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; display: none; }
+    .confetti-piece { position: absolute; border-radius: 2px; animation: fall linear both; }
+    @keyframes fall { 0%{transform:translateY(-20px) rotate(0);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+
+    /* ── ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(24px); animation: fadeUp .7s ease forwards; }
+    .fade-up.d1 { animation-delay: .1s; }
+    .fade-up.d2 { animation-delay: .2s; }
+    .fade-up.d3 { animation-delay: .3s; }
+    .fade-up.d4 { animation-delay: .4s; }
+    .fade-up.d5 { animation-delay: .5s; }
+    .fade-up.d6 { animation-delay: .6s; }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* TOAST */
+    @keyframes toastSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      .hero-inner { grid-template-columns: 1fr; max-width: 560px; }
+      .audience-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      header { padding: 0 20px; }
+      .hero { padding: 40px 20px; }
+      .stats-section, .audiences-section, .timeline-section, .faq-section { padding: 60px 20px; }
+      footer { padding: 24px 20px; }
+    }
+    @media (max-width: 540px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .field-row { grid-template-columns: 1fr; }
+      .type-selector { grid-template-columns: repeat(3,1fr); }
+      .hero-title { letter-spacing: -1px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONFETTI -->
+  <div class="confetti-wrap" id="confetti"></div>
+
+  <!-- BG MESH -->
+  <div class="bg-mesh">
+    <div class="mesh-1"></div>
+    <div class="mesh-2"></div>
+    <div class="mesh-3"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div class="header-badge">
+      <div class="pulse"></div>
+      Coming soon · Rhode Island
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- ══ HERO ══ -->
+    <section class="hero">
+      <div class="hero-inner">
+
+        <!-- LEFT COPY -->
+        <div class="hero-left">
+          <div class="hero-eyebrow fade-up">
+            <i data-lucide="map-pin" style="width:13px;height:13px;color:#f87171"></i>
+            Launching in Rhode Island
+          </div>
+
+          <h1 class="hero-title fade-up d1">
+            <span class="line-1">Find a contractor</span>
+            <span class="line-2">you can actually <span class="accent underline-word">trust.</span></span>
+          </h1>
+
+          <p class="hero-sub fade-up d2">
+            Property Pros is the <strong>flat-rate marketplace</strong> connecting homeowners with verified, insured local contractors — and giving honest pros <strong>unlimited leads for $9.99/month.</strong>
+          </p>
+
+          <div class="value-props fade-up d3">
+            <div class="vp-item">
+              <div class="vp-icon" style="background:rgba(22,163,74,.15)">
+                <i data-lucide="home" style="width:20px;height:20px;color:#4ade80"></i>
+              </div>
+              <div class="vp-text">
+                <div class="vp-title">Free for homeowners — always</div>
+                <div class="vp-sub">Post your project, get verified quotes in hours, hire the pro you trust. No cost, no obligation.</div>
+              </div>
+            </div>
+            <div class="vp-item">
+              <div class="vp-icon" style="background:rgba(220,38,38,.15)">
+                <i data-lucide="hammer" style="width:20px;height:20px;color:#f87171"></i>
+              </div>
+              <div class="vp-text">
+                <div class="vp-title">$9.99/month for contractors</div>
+                <div class="vp-sub">Unlimited leads. Unlimited quotes. Keep 100% of every job. No per-lead fees ever.</div>
+              </div>
+            </div>
+            <div class="vp-item">
+              <div class="vp-icon" style="background:rgba(245,158,11,.15)">
+                <i data-lucide="briefcase" style="width:20px;height:20px;color:var(--gold)"></i>
+              </div>
+              <div class="vp-text">
+                <div class="vp-title">Built for realtors too</div>
+                <div class="vp-sub">Post projects for clients, track inspection repairs, and earn credits for every referral.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-proof fade-up d4">
+            <div class="sp-avatars">
+              <div class="sp-avatar" style="background:#7c3aed">MS</div>
+              <div class="sp-avatar" style="background:#059669">JW</div>
+              <div class="sp-avatar" style="background:#dc2626">KH</div>
+              <div class="sp-avatar" style="background:#d97706">TB</div>
+              <div class="sp-avatar" style="background:#1d4ed8">DL</div>
+            </div>
+            <div class="sp-text"><strong id="counter-display">247 people</strong> already on the waitlist</div>
+          </div>
+        </div>
+
+        <!-- RIGHT FORM CARD -->
+        <div class="form-card fade-up d5" id="form-card">
+          <div class="form-title">Join the waitlist</div>
+          <div class="form-sub">Be first to know when we launch. Early members get priority access and special founding perks.</div>
+
+          <!-- USER TYPE -->
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:10px">I am a...</div>
+          <div class="type-selector" id="type-selector">
+            <button class="type-btn selected" onclick="selectType('homeowner', this)">
+              <div class="type-btn-icon" style="background:rgba(22,163,74,.15)">
+                <i data-lucide="home" style="width:20px;height:20px;color:#4ade80"></i>
+              </div>
+              <div class="type-btn-label">Homeowner</div>
+            </button>
+            <button class="type-btn" onclick="selectType('pro', this)">
+              <div class="type-btn-icon" style="background:rgba(220,38,38,.15)">
+                <i data-lucide="hammer" style="width:20px;height:20px;color:#f87171"></i>
+              </div>
+              <div class="type-btn-label">Contractor</div>
+            </button>
+            <button class="type-btn" onclick="selectType('realtor', this)">
+              <div class="type-btn-icon" style="background:rgba(245,158,11,.15)">
+                <i data-lucide="briefcase" style="width:20px;height:20px;color:var(--gold)"></i>
+              </div>
+              <div class="type-btn-label">Realtor</div>
+            </button>
+          </div>
+
+          <!-- FORM FIELDS -->
+          <div class="field-row">
+            <div class="field-group">
+              <label class="field-label">First name</label>
+              <input class="field-input" type="text" id="first-name" placeholder="Maria" />
+            </div>
+            <div class="field-group">
+              <label class="field-label">Last name</label>
+              <input class="field-input" type="text" id="last-name" placeholder="Santos" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label">Email address</label>
+            <input class="field-input" type="email" id="email" placeholder="maria@email.com" />
+          </div>
+
+          <div class="field-group" id="zip-group">
+            <label class="field-label">ZIP code <span style="color:#4b5563;font-size:10px;text-transform:none;letter-spacing:0;font-weight:700">(helps us prioritize your area)</span></label>
+            <input class="field-input" type="text" id="zip" placeholder="02903" maxlength="5" />
+          </div>
+
+          <!-- CONDITIONAL — Pro trade -->
+          <div class="field-group" id="trade-group" style="display:none">
+            <label class="field-label">Your primary trade</label>
+            <select class="field-input" id="trade" style="color:#9ca3af">
+              <option value="">Select your trade...</option>
+              <option>Roofing</option>
+              <option>Driveways & Paving</option>
+              <option>Masonry</option>
+              <option>Painting</option>
+              <option>Landscaping</option>
+              <option>Electrical</option>
+              <option>Plumbing</option>
+              <option>HVAC</option>
+              <option>Junk Removal</option>
+              <option>General Contracting</option>
+              <option>Remodeling</option>
+              <option>Handyman</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <!-- REFERRAL CODE -->
+          <div class="ref-toggle" onclick="document.getElementById('ref-field').classList.toggle('open'); this.querySelector('span').textContent = document.getElementById('ref-field').classList.contains('open') ? '▲ Hide' : '▼ Have a referral code?'">
+            <i data-lucide="tag" style="width:13px;height:13px"></i>
+            <span>▼ Have a referral code?</span>
+          </div>
+          <div class="ref-field" id="ref-field">
+            <div class="field-group" style="margin-bottom:0">
+              <label class="field-label">Referral code</label>
+              <input class="field-input" type="text" id="referral" placeholder="e.g. MARIA2026" />
+            </div>
+          </div>
+
+          <button class="submit-btn" onclick="submitWaitlist()">
+            <i data-lucide="rocket" style="width:18px;height:18px"></i>
+            Join the waitlist — it's free
+          </button>
+
+          <div class="form-note">
+            <i data-lucide="lock" style="width:13px;height:13px;color:#374151"></i>
+            No spam ever. Unsubscribe anytime.
+          </div>
+
+          <!-- COUNTER -->
+          <div class="waitlist-counter">
+            <i data-lucide="users" style="width:20px;height:20px;color:#4ade80;flex-shrink:0"></i>
+            <div>
+              <div class="wc-num" id="card-counter">247</div>
+              <div class="wc-text"><strong>people</strong> already waiting for launch</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUCCESS STATE (hidden initially) -->
+        <div class="form-card fade-up d5" id="success-card" style="display:none">
+          <div class="success-state" style="display:block">
+            <div class="success-icon">
+              <i data-lucide="check" style="width:32px;height:32px;color:#4ade80"></i>
+            </div>
+            <div class="success-title">You're on the list! 🎉</div>
+            <div class="success-sub">We'll email you the moment Property Pros goes live in your area. You'll have early access before the public launch.</div>
+
+            <div class="success-position">
+              <div class="sp-pos-label">Your position on the waitlist</div>
+              <div class="sp-pos-num" id="position-num">#248</div>
+            </div>
+
+            <div style="font-size:13px;font-weight:700;color:#6b7280;margin-bottom:14px;text-align:left">
+              Move up the list — share with people who would benefit:
+            </div>
+
+            <div class="share-row">
+              <button class="share-btn" onclick="shareTwitter()">
+                <i data-lucide="twitter" style="width:15px;height:15px"></i> Share
+              </button>
+              <button class="share-btn" onclick="copyLink()">
+                <i data-lucide="link" style="width:15px;height:15px"></i> Copy link
+              </button>
+              <button class="share-btn" onclick="shareEmail()">
+                <i data-lucide="mail" style="width:15px;height:15px"></i> Email
+              </button>
+            </div>
+
+            <div style="margin-top:20px;font-size:12px;color:#374151;font-weight:700;text-align:center">
+              Check out the full platform →
+              <a href="index.html" style="color:#f87171;font-weight:800"> propertypros.com</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══ STATS ══ -->
+    <section class="stats-section">
+      <div class="stats-inner">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-num" style="color:#f87171">$9.99</div>
+            <div class="stat-label">Flat monthly rate for pros — no per-lead fees</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" style="color:#4ade80">$0</div>
+            <div class="stat-label">Cost for homeowners — free forever</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" style="color:#fff">~2hrs</div>
+            <div class="stat-label">Average time to first quote after posting</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num" style="color:var(--gold)">4.9★</div>
+            <div class="stat-label">Target platform rating from verified pros</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ THREE AUDIENCES ══ -->
+    <section class="audiences-section">
+      <div class="audiences-inner">
+        <div class="section-eyebrow">Who it's for</div>
+        <div class="section-title">Built for three people<br>who all need each other.</div>
+        <div class="audience-grid">
+
+          <div class="audience-card homeowner">
+            <div class="audience-icon" style="background:rgba(22,163,74,.1)">
+              <i data-lucide="home" style="width:26px;height:26px;color:#4ade80"></i>
+            </div>
+            <div class="audience-label">Homeowners</div>
+            <div class="audience-title">Stop calling around. Start getting quotes.</div>
+            <div class="audience-body">Post your project once. Verified local pros come to you with quotes — usually within 2 hours. Compare side by side, hire the one you trust.</div>
+            <div class="audience-perks">
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#4ade80"></i></div>
+                Free forever — no subscription
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#4ade80"></i></div>
+                Verified license and insurance on every pro
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#4ade80"></i></div>
+                Two-way ratings keep everyone honest
+              </div>
+            </div>
+          </div>
+
+          <div class="audience-card pro">
+            <div class="audience-icon" style="background:rgba(220,38,38,.1)">
+              <i data-lucide="hammer" style="width:26px;height:26px;color:#f87171"></i>
+            </div>
+            <div class="audience-label">Service Pros</div>
+            <div class="audience-title">Stop paying per lead. $9.99 flat. That's it.</div>
+            <div class="audience-body">Unlimited leads, unlimited quotes, keep every dollar you earn. No commissions, no per-lead charges, no surprise bills. One flat monthly rate.</div>
+            <div class="audience-perks">
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#f87171"></i></div>
+                Unlimited matched leads in your area
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#f87171"></i></div>
+                Full business dashboard — quotes, schedule, earnings
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:#f87171"></i></div>
+                14-day free trial · Cancel anytime
+              </div>
+            </div>
+          </div>
+
+          <div class="audience-card realtor">
+            <div class="audience-icon" style="background:rgba(245,158,11,.1)">
+              <i data-lucide="briefcase" style="width:26px;height:26px;color:var(--gold)"></i>
+            </div>
+            <div class="audience-label">Realtors</div>
+            <div class="audience-title">The tool realtors have been missing.</div>
+            <div class="audience-body">Post projects for clients, track inspection repairs before closing, and send personalized referral links at every closing. Refer 10 clients — subscription is free.</div>
+            <div class="audience-perks">
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:var(--gold)"></i></div>
+                Post projects on behalf of buyers and sellers
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:var(--gold)"></i></div>
+                Inspection repair tracker with deadline reminders
+              </div>
+              <div class="perk">
+                <div class="perk-check"><i data-lucide="check" style="width:10px;height:10px;color:var(--gold)"></i></div>
+                Earn $3/month per referred client
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ TIMELINE ══ -->
+    <section class="timeline-section">
+      <div class="timeline-inner">
+        <div class="section-eyebrow" style="text-align:center">Launch roadmap</div>
+        <div class="section-title" style="text-align:center">What happens next.</div>
+        <div class="timeline">
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot done">
+                <i data-lucide="check" style="width:16px;height:16px"></i>
+              </div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Now — Spring 2026</div>
+              <div class="tl-title">Building the platform & waitlist</div>
+              <div class="tl-body">Full front-end prototype complete. Collecting waitlist signups from homeowners, contractors, and realtors across Rhode Island.</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot active">2</div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Summer 2026</div>
+              <div class="tl-title">Early access — contractors first</div>
+              <div class="tl-body">Waitlisted contractors get early access to set up profiles, complete verification, and get ready before homeowners arrive.</div>
+              <div class="tl-badge">
+                <div class="pulse"></div>
+                You are here — join now
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot">3</div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Late Summer 2026</div>
+              <div class="tl-title">Public launch — Rhode Island</div>
+              <div class="tl-body">Full platform goes live. Homeowners can post projects, pros respond with quotes, realtors start managing clients. Property Pros is open.</div>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-dot">4</div>
+              <div class="tl-line"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-date">Fall 2026</div>
+              <div class="tl-title">Expansion — Massachusetts</div>
+              <div class="tl-body">After validating the model in Rhode Island, we expand to Boston and greater Massachusetts. Then Connecticut, New Hampshire, and beyond.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ FAQ ══ -->
+    <section class="faq-section">
+      <div class="faq-inner">
+        <div class="section-eyebrow" style="text-align:center">Questions</div>
+        <div class="section-title" style="text-align:center;margin-bottom:36px">Common questions.</div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            When exactly are you launching? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">We're targeting a public launch in Rhode Island in late summer 2026. Waitlist members will get early access before the public launch — contractors first, then homeowners and realtors. We'll email you with exact dates as they're confirmed.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            Is the waitlist free? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">Completely free. There's no credit card, no commitment, and no obligation. Homeowners will always be free on Property Pros. Contractors and realtors get a free trial when we launch.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            What perks do waitlist members get? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">Early access before the public launch, priority placement in search results for contractors in the first 90 days, and founding member status. We may add additional perks as we get closer to launch — waitlist members hear about those first.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            I'm a contractor — how is this different from Thumbtack or Angi? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">Three things: First, $9.99/month flat versus paying $15–$100 per lead regardless of whether you win the job. Second, you get a full business suite — leads, quotes, schedule, earnings, messaging — not just a lead list. Third, we have a two-way rating system with homeowner Trust Scores, so you can see who you're quoting before you respond.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            I'm a realtor — what makes this worth $29.99/month? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">The inspection tracker alone is worth it — it keeps deals on track by helping you manage repair requests before closing deadlines. Add the client management tools, referral system, and the fact that referring 10 active clients makes your subscription free — and it pays for itself quickly.</div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+            Will you expand beyond Rhode Island? <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-a">Yes — Massachusetts is next, then Connecticut and New Hampshire. We're launching in Rhode Island first to get it right in one market before scaling. If you're outside Rhode Island, join the waitlist anyway and we'll notify you when we reach your area.</div>
+        </div>
+
+      </div>
+    </section>
+
+  
+  <!-- CHARITY SECTION -->
+  <section style="max-width:700px;margin:0 auto 48px;text-align:center;padding:0 24px">
+    <div style="font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#b45309;margin-bottom:12px">GIVING BACK</div>
+    <div style="font-size:24px;font-weight:900;letter-spacing:-0.5px;margin-bottom:10px">Plus™ members make a difference</div>
+    <div style="font-size:15px;color:#6b7280;font-weight:700;line-height:1.7;margin-bottom:28px">When you join Plus™ ($9.99/year), half your membership fee goes directly to a Rhode Island nonprofit of your choice.</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:600px;margin:0 auto">
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🏠</div>
+        <div style="font-size:12px;font-weight:900;color:#111827;margin-bottom:4px">Habitat for Humanity RI</div>
+        <div style="font-size:11px;color:#6b7280;font-weight:700">Building affordable homes across Rhode Island</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🎓</div>
+        <div style="font-size:12px;font-weight:900;color:#111827;margin-bottom:4px">Providence After School</div>
+        <div style="font-size:11px;color:#6b7280;font-weight:700">After-school programs for Providence kids</div>
+      </div>
+      <div style="background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;text-align:center">
+        <div style="font-size:28px;margin-bottom:8px">🥫</div>
+        <div style="font-size:12px;font-weight:900;color:#111827;margin-bottom:4px">RI Community Food Bank</div>
+        <div style="font-size:11px;color:#6b7280;font-weight:700">Fighting food insecurity across Rhode Island</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="homeowner-landing.html" class="footer-link">For homeowners</a>
+      <a href="pro-landing.html" class="footer-link">For contractors</a>
+      <a href="realtor-landing.html" class="footer-link">For realtors</a>
+      <a href="terms.html" class="footer-link">Terms</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 Property Pros, LLC · Providence, Rhode Island</div>
+  </footer>
+
+  <script>
+    // ── USER TYPE SELECTION ──
+    let selectedType = 'homeowner';
+
+    function selectType(type, btn) {
+      selectedType = type;
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      // Show/hide trade field for pros
+      document.getElementById('trade-group').style.display = type === 'pro' ? 'block' : 'none';
+    }
+
+    // ── ANIMATED COUNTER ──
+    let baseCount = 247;
+    function animateCounter() {
+      const targets = ['counter-display', 'card-counter'];
+      targets.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let count = 0;
+        const target = baseCount;
+        const duration = 1800;
+        const step = target / (duration / 16);
+        const interval = setInterval(() => {
+          count = Math.min(count + step, target);
+          if (id === 'counter-display') {
+            el.textContent = Math.floor(count).toLocaleString() + ' people';
+          } else {
+            el.textContent = Math.floor(count).toLocaleString();
+          }
+          if (count >= target) clearInterval(interval);
+        }, 16);
+      });
+    }
+
+    // Trigger counter when visible
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) { animateCounter(); observer.disconnect(); }
+    }, { threshold: 0.3 });
+    const counterEl = document.getElementById('counter-display');
+    if (counterEl) observer.observe(counterEl);
+
+    // ── FORM SUBMISSION ──
+    function submitWaitlist() {
+      const firstName = document.getElementById('first-name').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!firstName) {
+        document.getElementById('first-name').focus();
+        shake(document.getElementById('first-name'));
+        return;
+      }
+      if (!email || !email.includes('@')) {
+        document.getElementById('email').focus();
+        shake(document.getElementById('email'));
+        return;
+      }
+
+      // Increment counter
+      baseCount++;
+      const position = baseCount;
+      document.getElementById('position-num').textContent = '#' + position;
+
+      // Confetti
+      launchConfetti();
+
+      // Swap form for success
+      document.getElementById('form-card').style.display = 'none';
+      const successCard = document.getElementById('success-card');
+      successCard.style.display = 'block';
+      successCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Update counter displays
+      ['counter-display','card-counter'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = id === 'counter-display' ? position + ' people' : position;
+      });
+
+      // In a real app: POST to your API here
+      // fetch('/api/waitlist', { method:'POST', headers:{'Content-Type':'application/json'},
+      //   body: JSON.stringify({ firstName, email, type: selectedType }) })
+    }
+
+    function shake(el) {
+      el.style.animation = 'none';
+      el.style.borderColor = 'var(--red)';
+      el.style.boxShadow = '0 0 0 3px rgba(220,38,38,.2)';
+      setTimeout(() => {
+        el.style.borderColor = '';
+        el.style.boxShadow = '';
+      }, 2000);
+    }
+
+    // ── SHARE ──
+    function shareTwitter() {
+      const text = encodeURIComponent('Just joined the Property Pros waitlist — a new contractor marketplace launching in Rhode Island. Homeowners get free quotes, pros pay $9.99/month flat. Looks promising!');
+      const url = encodeURIComponent('https://propertypros.com/waitlist');
+      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+    }
+
+    function copyLink() {
+      const url = 'https://propertypros.com/waitlist';
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('✓ Link copied to clipboard!');
+      }).catch(() => {
+        showToast('Copy: propertypros.com/waitlist');
+      });
+    }
+
+    function shareEmail() {
+      const subject = encodeURIComponent('You should check out Property Pros');
+      const body = encodeURIComponent('Hey! I just joined the waitlist for Property Pros — a new home services marketplace launching in Rhode Island.\n\nHomeowners get free quotes from verified local contractors. Contractors pay $9.99/month flat — no per-lead fees.\n\nJoin the waitlist: https://propertypros.com/waitlist');
+      window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    }
+
+    // ── CONFETTI ──
+    function launchConfetti() {
+      const wrap = document.getElementById('confetti');
+      wrap.style.display = 'block';
+      const colors = ['#dc2626','#16a34a','#2563eb','#d97706','#7c3aed','#f59e0b'];
+      for (let i = 0; i < 80; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        p.style.cssText = `left:${Math.random()*100}vw;width:${Math.random()*8+5}px;height:${Math.random()*10+6}px;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${Math.random()*2+2.5}s;animation-delay:${Math.random()*0.8}s`;
+        wrap.appendChild(p);
+      }
+      setTimeout(() => { wrap.style.display = 'none'; wrap.innerHTML = ''; }, 5000);
+    }
+
+    // ── TOAST ──
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:28px;right:28px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.1);padding:14px 20px;border-radius:12px;font-size:14px;font-weight:800;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.3);animation:toastSlide .3s ease';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2500);
+    }
+
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

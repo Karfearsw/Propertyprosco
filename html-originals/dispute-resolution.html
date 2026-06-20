@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dispute Resolution — Property Pros</title>
+  <meta name="description" content="Property Pros dispute resolution process. Learn how we help homeowners and contractors resolve issues fairly." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--red:#dc2626;--red-dark:#b91c1c;--dark:#111827;--dark2:#1f2937;--gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;--green:#16a34a;--amber:#d97706;--font:'Manrope',sans-serif;--display:'Playfair Display',serif}
+    body{font-family:var(--font);background:var(--bg);color:var(--dark)}
+    a{text-decoration:none;color:inherit}
+    header{background:var(--dark);padding:0 48px;height:66px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:36px;height:36px;border-radius:10px;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#fff}
+    .brand-name{font-size:18px;font-weight:900;color:#fff}.brand-name span{color:#f87171}
+    .nav-links{display:flex;gap:24px}.nav-link{font-size:13px;font-weight:700;color:#9ca3af;transition:color .15s}.nav-link:hover{color:#fff}
+    .hdr-btns{display:flex;gap:10px}
+    .btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);transition:all .15s;display:inline-flex;align-items:center;gap:6px;border:1px solid transparent}
+    .btn-ghost{border-color:rgba(255,255,255,.2);color:#fff}.btn-ghost:hover{background:rgba(255,255,255,.08)}
+    .btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark)}
+    .hero{background:var(--dark);padding:56px 48px;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(220,38,38,.12) 0%,transparent 60%)}
+    .hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#f87171;margin-bottom:14px}
+    .hero h1{font-family:var(--display);font-size:42px;font-weight:900;color:#fff;letter-spacing:-1.5px;line-height:1.1;margin-bottom:14px}
+    .hero-sub{font-size:16px;color:#9ca3af;line-height:1.7;font-weight:700}
+    .main{max-width:860px;margin:0 auto;padding:48px 48px 80px}
+    .section{margin-bottom:48px}
+    .section-title{font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:6px}
+    .section-sub{font-size:14px;color:var(--gray);font-weight:700;line-height:1.6;margin-bottom:24px}
+    /* PROCESS STEPS */
+    .process{display:flex;flex-direction:column;gap:0}
+    .pstep{display:flex;gap:20px;position:relative}
+    .pstep:not(:last-child)::before{content:'';position:absolute;left:20px;top:48px;bottom:-24px;width:2px;background:var(--border)}
+    .pstep-left{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:0}
+    .pstep-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;flex-shrink:0;z-index:1;position:relative}
+    .pstep-body{flex:1;background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-bottom:24px}
+    .pstep-tag{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+    .pstep-title{font-size:16px;font-weight:900;margin-bottom:6px}
+    .pstep-desc{font-size:13px;color:var(--gray);line-height:1.7;font-weight:700}
+    .pstep-time{font-size:11px;font-weight:800;color:var(--amber);margin-top:8px;display:flex;align-items:center;gap:5px}
+    /* CAN/CANNOT */
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .info-card{border-radius:16px;padding:22px}
+    .info-card h3{font-size:14px;font-weight:900;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .info-list{display:flex;flex-direction:column;gap:9px}
+    .info-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;font-weight:700;line-height:1.5}
+    .info-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0;margin-top:1px}
+    /* TIPS */
+    .tips-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .tip{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;gap:12px}
+    .tip-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .tip-title{font-size:13px;font-weight:900;margin-bottom:4px}
+    .tip-desc{font-size:12px;color:var(--gray);line-height:1.6;font-weight:600}
+    /* ESCALATION */
+    .esc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .esc-card{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:16px}
+    .esc-title{font-size:13px;font-weight:900;margin-bottom:5px;display:flex;align-items:center;gap:7px}
+    .esc-desc{font-size:12px;color:var(--gray);line-height:1.6;font-weight:600}
+    .esc-link{font-size:12px;font-weight:800;color:var(--red);margin-top:6px;display:block}
+    /* FAQ */
+    .faq-item{background:var(--white);border:1px solid var(--border);border-radius:12px;margin-bottom:8px;overflow:hidden}
+    .faq-q{padding:15px 18px;font-size:14px;font-weight:800;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none}
+    .faq-q i{transition:transform .2s}
+    .faq-item.open .faq-q i{transform:rotate(180deg)}
+    .faq-a{display:none;padding:0 18px 14px;font-size:13px;color:var(--gray);line-height:1.7;font-weight:700}
+    .faq-item.open .faq-a{display:block}
+    /* CTA */
+    .contact-card{background:var(--dark);border-radius:20px;padding:32px;text-align:center}
+    .contact-card h2{font-size:22px;font-weight:900;color:#fff;margin-bottom:8px}
+    .contact-card p{font-size:14px;color:#9ca3af;font-weight:700;margin-bottom:20px}
+    .contact-email{display:inline-block;font-size:16px;font-weight:900;color:#f87171}
+    footer{background:var(--dark);padding:28px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fl{display:flex;gap:18px;flex-wrap:wrap}.fl a{font-size:13px;font-weight:700;color:#4b5563;transition:color .15s}.fl a:hover{color:#fff}
+    .fc{font-size:12px;color:#374151}
+    @media(max-width:768px){.two-col,.tips-grid,.esc-grid{grid-template-columns:1fr}.main{padding:32px 20px 60px}.hero{padding:40px 20px}.hero h1{font-size:30px}}
+    @media(max-width:640px){header{padding:0 18px}.nav-links{display:none}}
+  </style>
+</head>
+<body>
+<header>
+  <a href="index.html" class="brand"><div class="logo">PP</div><div class="brand-name"><span>Property</span> Pros</div></a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="find-a-pro.html" class="nav-link">Find a Pro</a>
+    <a href="how-it-works.html" class="nav-link">How It Works</a>
+    <a href="pricing.html" class="nav-link">Pricing</a>
+    <a href="contact.html" class="nav-link">Contact</a>
+  </div>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="contact.html" class="btn btn-red">Get help</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Dispute Resolution</div>
+    <h1>We're here to help if something goes wrong</h1>
+    <p class="hero-sub">Most issues resolve through direct communication. When they don't, Property Pros steps in to help mediate fairly.</p>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- PROCESS -->
+  <div class="section">
+    <div class="section-title">The resolution process</div>
+    <div class="section-sub">We follow a clear 5-step process to resolve disputes between homeowners and contractors as fairly and quickly as possible.</div>
+    <div class="process">
+      <div class="pstep">
+        <div class="pstep-left"><div class="pstep-num" style="background:#2563eb">1</div></div>
+        <div class="pstep-body">
+          <div class="pstep-tag" style="color:#2563eb">Step 1</div>
+          <div class="pstep-title">Contact the other party directly</div>
+          <div class="pstep-desc">Most disputes resolve when both parties communicate clearly. Use the Property Pros messaging system to explain the issue in writing. This creates a record of the conversation if escalation is needed.</div>
+          <div class="pstep-time"><i data-lucide="clock" size="13"></i> Try this first — give 48 hours for a response</div>
+        </div>
+      </div>
+      <div class="pstep">
+        <div class="pstep-left"><div class="pstep-num" style="background:#d97706">2</div></div>
+        <div class="pstep-body">
+          <div class="pstep-tag" style="color:#d97706">Step 2</div>
+          <div class="pstep-title">Open a dispute with Property Pros</div>
+          <div class="pstep-desc">If direct communication doesn't resolve the issue, contact our support team at support@propertypros.com with your project ID. Include photos, messages, and any documentation. We'll open a formal case within 1 business day.</div>
+          <div class="pstep-time"><i data-lucide="clock" size="13"></i> Response within 1 business day</div>
+        </div>
+      </div>
+      <div class="pstep">
+        <div class="pstep-left"><div class="pstep-num" style="background:#7c3aed">3</div></div>
+        <div class="pstep-body">
+          <div class="pstep-tag" style="color:#7c3aed">Step 3</div>
+          <div class="pstep-title">We review the evidence</div>
+          <div class="pstep-desc">Our team reviews all on-platform messages, the original project scope, submitted quotes, photos, and any additional documentation provided by both parties. We may ask follow-up questions to clarify the situation.</div>
+          <div class="pstep-time"><i data-lucide="clock" size="13"></i> Typically 3–5 business days</div>
+        </div>
+      </div>
+      <div class="pstep">
+        <div class="pstep-left"><div class="pstep-num" style="background:#dc2626">4</div></div>
+        <div class="pstep-body">
+          <div class="pstep-tag" style="color:#dc2626">Step 4</div>
+          <div class="pstep-title">We issue a recommendation</div>
+          <div class="pstep-desc">Based on our review, we issue a written recommendation for resolution. This might include a partial refund, requiring the contractor to return and fix the work, or in clear cases of misconduct, removing the contractor from the platform.</div>
+          <div class="pstep-time"><i data-lucide="clock" size="13"></i> Written decision within 7 business days total</div>
+        </div>
+      </div>
+      <div class="pstep">
+        <div class="pstep-left"><div class="pstep-num" style="background:#16a34a">5</div></div>
+        <div class="pstep-body">
+          <div class="pstep-tag" style="color:#16a34a">Step 5</div>
+          <div class="pstep-title">External escalation if needed</div>
+          <div class="pstep-desc">Property Pros is a marketplace — we are not a party to the contract between you and the contractor. If our mediation doesn't resolve the issue and significant money is at stake, we can provide your documentation to support small claims court or a licensing board complaint.</div>
+          <div class="pstep-time"><i data-lucide="info" size="13"></i> See escalation options below</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAN / CANNOT -->
+  <div class="section">
+    <div class="section-title">What we can and cannot do</div>
+    <div class="section-sub">Being clear about our role helps set the right expectations from the start.</div>
+    <div class="two-col">
+      <div class="info-card" style="background:#f0fdf4;border:1px solid #bbf7d0">
+        <h3><i data-lucide="check-circle" size="18" style="color:#16a34a"></i> What Property Pros CAN do</h3>
+        <div class="info-list">
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Review on-platform messages and project scope</div>
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Issue a written mediation recommendation</div>
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Suspend or remove a contractor for misconduct</div>
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Flag a contractor's profile with dispute history</div>
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Provide documentation for external escalation</div>
+          <div class="info-item"><div class="info-dot" style="background:#16a34a;color:#fff">✓</div> Help you contact the right authorities</div>
+        </div>
+      </div>
+      <div class="info-card" style="background:#fef2f2;border:1px solid #fecaca">
+        <h3><i data-lucide="x-circle" size="18" style="color:#dc2626"></i> What Property Pros CANNOT do</h3>
+        <div class="info-list">
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Force a contractor to issue a refund</div>
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Guarantee the quality of any contractor's work</div>
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Act as a party to the contractor agreement</div>
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Recover money paid outside our platform</div>
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Provide legal advice or representation</div>
+          <div class="info-item"><div class="info-dot" style="background:#dc2626;color:#fff">✗</div> Resolve disputes about work agreed off-platform</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTECTION TIPS -->
+  <div class="section">
+    <div class="section-title">Protect yourself before the job starts</div>
+    <div class="section-sub">These four habits prevent the vast majority of disputes.</div>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-icon" style="background:#fef2f2"><i data-lucide="file-text" size="20" style="color:#dc2626"></i></div>
+        <div><div class="tip-title">Get the scope in writing</div><div class="tip-desc">Before any work starts, make sure the quote or message describes exactly what's included — materials, labor, cleanup, and what's explicitly excluded.</div></div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon" style="background:#f0fdf4"><i data-lucide="message-circle" size="20" style="color:#16a34a"></i></div>
+        <div><div class="tip-title">Keep all communication on-platform</div><div class="tip-desc">Messages sent through Property Pros are recorded and can be reviewed during a dispute. Off-platform agreements are very difficult to enforce.</div></div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon" style="background:#eff6ff"><i data-lucide="camera" size="20" style="color:#2563eb"></i></div>
+        <div><div class="tip-title">Take before and after photos</div><div class="tip-desc">Document the condition of the property before work begins and after it's done. Photos are the most valuable evidence in any dispute.</div></div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon" style="background:#fef3c7"><i data-lucide="badge-check" size="20" style="color:#b45309"></i></div>
+        <div><div class="tip-title">Hire verified contractors</div><div class="tip-desc">Licensed & Insured contractors have uploaded their state license and insurance certificate. If something goes wrong, there's a real business and policy behind the work.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESCALATION -->
+  <div class="section">
+    <div class="section-title">External escalation options</div>
+    <div class="section-sub">If our mediation doesn't resolve the issue, these are the appropriate authorities for different situations in Rhode Island.</div>
+    <div class="esc-grid">
+      <div class="esc-card">
+        <div class="esc-title"><i data-lucide="scale" size="16" style="color:#2563eb"></i> Small Claims Court</div>
+        <div class="esc-desc">For disputes up to $2,500 in Rhode Island. No lawyer required. File at your local District Court. Property Pros can provide your message history and documentation.</div>
+        <a class="esc-link" href="https://courts.ri.gov" target="_blank">courts.ri.gov →</a>
+      </div>
+      <div class="esc-card">
+        <div class="esc-title"><i data-lucide="building" size="16" style="color:#dc2626"></i> RI Contractor Licensing Board</div>
+        <div class="esc-desc">For complaints against licensed contractors in RI. The board can investigate and revoke licenses. File a complaint if a licensed contractor did defective work or abandoned a project.</div>
+        <a class="esc-link" href="https://www.crb.ri.gov" target="_blank">crb.ri.gov →</a>
+      </div>
+      <div class="esc-card">
+        <div class="esc-title"><i data-lucide="shield-alert" size="16" style="color:#d97706"></i> RI Attorney General</div>
+        <div class="esc-desc">For consumer protection complaints. The AG's office handles contractor fraud, deceptive practices, and cases where a contractor took payment and didn't perform work.</div>
+        <a class="esc-link" href="https://www.riag.ri.gov" target="_blank">riag.ri.gov →</a>
+      </div>
+      <div class="esc-card">
+        <div class="esc-title"><i data-lucide="phone" size="16" style="color:#16a34a"></i> Local Police</div>
+        <div class="esc-desc">If a contractor took a significant payment (deposit) and abandoned the project without doing work, this may constitute fraud or theft. Contact your local police department.</div>
+        <a class="esc-link" href="tel:911">Emergency: 911 · Non-emergency: 311</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title">Common questions</div>
+    <div class="faq-item"><div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">How do I open a dispute? <i data-lucide="chevron-down" size="16"></i></div><div class="faq-a">Email support@propertypros.com with your project ID and a description of the issue. Include any photos and the relevant messages from the platform. We'll open a case within 1 business day.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">What if the contractor left a bad review in retaliation? <i data-lucide="chevron-down" size="16"></i></div><div class="faq-a">We take retaliatory reviews seriously. If you believe a review was left in retaliation for a legitimate complaint, contact support with the dispute case ID and we'll investigate and may remove the review.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">The contractor wants payment before the job is complete. Is that normal? <i data-lucide="chevron-down" size="16"></i></div><div class="faq-a">A deposit (typically 10–30%) is normal for larger jobs to cover materials. Avoid paying more than 50% upfront for any job. Never pay in full before work is completed. If a contractor is demanding full payment upfront, that's a red flag.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">A contractor on the platform isn't licensed. What should I do? <i data-lucide="chevron-down" size="16"></i></div><div class="faq-a">Report it immediately to support@propertypros.com. We will verify their credentials and remove them from the platform if they are misrepresenting their license status. Only hire Licensed & Insured badge contractors for trades that require a state license in RI.</div></div>
+    <div class="faq-item"><div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">Does Property Pros offer any kind of work guarantee? <i data-lucide="chevron-down" size="16"></i></div><div class="faq-a">We are a marketplace connecting homeowners with independent contractors. We do not guarantee the quality of work or act as the contractor. However, we vet all contractors, verify licenses and insurance for applicable trades, and take disputes seriously — including removing contractors who receive legitimate complaints.</div></div>
+  </div>
+
+  <!-- CTA -->
+  <div class="contact-card">
+    <h2>Need to open a dispute?</h2>
+    <p>Email us with your project ID and we'll respond within 1 business day.</p>
+    <a href="mailto:support@propertypros.com" class="contact-email">support@propertypros.com</a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a><a href="find-a-pro.html">Find a Pro</a>
+    <a href="how-it-works.html">How It Works</a><a href="pricing.html">Pricing</a>
+    <a href="contact.html">Contact</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+<script>lucide.createIcons();</script>
+</body>
+</html>

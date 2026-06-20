@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Verify your email address to complete your Property Pros account setup." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Your Email — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* HEADER */
+    header { background: var(--dark); padding: 0 32px; height: 62px; display: flex; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo { width: 34px; height: 34px; border-radius: 9px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; }
+    .brand-name { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    /* MAIN */
+    .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 24px; padding: 48px 44px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,.06); }
+
+    /* ENVELOPE ANIMATION */
+    .envelope-wrap { margin: 0 auto 28px; width: 88px; height: 88px; position: relative; }
+    .envelope { width: 88px; height: 88px; background: var(--blue-light); border-radius: 50%; border: 3px solid #bfdbfe; display: flex; align-items: center; justify-content: center; font-size: 40px; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .envelope-dot { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--red); border: 3px solid var(--white); animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+
+    .card-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); margin-bottom: 12px; }
+    .card-title { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 10px; }
+    .card-sub { font-size: 15px; color: var(--gray); line-height: 1.7; margin-bottom: 6px; }
+    .email-highlight { font-size: 15px; font-weight: 900; color: var(--dark); background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; display: inline-block; margin-bottom: 28px; }
+
+    /* STEPS */
+    .steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; text-align: left; }
+    .step { display: flex; gap: 12px; align-items: flex-start; }
+    .step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--dark); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; flex-shrink: 0; }
+    .step-text { font-size: 14px; font-weight: 700; color: var(--dark); padding-top: 4px; }
+    .step-text span { color: var(--gray); font-weight: 600; display: block; font-size: 12px; margin-top: 2px; }
+
+    /* RESEND */
+    .resend-wrap { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; }
+    .resend-label { font-size: 13px; font-weight: 700; color: var(--gray); margin-bottom: 10px; }
+    .resend-btn { width: 100%; padding: 12px; border-radius: 10px; background: var(--white); border: 1px solid var(--border); font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); color: var(--dark); transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .resend-btn:hover:not(:disabled) { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .resend-btn:disabled { opacity: .5; cursor: not-allowed; }
+    .countdown { font-size: 13px; font-weight: 800; color: var(--gray); margin-top: 8px; }
+    .countdown span { color: var(--red); }
+
+    /* LINKS */
+    .card-links { font-size: 13px; color: var(--gray); display: flex; flex-direction: column; gap: 8px; }
+    .card-link { color: var(--red); font-weight: 800; cursor: pointer; text-decoration: none; }
+    .card-link:hover { text-decoration: underline; }
+
+    /* WRONG EMAIL */
+    .wrong-email-wrap { display: none; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
+    .wrong-email-wrap.show { display: block; }
+    .wrong-email-input { width: 100%; padding: 10px 13px; border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-family: var(--font); color: var(--dark); margin-bottom: 8px; }
+    .wrong-email-input:focus { outline: none; border-color: var(--red); }
+    .wrong-email-btn { width: 100%; padding: 10px; border-radius: 9px; background: var(--red); color: #fff; border: none; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: background .15s; }
+    .wrong-email-btn:hover { background: var(--red-dark); }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--green); color: #fff; padding: 14px 22px; border-radius: 12px; font-size: 14px; font-weight: 800; box-shadow: 0 8px 24px rgba(0,0,0,.15); z-index: 100; display: none; animation: slideUp .3s ease; }
+    @keyframes slideUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+    /* DEMO LINK */
+    .demo-band { background: var(--dark); padding: 14px 20px; text-align: center; font-size: 13px; color: #9ca3af; }
+    .demo-band a { color: #f87171; font-weight: 800; text-decoration: none; }
+    .demo-band a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+  </header>
+
+  <div class="main">
+    <div class="card">
+
+      <!-- ICON -->
+      <div class="envelope-wrap">
+        <div class="envelope">📧</div>
+        <div class="envelope-dot"></div>
+      </div>
+
+      <div class="card-eyebrow">One more step</div>
+      <div class="card-title">Check your inbox</div>
+      <div class="card-sub">We sent a verification link to</div>
+      <div class="email-highlight" id="user-email">your@email.com</div>
+
+      <!-- STEPS -->
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text">Open the email from Property Pros
+            <span>Subject: "Verify your Property Pros account"</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">Click the verification button inside
+            <span>The link expires in 24 hours</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">You'll be taken straight to your dashboard
+            <span>No further steps needed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESEND -->
+      <div class="resend-wrap">
+        <div class="resend-label">Didn't receive it? Check your spam folder first, then:</div>
+        <button class="resend-btn" id="resend-btn" onclick="resendEmail()">
+          📨 Resend verification email
+        </button>
+        <div class="countdown" id="countdown" style="display:none">
+          Resend available in <span id="countdown-num">60</span>s
+        </div>
+      </div>
+
+      <!-- LINKS -->
+      <div class="card-links">
+        <div>
+          Wrong email address?
+          <a class="card-link" onclick="toggleWrongEmail()">Change it</a>
+        </div>
+        <div class="wrong-email-wrap" id="wrong-email-wrap">
+          <input class="wrong-email-input" type="email" placeholder="Enter correct email address" id="new-email" />
+          <button class="wrong-email-btn" onclick="updateEmail()">Update & resend →</button>
+        </div>
+        <div style="padding-top:4px">
+          <a href="login.html" class="card-link" style="color:var(--gray)">← Back to login</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DEMO BAND -->
+  <div class="demo-band">
+    🛠 Demo mode — <a href="email-verified.html?type=homeowner">Click here to simulate email verification →</a>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // Read email and account type from URL params
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get('email') || 'your@email.com';
+    const type = params.get('type') || 'homeowner';
+
+    document.getElementById('user-email').textContent = email;
+
+    // Update demo link with correct type
+    const demoLink = document.querySelector('.demo-band a');
+    demoLink.href = `email-verified.html?type=${type}`;
+
+    // RESEND with cooldown
+    let cooldown = false;
+    function resendEmail() {
+      if (cooldown) return;
+      cooldown = true;
+
+      const btn = document.getElementById('resend-btn');
+      btn.disabled = true;
+      btn.textContent = '✓ Verification email sent!';
+      btn.style.color = 'var(--green)';
+
+      showToast('✓ Verification email resent! Check your inbox.');
+
+      // Start 60 second countdown
+      const countdownEl = document.getElementById('countdown');
+      const numEl = document.getElementById('countdown-num');
+      countdownEl.style.display = 'block';
+      let secs = 60;
+
+      const interval = setInterval(() => {
+        secs--;
+        numEl.textContent = secs;
+        if (secs <= 0) {
+          clearInterval(interval);
+          btn.disabled = false;
+          btn.innerHTML = '📨 Resend verification email';
+          btn.style.color = '';
+          countdownEl.style.display = 'none';
+          cooldown = false;
+        }
+      }, 1000);
+    }
+
+    // WRONG EMAIL
+    function toggleWrongEmail() {
+      const wrap = document.getElementById('wrong-email-wrap');
+      wrap.classList.toggle('show');
+      if (wrap.classList.contains('show')) {
+        document.getElementById('new-email').focus();
+      }
+    }
+
+    function updateEmail() {
+      const newEmail = document.getElementById('new-email').value.trim();
+      if (!newEmail || !newEmail.includes('@')) {
+        document.getElementById('new-email').style.borderColor = 'var(--red)';
+        return;
+      }
+      document.getElementById('user-email').textContent = newEmail;
+      document.getElementById('wrong-email-wrap').classList.remove('show');
+      showToast('✓ Email updated! Verification link sent to ' + newEmail);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 3500);
+    }
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

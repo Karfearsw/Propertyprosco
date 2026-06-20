@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle, Check } from 'lucide-react'
@@ -47,9 +46,14 @@ export default function ProSignupPage() {
         serviceArea,
       }) })
     const json = await res.json()
-    if (!res.ok) { setError(json.error ?? 'Registration failed'); setLoading(false); return }
-    await signIn('credentials', { email: form.email, password: form.password, redirect: false })
-    router.push('/auth/continue?desiredRole=PRO')
+    if (!res.ok && !json.requiresEmailVerification) {
+      setError(json.error ?? 'Registration failed')
+      setLoading(false)
+      return
+    }
+
+    const email = encodeURIComponent(json.email ?? form.email)
+    router.push(`/verify-email?email=${email}`)
   }
 
   return (

@@ -1,1 +1,100 @@
-# Main_Prop_Pro
+# Property Pros
+
+Property Pros is a Next.js 15 marketplace app for homeowners, Pros, and Realtors. The app uses Prisma with PostgreSQL, NextAuth, email-based account recovery, and Stripe-backed billing.
+
+## Prerequisites
+
+- Node.js 20+
+- npm 10+
+- PostgreSQL
+
+## Local Setup
+
+1. Copy `.env.example` to `.env.local`.
+2. Fill in `DATABASE_URL` and `AUTH_SECRET` for all environments.
+3. Set `NEXTAUTH_URL=http://localhost:5000` for local work.
+4. Add SMTP values when you want to exercise real verification and password reset delivery.
+5. Add Stripe values when you want to exercise paid Pro and Realtor billing flows.
+6. Install dependencies with `npm ci`.
+7. Apply migrations with `npm run db:migrate:dev`.
+8. Seed local data if needed with `npm run db:seed`.
+9. Start the app with `npm run dev`.
+
+Run `npm run validate:env` before booting a new environment. Run `npm run validate:env:production` for deploy-target validation.
+
+## Environment Variables
+
+### Required In Every Environment
+
+- `DATABASE_URL`: PostgreSQL connection string used by Prisma.
+- `AUTH_SECRET`: secret used by NextAuth session and token handling.
+
+### Required In Production
+
+- `NEXTAUTH_URL`: canonical public app origin used for auth callbacks and email links.
+
+### Optional Provider Pairs
+
+- `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`: enable Google sign-in.
+- `APPLE_CLIENT_ID` and `APPLE_CLIENT_SECRET`: enable Apple sign-in.
+
+Set both values for a provider or leave both blank.
+
+### SMTP Email Delivery
+
+Verification and password reset flows require SMTP anywhere outside local development.
+
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_FROM`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `SMTP_SECURE`
+
+`SMTP_USER` and `SMTP_PASS` must be set together or omitted together. `SMTP_SECURE` must be `true`, `false`, `1`, or `0` when provided.
+
+### Stripe Billing
+
+Paid Pro and Realtor billing requires the following values:
+
+- `STRIPE_SECRET_KEY`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+- `STRIPE_WEBHOOK_SECRET`
+- `STRIPE_PRO_PRICE_ID`
+- `STRIPE_REALTOR_PRICE_ID`
+- `STRIPE_BILLING_PORTAL_RETURN_URL` optional override for the billing portal return path
+
+## Validation Scripts
+
+- `npm run prisma:validate`: validates Prisma schema configuration.
+- `npm run typecheck`: runs TypeScript in no-emit mode.
+- `npm test`: runs focused repository tests.
+- `npm run validate:env`: validates the local env contract.
+- `npm run validate:env:production`: validates production-required env coverage.
+- `npm run verify`: runs Prisma validation, typecheck, and tests together.
+
+## Database Workflow
+
+Use Prisma migrations as the source of truth for shared and production environments.
+
+- Use `npm run db:migrate:dev` when developing schema changes locally.
+- Commit the generated `prisma/migrations/*` directory with every schema change.
+- Use `npm run db:migrate:status` to inspect migration state before release work.
+- Use `npm run db:migrate:deploy` in staging and production to apply committed migrations.
+- Use `npm run db:push:local` only for disposable local experiments, never for shared, staging, or production databases.
+
+## Production Deploy Guidance
+
+Use this release sequence for staging and production:
+
+1. Confirm env coverage with `npm run validate:env:production`.
+2. Run core validation with `npm run verify`.
+3. Apply committed migrations with `npm run db:migrate:deploy`.
+4. Build the app with `npm run build`.
+5. Start the server with `npm run start`.
+
+Recommended deployment notes:
+
+- Run migrations before shifting live traffic to a new build.
+- Keep Stripe webhook signing secrets and SMTP credentials in your host secret manager, not in source control.
+- Verify `NEXTAUTH_URL`, Stripe products and prices, and SMTP sender identity per environment before release.

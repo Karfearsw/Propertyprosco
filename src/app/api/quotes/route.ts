@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { db } from '@/lib/db'
 import { z } from 'zod'
+import { getApiSessionUser, jsonForbidden, requirePaidApiRole } from '@/lib/api-guards'
+import { markQuotesViewedForOwner } from '@/lib/quote-workflow'
 
 const createSchema = z.object({
   projectId: z.string(),
@@ -13,10 +15,38 @@ export async function GET(req: Request) {
   const session = await auth()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const where: Record<string, unknown> =
-    session.user.role === 'PRO'
-      ? { proId: session.user.id }
-      : {}
+  const { searchParams } = new URL(req.url)
+  const projectId = searchParams.get('projectId')
+
+  let where: Record<string, unknown>
+
+  if (session.user.role === 'PRO') {
+    const billingResponse = requirePaidApiRole(session.user, 'PRO')
+    if (billingResponse) return billingResponse
+
+    where = { proId: session.user.id }
+  } else if (session.user.role === 'HOMEOWNER' || session.user.role === 'REALTOR') {
+    if (session.user.role === 'REALTOR') {
+      const billingResponse = requirePaidApiRole(session.user, 'REALTOR')
+      if (billingResponse) return billingResponse
+    }
+
+    where = {
+      project: {
+        ownerId: session.user.id,
+      },
+    }
+  } else {
+    return jsonForbidden('Forbidden')
+  }
+
+  if (projectId) {
+    where.projectId = projectId
+  }
+
+  if (session.user.role === 'HOMEOWNER') {
+    await markQuotesViewedForOwner(session.user.id, projectId ?? undefined)
+  }
 
   const quotes = await db.quote.findMany({
     where,
@@ -31,22 +61,37 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const session = await auth()
-  if (!session?.user || session.user.role !== 'PRO') {
-    return NextResponse.json({ error: 'Only pros can send quotes' }, { status: 403 })
-  }
+  const { user, response } = await getApiSessionUser()
+  if (response) return response
+  if (user.role !== 'PRO') return NextResponse.json({ error: 'Only pros can send quotes' }, { status: 403 })
+
+  const billingResponse = requirePaidApiRole(user, 'PRO')
+  if (billingResponse) return billingResponse
 
   try {
     const body = await req.json()
     const data = createSchema.parse(body)
 
+    const project = await db.project.findUnique({
+      where: { id: data.projectId },
+      select: { id: true, ownerId: true, title: true, status: true },
+    })
+
+    if (!project) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
+    if (project.ownerId === user.id) {
+      return NextResponse.json({ error: 'You cannot quote your own project' }, { status: 403 })
+    }
+    if (project.status !== 'OPEN') {
+      return NextResponse.json({ error: 'Quotes can only be sent on open projects' }, { status: 403 })
+    }
+
     const existing = await db.quote.findFirst({
-      where: { projectId: data.projectId, proId: session.user.id },
+      where: { projectId: data.projectId, proId: user.id },
     })
     if (existing) return NextResponse.json({ error: 'Quote already sent' }, { status: 400 })
 
     const quote = await db.quote.create({
-      data: { ...data, proId: session.user.id },
+      data: { ...data, proId: user.id },
       include: { project: { select: { ownerId: true, title: true } } },
     })
 

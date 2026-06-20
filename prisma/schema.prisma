@@ -157,6 +157,7 @@ model RealtorProfile {
 model Project {
   id          String        @id @default(cuid())
   ownerId     String
+  realtorClientId String?
   title       String
   description String?
   category    String
@@ -168,9 +169,12 @@ model Project {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  owner  User      @relation("ProjectOwner", fields: [ownerId], references: [id])
-  quotes Quote[]
-  leads  ProLead[]
+  owner         User           @relation("ProjectOwner", fields: [ownerId], references: [id])
+  realtorClient RealtorClient? @relation(fields: [realtorClientId], references: [id], onDelete: SetNull)
+  quotes        Quote[]
+  leads         ProLead[]
+
+  @@index([realtorClientId])
 }
 
 model Quote {
@@ -240,6 +244,7 @@ model RealtorClient {
   updatedAt  DateTime @updatedAt
 
   realtor RealtorProfile @relation(fields: [realtorId], references: [id])
+  projects Project[]
 }
 
 model ScheduleEntry {

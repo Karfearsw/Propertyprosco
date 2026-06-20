@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Manage your Property Pros realtor account settings and preferences." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); display: block; min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { width: 224px; min-height: 100vh; background: #1c1007; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; flex-shrink: 0; }
+    .sb-brand { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; gap: 10px; }
+    .sb-logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .sb-title { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .sb-title span { color: #f87171; }
+    .sb-badge { margin: 12px 16px 0; background: rgba(180,83,9,.2); border: 1px solid rgba(180,83,9,.35); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; }
+    .sb-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #fcd34d; }
+    .sb-badge-text { font-size: 11px; font-weight: 800; color: #fcd34d; }
+    .sb-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+    .sb-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #4b5563; font-weight: 800; padding: 10px 8px 4px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; color: #9ca3af; cursor: pointer; margin-bottom: 2px; text-decoration: none; transition: all .15s; }
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: rgba(180,83,9,.25); color: #fcd34d; }
+    .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: var(--red); color: #fff; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px; }
+    .sb-footer { padding: 14px; border-top: 1px solid rgba(255,255,255,.08); display: flex; align-items: center; gap: 10px; }
+    .sb-avatar { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,#b45309,#92400e); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; flex-shrink: 0; }
+    .sb-name { font-size: 13px; font-weight: 800; color: #fff; }
+    .sb-role { font-size: 11px; color: #6b7280; }
+
+    /* ── PAGE LAYOUT ── */
+    .main { flex: 1; display: flex; min-width: 0; overflow: hidden; height: 100vh; }
+
+    /* ── SETTINGS NAV ── */
+    .settings-nav { width: 230px; flex-shrink: 0; background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow-y: auto; }
+
+    .sn-profile { padding: 20px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .sn-avatar { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg,#b45309,#92400e); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 16px; flex-shrink: 0; }
+    .sn-name { font-size: 14px; font-weight: 900; }
+    .sn-role { font-size: 11px; color: var(--gray); margin-top: 2px; font-weight: 700; }
+    .sn-plan { font-size: 10px; font-weight: 800; background: var(--gold-light); color: var(--gold); padding: 2px 8px; border-radius: 999px; margin-top: 4px; display: inline-block; }
+
+    .sn-section-label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); padding: 14px 16px 6px; }
+
+    .sn-item { display: flex; align-items: center; gap: 10px; padding: 11px 16px; font-size: 13px; font-weight: 700; color: var(--gray); cursor: pointer; transition: all .15s; border-left: 3px solid transparent; }
+    .sn-item:hover { background: var(--bg); color: var(--dark); }
+    .sn-item.active { background: var(--gold-light); color: var(--gold); border-left-color: var(--gold); }
+    .sn-icon { font-size: 15px; width: 20px; text-align: center; }
+
+    .sn-divider { height: 1px; background: var(--border); margin: 6px 0; }
+
+    .sn-danger { display: flex; align-items: center; gap: 10px; padding: 11px 16px; font-size: 13px; font-weight: 700; color: var(--red); cursor: pointer; transition: all .15s; }
+    .sn-danger:hover { background: var(--red-light); }
+
+    /* ── SETTINGS CONTENT ── */
+    .settings-content { flex: 1; overflow-y: auto; padding: 28px 32px 60px; min-width: 0; }
+
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; }
+
+    /* ── CARD ── */
+    .settings-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 18px; overflow: hidden; }
+    .card-header { padding: 20px 24px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+    .card-title { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .card-sub { font-size: 13px; color: var(--gray); }
+    .card-body { padding: 20px 24px; }
+    .card-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 10px; background: var(--bg); }
+
+    /* ── FORM ── */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px; color: var(--dark3); margin-bottom: 7px; }
+    .form-label .opt { font-weight: 600; color: var(--gray); font-size: 10px; text-transform: none; letter-spacing: 0; margin-left: 4px; }
+    .form-input { width: 100%; padding: 11px 13px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; font-family: var(--font); color: var(--dark); background: var(--white); transition: all .15s; }
+    .form-input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(180,83,9,.08); }
+    .form-input:disabled { background: var(--bg); color: var(--gray); cursor: not-allowed; }
+    textarea.form-input { resize: vertical; min-height: 90px; line-height: 1.6; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .input-hint { font-size: 12px; color: var(--gray); margin-top: 5px; font-weight: 600; }
+
+    /* ── BUTTONS ── */
+    .btn { padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--white); color: var(--dark); }
+    .btn:hover { background: var(--bg); }
+    .btn-gold { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .btn-gold:hover { background: #92400e; }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-danger { color: var(--red); border-color: #fecaca; }
+    .btn-danger:hover { background: var(--red-light); }
+
+    /* ── AVATAR SECTION ── */
+    .avatar-section { display: flex; align-items: center; gap: 20px; padding-bottom: 22px; border-bottom: 1px solid var(--border); margin-bottom: 22px; }
+    .avatar-big { width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg,#b45309,#92400e); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; flex-shrink: 0; }
+    .avatar-name { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .avatar-meta { font-size: 13px; color: var(--gray); margin-bottom: 12px; }
+    .avatar-btns { display: flex; gap: 8px; }
+
+    /* ── TOGGLE ── */
+    .toggle-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .toggle-label { font-size: 14px; font-weight: 700; }
+    .toggle-sub { font-size: 12px; color: var(--gray); margin-top: 2px; line-height: 1.5; }
+    .toggle { width: 42px; height: 24px; border-radius: 999px; background: var(--gold); position: relative; cursor: pointer; flex-shrink: 0; border: none; transition: background .2s; outline: none; }
+    .toggle::after { content: ''; width: 18px; height: 18px; background: #fff; border-radius: 50%; position: absolute; top: 3px; right: 3px; transition: right .2s; }
+    .toggle.off { background: var(--border); }
+    .toggle.off::after { right: 21px; }
+
+    /* ── BADGE ── */
+    .badge { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; display: inline-block; }
+    .badge-gold { background: var(--gold-light); color: var(--gold); border: 1px solid #fde68a; }
+    .badge-green { background: var(--green-light); color: #166534; }
+    .badge-amber { background: var(--amber-light); color: #92400e; }
+    .badge-gray { background: var(--bg); color: var(--dark3); }
+
+    /* ── REFERRAL LINK SECTION ── */
+    .link-display { display: flex; gap: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 11px; overflow: hidden; margin-top: 10px; }
+    .link-url { flex: 1; padding: 11px 14px; font-size: 13px; font-weight: 700; color: var(--dark); background: transparent; border: none; outline: none; font-family: var(--font); }
+    .link-copy { padding: 11px 16px; background: var(--gold); color: #fff; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); border: none; transition: background .15s; white-space: nowrap; }
+    .link-copy:hover { background: #92400e; }
+
+    .qr-placeholder { width: 100px; height: 100px; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; }
+
+    /* ── BILLING INFO ── */
+    .plan-card { background: var(--dark); border-radius: 14px; padding: 22px; }
+    .plan-name { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 4px; }
+    .plan-price { font-size: 36px; font-weight: 900; color: #fff; letter-spacing: -1.5px; }
+    .plan-period { font-size: 14px; color: #9ca3af; font-weight: 700; }
+    .plan-renews { font-size: 12px; color: #6b7280; font-weight: 700; margin-top: 6px; }
+    .plan-credit { font-size: 13px; font-weight: 800; color: #fcd34d; margin-top: 8px; }
+    .plan-actions { display: flex; gap: 8px; margin-top: 16px; }
+    .plan-btn { padding: 9px 16px; border-radius: 9px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); border: 1px solid rgba(255,255,255,.15); color: #d1d5db; background: rgba(255,255,255,.08); transition: all .15s; }
+    .plan-btn:hover { background: rgba(255,255,255,.15); }
+
+    .billing-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .billing-row:last-child { border-bottom: none; }
+    .billing-label { color: var(--gray); font-weight: 700; }
+    .billing-val { font-weight: 800; }
+
+    .invoice-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+    .invoice-row:last-child { border-bottom: none; }
+    .invoice-num { font-weight: 700; color: var(--gray); }
+    .invoice-date { color: var(--gray); font-weight: 600; }
+    .invoice-amount { font-weight: 900; }
+    .invoice-status { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 999px; }
+    .status-paid { background: var(--green-light); color: #166534; }
+    .status-credit { background: var(--gold-light); color: var(--gold); }
+
+    /* ── SESSIONS ── */
+    .session-row { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-radius: 11px; margin-bottom: 8px; }
+    .session-row.current { background: var(--green-light); border: 1px solid #bbf7d0; }
+    .session-row.other { background: var(--bg); border: 1px solid var(--border); }
+    .session-left { display: flex; gap: 10px; align-items: center; }
+    .session-icon { font-size: 20px; }
+    .session-name { font-size: 13px; font-weight: 800; }
+    .session-meta { font-size: 11px; font-weight: 700; margin-top: 2px; }
+    .session-row.current .session-meta { color: var(--green); }
+    .session-row.other .session-meta { color: var(--gray); }
+
+    /* ── DANGER ZONE ── */
+    .danger-zone { border: 1px solid #fecaca; border-radius: 14px; padding: 20px 24px; background: #fff5f5; margin-top: 8px; }
+    .danger-title { font-size: 14px; font-weight: 900; color: #991b1b; margin-bottom: 6px; }
+    .danger-sub { font-size: 13px; color: #b91c1c; margin-bottom: 14px; line-height: 1.6; }
+
+    /* ── TAB PANELS ── */
+    .tab-section { display: none; }
+    .tab-section.active { display: block; }
+
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: var(--white); border-radius: 20px; padding: 28px; width: 100%; max-width: 440px; margin: 16px; box-shadow: 0 25px 60px rgba(0,0,0,.2); }
+    .modal-title { font-size: 18px; font-weight: 900; margin-bottom: 20px; }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    /* STRENGTH METER */
+    .pw-bars { display: flex; gap: 4px; margin: 8px 0 4px; }
+    .pw-bar { flex: 1; height: 4px; border-radius: 999px; background: var(--border); transition: background .2s; }
+
+    @media (max-width: 1000px) { .settings-nav { display: none; } }
+    @media (max-width: 720px) { .sidebar { display: none; } .settings-content { padding: 20px 16px 40px; } .form-row { grid-template-columns: 1fr; } }
+    @media (max-width:768px) { aside { display:none !important; } }
+  
+    /* dark-sidebar link palette (scoped) */
+    .sidebar .nav-item { color: rgba(255,255,255,.65); }
+    .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+    .sidebar .nav-item.active { background: #b45309; color:#fff; }
+    .sidebar .nav-item.active .nav-count { background:#fff; color:#b45309; }
+    .sidebar .nav-section, .sidebar .nav-label { color: #fcd34d; }
+  </style>
+</head>
+<body>
+  <header style="background:#1c1007;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+    <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#b45309;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#fcd34d">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="realtor-notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#b45309;border-radius:50%;border:2px solid #111827"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#b45309;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">SR</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#1c1007;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Workspace</div>
+      <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i> Dashboard</a>
+      <a href="realtor-clients.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="users" style="width:17px;height:17px"></i> Clients</a>
+      <a href="realtor-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-square" style="width:17px;height:17px"></i> Messages</a>
+      <a href="realtor-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:17px;height:17px"></i> Notifications</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Account</div>
+      <a href="realtor-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:17px;height:17px"></i> Plan &amp; Billing</a>
+      <a href="realtor-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#b45309;text-decoration:none;margin-bottom:2px"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+  </div>
+
+  <!-- MAIN -->
+
+<div style="display:flex;min-height:calc(100vh - 60px)">
+    <aside style="width:224px;flex-shrink:0;background:#1c1007;padding:14px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Workspace</div>
+      <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:17px;height:17px"></i> Dashboard</a>
+      <a href="realtor-clients.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="users" style="width:17px;height:17px"></i> Clients</a>
+      <a href="realtor-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-square" style="width:17px;height:17px"></i> Messages</a>
+      <a href="realtor-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:17px;height:17px"></i> Notifications</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#fcd34d;padding:14px 8px 6px">Account</div>
+      <a href="realtor-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:17px;height:17px"></i> Plan &amp; Billing</a>
+      <a href="realtor-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#b45309;text-decoration:none;margin-bottom:2px"><i data-lucide="settings" style="width:17px;height:17px"></i> Settings</a>
+    </aside>
+  <div style="flex:1;min-width:0">
+  <div class="main">
+
+    <!-- SETTINGS NAV -->
+    <div class="settings-nav">
+      <div class="sn-profile">
+        <div class="sn-avatar">SR</div>
+        <div>
+          <div class="sn-name">Sarah Rivera</div>
+          <div class="sn-role">Realtor · Keller Williams RI</div>
+          <div class="sn-plan">Realtor Pro · $24.99/yr</div>
+        </div>
+      </div>
+
+      <div class="sn-section-label">Profile</div>
+      <div class="sn-item active" onclick="switchTab('profile', this)"><span class="sn-icon">👤</span> Profile & brokerage</div>
+      <div class="sn-item" onclick="switchTab('referral', this)"><span class="sn-icon">🔗</span> Referral link</div>
+      <div class="sn-item" onclick="switchTab('notifications', this)"><span class="sn-icon">🔔</span> Notifications</div>
+
+      <div class="sn-section-label">Security</div>
+      <div class="sn-item" onclick="switchTab('security', this)"><span class="sn-icon">🛡️</span> Security</div>
+      <div class="sn-item" onclick="switchTab('connected', this)"><span class="sn-icon">🔗</span> Connected accounts</div>
+
+
+    </div>
+
+    <!-- SETTINGS CONTENT -->
+    <div class="settings-content">
+
+      <div class="page-header">
+        <div class="page-title" id="page-title">Profile & brokerage</div>
+        <div class="page-sub" id="page-sub">Keep your professional info accurate — it appears on your public profile and all projects you post.</div>
+      </div>
+
+      <!-- ═══ PROFILE TAB ═══ -->
+      <div class="tab-section active" id="tab-profile">
+
+        <div class="settings-card">
+          <div class="card-body">
+            <div class="avatar-section">
+              <div class="avatar-big">SR</div>
+              <div>
+                <div class="avatar-name">Sarah Rivera</div>
+                <div class="avatar-meta">Realtor Pro · Member since Jan 2026</div>
+                <div class="avatar-btns">
+                  <button class="btn btn-sm">Upload photo</button>
+                  <button class="btn btn-sm btn-danger">Remove</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">First name</label><input class="form-input" value="Sarah" /></div>
+              <div class="form-group"><label class="form-label">Last name</label><input class="form-input" value="Rivera" /></div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Email address</label><input class="form-input" type="email" value="sarah.rivera@kwri.com" /></div>
+              <div class="form-group"><label class="form-label">Phone number</label><input class="form-input" type="tel" value="(401) 555-0178" /></div>
+            </div>
+
+            <div class="form-group"><label class="form-label">Display name <span class="opt">(shown to clients & pros)</span></label><input class="form-input" value="Sarah Rivera" /><div class="input-hint">This is what clients and contractors see on projects you post on their behalf.</div></div>
+
+            <div class="form-group"><label class="form-label">Professional bio <span class="opt">(optional)</span></label><textarea class="form-input">Rhode Island Realtor with 8 years of experience specializing in residential sales across Cranston, Providence, and Warwick. I use Property Pros to connect my clients with verified local contractors — before listing, after inspection, and beyond closing.</textarea></div>
+
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">City</label><input class="form-input" value="Cranston" /></div>
+              <div class="form-group"><label class="form-label">State</label><select class="form-input"><option selected>Rhode Island</option><option>Massachusetts</option><option>Connecticut</option></select></div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-gold" onclick="saveChanges(this)">Save changes</button>
+          </div>
+        </div>
+
+        <!-- BROKERAGE INFO -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Brokerage information</div>
+              <div class="card-sub">Displayed on your public realtor profile and next to projects you post.</div>
+            </div>
+            <span class="badge badge-green">✓ Verified</span>
+          </div>
+          <div class="card-body">
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Brokerage name</label><input class="form-input" value="Keller Williams RI" /></div>
+              <div class="form-group"><label class="form-label">Office location</label><input class="form-input" value="Providence, RI" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Real estate license #</label><input class="form-input" value="RI-RES-0041882" /></div>
+              <div class="form-group"><label class="form-label">License state</label><select class="form-input"><option selected>Rhode Island</option><option>Massachusetts</option></select></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">License expiry</label><input class="form-input" type="date" value="2027-06-30" /></div>
+              <div class="form-group"><label class="form-label">Years in real estate</label><select class="form-input"><option>1–2 years</option><option>3–5 years</option><option selected>6–10 years</option><option>10+ years</option></select></div>
+            </div>
+            <div class="form-group"><label class="form-label">Brokerage website <span class="opt">(optional)</span></label><input class="form-input" type="url" value="https://kwri.com/sarah-rivera" /></div>
+            <div style="background:var(--gold-light);border:1px solid #fde68a;border-radius:11px;padding:13px 15px;font-size:13px;font-weight:700;color:#92400e;display:flex;gap:10px;align-items:center">
+              <span>✓</span> Your license was verified on Jan 15, 2026. Verification renews automatically when you update your license number.
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-gold" onclick="saveChanges(this)">Save brokerage info</button>
+          </div>
+        </div>
+
+        <!-- SERVICE AREA -->
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Service area</div>
+              <div class="card-sub">Where you work — helps match you with the right contractors and clients.</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Primary service areas</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+                <span style="background:var(--dark);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">Cranston, RI <span style="cursor:pointer;opacity:.6" onclick="this.parentElement.remove()">×</span></span>
+                <span style="background:var(--dark);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">Providence, RI <span style="cursor:pointer;opacity:.6" onclick="this.parentElement.remove()">×</span></span>
+                <span style="background:var(--dark);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">Warwick, RI <span style="cursor:pointer;opacity:.6" onclick="this.parentElement.remove()">×</span></span>
+                <span style="background:var(--dark);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">North Providence, RI <span style="cursor:pointer;opacity:.6" onclick="this.parentElement.remove()">×</span></span>
+                <button class="btn btn-sm" style="font-size:11px">+ Add city</button>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Specializations <span class="opt">(optional)</span></label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <span style="background:var(--gold-light);color:var(--gold);border:1px solid #fde68a;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">Residential sales <span style="cursor:pointer;opacity:.6">×</span></span>
+                <span style="background:var(--gold-light);color:var(--gold);border:1px solid #fde68a;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">First-time buyers <span style="cursor:pointer;opacity:.6">×</span></span>
+                <span style="background:var(--gold-light);color:var(--gold);border:1px solid #fde68a;font-size:12px;font-weight:800;padding:5px 12px;border-radius:999px;display:flex;align-items:center;gap:6px">Relocation <span style="cursor:pointer;opacity:.6">×</span></span>
+                <button class="btn btn-sm" style="font-size:11px">+ Add</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-gold" onclick="saveChanges(this)">Save</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══ REFERRAL LINK TAB ═══ -->
+      <div class="tab-section" id="tab-referral">
+
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Your master referral link</div>
+              <div class="card-sub">Share this with any client at any time. Anyone who signs up through it is tracked in your referral dashboard.</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+              <div style="flex:1;min-width:240px">
+                <div class="form-label" style="display:block;margin-bottom:7px">Your link</div>
+                <div class="link-display">
+                  <input class="link-url" value="propertypros.com/ref/sarah-rivera" readonly />
+                  <button class="link-copy" onclick="copyLink(this)">Copy</button>
+                </div>
+                <div class="input-hint">This link never changes. You can share it anywhere — email signatures, closing cards, social media.</div>
+              </div>
+              <div>
+                <div class="form-label" style="display:block;margin-bottom:7px">QR code</div>
+                <div class="qr-placeholder">📱</div>
+                <button class="btn btn-sm" style="margin-top:8px;width:100%;justify-content:center">Download QR</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Link slug</div>
+              <div class="card-sub">Customize the end of your URL. Keep it professional and easy to remember.</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">Your URL slug</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <span style="font-size:13px;font-weight:700;color:var(--gray);white-space:nowrap">propertypros.com/ref/</span>
+                <input class="form-input" value="sarah-rivera" style="flex:1" />
+              </div>
+              <div class="input-hint">⚠ Changing your slug will break any existing links you've already shared. Old links will stop working.</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-gold" onclick="saveChanges(this)">Update slug</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Default welcome message</div>
+              <div class="card-sub">Pre-filled when you generate a personalized closing gift link. You can always customize per client.</div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">Default message</label>
+              <textarea class="form-input">Congratulations on your new home! This is where I send all my clients when they need a trusted contractor in Rhode Island. Every pro is verified and rated — completely free for you to use.</textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Signature</label>
+              <input class="form-input" value="— Sarah Rivera, Keller Williams RI · (401) 555-0178" />
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn-gold" onclick="saveChanges(this)">Save message</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══ NOTIFICATIONS TAB ═══ -->
+      <div class="tab-section" id="tab-notifications">
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Client activity</div><div class="card-sub">Stay informed about what your referred clients are doing.</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row"><div><div class="toggle-label">Client joins via referral link</div><div class="toggle-sub">When a client signs up using one of your links</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client posts their first project</div><div class="toggle-sub">When a referred client posts a project for the first time</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client receives a quote</div><div class="toggle-sub">When any of your clients gets a new quote on a project</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client accepts a quote</div><div class="toggle-sub">When a client hires a pro through the platform</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client job completed</div><div class="toggle-sub">When a project is marked complete</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client hasn't posted in 30 days</div><div class="toggle-sub">Prompt to send a nudge to re-engage inactive referrals</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Inspection & deal alerts</div><div class="card-sub">Time-sensitive notifications around active transactions.</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row"><div><div class="toggle-label">Inspection deadline approaching</div><div class="toggle-sub">Alert 3 days, 1 day, and day-of an inspection response deadline</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Project has no quotes after 24 hours</div><div class="toggle-sub">Alert if a posted project isn't receiving responses</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Client hasn't viewed a quote in 48 hours</div><div class="toggle-sub">Prompt you to follow up with the client</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Pro sends a message on active project</div><div class="toggle-sub">When a contractor messages about a project you're managing</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Referral & billing</div><div class="card-sub">Credits, billing, and subscription notifications.</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row"><div><div class="toggle-label">New referral credit earned</div><div class="toggle-sub">When a monthly credit is applied to your account</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Upcoming billing reminder</div><div class="toggle-sub">3 days before your next billing date</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Platform updates & new features</div><div class="toggle-sub">New tools and improvements to Property Pros</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Delivery channels</div></div></div>
+          <div class="card-body">
+            <div class="toggle-row"><div><div class="toggle-label">In-app notifications</div><div class="toggle-sub">Alerts inside Property Pros</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Email notifications</div><div class="toggle-sub">Sent to sarah.rivera@kwri.com</div></div><button class="toggle" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">SMS / text message</div><div class="toggle-sub">Sent to (401) 555-0178 — for urgent alerts only</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══ BILLING TAB ═══ -->
+      <!-- ═══ SECURITY TAB ═══ -->
+      <div class="tab-section" id="tab-security">
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Change password</div></div></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Current password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">New password</label><input class="form-input" type="password" placeholder="Min 8 characters" id="pw-new" oninput="checkPw()" /></div>
+              <div class="form-group"><label class="form-label">Confirm new password</label><input class="form-input" type="password" placeholder="••••••••" /></div>
+            </div>
+            <div id="pw-meter" style="display:none">
+              <div class="pw-bars">
+                <div class="pw-bar" id="pb1"></div>
+                <div class="pw-bar" id="pb2"></div>
+                <div class="pw-bar" id="pb3"></div>
+                <div class="pw-bar" id="pb4"></div>
+              </div>
+              <div id="pw-label" style="font-size:12px;font-weight:700;color:var(--gray)">Enter a password</div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn">Cancel</button>
+            <button class="btn btn-gold">Update password</button>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Two-factor authentication</div></div><span class="badge badge-amber">Not enabled</span></div>
+          <div class="card-body">
+            <div class="toggle-row"><div><div class="toggle-label">Enable 2FA via SMS</div><div class="toggle-sub">A code will be sent to (401) 555-0178 on each login</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+            <div class="toggle-row"><div><div class="toggle-label">Authenticator app</div><div class="toggle-sub">Use Google Authenticator or Authy</div></div><button class="toggle off" onclick="this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Active sessions</div></div></div>
+          <div class="card-body">
+            <div class="session-row current">
+              <div class="session-left"><div class="session-icon">💻</div><div><div class="session-name">Chrome on macOS</div><div class="session-meta">● This device · Cranston, RI</div></div></div>
+              <span class="badge badge-green">Current</span>
+            </div>
+            <div class="session-row other">
+              <div class="session-left"><div class="session-icon">📱</div><div><div class="session-name">Safari on iPhone</div><div class="session-meta">Last active 4 hours ago · Cranston, RI</div></div></div>
+              <button class="btn btn-sm btn-danger">Sign out</button>
+            </div>
+            <div style="margin-top:10px;text-align:right"><button class="btn btn-sm btn-danger">Sign out all other devices</button></div>
+          </div>
+        </div>
+
+        <div class="danger-zone">
+          <div class="danger-title">Danger zone</div>
+          <div class="danger-sub">Deleting your account removes your profile, all client data, referral links, and billing history permanently. This cannot be undone.</div>
+          <button class="btn btn-sm btn-danger" onclick="openModal('deleteModal')">Delete my account</button>
+        </div>
+
+      </div>
+
+      <!-- ═══ CONNECTED TAB ═══ -->
+      <div class="tab-section" id="tab-connected">
+
+        <div class="settings-card">
+          <div class="card-header"><div><div class="card-title">Connected accounts</div><div class="card-sub">Use these for faster sign-in or to import client data.</div></div></div>
+          <div class="card-body">
+            <div style="display:flex;flex-direction:column;gap:0">
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)">
+                <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">🌐</div><div><div style="font-size:14px;font-weight:800">Google</div><div style="font-size:12px;color:var(--gray);margin-top:2px">sarah.rivera@kwri.com · Connected Jan 2026</div></div></div>
+                <button class="btn btn-sm btn-danger">Disconnect</button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)">
+                <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px">🍎</div><div><div style="font-size:14px;font-weight:800">Apple</div><div style="font-size:12px;color:var(--gray);margin-top:2px">Not connected</div></div></div>
+                <button class="btn btn-sm">Connect</button>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 0">
+                <div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:10px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#0077b5">in</div><div><div style="font-size:14px;font-weight:800">LinkedIn</div><div style="font-size:12px;color:var(--gray);margin-top:2px">Not connected</div></div></div>
+                <button class="btn btn-sm">Connect</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- DELETE MODAL -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+      <div class="modal-title">Delete your account?</div>
+      <div style="background:var(--red-light);border:1px solid #fecaca;border-radius:12px;padding:16px;margin-bottom:18px">
+        <div style="font-size:14px;font-weight:800;color:#991b1b;margin-bottom:6px">⚠ This cannot be undone</div>
+        <div style="font-size:13px;color:#b91c1c;line-height:1.7">All client data, referral links, messages, referral credits, and billing history will be permanently deleted.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type DELETE to confirm</label>
+        <input class="form-input" type="text" placeholder="DELETE" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('deleteModal')">Keep my account</button>
+        <button class="btn btn-sm" style="background:#991b1b;color:#fff;border-color:#991b1b" onclick="closeModal('deleteModal')">Delete everything</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tabMeta = {
+      profile:       { title: 'Profile & brokerage',     sub: 'Keep your professional info accurate — it appears on your public profile and all projects you post.' },
+      referral:      { title: 'Referral link',            sub: 'Manage your referral links and customize the welcome message clients receive.' },
+      notifications: { title: 'Notifications',            sub: 'Choose what you hear about and how you want to be notified.' },
+      billing:       { title: 'Plan & billing',           sub: 'Manage your Realtor Pro subscription, payment method, and invoices.' },
+      security:      { title: 'Security',                 sub: 'Manage your password, 2FA, and active sessions.' },
+      connected:     { title: 'Connected accounts',      sub: 'Link third-party accounts for faster sign-in.' },
+    };
+
+    function switchTab(tab, el) {
+      document.querySelectorAll('.tab-section').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.sn-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      el.classList.add('active');
+      const meta = tabMeta[tab];
+      if (meta) {
+        document.getElementById('page-title').textContent = meta.title;
+        document.getElementById('page-sub').textContent = meta.sub;
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+    function saveChanges(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Saved!';
+      btn.style.background = 'var(--green)';
+      btn.style.borderColor = 'var(--green)';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.style.borderColor = ''; }, 2000);
+    }
+
+    function copyLink(btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copied!';
+      btn.style.background = 'var(--green)';
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2000);
+    }
+
+    function checkPw() {
+      const pw = document.getElementById('pw-new').value;
+      const meter = document.getElementById('pw-meter');
+      meter.style.display = pw ? 'block' : 'none';
+      let score = 0;
+      if (pw.length >= 8) score++;
+      if (/[A-Z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+      const colors = ['', 'var(--red)', 'var(--amber)', 'var(--amber)', 'var(--green)'];
+      const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('pb' + i).style.background = i <= score ? colors[score] : 'var(--border)';
+      }
+      document.getElementById('pw-label').textContent = labels[score] || 'Enter a password';
+      document.getElementById('pw-label').style.color = colors[score] || 'var(--gray)';
+    }
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+  </div>
+</div>
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.style.display === 'flex';
+    drawer.style.display = isOpen ? 'none' : 'flex';
+    overlay.style.display = isOpen ? 'none' : 'block';
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').style.display = 'none';
+    document.getElementById('hw-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  </script>
+</body>
+</html>

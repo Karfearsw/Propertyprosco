@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pay · Property Pros</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --dark:#111827; --gray:#6b7280; --border:#e5e7eb; --bg:#f3f4f6; --white:#fff;
+    --green:#16a34a; --green-dark:#14532d; --green-light:#f0fdf4; --mint:#86efac;
+    --blue:#2563eb; --blue-light:#eff6ff; --font:'Manrope',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;display:flex;flex-direction:column}
+  /* demo control */
+  .demo-bar{background:var(--green-dark);color:#fff;padding:10px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:12.5px;font-weight:700}
+  .demo-bar .lbl{color:var(--mint)}
+  .demo-bar .seg{display:inline-flex;background:rgba(255,255,255,.1);border-radius:9px;padding:3px}
+  .demo-bar .seg button{background:none;border:none;color:rgba(255,255,255,.7);font-weight:800;font-size:12px;padding:6px 12px;border-radius:7px;cursor:pointer;font-family:var(--font)}
+  .demo-bar .seg button.on{background:var(--green);color:#fff}
+
+  .stage{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:32px 18px 60px}
+  .sheet{background:var(--white);border-radius:20px;width:100%;max-width:440px;box-shadow:0 24px 60px rgba(0,0,0,.16);overflow:hidden}
+  .sheet-head{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:13px}
+  .pro-av{width:46px;height:46px;border-radius:12px;background:#7f1d1d;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0}
+  .pro-name{font-size:16px;font-weight:900}
+  .pro-job{font-size:12.5px;color:var(--gray);font-weight:600;margin-top:1px}
+  .amt-row{padding:18px 22px;display:flex;align-items:baseline;justify-content:space-between;background:var(--green-light)}
+  .amt-row .l{font-size:13px;font-weight:700;color:var(--gray)}
+  .amt-row .v{font-size:28px;font-weight:900;color:var(--green-dark);letter-spacing:-.02em}
+
+  .body{padding:20px 22px 8px}
+  .sec-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--gray);margin-bottom:11px}
+  .method{border:1.5px solid var(--border);border-radius:14px;padding:15px;margin-bottom:11px;cursor:pointer;transition:all .15s}
+  .method:hover{border-color:var(--green)}
+  .method.sel{border-color:var(--green);background:var(--green-light)}
+  .m-top{display:flex;align-items:center;gap:12px}
+  .m-radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .method.sel .m-radio{border-color:var(--green)}
+  .method.sel .m-radio::after{content:'';width:10px;height:10px;border-radius:50%;background:var(--green)}
+  .m-ic{width:38px;height:38px;border-radius:10px;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .m-ic i{width:19px;height:19px;color:var(--green-dark)}
+  .m-title{font-size:14.5px;font-weight:800}
+  .m-sub{font-size:12px;color:var(--gray);font-weight:600;margin-top:1px;line-height:1.35}
+  .m-badge{display:inline-block;background:var(--green);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
+
+  .m-detail{margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);display:none}
+  .method.sel .m-detail{display:block}
+  .field{margin-bottom:10px}
+  .field label{display:block;font-size:11.5px;font-weight:800;margin-bottom:5px}
+  .field input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);outline:none}
+  .field input:focus{border-color:var(--green)}
+  .row2{display:flex;gap:10px}
+  .row2 .field{flex:1}
+
+  .fin{margin-top:12px;border:1.5px solid var(--border);border-radius:12px;overflow:hidden}
+  .fin-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer}
+  .fin-head .fic{width:34px;height:34px;border-radius:9px;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .fin-head .fic i{width:17px;height:17px}
+  .fin-t{font-size:13.5px;font-weight:800}
+  .fin-s{font-size:11.5px;color:var(--gray);font-weight:600}
+  .fin-chev{margin-left:auto;color:var(--gray)}
+  .fin-body{display:none;padding:0 14px 14px;border-top:1px solid var(--border)}
+  .fin.open .fin-body{display:block}
+  .fin.open .fin-chev{transform:rotate(180deg)}
+  .plan{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
+  .plan:last-child{border-bottom:none}
+  .plan .pl-t{font-size:13px;font-weight:700}
+  .plan .pl-m{font-size:15px;font-weight:900;color:var(--green-dark)}
+  .plan .pl-tot{font-size:11px;color:var(--gray);font-weight:600}
+
+  .direct-note{background:var(--bg);border-radius:11px;padding:13px 15px;font-size:13px;font-weight:600;color:var(--dark);line-height:1.45}
+  .direct-note b{font-weight:800}
+
+  .foot{padding:8px 22px 22px}
+  .pay-btn{width:100%;background:var(--green);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;font-family:var(--font);display:flex;align-items:center;justify-content:center;gap:8px}
+  .pay-btn:hover{background:#15803d}
+  .pay-btn i{width:18px;height:18px}
+  .fineprint{font-size:11px;color:var(--gray);font-weight:600;text-align:center;margin-top:11px;line-height:1.5}
+
+  /* success */
+  .done{text-align:center;padding:46px 26px}
+  .done .dc{width:64px;height:64px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  .done .dc i{width:32px;height:32px}
+  .done h2{font-size:20px;font-weight:900}
+  .done p{font-size:13.5px;color:var(--gray);font-weight:600;margin-top:6px;line-height:1.5}
+  .done .btn2{margin-top:18px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font)}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  <span class="lbl">Demo · pro accepts:</span>
+  <span class="seg">
+    <button id="b-both" class="on" onclick="setPro('both')">Both methods</button>
+    <button id="b-pp" onclick="setPro('pp')">Property Pros only</button>
+    <button id="b-direct" onclick="setPro('direct')">Direct only</button>
+  </span>
+  <span style="color:rgba(255,255,255,.6)">— shows what the customer sees at checkout</span>
+</div>
+
+<div class="stage">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+const _p = new URLSearchParams(location.search);
+const _pro = _p.get('pro') || 'Apex Roofing Group';
+const JOB = {
+  pro: _pro,
+  initials: (_pro.replace(/[^A-Za-z ]/g,'').split(/\s+/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase()) || 'PP',
+  service: _p.get('service') || 'Roof repair · 42 Maple St',
+  amount: parseInt((_p.get('amount')||'').replace(/[^0-9]/g,'')) || 1850
+};
+const _fromFlow = _p.has('pro');
+let proAccepts = _p.get('methods') || 'both';     // both | pp | direct
+let method = 'pp';           // pp | direct
+
+function setPro(v){
+  proAccepts = v;
+  ['both','pp','direct'].forEach(k=>document.getElementById('b-'+k).classList.toggle('on', k===v));
+  method = (v==='direct') ? 'direct' : 'pp';
+  render();
+}
+
+function money(n){ return '$'+n.toLocaleString(); }
+
+function render(){
+  const showPP = proAccepts!=='direct';
+  const showDirect = proAccepts!=='pp';
+  const sheet = document.getElementById('sheet');
+  sheet.innerHTML = `
+    <div class="sheet-head">
+      <div class="pro-av">${JOB.initials}</div>
+      <div><div class="pro-name">Pay ${JOB.pro}</div><div class="pro-job">${JOB.service}</div></div>
+    </div>
+    <div class="amt-row"><div class="l">Amount due</div><div class="v">${money(JOB.amount)}</div></div>
+    <div class="body">
+      <div class="sec-label">How would you like to pay?</div>
+
+      ${showPP ? `
+      <div class="method ${method==='pp'?'sel':''}" onclick="pick('pp')">
+        <div class="m-top">
+          <div class="m-radio"></div>
+          <div class="m-ic"><i data-lucide="shield-check"></i></div>
+          <div style="flex:1">
+            <div class="m-title">Pay through Property Pros<span class="m-badge">Protected</span></div>
+            <div class="m-sub">Held securely and released when the job's done. Pay by card.</div>
+          </div>
+        </div>
+        <div class="m-detail">
+          <div class="field"><label>Card number</label><input inputmode="numeric" placeholder="1234 1234 1234 1234" /></div>
+          <div class="row2">
+            <div class="field"><label>Expiry</label><input placeholder="MM / YY" /></div>
+            <div class="field"><label>CVC</label><input inputmode="numeric" placeholder="123" /></div>
+            <div class="field"><label>ZIP</label><input inputmode="numeric" placeholder="02920" /></div>
+          </div>
+        </div>
+      </div>` : ''}
+
+      ${showDirect ? `
+      <div class="method ${method==='direct'?'sel':''}" onclick="pick('direct')">
+        <div class="m-top">
+          <div class="m-radio"></div>
+          <div class="m-ic"><i data-lucide="handshake"></i></div>
+          <div style="flex:1">
+            <div class="m-title">Pay ${JOB.pro.split(' ')[0]} directly</div>
+            <div class="m-sub">${JOB.pro} collects payment their own way.</div>
+          </div>
+        </div>
+        <div class="m-detail">
+          <div class="direct-note">We'll share <b>${JOB.pro}</b>'s contact and mark this as <b>arranged directly</b>. Payment happens between you and the pro — Property Pros protection and pay-over-time don't apply to direct payments.</div>
+        </div>
+      </div>` : ''}
+
+    </div>
+    <div class="foot">
+      ${footerBtn()}
+      <div class="fineprint">Prototype — no real payment is processed.${ method==='pp' ? ' Funds are held until you confirm the job is complete.' : '' }</div>
+    </div>`;
+  lucide.createIcons();
+}
+
+function footerBtn(){
+  if(method==='direct')
+    return `<button class="pay-btn" onclick="finish('direct')"><i data-lucide="check"></i> Arrange directly with ${JOB.pro.split(' ')[0]}</button>`;
+  return `<button class="pay-btn" onclick="finish('pp')"><i data-lucide="lock"></i> Pay ${money(JOB.amount)}</button>`;
+}
+
+function pick(m){ method=m; render(); }
+
+function finish(kind){
+  const sheet = document.getElementById('sheet');
+  if(kind==='direct'){
+    sheet.innerHTML = `<div class="done">
+      <div class="dc" style="background:#eff6ff;color:#2563eb"><i data-lucide="handshake"></i></div>
+      <h2>Arranged with ${JOB.pro}</h2>
+      <p>We've shared their contact and marked this job as paid directly. You'll settle up with the pro.</p>
+      <button class="btn2" onclick="render()">Back to payment</button></div>`;
+  } else {
+    sheet.innerHTML = `<div class="done">
+      <div class="dc"><i data-lucide="shield-check"></i></div>
+      <h2>Payment held securely</h2>
+      <p>${money(JOB.amount)} is held by Property Pros and released to ${JOB.pro} once you confirm the roof repair is complete.</p>
+      <button class="btn2" onclick="render()">Back to payment</button></div>`;
+  }
+  lucide.createIcons();
+}
+
+render();
+if(_fromFlow){ const db=document.querySelector('.demo-bar'); if(db) db.style.display='none'; }
+</script>
+</body>
+</html>

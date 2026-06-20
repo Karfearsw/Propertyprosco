@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Contact Property Pros — get help with your account, report an issue, or reach our team." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help & Contact — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --dark3: #374151;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --amber: #d97706;
+      --amber-light: #fffbeb;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header {
+      background: var(--dark);
+      padding: 0 40px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky; top: 0; z-index: 50;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 13px; color: #fff;
+    }
+
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .header-nav { display: flex; gap: 24px; align-items: center; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .header-link:hover { color: #fff; }
+
+    .header-btns { display: flex; gap: 10px; }
+
+    .btn {
+      padding: 9px 18px; border-radius: 10px; font-size: 13px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid transparent;
+    }
+
+    .btn-outline-white { border-color: rgba(255,255,255,.2); color: #fff; background: transparent; }
+    .btn-outline-white:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-dark { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .btn-dark:hover { background: var(--dark2); }
+
+    /* HERO */
+    .hero {
+      background: var(--dark);
+      padding: 60px 40px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      background: rgba(220,38,38,.08);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: #f87171;
+      margin-bottom: 14px; position: relative; z-index: 1;
+    }
+
+    .hero-title {
+      font-size: 42px; font-weight: 900; color: #fff;
+      letter-spacing: -1.5px; line-height: 1.1;
+      margin-bottom: 14px; position: relative; z-index: 1;
+    }
+
+    .hero-sub {
+      font-size: 16px; color: #9ca3af; max-width: 500px;
+      margin: 0 auto 32px; line-height: 1.7; position: relative; z-index: 1;
+    }
+
+    /* SEARCH BAR */
+    .search-wrap {
+      max-width: 560px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+
+    .search-bar {
+      display: flex; background: var(--white);
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    }
+
+    .search-input {
+      flex: 1; padding: 16px 20px; border: none; outline: none;
+      font-size: 15px; font-family: var(--font); color: var(--dark);
+    }
+
+    .search-btn {
+      background: var(--red); color: #fff; border: none;
+      padding: 0 24px; font-size: 14px; font-weight: 800;
+      cursor: pointer; font-family: var(--font); transition: background .15s;
+      white-space: nowrap;
+    }
+
+    .search-btn:hover { background: var(--red-dark); }
+
+    /* CONTACT CHANNELS */
+    .channels {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; max-width: 900px; margin: -36px auto 0;
+      padding: 0 40px; position: relative; z-index: 2;
+    }
+
+    .channel-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 18px; padding: 24px; text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,.08);
+      transition: all .2s; cursor: pointer;
+    }
+
+    .channel-card:hover {
+      border-color: var(--red); transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(220,38,38,.1);
+    }
+
+    .channel-icon {
+      width: 56px; height: 56px; border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 14px;
+    }
+
+    .channel-icon.chat { background: var(--red-light); }
+    .channel-icon.email { background: var(--blue-light); }
+    .channel-icon.phone { background: var(--green-light); }
+
+    .channel-title { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+    .channel-sub { font-size: 13px; color: var(--gray); line-height: 1.6; margin-bottom: 14px; }
+    .channel-status { font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 5px; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .status-dot.green { background: var(--green); }
+    .status-dot.amber { background: var(--amber); }
+    .status-dot.gray { background: var(--gray); }
+
+    /* MAIN LAYOUT */
+    .main-wrap {
+      max-width: 1100px; margin: 60px auto;
+      padding: 0 40px;
+      display: grid; grid-template-columns: 1fr 380px;
+      gap: 40px; align-items: start;
+    }
+
+    /* FAQ */
+    .section-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 28px; font-weight: 900; letter-spacing: -0.8px;
+      margin-bottom: 6px;
+    }
+
+    .section-sub { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+
+    /* FAQ TABS */
+    .faq-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+
+    .faq-tab {
+      padding: 8px 16px; border-radius: 999px; font-size: 13px;
+      font-weight: 800; cursor: pointer; border: 1px solid var(--border);
+      background: var(--white); color: var(--gray); transition: all .15s;
+      font-family: var(--font);
+    }
+
+    .faq-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .faq-tab:hover:not(.active) { border-color: var(--dark); color: var(--dark); }
+
+    /* ACCORDION */
+    .accordion { display: flex; flex-direction: column; gap: 10px; }
+
+    .faq-item {
+      border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; transition: border-color .15s;
+    }
+
+    .faq-item:hover { border-color: #d1d5db; }
+    .faq-item.open { border-color: var(--red); }
+
+    .faq-question {
+      padding: 16px 18px; display: flex; justify-content: space-between;
+      align-items: center; cursor: pointer; font-size: 14px;
+      font-weight: 800; gap: 12px; background: var(--white);
+      transition: background .15s;
+    }
+
+    .faq-item.open .faq-question { background: var(--red-light); color: var(--red); }
+
+    .faq-arrow {
+      font-size: 18px; color: var(--gray); transition: transform .25s; flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--red); }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height .3s ease;
+    }
+
+    .faq-item.open .faq-answer { max-height: 400px; }
+
+    .faq-answer-inner {
+      padding: 0 18px 16px; font-size: 14px; color: var(--gray);
+      line-height: 1.8;
+    }
+
+    .faq-answer-inner a { color: var(--red); font-weight: 700; }
+
+    /* CONTACT FORM */
+    .contact-form-wrap {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.05);
+      position: sticky; top: 84px;
+    }
+
+    .form-title { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+    .form-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block; font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .8px;
+      color: var(--dark3); margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: var(--font);
+      color: var(--dark); background: var(--white); transition: all .15s;
+    }
+
+    .form-input:focus {
+      outline: none; border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(220,38,38,.08);
+    }
+
+    textarea.form-input { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+    .submit-btn {
+      width: 100%; padding: 13px; border-radius: 11px;
+      background: var(--red); color: #fff; border: none;
+      font-size: 14px; font-weight: 900; cursor: pointer;
+      font-family: var(--font); transition: all .15s; margin-top: 4px;
+    }
+
+    .submit-btn:hover { background: var(--red-dark); transform: translateY(-1px); }
+
+    /* USER TYPE TOGGLE */
+    .user-toggle {
+      display: flex; background: var(--bg); border-radius: 10px;
+      padding: 4px; gap: 4px; margin-bottom: 14px;
+    }
+
+    .toggle-opt {
+      flex: 1; padding: 8px; border-radius: 8px; text-align: center;
+      font-size: 13px; font-weight: 800; cursor: pointer; transition: all .15s;
+      color: var(--gray);
+    }
+
+    .toggle-opt.active { background: var(--white); color: var(--dark); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+
+    /* POPULAR ARTICLES */
+    .articles-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 16px; max-width: 1100px; margin: 0 auto 60px;
+      padding: 0 40px;
+    }
+
+    .article-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; transition: all .2s; cursor: pointer;
+    }
+
+    .article-card:hover { border-color: var(--red); transform: translateY(-1px); }
+
+    .article-icon { font-size: 24px; margin: 0 auto 12px; text-align: center;}
+    .article-title { font-size: 14px; font-weight: 900; margin-bottom: 6px; line-height: 1.4; text-align: center;}
+    .article-sub { font-size: 12px; color: var(--gray); line-height: 1.6; text-align: center;}
+    .article-link { font-size: 12px; color: var(--red); font-weight: 800; margin-top: 12px; display: block; text-align: center;}
+
+    /* STATUS BANNER */
+    .status-banner {
+      background: var(--green-light); border-bottom: 1px solid #bbf7d0;
+      padding: 10px 40px; display: flex; align-items: center;
+      justify-content: center; gap: 10px; font-size: 13px;
+      font-weight: 700; color: var(--green);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--dark); color: #9ca3af;
+      padding: 40px; text-align: center; font-size: 13px;
+    }
+
+    footer a { color: #6b7280; font-weight: 700; }
+    footer a:hover { color: #fff; }
+
+    .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+
+    /* BADGES */
+    .badge {
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; display: inline-block;
+    }
+
+    .badge-new { background: var(--blue-light); color: #1e40af; }
+    .badge-popular { background: var(--red-light); color: #991b1b; }
+
+    /* SUCCESS STATE */
+    .form-success {
+      display: none; text-align: center; padding: 20px 0;
+    }
+
+    .success-icon {
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--green-light); border: 3px solid #bbf7d0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 16px;
+    }
+
+    @media (max-width: 960px) {
+      .main-wrap { grid-template-columns: 1fr; }
+      .channels { grid-template-columns: 1fr; }
+      .articles-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-form-wrap { position: static; }
+      .hero-title { font-size: 30px; }
+      header { padding: 0 20px; }
+      .header-nav { display: none; }
+      .main-wrap, .articles-grid { padding: 0 20px; }
+      .channels { padding: 0 20px; }
+      .status-banner { padding: 10px 20px; }
+    }
+
+    @media (max-width: 600px) {
+      .articles-grid { grid-template-columns: 1fr; }
+      .hero { padding: 40px 20px 70px; }
+      .hero-title { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STATUS BANNER -->
+  <div class="status-banner">
+    <div class="status-dot green" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>
+    All systems operational — No known issues · <a href="contact.html" style="color:var(--green);margin-left:4px">View status page →</a>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div class="header-nav">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="homeowner-dashboard.html" class="header-link">Find a Pro</a>
+      <a href="pricing.html" class="header-link">Pricing</a>
+      <a href="realtor-landing.html" class="header-link">For Realtors</a>
+      <a href="about.html" class="header-link">About</a>
+      <a href="contact.html" class="header-link" style="color:#f87171">Help</a>
+    </div>
+    <div class="header-btns">
+      <a href="login.html" class="btn btn-outline-white">Log In</a>
+      <a href="login.html" class="btn btn-red">Get Started</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Help center</div>
+    <div class="hero-title">How can we help you?</div>
+    <div class="hero-sub">Search our help center or reach out directly — our team is ready to assist homeowners, service pros, and realtors.</div>
+    <div class="search-wrap">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Search help articles, e.g. 'How do I cancel my plan?'" id="help-search" oninput="filterFAQ()" />
+        <button class="search-btn">Search</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT CHANNELS -->
+  <div class="channels">
+    <div class="channel-card" onclick="document.getElementById('contact-form').scrollIntoView({behavior:'smooth'})">
+      <div class="channel-icon chat"><i data-lucide="message-circle-more" style="color: red;"></i></div>
+      <div class="channel-title">Live chat</div>
+      <div class="channel-sub">Chat with our support team in real time. Average response under 3 minutes.</div>
+      <div class="channel-status" style="color:var(--green)">
+        <div class="status-dot green"></div> Online now
+      </div>
+    </div>
+    <div class="channel-card" onclick="document.getElementById('contact-form').scrollIntoView({behavior:'smooth'})">
+      <div class="channel-icon email"><i data-lucide="mail" style="color: #2563eb;"></i></div>
+      <div class="channel-title">Email support</div>
+      <div class="channel-sub">Send us a message and we'll respond within 24 hours on business days.</div>
+      <div class="channel-status" style="color:var(--amber)">
+        <div class="status-dot amber"></div> Usually within 24 hrs
+      </div>
+    </div>
+    <div class="channel-card">
+      <div class="channel-icon phone"><i data-lucide="phone" style="color: #16a34a;"></i></div>
+      <div class="channel-title">Call us</div>
+      <div class="channel-sub">Speak directly with a support rep. Available Mon–Fri, 9AM–6PM EST.</div>
+      <div class="channel-status" style="color:var(--green)">
+        <div class="status-dot green"></div> 1-(800)-555-1000
+      </div>
+    </div>
+  </div>
+
+  <!-- POPULAR ARTICLES -->
+  <div style="max-width:1100px;margin:60px auto 20px;padding:0 40px">
+    <div class="section-eyebrow">Popular articles</div>
+    <div class="section-title">Quick answers</div>
+    <div class="section-sub">The most common questions from homeowners, pros, and realtors.</div>
+  </div>
+
+  <div class="articles-grid">
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="key"></i></div>
+      <div class="article-title">How do I reset my password?</div>
+      <div class="article-sub">Visit the login page and click "Forgot password" to receive a reset link by email.</div>
+      <a class="article-link" href="articles.html">Read article →</a>
+    </div>
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="credit-card"></i></div>
+      <div class="article-title">When will I be charged for my pro plan?</div>
+      <div class="article-sub">Your 14-day free trial starts at signup. Your card is charged after the trial ends.</div>
+      <a class="article-link" href="articles.html">Read article →</a>
+    </div>
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="home"></i></div>
+      <div class="article-title">How do homeowners post a project?</div>
+      <div class="article-sub">Sign up free, click "Post a project," fill in the details, and pros will send quotes within hours.</div>
+      <a class="article-link" href="articles.html">Read article →</a>
+    </div>
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="check"></i></div>
+      <div class="article-title">How do pros get verified?</div>
+      <div class="article-sub">Upload your license and insurance certificate in your profile settings. Our team reviews within 24 hrs.</div>
+      <a class="article-link " href="articles.html">Read article →</a>
+    </div>
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="message-circle-more"></i></div>
+      <div class="article-title">How does messaging work?</div>
+      <div class="article-sub">Homeowners and pros can message directly from the lead or quote page once a connection is made.</div>
+      <a class="article-link" href="articles.html">Read article →</a>
+    </div>
+    <div class="article-card">
+      <div class="article-icon"><i data-lucide="x"></i></div>
+      <div class="article-title">How do I cancel my subscription?</div>
+      <div class="article-sub">Go to Billing in your pro dashboard and click "Cancel subscription." Your plan stays active until the period ends.</div>
+      <a class="article-link" href="articles.html">Read article →</a>
+    </div>
+  </div>
+
+  <!-- MAIN: FAQ + FORM -->
+  <div class="main-wrap">
+
+    <!-- LEFT: FAQ -->
+    <div>
+      <div class="section-eyebrow">FAQ</div>
+      <div class="section-title">Frequently asked questions</div>
+      <div class="section-sub">Filter by topic or search above to find what you need.</div>
+
+      <div class="faq-tabs">
+        <button class="faq-tab active" onclick="filterTab('all', this)">All</button>
+        <button class="faq-tab" onclick="filterTab('homeowner', this)">Homeowners</button>
+        <button class="faq-tab" onclick="filterTab('pro', this)">Service pros</button>
+        <button class="faq-tab" onclick="filterTab('realtor', this)">Realtors</button>
+        <button class="faq-tab" onclick="filterTab('billing', this)">Billing</button>
+        <button class="faq-tab" onclick="filterTab('account', this)">Account</button>
+      </div>
+
+      <div class="accordion" id="faq-accordion">
+
+        <div class="faq-item" data-cat="homeowner" data-q="how do i post a project">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do I post a project as a homeowner?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Sign up for a free homeowner account, then click the "Post a project" button from your dashboard. Describe the service you need, your location, budget range, and ideal timeline. Verified pros in your area will send quotes, usually within a few hours. There is no cost to post — ever.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="homeowner" data-q="how do i choose a pro">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do I choose the right pro for my project?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Compare pros based on their ratings, number of reviews, verified badges, portfolio photos, and response time. You can message any pro before hiring to ask questions or request a free estimate. We recommend reading at least 3–5 recent reviews and confirming the pro is licensed and insured for your type of project.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="homeowner" data-q="is it free for homeowners">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            Is Property Pros really free for homeowners?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — completely free. Homeowners can create an account, post unlimited projects, message pros, and receive quotes at no cost. There are no hidden fees, no credit card required, and no commissions taken from your project. Pros pay a monthly subscription to access leads, which keeps the platform free for homeowners.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pro" data-q="how do leads work for pros">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do leads work for service pros?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              When a homeowner posts a project that matches your services and location, it appears in your Leads & Quotes dashboard. You can view the full project details, message the homeowner, and send a custom quote — all from within the platform. Responding quickly significantly increases your chance of winning the job.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pro" data-q="how do i get verified as a pro">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do I get the verified pro badge?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Go to <a href="settings.html">Profile Settings</a> and navigate to the Portfolio tab. Upload your business license and insurance certificate. Our team reviews all documents within 24 hours and grants the Verified badge once approved. The badge appears on your profile, in search results, and on all your quote cards — building trust with homeowners immediately.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="pro" data-q="how many leads will i get">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How many leads can I expect per month?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              This varies based on your service type, location, and how active your profile is. On average, active pros in competitive markets receive 10–20 matched leads per month. Completing your profile with photos, a bio, and credentials significantly increases your visibility.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing" data-q="when will i be charged billing subscription">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            When does my billing start?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              All pro plans include a 14-day free trial. Your card is not charged until the trial ends. After that, you are billed monthly on the same date. You can cancel at any time before the trial ends and you will never be charged. If you cancel after being billed, your plan remains active until the end of that billing period.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing" data-q="can i change my plan billing upgrade downgrade">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            Can I upgrade or downgrade my plan?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes, you can change your plan at any time from the <a href="billing.html">Billing page</a>. Upgrades take effect immediately and you are only charged the prorated difference. Downgrades take effect at the start of your next billing cycle. There are no contracts or penalties for changing plans.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="billing" data-q="refund policy billing">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            What is your refund policy?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              We offer a full refund within 7 days of your first charge if you are unsatisfied for any reason. After 7 days, refunds are evaluated on a case-by-case basis. To request a refund, contact our support team at <a href="mailto:billing@propertypros.com">billing@propertypros.com</a> with your account details.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="account" data-q="how do i reset my password account">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do I reset my password?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              On the <a href="login.html">login page</a>, click "Forgot password?" and enter your email address. You will receive a reset link within a few minutes. Check your spam folder if you don't see it. The link expires after 24 hours — if it expires, simply request a new one.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="account" data-q="how do i delete my account">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do I delete my account?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              For pro accounts, go to <a href="settings.html">Profile Settings → Security</a> and scroll to the Danger Zone section. For homeowner accounts, contact our support team and we will process your deletion within 5 business days. Deleting your account is permanent and cannot be undone — all your data, messages, and history will be removed.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="account" data-q="can i have both homeowner and pro account">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            Can I have both a homeowner and a pro account?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — you can maintain separate homeowner and pro accounts using different email addresses. We do not support dual-role accounts under a single email at this time. If you need help managing both, contact our support team and we can help set it up cleanly.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="realtor" data-q="what is realtor pro">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            What is the Realtor Pro account and who is it for?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Realtor Pro is a $29.99/month account type built specifically for licensed real estate professionals. It gives you a full client management dashboard, the ability to post projects on behalf of clients, a post-inspection repair tracker, pre-listing project checklists, personalized closing gift referral links, and a preferred contractor shortlist. It's designed to help realtors manage contractor relationships for clients at every stage of a transaction — without touching listings or real estate sales.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="realtor" data-q="can i post projects for my clients">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            Can I post projects on behalf of my clients as a realtor?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Yes — this is one of the core features of Realtor Pro. From your dashboard, select a client from your roster and post a project using their property address. The project goes live under their account and they receive notifications when quotes arrive. You can monitor all activity from your realtor dashboard without your clients needing to do anything themselves.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="realtor" data-q="how does the closing gift referral link work">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            How do referral links work for realtors?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              From your Referrals page, you can generate a unique, personalized referral link for each client at closing. The link includes your name, photo, and a custom welcome message. When a client signs up through your link, they're automatically connected to you and you can see their project activity in your dashboard. You also earn $3/month in credits for every active referred client — which can offset your monthly subscription.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item" data-cat="realtor" data-q="do my clients pay anything">
+          <div class="faq-question" onclick="toggleFAQ(this)">
+            Do my clients need to pay to use Property Pros?
+            <span class="faq-arrow">+</span>
+          </div>
+          <div class="faq-answer">
+            <div class="faq-answer-inner">
+              Never. Homeowners — including your clients — always use Property Pros completely free. There's no subscription, no fees, and no commissions. You pay the $29.99/month Realtor Pro subscription, and your clients get full access to the platform as a benefit of working with you.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: CONTACT FORM -->
+    <div id="contact-form">
+      <div class="contact-form-wrap">
+        <div id="form-content">
+          <div class="form-title">Send us a message</div>
+          <div class="form-sub">We typically respond within a few hours on business days.</div>
+
+          <div class="user-toggle">
+            <div class="toggle-opt active" onclick="setUserType(this, 'Homeowner')">🏠 Homeowner</div>
+            <div class="toggle-opt" onclick="setUserType(this, 'Service pro')">🔨 Service pro</div>
+            <div class="toggle-opt" onclick="setUserType(this, 'Realtor')">🏡 Realtor</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Your name</label>
+            <input class="form-input" type="text" placeholder="Maria Santos" id="contact-name" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Email address</label>
+            <input class="form-input" type="email" placeholder="you@example.com" id="contact-email" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Topic</label>
+            <select class="form-input" id="contact-topic">
+              <option>Select a topic...</option>
+              <option>Account issue</option>
+              <option>Billing question</option>
+              <option>Lead or quote problem</option>
+              <option>Profile or verification</option>
+              <option>Report a pro or homeowner</option>
+              <option>Technical issue</option>
+              <option>Realtor — client management</option>
+              <option>Realtor — inspection tracker</option>
+              <option>Realtor — referral link help</option>
+              <option>Realtor — brokerage verification</option>
+              <option>General question</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-input" placeholder="Describe your issue or question in as much detail as possible..." id="contact-msg"></textarea>
+          </div>
+
+          <button class="submit-btn" onclick="submitForm()">Send message →</button>
+
+          <div style="display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--gray);font-weight:700">
+            🔒 Your message is private and only seen by our support team.
+          </div>
+        </div>
+
+        <div class="form-success" id="form-success">
+          <div class="success-icon">✓</div>
+          <div style="font-size:17px;font-weight:900;margin-bottom:8px">Message sent!</div>
+          <div style="font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:20px">
+            Thanks for reaching out. Our team will get back to you within 24 hours. Check your email for a confirmation.
+          </div>
+          <button class="submit-btn" onclick="resetForm()">Send another message</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="homeowner-dashboard.html">Find a pro</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="realtor-landing.html">For realtors</a>
+      <a href="about.html">About</a>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="terms.html">Terms of service</a>
+      <a href="contact.html">Contact</a>
+         <a href="community-fund.html">Community Fund</a>
+    </div>
+    <div>© 2026 Property Pros, LLC · All rights reserved</div>
+  </footer>
+
+  <script>
+    /* ACCORDION */
+    function toggleFAQ(btn) {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    /* FAQ TAB FILTER */
+    function filterTab(cat, btn) {
+      document.querySelectorAll('.faq-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const itemCat = item.dataset.cat;
+        item.style.display = (cat === 'all' || itemCat === cat) ? 'block' : 'none';
+        item.classList.remove('open');
+      });
+    }
+
+    /* SEARCH FILTER */
+    function filterFAQ() {
+      const q = document.getElementById('help-search').value.toLowerCase();
+      document.querySelectorAll('.faq-item').forEach(item => {
+        const text = (item.dataset.q + ' ' + item.textContent).toLowerCase();
+        item.style.display = text.includes(q) ? 'block' : 'none';
+        item.classList.remove('open');
+      });
+      if (q.length > 1) {
+        document.getElementById('faq-accordion').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    /* USER TYPE TOGGLE */
+    function setUserType(el, type) {
+      document.querySelectorAll('.toggle-opt').forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    /* FORM SUBMIT */
+    function submitForm() {
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const topic = document.getElementById('contact-topic').value;
+      const msg = document.getElementById('contact-msg').value.trim();
+
+      if (!name || !email || topic === 'Select a topic...' || !msg) {
+        alert('Please fill in all fields before submitting.');
+        return;
+      }
+
+      document.getElementById('form-content').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }
+
+    function resetForm() {
+      document.getElementById('form-content').style.display = 'block';
+      document.getElementById('form-success').style.display = 'none';
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-topic').value = 'Select a topic...';
+      document.getElementById('contact-msg').value = '';
+    }
+  </script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

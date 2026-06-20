@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Contractor profile on Property Pros — view ratings, reviews, portfolio, and services." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kev Hernandez Contracting — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --dark3: #374151;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --amber: #d97706;
+      --amber-light: #fffbeb;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--dark);
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header {
+      background: var(--dark);
+      padding: 0 40px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky; top: 0; z-index: 50;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 13px; color: #fff;
+    }
+
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .header-nav { display: flex; gap: 24px; align-items: center; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; transition: color .15s; }
+    .header-link:hover { color: #fff; }
+
+    .header-btns { display: flex; gap: 10px; }
+
+    .btn {
+      padding: 9px 18px; border-radius: 10px; font-size: 13px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid transparent;
+    }
+
+    .btn-outline-white { border-color: rgba(255,255,255,.2); color: #fff; background: transparent; }
+    .btn-outline-white:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-outline { background: var(--white); color: var(--dark); border-color: var(--border); }
+    .btn-outline:hover { background: var(--bg); }
+    .btn-dark { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .btn-dark:hover { background: var(--dark2); }
+
+    /* BREADCRUMB */
+    .breadcrumb {
+      padding: 14px 40px;
+      font-size: 13px; color: var(--gray); font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+      background: var(--white); border-bottom: 1px solid var(--border);
+    }
+
+    .breadcrumb a { color: var(--red); }
+    .breadcrumb span { color: var(--border); }
+
+    /* HERO BANNER */
+    .profile-hero {
+      background: var(--dark);
+      padding: 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-hero::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 400px; height: 100%;
+      background: rgba(220,38,38,.06);
+      clip-path: polygon(20% 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    .hero-inner {
+      max-width: 1060px; margin: 0 auto;
+      padding: 36px 0 28px;
+      display: flex; justify-content: space-between;
+      align-items: flex-end; gap: 24px;
+      position: relative; z-index: 1;
+    }
+
+    .pro-identity { display: flex; gap: 22px; align-items: flex-start; }
+
+    .pro-avatar-wrap { position: relative; flex-shrink: 0; }
+
+    .pro-avatar {
+      width: 90px; height: 90px; border-radius: 22px;
+      background: linear-gradient(135deg, #374151, #111827);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; font-weight: 900; color: #fff;
+      border: 3px solid rgba(255,255,255,.1);
+    }
+
+    .verified-ring {
+      position: absolute; bottom: -6px; right: -6px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--green); border: 3px solid var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: #fff; font-weight: 900;
+    }
+
+    .pro-name { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -0.8px; margin-bottom: 5px; }
+    .pro-tagline { font-size: 14px; color: #9ca3af; margin-bottom: 12px; }
+
+    .pro-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .badge {
+      padding: 4px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 5px;
+    }
+
+    .badge-verified { background: rgba(22,163,74,.2); color: #4ade80; border: 1px solid rgba(22,163,74,.3); }
+    .badge-insured { background: rgba(37,99,235,.2); color: #93c5fd; border: 1px solid rgba(37,99,235,.3); }
+    .badge-toprated { background: rgba(220,38,38,.25); color: #fca5a5; border: 1px solid rgba(220,38,38,.3); }
+    .badge-years { background: rgba(255,255,255,.08); color: #d1d5db; border: 1px solid rgba(255,255,255,.1); }
+
+    .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; flex-shrink: 0; }
+
+    .rating-big {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 2px;
+    }
+
+    .rating-num-big { font-size: 40px; font-weight: 900; color: #fff; line-height: 1; letter-spacing: -1.5px; }
+    .rating-stars-big { color: #fbbf24; font-size: 16px; letter-spacing: 1px; }
+    .rating-count { font-size: 12px; color: #6b7280; font-weight: 700; }
+
+    .hero-cta { display: flex; gap: 10px; }
+
+    /* STICKY NAV */
+    .sticky-nav {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      position: sticky; top: 64px; z-index: 40;
+    }
+
+    .sticky-nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      padding: 0 40px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .sticky-tabs { display: flex; }
+
+    .sticky-tab {
+      padding: 16px 18px; font-size: 13px; font-weight: 800;
+      color: var(--gray); cursor: pointer; border: none; background: none;
+      font-family: var(--font); border-bottom: 2px solid transparent;
+      transition: all .15s;
+    }
+
+    .sticky-tab.active { color: var(--red); border-bottom-color: var(--red); }
+    .sticky-tab:hover:not(.active) { color: var(--dark); }
+
+    .sticky-actions { display: flex; gap: 8px; align-items: center; }
+
+    /* MAIN LAYOUT */
+    .profile-layout {
+      max-width: 1060px; margin: 28px auto;
+      padding: 0 40px;
+      display: grid; grid-template-columns: 1fr 320px;
+      gap: 24px; align-items: start;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 22px; margin-bottom: 18px;
+    }
+
+    .card-title {
+      font-size: 16px; font-weight: 900; margin-bottom: 14px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .card-link { font-size: 13px; color: var(--red); font-weight: 800; cursor: pointer; }
+
+    /* STATS ROW */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border-radius: 14px; overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .stat-block {
+      background: var(--white); padding: 18px 16px; text-align: center;
+    }
+
+    .stat-block-num { font-size: 24px; font-weight: 900; color: var(--dark); letter-spacing: -0.5px; }
+    .stat-block-num.red { color: var(--red); }
+    .stat-block-num.green { color: var(--green); }
+    .stat-block-label { font-size: 11px; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+    /* SERVICES CHIPS */
+    .services-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .service-chip {
+      padding: 8px 16px; border-radius: 999px; font-size: 13px;
+      font-weight: 800; background: var(--bg); color: var(--dark3);
+      border: 1px solid var(--border); display: flex; align-items: center; gap: 6px;
+    }
+
+    /* PORTFOLIO GRID */
+    .portfolio-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .portfolio-item {
+      aspect-ratio: 4/3; border-radius: 12px; overflow: hidden;
+      cursor: pointer; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; transition: transform .2s;
+    }
+
+    .portfolio-item:hover { transform: scale(1.02); }
+
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+    .portfolio-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity .2s;
+      font-size: 13px; font-weight: 800; color: #fff;
+    }
+
+    .pi-1 { background: linear-gradient(135deg, #374151, #1f2937); }
+    .pi-2 { background: linear-gradient(135deg, #1e3a5f, #0f172a); }
+    .pi-3 { background: linear-gradient(135deg, #4a2c2a, #1f0f0e); }
+    .pi-4 { background: linear-gradient(135deg, #1a3a2a, #0f1f16); }
+    .pi-5 { background: linear-gradient(135deg, #3a1a2a, #1f0f16); }
+    .pi-6 { background: linear-gradient(135deg, #2a3a1a, #151f0f); }
+
+    .portfolio-label {
+      position: absolute; bottom: 8px; left: 10px;
+      font-size: 10px; font-weight: 800; color: rgba(255,255,255,.8);
+      background: rgba(0,0,0,.4); padding: 3px 8px; border-radius: 6px;
+    }
+
+    /* REVIEWS */
+    .review-summary {
+      display: flex; gap: 24px; align-items: center; margin-bottom: 20px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+
+    .review-big-num { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+    .review-stars { color: #fbbf24; font-size: 18px; letter-spacing: 2px; margin: 4px 0; }
+    .review-total { font-size: 13px; color: var(--gray); font-weight: 700; }
+
+    .rating-bars { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+    .rating-bar-row { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 700; }
+    .rating-bar-label { width: 16px; text-align: right; color: var(--gray); }
+    .rating-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .rating-bar-fill { height: 100%; background: #fbbf24; border-radius: 999px; }
+    .rating-bar-count { width: 24px; color: var(--gray); }
+
+    .review-card {
+      padding: 18px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .review-card:last-child { border-bottom: none; }
+
+    .review-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .reviewer-info { display: flex; gap: 10px; align-items: center; }
+
+    .reviewer-avatar {
+      width: 38px; height: 38px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; color: #fff; flex-shrink: 0;
+    }
+
+    .reviewer-name { font-size: 14px; font-weight: 800; }
+    .reviewer-meta { font-size: 12px; color: var(--gray); margin-top: 2px; }
+    .review-stars-small { color: #fbbf24; font-size: 13px; letter-spacing: 1px; }
+    .review-date { font-size: 12px; color: var(--gray); font-weight: 700; }
+
+    .review-text {
+      font-size: 14px; color: var(--dark3); line-height: 1.7; margin-bottom: 10px;
+    }
+
+    .review-service-tag {
+      font-size: 11px; font-weight: 800; color: var(--gray);
+      background: var(--bg); padding: 4px 10px; border-radius: 999px;
+      border: 1px solid var(--border); display: inline-block;
+    }
+
+    .pro-response {
+      background: var(--bg); border-radius: 10px; padding: 12px 14px;
+      margin-top: 10px; font-size: 13px; color: var(--dark3); line-height: 1.6;
+    }
+
+    .pro-response-label {
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--red); margin-bottom: 5px;
+    }
+
+    /* RIGHT SIDEBAR */
+    .sidebar-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px; margin-bottom: 16px;
+    }
+
+    .sidebar-title { font-size: 14px; font-weight: 900; margin-bottom: 14px; }
+
+    .cta-card {
+      background: var(--dark); border-radius: 16px;
+      padding: 22px; margin-bottom: 16px; position: relative; overflow: hidden;
+    }
+
+    .cta-card::before {
+      content: ''; position: absolute; top: -30px; right: -30px;
+      width: 120px; height: 120px; border-radius: 50%;
+      background: rgba(220,38,38,.15);
+    }
+
+    .cta-card-title { font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 6px; position: relative; z-index: 1; letter-spacing: -0.3px; }
+    .cta-card-sub { font-size: 13px; color: #9ca3af; margin-bottom: 16px; position: relative; z-index: 1; line-height: 1.6; }
+
+    .cta-btn {
+      width: 100%; padding: 13px; border-radius: 11px;
+      background: var(--red); color: #fff; border: none;
+      font-size: 14px; font-weight: 900; cursor: pointer;
+      font-family: var(--font); transition: all .15s;
+      position: relative; z-index: 1;
+    }
+
+    .cta-btn:hover { background: var(--red-dark); }
+
+    .cta-btn-outline {
+      width: 100%; padding: 11px; border-radius: 11px;
+      background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.2);
+      font-size: 13px; font-weight: 800; cursor: pointer;
+      font-family: var(--font); transition: all .15s; margin-top: 8px;
+      position: relative; z-index: 1;
+    }
+
+    .cta-btn-outline:hover { background: rgba(255,255,255,.08); }
+
+    .info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--gray); font-weight: 700; }
+    .info-val { font-weight: 800; text-align: right; }
+    .info-val.green { color: var(--green); }
+
+    .response-meter {
+      display: flex; align-items: center; gap: 10px; margin-top: 10px;
+    }
+
+    .meter-track {
+      flex: 1; height: 6px; background: var(--border); border-radius: 999px; overflow: hidden;
+    }
+
+    .meter-fill { height: 100%; border-radius: 999px; background: var(--green); }
+
+    .availability-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr);
+      gap: 4px; margin-top: 10px;
+    }
+
+    .avail-day {
+      padding: 6px 0; border-radius: 6px; text-align: center;
+      font-size: 10px; font-weight: 800;
+    }
+
+    .avail-day.avail { background: var(--green-light); color: var(--green); }
+    .avail-day.busy { background: var(--red-light); color: var(--red); }
+    .avail-day.partial { background: var(--amber-light); color: var(--amber); }
+    .avail-day-name { font-size: 9px; display: block; margin-bottom: 2px; }
+
+    .share-row { display: flex; gap: 8px; margin-top: 4px; }
+
+    .share-btn {
+      flex: 1; padding: 9px; border-radius: 9px; font-size: 12px;
+      font-weight: 800; cursor: pointer; border: 1px solid var(--border);
+      background: var(--white); color: var(--dark); font-family: var(--font);
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      transition: all .15s;
+    }
+
+    .share-btn:hover { background: var(--bg); }
+
+    /* LIGHTBOX */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.88); z-index: 200;
+      align-items: center; justify-content: center; flex-direction: column; gap: 16px;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-close {
+      position: absolute; top: 20px; right: 20px;
+      width: 40px; height: 40px; border-radius: 10px;
+      background: rgba(255,255,255,.15); color: #fff; border: none;
+      font-size: 20px; cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    .lightbox-img-wrap {
+      width: 560px; max-width: 90vw; aspect-ratio: 4/3;
+      border-radius: 16px; display: flex; align-items: center; justify-content: center;
+      font-size: 80px;
+    }
+
+    .lightbox-caption { color: #fff; font-size: 14px; font-weight: 700; }
+
+    /* QUOTE MODAL */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 100;
+      align-items: center; justify-content: center;
+    }
+
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: var(--white); border-radius: 20px;
+      padding: 28px; width: 100%; max-width: 500px;
+      margin: 16px; box-shadow: 0 25px 60px rgba(0,0,0,.2);
+      max-height: 90vh; overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title { font-size: 18px; font-weight: 900; }
+
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--white); cursor: pointer; font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .modal-close:hover { background: var(--bg); }
+
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block; font-size: 11px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .8px;
+      color: var(--dark3); margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: var(--font);
+      color: var(--dark); background: var(--white); transition: all .15s;
+    }
+
+    .form-input:focus {
+      outline: none; border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(220,38,38,.08);
+    }
+
+    textarea.form-input { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .modal-footer {
+      display: flex; justify-content: flex-end; gap: 10px;
+      margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+
+    .submit-btn {
+      padding: 11px 22px; border-radius: 10px;
+      background: var(--red); color: #fff; border: none;
+      font-size: 14px; font-weight: 900; cursor: pointer;
+      font-family: var(--font); transition: all .15s;
+    }
+
+    .submit-btn:hover { background: var(--red-dark); }
+    .submit-btn.outline { background: var(--white); color: var(--dark); border: 1px solid var(--border); }
+    .submit-btn.outline:hover { background: var(--bg); }
+
+    /* SIMILAR PROS */
+    .similar-grid { display: flex; flex-direction: column; gap: 10px; }
+
+    .similar-card {
+      display: flex; gap: 12px; align-items: center;
+      padding: 12px; background: var(--bg); border-radius: 12px;
+      cursor: pointer; transition: background .15s;
+    }
+
+    .similar-card:hover { background: #ebebeb; }
+
+    .similar-avatar {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; color: #fff; flex-shrink: 0;
+    }
+
+    .similar-name { font-size: 13px; font-weight: 800; }
+    .similar-cat { font-size: 11px; color: var(--gray); margin-top: 2px; }
+    .similar-rating { font-size: 12px; color: #fbbf24; font-weight: 700; margin-top: 2px; }
+
+    .similar-quote-btn {
+      margin-left: auto; padding: 7px 13px; border-radius: 8px;
+      background: var(--white); border: 1px solid var(--border);
+      font-size: 12px; font-weight: 800; cursor: pointer;
+      font-family: var(--font); transition: all .15s; flex-shrink: 0;
+      color: var(--dark);
+    }
+
+    .similar-quote-btn:hover { background: var(--red); color: #fff; border-color: var(--red); }
+
+    @media (max-width: 960px) {
+      .profile-layout { grid-template-columns: 1fr; padding: 0 20px; }
+      .hero-inner { flex-direction: column; align-items: flex-start; gap: 18px; }
+      .hero-right { align-items: flex-start; flex-direction: row; align-items: center; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .profile-hero { padding: 0 20px; }
+      .breadcrumb { padding: 12px 20px; }
+      .header-nav { display: none; }
+      header { padding: 0 20px; }
+      .sticky-nav-inner { padding: 0 20px; }
+    }
+
+    /* ── GLOBAL MOBILE IMPROVEMENTS ── */
+    @media (max-width:768px) {
+      /* Better touch targets */
+      .btn, .btn-sm, button { min-height:40px; }
+      /* Readable body text */
+      body { font-size:15px; }
+      /* Stack grids on mobile */
+      .stats-strip, .stats-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      .fears-grid, .features-grid, .trust-grid, .testi-grid, .how-grid { grid-template-columns:1fr !important; }
+      .services-grid, .pros-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      /* Hero adjustments */
+      .hero { padding:48px 20px 56px !important; }
+      .hero-inner { grid-template-columns:1fr !important; gap:32px !important; }
+      .hero-card, .comparison-card { display:none; } /* hide demo cards on mobile hero */
+      /* Header padding */
+      header { padding:0 16px !important; }
+      /* Modal full screen on mobile */
+      .modal-overlay { padding:0 !important; align-items:flex-end !important; }
+      .modal, .vd-modal { border-radius:20px 20px 0 0 !important; max-height:92vh !important; }
+      /* Page padding */
+      .page, .content { padding-left:16px !important; padding-right:16px !important; }
+      /* Filter tabs scroll */
+      .filter-bar, .cat-tabs { overflow-x:auto; flex-wrap:nowrap !important; padding-bottom:4px; }
+      .filter-tab, .cat-tab, .filter-tab { white-space:nowrap; flex-shrink:0; }
+      /* Card actions stack */
+      .qc-footer, .lc-footer, .pc-footer { flex-direction:column !important; align-items:flex-start !important; }
+      .qc-footer-right, .lc-actions, .pc-footer-right { flex-wrap:wrap !important; }
+      /* How strip stacks */
+      .how-strip-inner { flex-direction:column !important; gap:12px !important; }
+      .how-strip-item { border-right:none !important; padding:0 !important; }
+      /* Stats band */
+      .stats-section .stats-inner, .stats-inner { grid-template-columns:1fr 1fr !important; gap:20px !important; }
+      /* Math section */
+      .math-grid { grid-template-columns:1fr !important; }
+      .math-vs { display:none !important; }
+      /* Topbar stacks */
+      .topbar { flex-direction:column !important; align-items:flex-start !important; }
+      /* Table overflow */
+      .earnings-table, .et-header, .et-row { overflow-x:auto; }
+    }
+    @media (max-width:400px) {
+      .services-grid, .pros-grid { grid-template-columns:1fr !important; }
+      .date-grid { grid-template-columns:repeat(3,1fr) !important; }
+      .add-on-grid { grid-template-columns:1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div class="header-nav">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="homeowner-dashboard.html" class="header-link">Find a pro</a>
+      <a href="pricing.html" class="header-link">Pricing</a>
+      <a href="realtor-landing.html" class="header-link">For realtors</a>
+      <a href="contact.html" class="header-link">Help</a>
+    </div>
+    <div class="header-btns">
+      <a href="login.html" class="btn btn-outline-white">Log in</a>
+      <a href="login.html" class="btn btn-red">Get started</a>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="homeowner-dashboard.html">Find a pro</a>
+    <span>›</span>
+    <a href="homeowner-dashboard.html">Roofing contractors near you</a>
+    <span>›</span>
+    Kev Hernandez Contracting
+  </div>
+
+  <!-- PROFILE HERO -->
+  <div class="profile-hero">
+    <div class="hero-inner">
+      <div class="pro-identity">
+        <div class="pro-avatar-wrap">
+          <div class="pro-avatar">KH</div>
+          <div class="verified-ring">✓</div>
+        </div>
+        <div>
+          <div class="pro-name">Kev Hernandez Contracting</div>
+          <div class="pro-tagline">Roofing · Driveways · Masonry · Junk Removal &nbsp;·&nbsp; Cranston, RI</div>
+          <div class="pro-badges">
+            <span class="badge badge-verified">✓ Verified pro</span>
+            <span class="badge badge-insured">✓ Licensed &amp; insured</span>
+            <span class="badge badge-toprated">🔥 Top rated</span>
+            <span class="badge badge-years">8 years in business</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="rating-big">
+          <div class="rating-num-big">4.8</div>
+          <div class="rating-stars-big">★★★★★</div>
+          <div class="rating-count">168 reviews</div>
+        </div>
+        <div class="hero-cta">
+          <button class="btn btn-outline-white" onclick="openModal('msgModal')">💬 Message</button>
+          <button class="btn btn-red" onclick="window.location='post-project.html?pro=kev-hernandez&trade=roofing'">Post a project →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STICKY NAV -->
+  <div class="sticky-nav">
+    <div class="sticky-nav-inner">
+      <div class="sticky-tabs">
+        <button class="sticky-tab active" onclick="scrollTo('overview')">Overview</button>
+        <button class="sticky-tab" onclick="scrollTo('services')">Services</button>
+        <button class="sticky-tab" onclick="scrollTo('portfolio')">Portfolio</button>
+        <button class="sticky-tab" onclick="scrollTo('reviews')">Reviews</button>
+      </div>
+      <div class="sticky-actions">
+        <button class="btn btn-outline" style="padding:8px 14px;font-size:12px" onclick="saveProToggle(this)">🤍 Save pro</button>
+        <button class="btn btn-red" style="padding:8px 14px;font-size:12px" onclick="window.location='post-project.html?pro=kev-hernandez&trade=roofing'">Post a project →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div class="profile-layout">
+
+    <!-- LEFT -->
+    <div>
+
+      <!-- STATS -->
+      <div class="stats-row" id="overview">
+        <div class="stat-block">
+          <div class="stat-block-num red">168</div>
+          <div class="stat-block-label">Reviews</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-num">4.8★</div>
+          <div class="stat-block-label">Rating</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-num green">98%</div>
+          <div class="stat-block-label">Job success</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-num">~1 hr</div>
+          <div class="stat-block-label">Response time</div>
+        </div>
+      </div>
+
+      <!-- ABOUT -->
+      <div class="card">
+        <div class="card-title">About</div>
+        <div style="font-size:14px;color:var(--dark3);line-height:1.85;margin-bottom:16px">
+          Kev Hernandez Contracting has been serving Rhode Island homeowners and property managers for over 8 years. We specialize in roofing, asphalt driveways, masonry, and junk removal across the Providence metro area — delivering quality workmanship and honest pricing on every job.
+          <br><br>
+          We are fully licensed and insured in the state of Rhode Island. All of our work comes with a written warranty and we never leave a job site without completing a full walkthrough with the homeowner. No surprises, no shortcuts.
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--dark3)">
+            <span style="font-size:16px">📍</span> Cranston, RI — serves up to 40 miles
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--dark3)">
+            <span style="font-size:16px">📅</span> Available Mon–Sat
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--dark3)">
+            <span style="font-size:16px">🏷️</span> Starting at $150
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--green)">
+            <span style="font-size:16px">✅</span> Free estimates offered
+          </div>
+        </div>
+      </div>
+
+      <!-- SERVICES -->
+      <div class="card" id="services">
+        <div class="card-title">Services offered</div>
+        <div class="services-wrap">
+          <div class="service-chip">🏠 Roof replacement</div>
+          <div class="service-chip">🔧 Roof repair</div>
+          <div class="service-chip">🌧️ Leak detection</div>
+          <div class="service-chip">🏔️ Flashing & ridge cap</div>
+          <div class="service-chip">🛣️ Asphalt driveways</div>
+          <div class="service-chip">🪨 Driveway resurfacing</div>
+          <div class="service-chip">🧱 Patio masonry</div>
+          <div class="service-chip">🏗️ Retaining walls</div>
+          <div class="service-chip">🪜 Stone steps</div>
+          <div class="service-chip">🚛 Junk removal</div>
+          <div class="service-chip">🏚️ Full cleanouts</div>
+          <div class="service-chip">🏠 Chimney work</div>
+        </div>
+      </div>
+
+      <!-- PORTFOLIO -->
+      <div class="card" id="portfolio">
+        <div class="card-title">
+          Portfolio
+          <span class="card-link">View all 24 photos</span>
+        </div>
+        <div class="portfolio-grid">
+          <div class="portfolio-item pi-1" onclick="openLightbox('🏠', 'Full roof replacement — Cranston, RI')">
+            🏠
+            <div class="portfolio-label">Roof replacement</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+          <div class="portfolio-item pi-2" onclick="openLightbox('🛣️', 'Asphalt driveway — Providence, RI')">
+            🛣️
+            <div class="portfolio-label">Asphalt driveway</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+          <div class="portfolio-item pi-3" onclick="openLightbox('🧱', 'Stone patio — Warwick, RI')">
+            🧱
+            <div class="portfolio-label">Stone patio</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+          <div class="portfolio-item pi-4" onclick="openLightbox('🌿', 'Retaining wall — Pawtucket, RI')">
+            🌿
+            <div class="portfolio-label">Retaining wall</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+          <div class="portfolio-item pi-5" onclick="openLightbox('🔧', 'Chimney flashing repair')">
+            🔧
+            <div class="portfolio-label">Chimney repair</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+          <div class="portfolio-item pi-6" onclick="openLightbox('🚛', 'Full basement cleanout')">
+            🚛
+            <div class="portfolio-label">Cleanout</div>
+            <div class="portfolio-overlay">🔍 View photo</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="card" id="reviews">
+        <div class="card-title">Reviews <span style="font-size:13px;color:var(--gray);font-weight:700">(168)</span></div>
+
+        <div class="review-summary">
+          <div>
+            <div class="review-big-num">4.8</div>
+            <div class="review-stars">★★★★★</div>
+            <div class="review-total">168 reviews</div>
+          </div>
+          <div class="rating-bars">
+            <div class="rating-bar-row">
+              <div class="rating-bar-label">5</div>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:78%"></div></div>
+              <div class="rating-bar-count">131</div>
+            </div>
+            <div class="rating-bar-row">
+              <div class="rating-bar-label">4</div>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:14%"></div></div>
+              <div class="rating-bar-count">24</div>
+            </div>
+            <div class="rating-bar-row">
+              <div class="rating-bar-label">3</div>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:5%"></div></div>
+              <div class="rating-bar-count">8</div>
+            </div>
+            <div class="rating-bar-row">
+              <div class="rating-bar-label">2</div>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:2%"></div></div>
+              <div class="rating-bar-count">3</div>
+            </div>
+            <div class="rating-bar-row">
+              <div class="rating-bar-label">1</div>
+              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div>
+              <div class="rating-bar-count">2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- REVIEW 1 -->
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:#7c3aed">MS</div>
+              <div>
+                <div class="reviewer-name">Maria Santos</div>
+                <div class="reviewer-meta">Cranston, RI · Verified homeowner</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="review-stars-small">★★★★★</div>
+              <div class="review-date">Apr 2026</div>
+            </div>
+          </div>
+          <div class="review-text">
+            Kev and his crew did an incredible job replacing our 22-year-old roof. They showed up on time every day, kept the site clean, and finished ahead of schedule. The quality is excellent and the price was fair. I've already recommended him to two neighbors. Will definitely hire again for future projects.
+          </div>
+          <div class="review-service-tag">🏠 Full roof replacement</div>
+          <div class="pro-response">
+            <div class="pro-response-label">Response from Kev</div>
+            Thank you Maria! It was a pleasure working with you and your family. Enjoy the new roof — it should last you another 30 years!
+          </div>
+        </div>
+
+        <!-- REVIEW 2 -->
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:#0369a1">JW</div>
+              <div>
+                <div class="reviewer-name">James Whitfield</div>
+                <div class="reviewer-meta">Providence, RI · Verified homeowner</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="review-stars-small">★★★★★</div>
+              <div class="review-date">Mar 2026</div>
+            </div>
+          </div>
+          <div class="review-text">
+            Hired Kev to resurface my driveway and couldn't be happier. He gave me a detailed quote the same day I posted the project, came out to inspect, and scheduled the job within two weeks. The new asphalt looks great and he sealed it properly. Very professional throughout.
+          </div>
+          <div class="review-service-tag">🛣️ Driveway resurfacing</div>
+        </div>
+
+        <!-- REVIEW 3 -->
+        <div class="review-card">
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar" style="background:#be185d">RM</div>
+              <div>
+                <div class="reviewer-name">Rosa Mendez</div>
+                <div class="reviewer-meta">Cranston, RI · Verified homeowner</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="review-stars-small">★★★★☆</div>
+              <div class="review-date">Jan 2026</div>
+            </div>
+          </div>
+          <div class="review-text">
+            Great work on the patio stone border — it looks beautiful. Only minor issue was a slight delay on the start date, but Kev communicated well about it and made up the time. The finished product is exactly what I had in mind.
+          </div>
+          <div class="review-service-tag">🧱 Patio masonry</div>
+          <div class="pro-response">
+            <div class="pro-response-label">Response from Kev</div>
+            Thanks Rosa! Apologies again for the day delay — material delivery was held up. Really glad the patio came out the way you envisioned it!
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:16px">
+          <button class="btn btn-outline" style="width:100%;justify-content:center">Load more reviews</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDEBAR -->
+    <div>
+
+      <!-- CTA CARD -->
+      <div class="cta-card">
+        <div class="cta-card-title">Ready to get started?</div>
+        <div class="cta-card-sub">Post your project and Kev will be notified immediately. Your account info is used automatically — no forms to refill.</div>
+        <button class="cta-btn" onclick="window.location='post-project.html?pro=kev-hernandez&trade=roofing'">Post a project →</button>
+        <button class="cta-btn-outline" onclick="openModal('msgModal')">💬 Send a message</button>
+      </div>
+
+      <!-- PRO INFO -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Pro details</div>
+        <div class="info-row">
+          <div class="info-label">Location</div>
+          <div class="info-val">Cranston, RI</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Service radius</div>
+          <div class="info-val">Up to 40 miles</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">In business since</div>
+          <div class="info-val">2016 (8 years)</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">License</div>
+          <div class="info-val green">✓ RI-2024-04821</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Insurance</div>
+          <div class="info-val green">✓ Verified</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Crew size</div>
+          <div class="info-val">2–4 people</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Jobs completed</div>
+          <div class="info-val">200+</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Starting price</div>
+          <div class="info-val">From $150</div>
+        </div>
+      </div>
+
+      <!-- RESPONSE TIME -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Response time</div>
+        <div style="font-size:24px;font-weight:900;color:var(--green)">~1 hour</div>
+        <div style="font-size:12px;color:var(--gray);font-weight:700;margin-top:3px;margin-bottom:10px">Avg. response to new inquiries</div>
+        <div class="response-meter">
+          <div style="font-size:12px;font-weight:700;color:var(--gray)">Fast</div>
+          <div class="meter-track"><div class="meter-fill" style="width:88%"></div></div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray)">Slow</div>
+        </div>
+        <div style="font-size:12px;color:var(--gray);font-weight:700;margin-top:10px">
+          ⚡ Responding quickly this week
+        </div>
+      </div>
+
+      <!-- AVAILABILITY -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">This week's availability</div>
+        <div class="availability-grid">
+          <div class="avail-day busy"><span class="avail-day-name">Sun</span>Off</div>
+          <div class="avail-day avail"><span class="avail-day-name">Mon</span>Open</div>
+          <div class="avail-day avail"><span class="avail-day-name">Tue</span>Open</div>
+          <div class="avail-day partial"><span class="avail-day-name">Wed</span>PM</div>
+          <div class="avail-day avail"><span class="avail-day-name">Thu</span>Open</div>
+          <div class="avail-day avail"><span class="avail-day-name">Fri</span>Open</div>
+          <div class="avail-day partial"><span class="avail-day-name">Sat</span>AM</div>
+        </div>
+        <button class="cta-btn" style="margin-top:14px;background:var(--dark)" onclick="window.location='post-project.html?pro=kev-hernandez&trade=roofing'">Post a project →</button>
+      </div>
+
+      <!-- SHARE -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Share this pro</div>
+        <div class="share-row">
+          <button class="share-btn">🔗 Copy link</button>
+          <button class="share-btn">📧 Email</button>
+          <button class="share-btn">📱 Text</button>
+        </div>
+      </div>
+
+      <!-- SIMILAR PROS -->
+      <div class="sidebar-card">
+        <div class="sidebar-title">Similar pros nearby</div>
+        <div class="similar-grid">
+          <div class="similar-card">
+            <div class="similar-avatar" style="background:#0369a1">AR</div>
+            <div>
+              <div class="similar-name">Apex Roofing Group</div>
+              <div class="similar-cat">Roofing · Providence, RI</div>
+              <div class="similar-rating">★★★★★ 4.9</div>
+            </div>
+            <button class="similar-quote-btn" onclick="window.location='post-project.html'">Post project</button>
+          </div>
+          <div class="similar-card">
+            <div class="similar-avatar" style="background:#065f46">PM</div>
+            <div>
+              <div class="similar-name">Premier Paving & Masonry</div>
+              <div class="similar-cat">Driveways · Warwick, RI</div>
+              <div class="similar-rating">★★★★★ 4.8</div>
+            </div>
+            <button class="similar-quote-btn" onclick="window.location='post-project.html'">Post project</button>
+          </div>
+          <div class="similar-card">
+            <div class="similar-avatar" style="background:#92400e">SL</div>
+            <div>
+              <div class="similar-name">StoneLine Outdoor</div>
+              <div class="similar-cat">Masonry · Pawtucket, RI</div>
+              <div class="similar-rating">★★★★ 4.6</div>
+            </div>
+            <button class="similar-quote-btn" onclick="window.location='post-project.html'">Post project</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-img-wrap pi-1" id="lightbox-img" style="border-radius:16px"></div>
+    <div class="lightbox-caption" id="lightbox-caption"></div>
+  </div>
+
+  <!-- QUOTE MODAL -->
+  <div class="modal-overlay" id="quoteModal">
+    <div class="modal" style="max-width:480px;text-align:center">
+      <div class="modal-header" style="justify-content:flex-end;border-bottom:none;padding-bottom:0">
+        <button class="modal-close" onclick="closeModal('quoteModal')">✕</button>
+      </div>
+      <div style="padding:10px 32px 32px">
+        <div style="font-size:48px;margin-bottom:16px">📋</div>
+        <div style="font-size:20px;font-weight:900;margin-bottom:8px;letter-spacing:-0.4px">Post a project to get a quote</div>
+        <div style="font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:24px">
+          Post your project and Kev Hernandez Contracting will be notified immediately. Your contact info from your account is used automatically — no re-entry needed.
+        </div>
+        <div style="background:var(--green-light);border:1px solid #bbf7d0;border-radius:12px;padding:14px 16px;font-size:13px;font-weight:700;color:#166534;margin-bottom:20px;display:flex;gap:10px;align-items:center;text-align:left">
+          <span style="font-size:20px;flex-shrink:0">⚡</span>
+          <div>Kev typically responds within 1–2 hours. You'll be notified the moment a quote arrives.</div>
+        </div>
+        <a href="post-project.html?pro=kev-hernandez&trade=roofing" style="display:block;width:100%;padding:14px;background:var(--red);color:#fff;border-radius:12px;font-size:15px;font-weight:900;text-decoration:none;margin-bottom:10px">
+          Post my project — it's free →
+        </a>
+        <button onclick="closeModal('quoteModal')" style="width:100%;padding:12px;background:none;border:1px solid var(--border);border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font);color:var(--dark)">
+          Maybe later
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MESSAGE MODAL -->
+  <div class="modal-overlay" id="msgModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Message Kev</div>
+          <div style="font-size:13px;color:var(--gray);margin-top:2px">Kev Hernandez Contracting</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('msgModal')">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your name</label>
+        <input class="form-input" type="text" placeholder="Your name" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email address</label>
+        <input class="form-input" type="email" placeholder="you@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your message</label>
+        <textarea class="form-input" style="min-height:130px" placeholder="Hi Kev, I'm interested in getting a quote for..."></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button class="submit-btn outline" onclick="closeModal('msgModal')">Cancel</button>
+        <button class="submit-btn" onclick="closeModal('msgModal')">Send message →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    document.querySelectorAll('.modal-overlay').forEach(o => {
+      o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+    });
+
+    function openLightbox(emoji, caption) {
+      document.getElementById('lightbox-img').textContent = emoji;
+      document.getElementById('lightbox-caption').textContent = caption;
+      document.getElementById('lightbox').classList.add('open');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+
+    function scrollTo(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      document.querySelectorAll('.sticky-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function saveProToggle(btn) {
+      const saved = btn.textContent.includes('❤️');
+      btn.textContent = saved ? '🤍 Save pro' : '❤️ Saved';
+      btn.style.background = saved ? '' : '#fef2f2';
+      btn.style.borderColor = saved ? '' : '#fecaca';
+      btn.style.color = saved ? '' : '#dc2626';
+    }
+
+    // Highlight sticky tab on scroll
+    const sections = ['overview', 'services', 'portfolio', 'reviews'];
+    window.addEventListener('scroll', () => {
+      let current = 'overview';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top < 140) current = id;
+      });
+      document.querySelectorAll('.sticky-tab').forEach((tab, i) => {
+        tab.classList.toggle('active', sections[i] === current);
+      });
+    });
+  </script>
+
+  <footer style="background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:32px 48px;margin-top:60px">
+    <div style="max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:32px;height:32px;border-radius:8px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+        <div style="font-size:15px;font-weight:900;color:#fff;letter-spacing:-0.5px"><span style="color:#f87171">Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="homeowner-dashboard.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Find a pro</a>
+        <a href="pricing.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Pricing</a>
+        <a href="realtor-landing.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">For realtors</a>
+        <a href="about.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">About</a>
+        <a href="contact.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Contact</a>
+        <a href="terms.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Terms</a>
+        <a href="privacy.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

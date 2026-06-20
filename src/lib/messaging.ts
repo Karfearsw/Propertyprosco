@@ -35,6 +35,83 @@ export type ConversationMessage = {
   }
 }
 
+function isConversationRolePairAllowed(userRole: UserRole, partnerRole: UserRole) {
+  if (userRole === 'HOMEOWNER') return partnerRole === 'PRO'
+  if (userRole === 'PRO') return partnerRole === 'HOMEOWNER' || partnerRole === 'REALTOR'
+  if (userRole === 'REALTOR') return partnerRole === 'PRO'
+  return false
+}
+
+async function hasExistingThread(userId: string, partnerId: string) {
+  const thread = await db.message.findFirst({
+    where: {
+      OR: [
+        { senderId: userId, receiverId: partnerId },
+        { senderId: partnerId, receiverId: userId },
+      ],
+    },
+    select: { id: true },
+  })
+
+  return Boolean(thread)
+}
+
+async function hasQuotedProjectRelationship(ownerId: string, proId: string) {
+  const quote = await db.quote.findFirst({
+    where: {
+      proId,
+      project: {
+        ownerId,
+      },
+    },
+    select: { id: true },
+  })
+
+  return Boolean(quote)
+}
+
+async function hasMessagingRelationship(
+  user: Pick<MessageParticipant, 'id' | 'role'>,
+  partner: Pick<MessageParticipant, 'id' | 'role'>,
+) {
+  if (!isConversationRolePairAllowed(user.role, partner.role)) {
+    return false
+  }
+
+  if (user.role === 'HOMEOWNER' && partner.role === 'PRO') {
+    return true
+  }
+
+  if (user.role === 'PRO' && partner.role === 'HOMEOWNER') {
+    const [existingThread, quotedProject] = await Promise.all([
+      hasExistingThread(user.id, partner.id),
+      hasQuotedProjectRelationship(partner.id, user.id),
+    ])
+
+    return existingThread || quotedProject
+  }
+
+  if (user.role === 'PRO' && partner.role === 'REALTOR') {
+    const [existingThread, quotedProject] = await Promise.all([
+      hasExistingThread(user.id, partner.id),
+      hasQuotedProjectRelationship(partner.id, user.id),
+    ])
+
+    return existingThread || quotedProject
+  }
+
+  if (user.role === 'REALTOR' && partner.role === 'PRO') {
+    const [existingThread, quotedProject] = await Promise.all([
+      hasExistingThread(user.id, partner.id),
+      hasQuotedProjectRelationship(user.id, partner.id),
+    ])
+
+    return existingThread || quotedProject
+  }
+
+  return false
+}
+
 function toConversationMessage(message: {
   id: string
   senderId: string
@@ -61,6 +138,15 @@ function toConversationMessage(message: {
 }
 
 export async function getConversationSummaries(userId: string) {
+  const currentUser = await db.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  })
+
+  if (!currentUser) {
+    return []
+  }
+
   const recentMessages = await db.message.findMany({
     where: {
       OR: [{ senderId: userId }, { receiverId: userId }],
@@ -78,6 +164,10 @@ export async function getConversationSummaries(userId: string) {
 
   for (const message of recentMessages) {
     const partner = message.senderId === userId ? message.receiver : message.sender
+
+    if (!isConversationRolePairAllowed(currentUser.role, partner.role)) {
+      continue
+    }
 
     if (message.senderId === partner.id && message.receiverId === userId && !message.read) {
       unreadByPartner.set(partner.id, (unreadByPartner.get(partner.id) ?? 0) + 1)
@@ -146,10 +236,24 @@ export async function getSafeMessagingPartner(userId: string, partnerId?: string
     return null
   }
 
-  return db.user.findUnique({
-    where: { id: partnerId },
+  const users = await db.user.findMany({
+    where: {
+      id: {
+        in: [userId, partnerId],
+      },
+    },
     select: { id: true, name: true, image: true, role: true },
   })
+
+  const currentUser = users.find((user) => user.id === userId)
+  const partner = users.find((user) => user.id === partnerId)
+
+  if (!currentUser || !partner) {
+    return null
+  }
+
+  const allowed = await hasMessagingRelationship(currentUser, partner)
+  return allowed ? partner : null
 }
 
 export async function getMessagingPageData(userId: string, preselectedPartnerId?: string | null) {

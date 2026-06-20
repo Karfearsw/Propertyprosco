@@ -6,6 +6,7 @@ import { requireRole } from '@/lib/auth-guards'
 import { getProSnapshot } from '@/lib/dashboard-data'
 import EmptyState from '@/components/brand/EmptyState'
 import BillingStatusBanner from '@/components/billing/BillingStatusBanner'
+import { getProjectWorkflowLabel, quoteStatusClasses, quoteStatusLabel } from '@/lib/quote-workflow'
 
 export const metadata = { title: 'Dashboard' }
 
@@ -160,10 +161,10 @@ export default async function ProDashboardPage() {
                 <div key={q.id} className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
                   <div className="flex-1 min-w-0">
                     <div className="text-[13px] font-black text-pp-dark truncate">{q.project.title}</div>
-                    <div className="text-[11px] font-bold text-pp-gray">{q.project.category}</div>
+                    <div className="text-[11px] font-bold text-pp-gray">{q.project.category} · {getProjectWorkflowLabel(q.project.status)}</div>
                   </div>
                   <span className="text-[13px] font-black text-pp-dark shrink-0">{formatCurrency(q.amount)}</span>
-                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${q.status==='ACCEPTED'?'bg-pp-green-light text-pp-green':q.status==='VIEWED'?'bg-pp-blue-light text-pp-blue':'bg-pp-gold-light text-pp-gold'}`}>{q.status.charAt(0)+q.status.slice(1).toLowerCase()}</span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full shrink-0 ${quoteStatusClasses[q.status]}`}>{quoteStatusLabel[q.status]}</span>
                 </div>
               ))}
             </div>

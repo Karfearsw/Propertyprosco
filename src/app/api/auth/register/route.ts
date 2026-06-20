@@ -2,8 +2,9 @@ import { NextResponse } from 'next/server'
 import { SubscriptionStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
+import { issueEmailVerificationToken, normalizeEmail } from '@/lib/auth-flows'
 import { db } from '@/lib/db'
-import { normalizeEmail } from '@/lib/auth-flows'
 import { calculateProProfileCompletion, sanitizeStringArray } from '@/lib/profile-completion'
 
 const schema = z.object({
@@ -35,6 +36,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     const data = schema.parse(body)
+    const origin = new URL(req.url).origin
     const email = normalizeEmail(data.email)
     const businessName = cleanOptionalString(data.businessName)
     const bio = cleanOptionalString(data.bio)
@@ -48,8 +50,36 @@ export async function POST(req: Request) {
         ? [data.zipCode!.trim()]
         : []
 
-    const existing = await db.user.findUnique({ where: { email } })
+    assertAuthEmailDeliveryReady(origin)
+
+    const existing = await db.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        emailVerified: true,
+        password: true,
+      },
+    })
     if (existing) {
+      if (existing.password && !existing.emailVerified) {
+        const verification = await issueEmailVerificationToken(email)
+
+        if (verification.issued && verification.rawToken) {
+          await sendVerificationEmail({
+            email,
+            fallbackOrigin: origin,
+            token: verification.rawToken,
+          })
+        }
+
+        return NextResponse.json({
+          success: true,
+          email,
+          requiresEmailVerification: true,
+          resent: true,
+        })
+      }
+
       return NextResponse.json({ error: 'Email already in use' }, { status: 400 })
     }
 
@@ -131,13 +161,33 @@ export async function POST(req: Request) {
       },
     })
 
-    return NextResponse.json({ success: true, userId: user.id })
+    const verification = await issueEmailVerificationToken(email)
+
+    if (verification.issued && verification.rawToken) {
+      await sendVerificationEmail({
+        email,
+        fallbackOrigin: origin,
+        token: verification.rawToken,
+      })
+    }
+
+    return NextResponse.json({
+      success: true,
+      userId: user.id,
+      email,
+      requiresEmailVerification: true,
+    })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
     }
 
     console.error(error)
-    return NextResponse.json({ error: 'Registration failed' }, { status: 500 })
-  }
+    return NextResponse.json(
+      {
+        error: 'Registration failed or verification email could not be sent.',
+      },
+      { status: 500 },
+    )
+}
 }

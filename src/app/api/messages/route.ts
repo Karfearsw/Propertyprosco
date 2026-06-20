@@ -4,10 +4,16 @@ import { db } from '@/lib/db'
 import { z } from 'zod'
 import { getConversationSummaries, getSafeMessagingPartner, getThreadMessages, markThreadSeen } from '@/lib/messaging'
 import { roleSection, type AppRole } from '@/lib/role-routes'
+import { requirePaidApiRole } from '@/lib/api-guards'
 
 export async function GET(req: Request) {
   const session = await auth()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  if (session.user.role === 'PRO' || session.user.role === 'REALTOR') {
+    const billingResponse = requirePaidApiRole(session.user, session.user.role)
+    if (billingResponse) return billingResponse
+  }
 
   const { searchParams } = new URL(req.url)
   const partnerId = searchParams.get('partnerId')
@@ -49,16 +55,21 @@ export async function POST(req: Request) {
   const session = await auth()
   if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  if (session.user.role === 'PRO' || session.user.role === 'REALTOR') {
+    const billingResponse = requirePaidApiRole(session.user, session.user.role)
+    if (billingResponse) return billingResponse
+  }
+
   try {
     const body = await req.json()
     const data = sendSchema.parse(body)
-    const receiver = await db.user.findUnique({
-      where: { id: data.receiverId },
-      select: { id: true, role: true },
-    })
+    const receiver = await getSafeMessagingPartner(session.user.id, data.receiverId)
 
-    if (!receiver || receiver.id === session.user.id) {
+    if (receiver?.id === session.user.id) {
       return NextResponse.json({ error: 'Invalid recipient' }, { status: 422 })
+    }
+    if (!receiver) {
+      return NextResponse.json({ error: 'Messaging is not allowed for this relationship' }, { status: 403 })
     }
 
     const message = await db.message.create({

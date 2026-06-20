@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Refer a Friend — Property Pros</title>
+  <meta name="description" content="Refer friends to Property Pros and earn credits toward Plus membership. Share your link, they save, you earn." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #fff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); }
+    a { text-decoration: none; color: inherit; }
+
+    header { background: var(--dark); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .btn { padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; }
+    .btn-red { background: var(--red); color: #fff; } .btn-red:hover { background: var(--red-dark); }
+    .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+
+    /* HERO */
+    .hero { background: var(--dark); padding: 72px 40px 80px; text-align: center; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 60%, rgba(220,38,38,.12) 0%, transparent 60%); }
+    .hero-inner { position: relative; z-index: 2; max-width: 620px; margin: 0 auto; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(220,38,38,.15); border: 1px solid rgba(220,38,38,.3); border-radius: 999px; padding: 6px 14px; font-size: 12px; font-weight: 800; color: #fca5a5; margin-bottom: 20px; }
+    .hero-title { font-size: clamp(32px, 5vw, 52px); font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 14px; }
+    .hero-sub { font-size: 17px; color: #9ca3af; line-height: 1.75; margin-bottom: 36px; }
+    .reward-cards { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+    .reward-card { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 18px 22px; text-align: center; min-width: 140px; }
+    .rc-num { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1; }
+    .rc-label { font-size: 12px; color: #9ca3af; font-weight: 700; margin-top: 4px; }
+
+    /* MAIN */
+    .main { max-width: 860px; margin: 0 auto; padding: 48px 40px 80px; }
+
+    /* REFERRAL LINK BOX */
+    .ref-box { background: var(--white); border: 2px solid var(--border); border-radius: 20px; padding: 28px 30px; margin-bottom: 28px; }
+    .ref-box-title { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+    .ref-box-sub { font-size: 13px; color: var(--gray); font-weight: 700; margin-bottom: 18px; }
+    .link-field { display: flex; gap: 8px; }
+    .link-input { flex: 1; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 11px; font-size: 13px; font-family: var(--font); font-weight: 700; color: var(--dark); background: var(--bg); }
+    .link-input:focus { outline: none; border-color: var(--red); }
+    .copy-btn { padding: 12px 20px; border-radius: 11px; background: var(--red); color: #fff; border: none; font-size: 13px; font-weight: 900; cursor: pointer; font-family: var(--font); transition: all .15s; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+    .copy-btn:hover { background: var(--red-dark); }
+    .share-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .share-btn { padding: 9px 16px; border-radius: 9px; border: 1px solid var(--border); background: var(--white); font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: flex; align-items: center; gap: 6px; color: var(--dark); }
+    .share-btn:hover { background: var(--bg); border-color: var(--dark); }
+
+    /* HOW IT WORKS */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .step-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 22px; text-align: center; }
+    .step-num { width: 40px; height: 40px; border-radius: 12px; background: var(--red); color: #fff; font-weight: 900; font-size: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .step-title { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+    .step-desc { font-size: 13px; color: var(--gray); font-weight: 600; line-height: 1.6; }
+
+    /* REWARDS TIERS */
+    .rewards-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 28px 30px; margin-bottom: 28px; }
+    .rc-title { font-size: 16px; font-weight: 900; margin-bottom: 18px; }
+    .tier-list { display: flex; flex-direction: column; gap: 10px; }
+    .tier-item { display: flex; gap: 14px; align-items: center; padding: 14px 16px; background: var(--bg); border-radius: 12px; }
+    .tier-badge { font-size: 11px; font-weight: 900; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+    .tier-desc { font-size: 14px; font-weight: 700; flex: 1; }
+    .tier-reward { font-size: 14px; font-weight: 900; color: var(--green); white-space: nowrap; }
+
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; text-align: center; }
+    .sc-num { font-size: 30px; font-weight: 900; letter-spacing: -1px; }
+    .sc-label { font-size: 12px; color: var(--gray); font-weight: 700; margin-top: 4px; }
+
+    /* REFERRAL HISTORY */
+    .history-card { background: var(--white); border: 1px solid var(--border); border-radius: 20px; padding: 28px 30px; }
+    .hist-title { font-size: 16px; font-weight: 900; margin-bottom: 16px; }
+    .empty-state { text-align: center; padding: 32px 20px; }
+    .es-icon { width: 56px; height: 56px; border-radius: 16px; background: var(--bg); display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .es-title { font-size: 15px; font-weight: 900; margin-bottom: 5px; }
+    .es-sub { font-size: 13px; color: var(--gray); font-weight: 700; }
+
+    /* FAQ */
+    .faq-section { margin-top: 28px; }
+    .faq-title { font-size: 16px; font-weight: 900; margin-bottom: 14px; }
+    .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+    .faq-q { padding: 15px 18px; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .faq-q:hover { background: var(--bg); }
+    .faq-arrow { font-size: 18px; color: var(--gray); transition: transform .2s; font-weight: 400; }
+    .faq-item.open .faq-arrow { transform: rotate(45deg); color: var(--red); }
+    .faq-a { display: none; padding: 14px 18px; font-size: 13px; color: var(--gray); line-height: 1.75; font-weight: 600; border-top: 1px solid var(--border); }
+    .faq-item.open .faq-a { display: block; }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--green); color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 300; display: none; box-shadow: 0 8px 24px rgba(0,0,0,.15); }
+
+    footer { background: var(--dark2); padding: 32px 40px; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-inner { max-width: 860px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .footer-link { font-size: 13px; font-weight: 700; color: #6b7280; transition: color .15s; } .footer-link:hover { color: #fff; }
+
+    @media (max-width: 700px) {
+      .steps { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .reward-cards { flex-direction: column; align-items: center; }
+      header { padding: 0 20px; } .hero { padding: 52px 20px 60px; }
+      .main { padding: 28px 16px 60px; } footer { padding: 24px 20px; }
+      .ref-box, .rewards-card, .history-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div style="display:flex;gap:10px">
+      <a href="homeowner-dashboard.html" class="btn btn-ghost">
+        <i data-lucide="layout-dashboard" style="width:14px;height:14px"></i> Dashboard
+      </a>
+      <a href="homeowner-settings.html" class="btn btn-red">
+        <i data-lucide="settings" style="width:14px;height:14px"></i> Settings
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <i data-lucide="gift" style="width:13px;height:13px"></i>
+        Referral Program
+      </div>
+      <h1 class="hero-title">Share Property Pros.<br>Earn real rewards.</h1>
+      <p class="hero-sub">Refer friends, neighbors, or family. When they join, you both get something back. No limits on how many friends you refer.</p>
+
+      <div class="reward-cards">
+        <div class="reward-card">
+          <div class="rc-num" style="color:#4ade80">$5</div>
+          <div class="rc-label">credit per homeowner referral</div>
+        </div>
+        <div class="reward-card">
+          <div class="rc-num" style="color:#fbbf24">$10</div>
+          <div class="rc-label">credit per contractor referral</div>
+        </div>
+        <div class="reward-card">
+          <div class="rc-num" style="color:#f87171">Free</div>
+          <div class="rc-label">Plus™ when you refer 2 friends</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="main">
+
+    <!-- YOUR REFERRAL LINK -->
+    <div class="ref-box">
+      <div class="ref-box-title">Your personal referral link</div>
+      <div class="ref-box-sub">Share this link with anyone. When they sign up, you both benefit.</div>
+      <div class="link-field">
+        <input class="link-input" type="text" id="ref-link" value="propertypros.com/join?ref=maria2026" readonly />
+        <button class="copy-btn" onclick="copyLink()">
+          <i data-lucide="copy" style="width:14px;height:14px"></i>
+          Copy link
+        </button>
+      </div>
+      <div class="share-row">
+        <button class="share-btn" onclick="shareAction('Text')">
+          <i data-lucide="message-circle" style="width:13px;height:13px"></i> Text a friend
+        </button>
+        <button class="share-btn" onclick="shareAction('Email')">
+          <i data-lucide="mail" style="width:13px;height:13px"></i> Send by email
+        </button>
+        <button class="share-btn" onclick="shareAction('WhatsApp')">
+          <i data-lucide="share-2" style="width:13px;height:13px"></i> Share on WhatsApp
+        </button>
+        <button class="share-btn" onclick="shareAction('Facebook')">
+          <i data-lucide="share" style="width:13px;height:13px"></i> Facebook
+        </button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="sc-num" style="color:var(--red)">0</div>
+        <div class="sc-label">Total referrals</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num" style="color:var(--green)">$0</div>
+        <div class="sc-label">Credits earned</div>
+      </div>
+      <div class="stat-card">
+        <div class="sc-num" style="color:var(--amber)">$0</div>
+        <div class="sc-label">Available balance</div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-title">Share your link</div>
+        <div class="step-desc">Copy your personal referral link and send it to anyone who might benefit from Property Pros — homeowners, contractors, or realtors.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-title">They sign up</div>
+        <div class="step-desc">When someone uses your link to create an account, the referral is tracked automatically. They get $5 off their first month or Plus membership.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-title">You earn credits</div>
+        <div class="step-desc">Credits are added to your account once your referral completes their first project or subscribes. Use credits toward Plus™ or future features.</div>
+      </div>
+    </div>
+
+    <!-- REWARDS TIERS -->
+    <div class="rewards-card">
+      <div class="rc-title">What you earn per referral</div>
+      <div class="tier-list">
+        <div class="tier-item">
+          <span class="tier-badge" style="background:var(--green-light);color:#166534;border:1px solid #bbf7d0">Homeowner</span>
+          <div class="tier-desc">They sign up and post their first project</div>
+          <div class="tier-reward">+$5 credit</div>
+        </div>
+        <div class="tier-item">
+          <span class="tier-badge" style="background:var(--red-light);color:#991b1b;border:1px solid #fecaca">Contractor</span>
+          <div class="tier-desc">They sign up and complete their free trial</div>
+          <div class="tier-reward">+$10 credit</div>
+        </div>
+        <div class="tier-item">
+          <span class="tier-badge" style="background:var(--amber-light);color:#78350f;border:1px solid #fde68a">Realtor</span>
+          <div class="tier-desc">They subscribe to the Realtor plan</div>
+          <div class="tier-reward">+$15 credit</div>
+        </div>
+        <div class="tier-item" style="background:linear-gradient(135deg,rgba(220,38,38,.04),rgba(220,38,38,.08));border:1px solid #fecaca">
+          <span class="tier-badge" style="background:var(--red);color:#fff">🎁 Milestone</span>
+          <div class="tier-desc">Refer 2 friends of any type</div>
+          <div class="tier-reward">Free Plus™ for 1 year</div>
+        </div>
+        <div class="tier-item" style="background:linear-gradient(135deg,rgba(16,163,74,.04),rgba(16,163,74,.08));border:1px solid #bbf7d0">
+          <span class="tier-badge" style="background:var(--green);color:#fff">🏆 Milestone</span>
+          <div class="tier-desc">Refer 10 friends total</div>
+          <div class="tier-reward">$50 credit + Feature badge</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFERRAL HISTORY -->
+    <div class="history-card">
+      <div class="hist-title">
+        <i data-lucide="clock" style="width:16px;height:16px;vertical-align:middle;margin-right:6px"></i>
+        Your referral history
+      </div>
+      <div class="empty-state">
+        <div class="es-icon">
+          <i data-lucide="users" style="width:24px;height:24px;color:var(--gray)"></i>
+        </div>
+        <div class="es-title">No referrals yet</div>
+        <div class="es-sub">Copy your link above and share it with friends, neighbors, or anyone dealing with a home project.</div>
+        <button class="btn btn-red" style="margin: 16px auto 0" onclick="copyLink()">
+          <i data-lucide="copy" style="width:14px;height:14px"></i>
+          Copy my referral link
+        </button>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq-section">
+      <div class="faq-title">Common questions</div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">When do credits hit my account? <span class="faq-arrow">+</span></div><div class="faq-a">Credits are applied within 24 hours after your referral completes the qualifying action — for homeowners, that's posting their first project; for contractors, completing the free trial.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is there a limit to how many friends I can refer? <span class="faq-arrow">+</span></div><div class="faq-a">No limit at all. Refer as many people as you want. Every qualifying referral earns you credits, and milestone bonuses stack as you hit them.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What can I use credits for? <span class="faq-arrow">+</span></div><div class="faq-a">Credits apply toward Plus™ membership. Future uses — including discounts from local contractors — are coming in Phase 2. Credits never expire as long as your account is active.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What does my referral get? <span class="faq-arrow">+</span></div><div class="faq-a">Homeowners who sign up through your link get $5 off their first Plus membership. Contractors get an extra 7 days added to their free trial (21 days total). Realtors get one month free on their first subscription.</div></div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo">PP</div>
+        <div class="brand-name" style="color:#fff"><span>Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="homeowner-dashboard.html" class="footer-link">Dashboard</a>
+        <a href="plus.html" class="footer-link">Plus™</a>
+        <a href="contact.html" class="footer-link">Help</a>
+        <a href="terms.html" class="footer-link">Terms</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC</div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    function copyLink() {
+      const input = document.getElementById('ref-link');
+      input.select();
+      navigator.clipboard.writeText(input.value).catch(() => {});
+      showToast('✓ Referral link copied to clipboard!');
+    }
+
+    function shareAction(method) {
+      const link = document.getElementById('ref-link').value;
+      const msg = `I've been using Property Pros to find trusted local contractors — thought you'd find it useful too. Sign up free: ${link}`;
+      if (method === 'Text') window.open(`sms:?&body=${encodeURIComponent(msg)}`);
+      else if (method === 'Email') window.open(`mailto:?subject=Check out Property Pros&body=${encodeURIComponent(msg)}`);
+      else if (method === 'WhatsApp') window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+      else if (method === 'Facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://' + link)}`);
+      showToast(`Opening ${method} share...`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity .3s'; setTimeout(() => { t.style.display = 'none'; t.style.opacity = '1'; t.style.transition = ''; }, 300); }, 2800);
+    }
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Your Property Pros homeowner dashboard — manage projects, quotes, and messages." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Find a Pro — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--dark);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--dark);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 12px; color: #fff;
+    }
+
+    .brand-name { font-size: 15px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .header-right { display: flex; align-items: center; gap: 14px; }
+
+    .header-link {
+      font-size: 13px; font-weight: 700; color: #9ca3af;
+      text-decoration: none; transition: color .15s;
+    }
+
+    .header-link:hover { color: #fff; }
+
+    .user-pill {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.08); border-radius: 999px;
+      padding: 5px 12px 5px 5px; cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 11px;
+    }
+
+    .user-name { font-size: 13px; font-weight: 700; color: #fff; }
+
+    /* HERO SEARCH */
+    .search-hero {
+      background: var(--dark);
+      padding: 40px 32px 50px;
+      text-align: center;
+    }
+
+    .search-eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: #f87171; margin-bottom: 10px;
+    }
+
+    .search-title {
+      font-size: 32px; font-weight: 900; color: #fff;
+      letter-spacing: -1px; margin-bottom: 6px; line-height: 1.1;
+    }
+
+    .search-sub { font-size: 15px; color: #9ca3af; margin-bottom: 24px; }
+
+    .search-bar {
+      display: flex; gap: 0; max-width: 680px; margin: 0 auto;
+      background: var(--white); border-radius: 14px;
+      overflow: hidden; border: 2px solid transparent;
+      transition: border-color .2s;
+      box-shadow: 0 8px 32px rgba(0,0,0,.3);
+    }
+
+    .search-bar:focus-within { border-color: var(--red); }
+
+    .search-input {
+      flex: 1; padding: 16px 18px; border: none; outline: none;
+      font-size: 15px; font-family: var(--font); color: var(--dark);
+      background: transparent;
+    }
+
+    .search-divider {
+      width: 1px; background: var(--border); margin: 10px 0;
+    }
+
+    .search-location {
+      padding: 16px 14px; border: none; outline: none;
+      font-size: 14px; font-family: var(--font); color: var(--dark);
+      background: transparent; width: 180px;
+    }
+
+    .search-btn {
+      background: var(--red); color: #fff; border: none;
+      padding: 0 24px; font-size: 14px; font-weight: 800;
+      cursor: pointer; font-family: var(--font);
+      transition: background .15s;
+    }
+
+    .search-btn:hover { background: var(--red-dark); }
+
+    .search-chips {
+      display: flex; gap: 8px; justify-content: center;
+      flex-wrap: wrap; margin-top: 16px;
+    }
+
+    .chip {
+      padding: 7px 14px; border-radius: 999px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.1);
+      font-size: 12px; font-weight: 700; color: #d1d5db;
+      cursor: pointer; transition: all .15s;
+    }
+
+    .chip:hover { background: var(--red); border-color: var(--red); color: #fff; }
+
+    /* MAIN LAYOUT */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: #14532d;border-right: none;padding: 20px 14px;}
+
+    .sb-section { margin-bottom: 24px; }
+
+    .sb-label {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; color: #86efac; opacity: .8; padding: 0 8px; margin-bottom: 8px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; color: rgba(255,255,255,.65);
+      cursor: pointer; margin-bottom: 2px; text-decoration: none;
+      transition: all .15s;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .nav-item.active { background: #16a34a; color: #fff; }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+    .nav-count {
+      margin-left: auto; background: #16a34a; color: #fff;
+      font-size: 10px; font-weight: 800; padding: 2px 6px;
+      border-radius: 999px;
+    }
+
+    /* FILTERS */
+    .filter-group { margin-bottom: 18px; }
+
+    .filter-label {
+      font-size: 11px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--dark); margin-bottom: 8px;
+    }
+
+    .filter-option {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0; font-size: 13px; color: var(--gray);
+      cursor: pointer; transition: color .15s;
+    }
+
+    .filter-option:hover { color: var(--dark); }
+
+    .filter-check {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1.5px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all .15s;
+    }
+
+    .filter-option.checked .filter-check {
+      background: var(--red); border-color: var(--red); color: #fff;
+      font-size: 10px;
+    }
+
+    .filter-option.checked { color: var(--dark); font-weight: 700; }
+
+    select.filter-select {
+      width: 100%; padding: 9px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 13px; font-family: var(--font);
+      color: var(--dark); background: var(--white); cursor: pointer;
+    }
+
+    /* CONTENT */
+    .content { padding: 22px 24px; }
+
+    .content-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .content-title { font-size: 18px; font-weight: 900; }
+    .content-sub { font-size: 13px; color: var(--gray); margin-top: 2px; }
+
+    .sort-bar { display: flex; gap: 8px; align-items: center; }
+
+    .sort-label { font-size: 12px; color: var(--gray); font-weight: 700; }
+
+    select.sort-select {
+      padding: 7px 12px; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 13px; font-family: var(--font);
+      color: var(--dark); background: var(--white); cursor: pointer;
+    }
+
+    .view-toggle { display: flex; gap: 4px; }
+
+    .view-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--white); cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .15s;
+    }
+
+    .view-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+
+    /* PRO CARDS */
+    .pros-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 14px; margin-bottom: 22px;
+    }
+
+    .pro-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 20px; transition: all .2s;
+      cursor: pointer; position: relative;
+    }
+
+    .pro-card:hover {
+      border-color: var(--red); box-shadow: 0 4px 20px rgba(220,38,38,.08);
+      transform: translateY(-1px);
+    }
+
+    .pro-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 14px;
+    }
+
+    .pro-left { display: flex; gap: 12px; align-items: flex-start; }
+
+    .pro-avatar {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; flex-shrink: 0;
+    }
+
+    .pro-name { font-size: 15px; font-weight: 900; margin-bottom: 3px; }
+    .pro-category { font-size: 12px; color: var(--gray); font-weight: 600; }
+
+    .save-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--white);
+      cursor: pointer; font-size: 16px; display: flex;
+      align-items: center; justify-content: center; transition: all .15s;
+      flex-shrink: 0;
+    }
+
+    .save-btn:hover { background: var(--red-light); border-color: var(--red); }
+    .save-btn.saved { background: var(--red-light); border-color: var(--red); }
+
+    .pro-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+
+    .badge {
+      padding: 4px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 800;
+    }
+
+    .badge-dark { background: #f3f4f6; color: var(--dark); }
+    .badge-green { background: #f0fdf4; color: #166534; }
+    .badge-red { background: var(--red-light); color: #991b1b; }
+    .badge-blue { background: #eff6ff; color: #1e40af; }
+
+    .pro-rating {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; margin-bottom: 8px;
+    }
+
+    .stars { color: #f59e0b; font-size: 13px; }
+    .rating-num { font-weight: 800; }
+    .review-count { color: var(--gray); }
+
+    .pro-desc {
+      font-size: 13px; color: var(--gray); line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .pro-footer {
+      display: flex; justify-content: space-between;
+      align-items: center; padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .pro-price { font-size: 13px; font-weight: 800; color: var(--dark); }
+    .pro-price span { color: var(--gray); font-weight: 600; }
+    .pro-response { font-size: 12px; color: var(--green); font-weight: 700; }
+
+    .pro-actions { display: flex; gap: 8px; }
+
+    .btn {
+      padding: 9px 16px; border-radius: 10px; font-size: 12px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      transition: all .15s; border: 1px solid var(--border);
+      text-decoration: none; display: inline-block;
+    }
+
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-ghost { background: var(--white); color: var(--dark); }
+    .btn-ghost:hover { background: var(--bg); }
+
+    /* MY REQUESTS */
+    .requests-section { margin-bottom: 22px; }
+
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .section-title { font-size: 16px; font-weight: 900; }
+
+    .request-item {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; margin-bottom: 10px; transition: all .15s;
+    }
+
+    .request-item:hover { border-color: #d1d5db; }
+
+    .request-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--red-light); display: flex; align-items: center;
+      justify-content: center; font-size: 20px; flex-shrink: 0;
+    }
+
+    .request-name { font-size: 14px; font-weight: 800; margin-bottom: 3px; }
+    .request-detail { font-size: 12px; color: var(--gray); }
+
+    .request-status { text-align: right; flex-shrink: 0; }
+
+    .status-badge {
+      padding: 5px 12px; border-radius: 999px;
+      font-size: 11px; font-weight: 800; display: inline-block;
+      margin-bottom: 4px;
+    }
+
+    .status-active { background: #f0fdf4; color: #166534; }
+    .status-pending { background: #fffbeb; color: #92400e; }
+    .status-done { background: #f3f4f6; color: #374151; }
+
+    .request-quotes { font-size: 12px; color: var(--gray); font-weight: 600; }
+
+    /* SAVED PROS */
+    .saved-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+
+    .saved-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 16px; text-align: center;
+      transition: all .15s; cursor: pointer;
+    }
+
+    .saved-card:hover { border-color: var(--red); }
+
+    .saved-avatar {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; margin: 0 auto 10px;
+    }
+
+    .saved-name { font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+    .saved-cat { font-size: 11px; color: var(--gray); margin-bottom: 8px; }
+    .saved-rating { font-size: 12px; color: #f59e0b; font-weight: 700; }
+
+    /* EMPTY STATE */
+    .empty {
+      text-align: center; padding: 40px 20px; color: var(--gray);
+    }
+
+    .empty-icon { font-size: 36px; margin-bottom: 10px; }
+    .empty-title { font-size: 15px; font-weight: 800; color: var(--dark); margin-bottom: 6px; }
+    .empty-sub { font-size: 13px; line-height: 1.6; }
+
+    /* TABS */
+    .tab-bar {
+      display: flex; gap: 4px; margin-bottom: 20px;
+      border-bottom: 1px solid var(--border); padding-bottom: 0;
+    }
+
+    .tab {
+      padding: 10px 16px; font-size: 13px; font-weight: 800;
+      cursor: pointer; border: none; background: none;
+      font-family: var(--font); color: var(--gray);
+      border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: all .15s;
+    }
+
+    .tab.active { color: var(--red); border-bottom-color: var(--red); }
+    .tab:hover:not(.active) { color: var(--dark); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .pros-grid { grid-template-columns: 1fr; }
+      .saved-grid { grid-template-columns: repeat(2, 1fr); }
+      .search-title { font-size: 24px; }
+    }
+
+    /* ── MOBILE BOTTOM NAV ── */
+    .mobile-bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; background:var(--dark); border-top:1px solid rgba(255,255,255,.08); padding:6px 0 env(safe-area-inset-bottom,6px); z-index:98; justify-content:space-around; align-items:center; }
+    .mbn-item { display:flex; flex-direction:column; align-items:center; gap:2px; text-decoration:none; padding:6px 10px; border-radius:8px; color:#6b7280; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; transition:color .15s; min-width:48px; }
+    .mbn-item.active { color:#fff; }
+    .mbn-item:hover { color:#fff; }
+    .mbn-icon { font-size:20px; line-height:1; }
+    .mbn-badge { position:relative; display:inline-block; }
+    .mbn-dot { position:absolute; top:-2px; right:-6px; width:8px; height:8px; background:var(--red); border-radius:50%; border:1.5px solid var(--dark); }
+    @media (max-width:768px) {
+      .mobile-bottom-nav { display:flex !important; }
+      .main, .page, body { padding-bottom:72px !important; }
+      .header-nav { display:none !important; }
+    }
+
+    /* ── GLOBAL MOBILE IMPROVEMENTS ── */
+    @media (max-width:768px) {
+      /* Better touch targets */
+      .btn, .btn-sm, button { min-height:40px; }
+      /* Readable body text */
+      body { font-size:15px; }
+      /* Stack grids on mobile */
+      .stats-strip, .stats-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      .fears-grid, .features-grid, .trust-grid, .testi-grid, .how-grid { grid-template-columns:1fr !important; }
+      .services-grid, .pros-grid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      /* Hero adjustments */
+      .hero { padding:48px 20px 56px !important; }
+      .hero-inner { grid-template-columns:1fr !important; gap:32px !important; }
+      .hero-card, .comparison-card { display:none; } /* hide demo cards on mobile hero */
+      /* Header padding */
+      header { padding:0 16px !important; }
+      /* Modal full screen on mobile */
+      .modal-overlay { padding:0 !important; align-items:flex-end !important; }
+      .modal, .vd-modal { border-radius:20px 20px 0 0 !important; max-height:92vh !important; }
+      /* Page padding */
+      .page, .content { padding-left:16px !important; padding-right:16px !important; }
+      /* Filter tabs scroll */
+      .filter-bar, .cat-tabs { overflow-x:auto; flex-wrap:nowrap !important; padding-bottom:4px; }
+      .filter-tab, .cat-tab, .filter-tab { white-space:nowrap; flex-shrink:0; }
+      /* Card actions stack */
+      .qc-footer, .lc-footer, .pc-footer { flex-direction:column !important; align-items:flex-start !important; }
+      .qc-footer-right, .lc-actions, .pc-footer-right { flex-wrap:wrap !important; }
+      /* How strip stacks */
+      .how-strip-inner { flex-direction:column !important; gap:12px !important; }
+      .how-strip-item { border-right:none !important; padding:0 !important; }
+      /* Stats band */
+      .stats-section .stats-inner, .stats-inner { grid-template-columns:1fr 1fr !important; gap:20px !important; }
+      /* Math section */
+      .math-grid { grid-template-columns:1fr !important; }
+      .math-vs { display:none !important; }
+      /* Topbar stacks */
+      .topbar { flex-direction:column !important; align-items:flex-start !important; }
+      /* Table overflow */
+      .earnings-table, .et-header, .et-row { overflow-x:auto; }
+    }
+    @media (max-width:400px) {
+      .services-grid, .pros-grid { grid-template-columns:1fr !important; }
+      .date-grid { grid-template-columns:repeat(3,1fr) !important; }
+      .add-on-grid { grid-template-columns:1fr !important; }
+    }
+  
+    /* ── APP HEADER ── */
+    header { background: #14532d; height: 60px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .hw-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .hw-logo { width: 32px; height: 32px; border-radius: 9px; background: #16a34a; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; flex-shrink: 0; }
+    .hw-brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.3px; }
+    .hw-brand-name span { color: #86efac; }
+    .hw-header-right { display: flex; align-items: center; gap: 6px; }
+    /* Bell */
+    .hw-bell { position: relative; width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #9ca3af; cursor: pointer; transition: all .15s; text-decoration: none; }
+    .hw-bell:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .hw-bell-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: #dc2626; border-radius: 50%; border: 2px solid #14532d; }
+    /* Avatar */
+    .hw-avatar-btn { width: 34px; height: 34px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; cursor: pointer; border: 2px solid rgba(255,255,255,.15); transition: border-color .15s; }
+    .hw-avatar-btn:hover { border-color: rgba(255,255,255,.4); }
+    /* Hamburger */
+    .hw-hamburger { width: 38px; height: 38px; border-radius: 9px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; background: transparent; border: none; transition: background .15s; }
+    .hw-hamburger:hover { background: rgba(255,255,255,.08); }
+    .hw-hamburger span { display: block; width: 20px; height: 2px; background: #9ca3af; border-radius: 2px; transition: all .25s; }
+    .hw-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: #fff; }
+    .hw-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hw-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: #fff; }
+    /* Drawer */
+    .hw-drawer { display: none; position: fixed; top: 60px; right: 0; width: 280px; bottom: 0; background: #14532d; border-left: 1px solid rgba(255,255,255,.07); z-index: 99; flex-direction: column; padding: 12px; box-shadow: -8px 0 32px rgba(0,0,0,.3); overflow-y: auto; }
+    .hw-drawer.open { display: flex; }
+    .hw-drawer-section { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #4b5563; padding: 10px 10px 4px; }
+    .hw-drawer-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; color: #9ca3af; text-decoration: none; transition: all .15s; margin-bottom: 2px; }
+    .hw-drawer-link:hover, .hw-drawer-link.active { background: rgba(255,255,255,.06); color: #fff; }
+    .hw-drawer-link i { flex-shrink: 0; }
+    .hw-drawer-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 4px; }
+    .hw-drawer-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+    .hw-drawer-user { display: flex; align-items: center; gap: 10px; padding: 10px 12px; margin-bottom: 8px; }
+    .hw-drawer-avatar { width: 36px; height: 36px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .hw-drawer-username { font-size: 13px; font-weight: 800; color: #fff; }
+    .hw-drawer-role { font-size: 11px; color: #6b7280; font-weight: 700; }
+    .hw-drawer-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; color: #f87171; text-decoration: none; transition: all .15s; }
+    .hw-drawer-logout:hover { background: rgba(220,38,38,.1); }
+    /* Overlay */
+    .hw-overlay { display: none; position: fixed; inset: 0; top: 60px; background: rgba(0,0,0,.4); z-index: 98; }
+    .hw-overlay.open { display: block; }
+
+  </style>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <header>
+    <a href="homeowner-dashboard.html" class="hw-brand">
+      <div class="hw-logo">PP</div>
+      <div class="hw-brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div class="hw-header-right">
+      <!-- Notification bell -->
+      <a href="homeowner-notifications.html" class="hw-bell" title="Notifications">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div class="hw-bell-dot"></div>
+      </a>
+      <!-- Avatar -->
+      <div class="hw-avatar-btn" onclick="toggleHwMenu()" title="Menu">MS</div>
+      <!-- Hamburger -->
+      <button class="hw-hamburger" id="hw-hamburger" onclick="toggleHwMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CLICK OVERLAY -->
+  <div class="hw-overlay" id="hw-overlay" onclick="closeHwMenu()"></div>
+
+  <!-- SIDE DRAWER -->
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+
+  <!-- DASHBOARD WELCOME STRIP -->
+  <div style="background:linear-gradient(135deg,#14532d,#166534);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+    <div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#86efac;opacity:.8;margin-bottom:6px">Welcome back</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
+        <div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.5px">Maria Santos</div>
+        <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);border-radius:999px;padding:3px 10px">
+          <span style="font-size:13px">⭐</span>
+          <span style="font-size:12px;font-weight:900;color:#fcd34d">4.8</span>
+          <span style="font-size:11px;font-weight:700;color:#9ca3af">· 3 reviews</span>
+        </div>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.65);font-weight:700">Cranston, RI · 2 active projects · 4 quotes waiting</div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="post-project.html" style="padding:11px 20px;background:var(--red);color:#fff;border-radius:11px;font-size:13px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:7px">
+        <i data-lucide="plus" style="width:15px;height:15px"></i> Post a project
+      </a>
+      <a href="find-a-pro.html" style="padding:11px 20px;background:rgba(255,255,255,.08);color:#fff;border-radius:11px;font-size:13px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:7px;border:1px solid rgba(255,255,255,.15)">
+        <i data-lucide="search" style="width:15px;height:15px"></i> Find a pro
+      </a>
+    </div>
+  </div>
+
+  <!-- STATS STRIP -->
+  <div style="background:var(--white);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;gap:0">
+    <div style="flex:1;text-align:center;padding:8px 16px;border-right:1px solid var(--border)">
+      <div style="font-size:22px;font-weight:900;color:var(--dark);letter-spacing:-0.5px">2</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray)">Active projects</div>
+    </div>
+    <div style="flex:1;text-align:center;padding:8px 16px;border-right:1px solid var(--border)">
+      <div style="font-size:22px;font-weight:900;color:var(--red);letter-spacing:-0.5px">4</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray)">Quotes to review</div>
+    </div>
+    <div style="flex:1;text-align:center;padding:8px 16px;border-right:1px solid var(--border)">
+      <div style="font-size:22px;font-weight:900;color:var(--green);letter-spacing:-0.5px">1</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray)">New message</div>
+    </div>
+    <div style="flex:1;text-align:center;padding:8px 16px">
+      <div style="font-size:22px;font-weight:900;color:var(--dark);letter-spacing:-0.5px">3</div>
+      <div style="font-size:11px;font-weight:700;color:var(--gray)">Jobs completed</div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+
+    <main class="content">
+
+      <!-- OVERVIEW / DASHBOARD VIEW -->
+      <div id="view-find" class="tab-content active">
+
+        <!-- FIND A PRO CTA CARD -->
+        <div style="background:linear-gradient(135deg,#111827,#1f2937);border-radius:16px;padding:24px 28px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#f87171;margin-bottom:8px">Pro directory</div>
+            <div style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px">Looking for a local contractor?</div>
+            <div style="font-size:13px;color:#9ca3af;font-weight:700">Browse 12+ verified pros in Rhode Island — filter by trade, rating, and response time.</div>
+          </div>
+          <a href="find-a-pro.html" style="padding:12px 22px;background:var(--red);color:#fff;border-radius:11px;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;flex-shrink:0">
+            <i data-lucide="search" style="width:15px;height:15px"></i> Browse pros
+          </a>
+        </div>
+
+
+        <!-- ── PENDING REVIEWS ── -->
+        <div style="background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;margin-bottom:16px">
+          <div style="padding:14px 18px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14px;font-weight:900">⭐ Leave a review</div>
+            <span style="font-size:11px;font-weight:900;padding:2px 9px;border-radius:999px;background:#fef3c7;color:#b45309;border:1px solid #fde68a">1 pending</span>
+          </div>
+          <div style="padding:16px 18px">
+            <!-- Review prompt -->
+            <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:16px;margin-bottom:12px" id="review-prompt-1">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                <div style="width:42px;height:42px;border-radius:11px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;color:#fff;flex-shrink:0">AP</div>
+                <div>
+                  <div style="font-size:14px;font-weight:900;color:#111827">Apex Roofing Group</div>
+                  <div style="font-size:12px;font-weight:700;color:#6b7280">Full roof replacement · Completed Apr 22</div>
+                </div>
+                <div style="margin-left:auto;font-size:12px;font-weight:700;color:#6b7280">7 days left to review</div>
+              </div>
+              <!-- Star selector -->
+              <div style="margin-bottom:10px">
+                <div style="font-size:12px;font-weight:800;color:#111827;margin-bottom:6px">How was your experience?</div>
+                <div style="display:flex;gap:6px" id="hw-stars-1">
+                  <span class="hw-star" onclick="setHwStars(1,1)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+                  <span class="hw-star" onclick="setHwStars(1,2)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+                  <span class="hw-star" onclick="setHwStars(1,3)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+                  <span class="hw-star" onclick="setHwStars(1,4)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+                  <span class="hw-star" onclick="setHwStars(1,5)" style="font-size:28px;cursor:pointer;transition:transform .1s;filter:grayscale(1)">⭐</span>
+                </div>
+              </div>
+              <!-- Comment -->
+              <textarea id="hw-comment-1" placeholder="Tell other homeowners about your experience — what went well, how was communication, would you hire them again?" style="width:100%;padding:10px 13px;border:1px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;min-height:80px;resize:vertical;margin-bottom:10px;color:#111827"></textarea>
+              <!-- Actions -->
+              <div style="display:flex;gap:8px">
+                <button onclick="submitHwReview(1)" style="padding:9px 20px;background:#dc2626;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s">Submit review</button>
+                <button onclick="skipHwReview(1)" style="padding:9px 16px;background:#fff;color:#6b7280;border:1px solid #e5e7eb;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Skip for now</button>
+              </div>
+            </div>
+            <div style="font-size:12px;font-weight:700;color:#9ca3af;display:flex;align-items:center;gap:5px">
+              <i data-lucide="lock" style="width:12px;height:12px"></i>
+              Your review is hidden until the pro reviews you — keeps it honest for both sides.
+            </div>
+          </div>
+        </div>
+        <!-- QUICK ACTIONS -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+          <a href="post-project.html" style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .15s" onmouseover="this.style.borderColor='#dc2626'" onmouseout="this.style.borderColor='#e5e7eb'">
+            <div style="width:40px;height:40px;border-radius:11px;background:#fef2f2;display:flex;align-items:center;justify-content:center"><i data-lucide="file-plus" style="width:20px;height:20px;color:#dc2626"></i></div>
+            <div style="font-size:13px;font-weight:900;color:var(--dark)">Post a project</div>
+            <div style="font-size:11px;color:var(--gray);font-weight:700">Get quotes from verified pros</div>
+          </a>
+          <a href="quick-jobs.html" style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .15s" onmouseover="this.style.borderColor='#ea580c'" onmouseout="this.style.borderColor='#e5e7eb'">
+            <div style="width:40px;height:40px;border-radius:11px;background:#fff7ed;display:flex;align-items:center;justify-content:center"><i data-lucide="camera" style="width:20px;height:20px;color:#ea580c"></i></div>
+            <div style="font-size:13px;font-weight:900;color:var(--dark)">Quick Jobs</div>
+            <div style="font-size:11px;color:var(--gray);font-weight:700">Post a photo, get prices fast</div>
+          </a>
+          <a href="saved-pros.html" style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:16px;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;transition:all .15s" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='#e5e7eb'">
+            <div style="width:40px;height:40px;border-radius:11px;background:#eff6ff;display:flex;align-items:center;justify-content:center"><i data-lucide="bookmark" style="width:20px;height:20px;color:#2563eb"></i></div>
+            <div style="font-size:13px;font-weight:900;color:var(--dark)">Saved Pros</div>
+            <div style="font-size:11px;color:var(--gray);font-weight:700">Pros you've bookmarked</div>
+          </a>
+        </div>
+
+        <!-- QUICK JOBS ACTIVE POSTS -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:14px;font-weight:900">⚡ Your Quick Jobs</div>
+              <div style="font-size:11px;font-weight:700;color:var(--gray);margin-top:2px">Posts waiting for pro responses</div>
+            </div>
+            <a href="quick-jobs.html" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:none">View all →</a>
+          </div>
+
+          <!-- Post 1 — has responses -->
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f9fafb">
+            <div style="width:52px;height:52px;border-radius:9px;overflow:hidden;flex-shrink:0">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=120&q=80" style="width:100%;height:100%;object-fit:cover">
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Full garage cleanout — furniture &amp; boxes</div>
+              <div style="font-size:11px;font-weight:700;color:var(--gray)">🚛 Junk Removal · Posted 2 hrs ago</div>
+              <div style="font-size:11px;font-weight:900;color:var(--green);margin-top:3px">✅ 2 pros responded with prices</div>
+            </div>
+            <a href="quick-jobs.html" style="padding:7px 13px;background:var(--red);color:#fff;border-radius:8px;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0">View responses</a>
+          </div>
+
+          <!-- Post 2 — waiting -->
+          <div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f9fafb">
+            <div style="width:52px;height:52px;border-radius:9px;overflow:hidden;flex-shrink:0">
+              <img src="https://images.unsplash.com/photo-1527515637462-cff94edd1b27?w=120&q=80" style="width:100%;height:100%;object-fit:cover">
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Deep clean — 3 bed 2 bath, move-out</div>
+              <div style="font-size:11px;font-weight:700;color:var(--gray)">🧹 Cleaning · Posted 5 hrs ago</div>
+              <div style="font-size:11px;font-weight:800;color:#f59e0b;margin-top:3px">⏳ Waiting for responses...</div>
+            </div>
+            <a href="quick-jobs.html" style="padding:7px 13px;background:var(--white);color:var(--dark);border:1px solid var(--border);border-radius:8px;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0">View post</a>
+          </div>
+
+          <!-- Post a new one -->
+          <div style="padding:12px 16px;background:#fafafa;display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <div style="font-size:12px;font-weight:700;color:var(--gray)">Have another job that needs doing?</div>
+            <a href="quick-jobs.html" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--red);color:#fff;border-radius:8px;font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0">
+              <i data-lucide="camera" style="width:13px;height:13px"></i> Post a Quick Job
+            </a>
+          </div>
+        </div>
+
+        <!-- ACTIVE PROJECTS PREVIEW -->
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:14px;font-weight:900">Active projects</div>
+            <a href="homeowner-projects.html" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:none">View all →</a>
+          </div>
+          <div style="padding:0 4px">
+            <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #f9fafb">
+              <div style="font-size:24px;flex-shrink:0">🏠</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:2px">Roof repair — shingle replacement</div>
+                <div style="font-size:11px;color:var(--gray);font-weight:700">Posted 2 days ago · Budget $500–$900</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:10px;font-weight:900;padding:3px 9px;border-radius:999px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;margin-bottom:4px">Active</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray)">4 quotes</div>
+              </div>
+              <a href="homeowner-projects.html" style="padding:7px 13px;background:var(--red);color:#fff;border-radius:8px;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0">View quotes</a>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;padding:14px 16px">
+              <div style="font-size:24px;flex-shrink:0">🛣️</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:2px">Driveway resurfacing — asphalt</div>
+                <div style="font-size:11px;color:var(--gray);font-weight:700">Posted 5 days ago · Budget $1,200–$2,000</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <div style="font-size:10px;font-weight:900;padding:3px 9px;border-radius:999px;background:#fef3c7;color:#b45309;border:1px solid #fde68a;margin-bottom:4px">1 quote</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray)">Awaiting more</div>
+              </div>
+              <a href="homeowner-projects.html" style="padding:7px 13px;background:var(--white);color:var(--dark);border:1px solid var(--border);border-radius:8px;font-size:11px;font-weight:800;text-decoration:none;white-space:nowrap;flex-shrink:0">View quote</a>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- LOCAL COST GUIDES — PHASE 2 (hidden until ready) -->
+        <div id="phase2-cost-guides" style="display:none">
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-size:14px;font-weight:900;margin-bottom:2px">Cost guides for Cranston, RI</div>
+              <div style="font-size:12px;color:var(--gray);font-weight:700">Local estimates based on your area — updated 2026</div>
+            </div>
+            <a href="blog.html" style="font-size:12px;font-weight:800;color:var(--red);text-decoration:none">View all guides →</a>
+          </div>
+
+          <!-- ARTICLES GRID -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0" id="cost-guides-grid">
+
+            <div class="guide-card" onclick="openGuide('driveway')" style="padding:16px 18px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="font-size:28px;flex-shrink:0">🛣️</div>
+                <div>
+                  <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:4px">Driveways</div>
+                  <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:4px;line-height:1.3">Driveway Cost in Cranston, RI (2026)</div>
+                  <div style="font-size:12px;color:var(--gray);font-weight:700;line-height:1.5">Asphalt $8–15/sqft · Concrete $10–20/sqft · Pavers $18–35/sqft</div>
+                  <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+                    <span style="font-size:11px;font-weight:700;color:var(--gray)">5 min read</span>
+                    <span style="font-size:11px;font-weight:900;color:var(--green);background:#f0fdf4;padding:2px 8px;border-radius:999px;border:1px solid #bbf7d0">Updated May 2026</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="guide-card" onclick="openGuide('roof')" style="padding:16px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="font-size:28px;flex-shrink:0">🏠</div>
+                <div>
+                  <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:4px">Roofing</div>
+                  <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:4px;line-height:1.3">Roof Replacement Cost in RI (2026)</div>
+                  <div style="font-size:12px;color:var(--gray);font-weight:700;line-height:1.5">Average $9,000–$16,000 · Materials, labor & what to expect</div>
+                  <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+                    <span style="font-size:11px;font-weight:700;color:var(--gray)">5 min read</span>
+                    <span style="font-size:11px;font-weight:900;color:var(--green);background:#f0fdf4;padding:2px 8px;border-radius:999px;border:1px solid #bbf7d0">Updated Mar 2026</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="guide-card" onclick="openGuide('spring')" style="padding:16px 18px;border-right:1px solid var(--border);cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="font-size:28px;flex-shrink:0">🌿</div>
+                <div>
+                  <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:4px">Maintenance</div>
+                  <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:4px;line-height:1.3">Spring Home Checklist for RI Homeowners</div>
+                  <div style="font-size:12px;color:var(--gray);font-weight:700;line-height:1.5">12 things to check after a Rhode Island winter</div>
+                  <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+                    <span style="font-size:11px;font-weight:700;color:var(--gray)">4 min read</span>
+                    <span style="font-size:11px;font-weight:900;color:var(--gold);background:#fef3c7;padding:2px 8px;border-radius:999px;border:1px solid #fde68a">Seasonal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="guide-card" onclick="openGuide('quotes')" style="padding:16px 18px;cursor:pointer;transition:background .15s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='#fff'">
+              <div style="display:flex;align-items:flex-start;gap:12px">
+                <div style="font-size:28px;flex-shrink:0">📊</div>
+                <div>
+                  <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:4px">Hiring Guide</div>
+                  <div style="font-size:13px;font-weight:900;color:var(--dark);margin-bottom:4px;line-height:1.3">How to Compare Contractor Quotes</div>
+                  <div style="font-size:12px;color:var(--gray);font-weight:700;line-height:1.5">It's not just the price — what to look at line by line</div>
+                  <div style="margin-top:8px;display:flex;align-items:center;gap:10px">
+                    <span style="font-size:11px;font-weight:700;color:var(--gray)">5 min read</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /grid -->
+        </div><!-- /cost guides -->
+
+        <!-- ARTICLE MODAL -->
+        <div id="guide-modal-overlay" onclick="closeGuide()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;align-items:flex-start;justify-content:center;padding:40px 20px;overflow-y:auto">
+          <div onclick="event.stopPropagation()" style="background:#fff;border-radius:20px;max-width:660px;width:100%;padding:32px;position:relative">
+            <button onclick="closeGuide()" style="position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+            <div id="guide-category" style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--red);margin-bottom:10px"></div>
+            <div id="guide-title" style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;letter-spacing:-0.5px;line-height:1.2;margin-bottom:10px"></div>
+            <div id="guide-meta" style="font-size:12px;color:var(--gray);font-weight:700;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border)"></div>
+            <div id="guide-body" style="font-size:14px;color:#374151;line-height:1.8;font-weight:600"></div>
+            <a href="post-project.html" style="display:block;margin-top:24px;padding:13px;background:var(--red);color:#fff;border-radius:12px;font-size:14px;font-weight:800;text-align:center;text-decoration:none">Get quotes from local pros →</a>
+          </div>
+        </div>
+
+
+
+        </div><!-- /phase2-cost-guides -->
+      <!-- MY REQUESTS VIEW -->
+      <div id="view-requests" class="tab-content">
+        <div class="content-header">
+          <div>
+            <div class="content-title">My requests</div>
+            <div class="content-sub">Track quotes and job progress</div>
+          </div>
+          <button class="btn btn-red">+ Post new request</button>
+        </div>
+
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchReqTab('active', this)">Active (2)</button>
+          <button class="tab" onclick="switchReqTab('completed', this)">Completed (3)</button>
+        </div>
+
+        <div id="req-active">
+          <div class="request-item">
+            <div class="request-icon">🏠</div>
+            <div style="flex:1">
+              <div class="request-name">Roof repair — shingle replacement</div>
+              <div class="request-detail">Your area &bull; Posted 2 days ago &bull; Budget: $500–$900</div>
+            </div>
+            <div class="request-status">
+              <div class="status-badge status-active">Active</div>
+              <div class="request-quotes">4 quotes received</div>
+            </div>
+            <button class="btn btn-red" style="flex-shrink:0" onclick="window.location='homeowner-projects.html'">View quotes (4)</button>
+          </div>
+
+          <div class="request-item">
+            <div class="request-icon">🛣️</div>
+            <div style="flex:1">
+              <div class="request-name">Driveway resurfacing — asphalt</div>
+              <div class="request-detail">Your area &bull; Posted 5 days ago &bull; Budget: $1,200–$2,000</div>
+            </div>
+            <div class="request-status">
+              <div class="status-badge status-pending">Awaiting quotes</div>
+              <div class="request-quotes">1 quote received</div>
+            </div>
+            <button class="btn btn-ghost" style="flex-shrink:0" onclick="window.location='homeowner-projects.html'">View quote (1)</button>
+          </div>
+        </div>
+
+        <div id="req-completed" style="display:none">
+          <div class="request-item">
+            <div class="request-icon">🧱</div>
+            <div style="flex:1">
+              <div class="request-name">Patio masonry — stone border</div>
+              <div class="request-detail">Your area &bull; Completed Jan 2025</div>
+            </div>
+            <div class="request-status">
+              <div class="status-badge status-done">Completed</div>
+            </div>
+            <button class="btn btn-ghost" style="flex-shrink:0">Leave review</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAVED PROS VIEW -->
+      <div id="view-saved" class="tab-content">
+        <div class="content-header">
+          <div>
+            <div class="content-title">Saved pros</div>
+            <div class="content-sub">Pros you've bookmarked for future projects</div>
+          </div>
+        </div>
+        <div class="saved-grid">
+          <div class="saved-card">
+            <div class="saved-avatar">PM</div>
+            <div class="saved-name">Premier Paving & Masonry</div>
+            <div class="saved-cat">Driveways • Masonry</div>
+            <div class="saved-rating">★★★★★ 4.8</div>
+            <div style="margin-top:12px;display:flex;gap:6px;justify-content:center">
+              <button class="btn btn-red" style="font-size:11px;padding:6px 12px" onclick="window.location='post-project.html'">Get quote</button>
+              <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px">View</button>
+            </div>
+          </div>
+          <div class="saved-card">
+            <div class="saved-avatar">NR</div>
+            <div class="saved-name">Northshore Remodel Co.</div>
+            <div class="saved-cat">Kitchen • Bath • Basement</div>
+            <div class="saved-rating">★★★★★ 5.0</div>
+            <div style="margin-top:12px;display:flex;gap:6px;justify-content:center">
+              <button class="btn btn-red" style="font-size:11px;padding:6px 12px" onclick="window.location='post-project.html'">Get quote</button>
+              <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px">View</button>
+            </div>
+          </div>
+          <div class="saved-card">
+            <div class="saved-avatar">JR</div>
+            <div class="saved-name">JR Junk & Cleanout</div>
+            <div class="saved-cat">Junk removal • Hauling</div>
+            <div class="saved-rating">★★★★ 4.6</div>
+            <div style="margin-top:12px;display:flex;gap:6px;justify-content:center">
+              <button class="btn btn-red" style="font-size:11px;padding:6px 12px" onclick="window.location='post-project.html'">Get quote</button>
+              <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PLUS FEATURES SECTION ══ -->
+      <div style="margin-top:32px;padding-top:28px;border-top:1px solid var(--border)">
+
+        <!-- PLUS BANNER -->
+        <div style="background:var(--dark);border-radius:18px;padding:24px 28px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background:radial-gradient(circle at 80% 50%, rgba(180,83,9,.2) 0%, transparent 60%)"></div>
+          <div style="position:relative;z-index:1">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <i data-lucide="star" style="width:16px;height:16px;color:#fbbf24"></i>
+              <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#86efac">Property Pros Plus™</div>
+            </div>
+            <div style="font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.4px;margin-bottom:4px">Unlock Discounts & Priority Support</div>
+            <div style="font-size:13px;color:#9ca3af;font-weight:700">$9.99/year — less than $1 a month. Cancel anytime.</div>
+          </div>
+          <a href="plus.html" style="background:linear-gradient(135deg,#d97706,#b45309,#78350f);color:#fff;border:none;border-radius:12px;padding:12px 22px;font-size:14px;font-weight:900;cursor:pointer;font-family:var(--font);display:inline-flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap;position:relative;z-index:1;box-shadow:0 4px 14px rgba(180,83,9,.35)">
+            <i data-lucide="star" style="width:15px;height:15px"></i>
+            Upgrade to Plus
+          </a>
+        </div>
+
+        <!-- PLUS FEATURE CARDS -->
+        <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:var(--gray);margin-bottom:14px">Plus Member Features</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+
+          <!-- AI ASSISTANT -->
+          <!-- <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;opacity:.8">
+            <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;background:var(--amber-light);color:#92400e;border:1px solid #fde68a;padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:4px">
+              <i data-lucide="clock" style="width:10px;height:10px"></i> Coming soon
+            </div>
+            <div style="width:44px;height:44px;border-radius:12px;background:var(--purple-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+              <i data-lucide="bot" style="width:22px;height:22px;color:var(--purple)"></i>
+            </div>
+            <div style="font-size:15px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px">AI Property Assistant</div>
+            <div style="font-size:13px;color:var(--gray);line-height:1.6;font-weight:600;margin-bottom:14px">Compare quotes, understand fair pricing, plan your project, and get instant answers about any home improvement topic.</div>
+            <button onclick="showPlusToast('AI Property Assistant')" style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--purple);background:var(--purple-light);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--font)">
+              <i data-lucide="lock" style="width:13px;height:13px"></i> Plus members only
+            </button>
+          </div> -->
+
+          <!-- DISCOUNTS -->
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;opacity:.8">
+            <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;background:var(--amber-light);color:#92400e;border:1px solid #fde68a;padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:4px">
+              <i data-lucide="clock" style="width:10px;height:10px"></i> Coming soon
+            </div>
+            <div style="width:44px;height:44px;border-radius:12px;background:var(--amber-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+              <i data-lucide="tag" style="width:22px;height:22px;color:var(--amber)"></i>
+            </div>
+            <div style="font-size:15px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px">Exclusive Discounts</div>
+            <div style="font-size:13px;color:var(--gray);line-height:1.6;font-weight:600;margin-bottom:14px">Member-only deals and 10–30% off coupons from participating contractors delivered to your inbox every month.</div>
+            <button onclick="showPlusToast('Exclusive Discounts')" style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--amber);background:var(--amber-light);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--font)">
+              <i data-lucide="lock" style="width:13px;height:13px"></i> Plus members only
+            </button>
+          </div>
+
+          <!-- RESOURCES -->
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;opacity:.8">
+            <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;background:var(--amber-light);color:#92400e;border:1px solid #fde68a;padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:4px">
+              <i data-lucide="clock" style="width:10px;height:10px"></i> Coming soon
+            </div>
+            <div style="width:44px;height:44px;border-radius:12px;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+              <i data-lucide="clipboard-list" style="width:22px;height:22px;color:var(--green)"></i>
+            </div>
+            <div style="font-size:15px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px">Homeowner Resources</div>
+            <div style="font-size:13px;color:var(--gray);line-height:1.6;font-weight:600;margin-bottom:14px">Project checklists, seasonal maintenance reminders, renovation guides, and smart tools to manage your home like a pro.</div>
+            <button onclick="showPlusToast('Homeowner Resources')" style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--green);background:var(--green-light);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--font)">
+              <i data-lucide="lock" style="width:13px;height:13px"></i> Plus members only
+            </button>
+          </div>
+
+          <!-- PRIORITY SUPPORT -->
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px;position:relative;overflow:hidden;opacity:.8">
+            <div style="position:absolute;top:12px;right:12px;font-size:10px;font-weight:900;background:var(--amber-light);color:#92400e;border:1px solid #fde68a;padding:3px 9px;border-radius:999px;display:flex;align-items:center;gap:4px">
+              <i data-lucide="clock" style="width:10px;height:10px"></i> Coming soon
+            </div>
+            <div style="width:44px;height:44px;border-radius:12px;background:var(--blue-light);display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+              <i data-lucide="headphones" style="width:22px;height:22px;color:var(--blue)"></i>
+            </div>
+            <div style="font-size:15px;font-weight:900;margin-bottom:6px;letter-spacing:-0.3px">Priority Support</div>
+            <div style="font-size:13px;color:var(--gray);line-height:1.6;font-weight:600;margin-bottom:14px">Skip the queue. Plus members get faster response times and priority assistance from the Property Pros support team.</div>
+            <button onclick="showPlusToast('Priority Support')" style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--blue);background:var(--blue-light);border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-family:var(--font)">
+              <i data-lucide="lock" style="width:13px;height:13px"></i> Plus members only
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function showPlusToast(feature) {
+      const t = document.createElement('div');
+      t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;border:1px solid rgba(255,255,255,.1);padding:14px 20px;border-radius:14px;font-size:13px;font-weight:800;z-index:300;box-shadow:0 8px 28px rgba(0,0,0,.2);display:flex;align-items:center;gap:10px;white-space:nowrap;animation:toastSlide .3s ease';
+      t.innerHTML = `<span style="font-size:16px">⭐</span><div><div>${feature} is coming soon for Plus members</div><div style="font-size:11px;opacity:.7;margin-top:2px;font-weight:700">You'll be emailed when it goes live · <a href="plus.html" style="color:#fbbf24;text-decoration:none">Learn about Plus →</a></div></div>`;
+      document.body.appendChild(t);
+      setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 4000);
+    }
+
+    function switchMain(view) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.getElementById('view-' + view).classList.add('active');
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+    }
+
+    function switchReqTab(tab, btn) {
+      document.getElementById('req-active').style.display = tab === 'active' ? 'block' : 'none';
+      document.getElementById('req-completed').style.display = tab === 'completed' ? 'block' : 'none';
+      document.querySelectorAll('.tab-bar .tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    document.querySelectorAll('.save-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        btn.classList.toggle('saved');
+        btn.textContent = btn.classList.contains('saved') ? '♥' : '♡';
+      });
+    });
+
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelector('.search-input').value = chip.textContent;
+      });
+    });
+
+    // Close user dropdown when clicking outside
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.user-pill')) {
+        document.querySelectorAll('.user-dropdown').forEach(d => d.style.display = 'none');
+      }
+    });
+
+    // Quotes modal
+    function openQuotesModal(projectTitle, count) {
+      document.getElementById('qm-title').textContent = 'Quotes for: ' + projectTitle;
+      document.getElementById('quotes-modal').style.display = 'flex';
+    }
+
+    function closeQuotesModal() {
+      document.getElementById('quotes-modal').style.display = 'none';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeQuotesModal();
+    });
+  
+    // Notification bell badge
+    (function() {
+      const read = localStorage.getItem('pp_hw_notifs_read') === 'true';
+      const badge = document.getElementById('hw-bell-badge');
+      if (badge && !read) {
+        badge.style.display = 'flex';
+        badge.textContent = '3';
+      }
+    })();
+  
+    lucide.createIcons();
+  </script>
+
+  <!-- QUOTES MODAL -->
+  <div id="quotes-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)closeQuotesModal()">
+    <div style="background:#fff;border-radius:20px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,.2)">
+      <!-- Modal Header -->
+      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #e5e7eb;padding-bottom:16px">
+        <div>
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#dc2626;margin-bottom:4px">Incoming quotes</div>
+          <div id="qm-title" style="font-size:18px;font-weight:900;color:#111827">Quotes for your project</div>
+        </div>
+        <button onclick="closeQuotesModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;padding:4px">✕</button>
+      </div>
+
+      <!-- Sort bar -->
+      <div style="padding:14px 24px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;background:#f9fafb">
+        <div style="font-size:13px;font-weight:700;color:#6b7280">4 quotes received</div>
+        <select style="padding:6px 12px;border:1px solid #e5e7eb;border-radius:8px;font-size:12px;font-family:inherit;font-weight:700;color:#111827;background:#fff">
+          <option>Best match</option>
+          <option>Lowest price</option>
+          <option>Highest rated</option>
+          <option>Fastest start</option>
+        </select>
+      </div>
+
+      <!-- Quote Cards -->
+      <div style="padding:18px 24px;display:flex;flex-direction:column;gap:14px">
+
+        <!-- Quote 1 - Recommended -->
+        <div style="border:2px solid #dc2626;border-radius:16px;overflow:hidden">
+          <div style="background:#dc2626;padding:6px 16px;font-size:11px;font-weight:900;color:#fff;text-transform:uppercase;letter-spacing:1px">⭐ Best match</div>
+          <div style="padding:18px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+              <div style="display:flex;gap:12px;align-items:center">
+                <div style="width:44px;height:44px;border-radius:12px;background:#111827;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">AR</div>
+                <div>
+                  <div style="font-size:14px;font-weight:900;color:#111827">Apex Roofing Group</div>
+                  <div style="font-size:12px;color:#6b7280;font-weight:700;margin-top:2px">⭐ 4.9 · 214 reviews · ✓ Verified</div>
+                </div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:22px;font-weight:900;color:#111827;letter-spacing:-0.5px">$4,200</div>
+                <div style="font-size:11px;color:#6b7280;font-weight:700">Fixed price</div>
+              </div>
+            </div>
+            <div style="background:#f3f4f6;border-radius:10px;padding:12px;font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px">
+              Hi! We reviewed your project and can start April 22. Our quote covers full shingle removal, GAF Timberline HDZ architectural shingles, underlayment, new flashing, and full cleanup. 25-year warranty included.
+            </div>
+            <div style="display:flex;gap:10px;font-size:12px;font-weight:700;color:#6b7280;margin-bottom:14px;flex-wrap:wrap">
+              <span><i data-lucide="calendar" style="width:14px;height:14px"></i> Start: Apr 22</span>
+              <span>⏱ Duration: 2–3 days</span>
+              <span>✓ Materials included</span>
+              <span>✓ Cleanup included</span>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button onclick="window.location='homeowner-messages.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="message-circle" style="width:14px;height:14px"></i> Message pro</button>
+              <button style="display:none"></button>
+              <button onclick="window.location='homeowner-pay.html?pro=Apex%20Roofing%20Group&amount=4200&service=Roof%20repair'" style="flex:1;padding:10px;border-radius:10px;border:none;background:#16a34a;color:#fff;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit">✓ Accept quote</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quote 2 -->
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:44px;height:44px;border-radius:12px;background:#059669;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">NR</div>
+              <div>
+                <div style="font-size:14px;font-weight:900;color:#111827">Northeast Roofing Co.</div>
+                <div style="font-size:12px;color:#6b7280;font-weight:700;margin-top:2px">⭐ 4.7 · 98 reviews · ✓ Verified</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:900;color:#111827;letter-spacing:-0.5px">$3,850</div>
+              <div style="font-size:11px;color:#6b7280;font-weight:700">Fixed price</div>
+            </div>
+          </div>
+          <div style="background:#f3f4f6;border-radius:10px;padding:12px;font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px">
+            We can get this done efficiently. Quote includes removal of old shingles, installation of 30-year architectural shingles, and new drip edge. Can start within the week.
+          </div>
+          <div style="display:flex;gap:10px;font-size:12px;font-weight:700;color:#6b7280;margin-bottom:14px;flex-wrap:wrap">
+            <span><i data-lucide="calendar" style="width:14px;height:14px"></i> Start: Within 1 week</span>
+            <span>⏱ Duration: 1–2 days</span>
+            <span>✓ Materials included</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="window.location='homeowner-messages.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="message-circle" style="width:14px;height:14px"></i> Message</button>
+            <button onclick="window.location='pro-profile.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="user" style="width:14px;height:14px"></i> Profile</button>
+            <button onclick="window.location='homeowner-pay.html?pro=Northeast%20Roofing%20Co&amount=3850&service=Roof%20replacement'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #16a34a;background:#fff;color:#16a34a;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit">✓ Accept</button>
+          </div>
+        </div>
+
+        <!-- Quote 3 -->
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:44px;height:44px;border-radius:12px;background:#1d4ed8;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">PR</div>
+              <div>
+                <div style="font-size:14px;font-weight:900;color:#111827">ProRoof Solutions</div>
+                <div style="font-size:12px;color:#6b7280;font-weight:700;margin-top:2px">⭐ 4.5 · 61 reviews · ✓ Verified</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:900;color:#111827;letter-spacing:-0.5px">$5,100</div>
+              <div style="font-size:11px;color:#6b7280;font-weight:700">Estimate</div>
+            </div>
+          </div>
+          <div style="background:#f3f4f6;border-radius:10px;padding:12px;font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px">
+            Premium quote includes upgraded Owens Corning Duration shingles (50-year warranty), ice & water shield on entire roof, and new ridge vent installation for better ventilation.
+          </div>
+          <div style="display:flex;gap:10px;font-size:12px;font-weight:700;color:#6b7280;margin-bottom:14px;flex-wrap:wrap">
+            <span><i data-lucide="calendar" style="width:14px;height:14px"></i> Start: Apr 28</span>
+            <span>⏱ Duration: 2–3 days</span>
+            <span>✓ Premium materials</span>
+            <span>✓ 50-yr warranty</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="window.location='homeowner-messages.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="message-circle" style="width:14px;height:14px"></i> Message</button>
+            <button onclick="window.location='pro-profile.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="user" style="width:14px;height:14px"></i> Profile</button>
+            <button onclick="window.location='homeowner-pay.html?pro=ProRoof%20Solutions&amount=5100&service=Roof%20replacement'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #16a34a;background:#fff;color:#16a34a;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit">✓ Accept</button>
+          </div>
+        </div>
+
+        <!-- Quote 4 -->
+        <div style="border:1px solid #e5e7eb;border-radius:16px;padding:18px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:44px;height:44px;border-radius:12px;background:#7c3aed;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">KR</div>
+              <div>
+                <div style="font-size:14px;font-weight:900;color:#111827">Kev Hernandez Contracting</div>
+                <div style="font-size:12px;color:#6b7280;font-weight:700;margin-top:2px">⭐ 4.8 · 168 reviews · ✓ Verified</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:22px;font-weight:900;color:#111827;letter-spacing:-0.5px">$4,600</div>
+              <div style="font-size:11px;color:#6b7280;font-weight:700">Fixed price</div>
+            </div>
+          </div>
+          <div style="background:#f3f4f6;border-radius:10px;padding:12px;font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px">
+            Full replacement with GAF Timberline shingles. Price includes tear-off, disposal, new felt paper, drip edge, and flashing. Family business, 15 years local experience.
+          </div>
+          <div style="display:flex;gap:10px;font-size:12px;font-weight:700;color:#6b7280;margin-bottom:14px;flex-wrap:wrap">
+            <span><i data-lucide="calendar" style="width:14px;height:14px"></i> Start: Apr 25</span>
+            <span>⏱ Duration: 2 days</span>
+            <span>✓ All inclusive</span>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="window.location='homeowner-messages.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="message-circle" style="width:14px;height:14px"></i> Message</button>
+            <button onclick="window.location='pro-profile.html'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit"><i data-lucide="user" style="width:14px;height:14px"></i> Profile</button>
+            <button onclick="window.location='homeowner-pay.html?pro=Kev%20Hernandez%20Contracting&amount=4600&service=Roof%20repair'" style="flex:1;padding:10px;border-radius:10px;border:1px solid #16a34a;background:#fff;color:#16a34a;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit">✓ Accept</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div style="padding:16px 24px;border-top:1px solid #e5e7eb;background:#f9fafb;display:flex;justify-content:space-between;align-items:center;border-radius:0 0 20px 20px">
+        <div style="font-size:13px;color:#6b7280;font-weight:700"><i data-lucide="lightbulb" style="width:14px;height:14px"></i> Tip: Read reviews and message pros before accepting</div>
+        <button onclick="closeQuotesModal()" style="padding:9px 18px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+  <a href="homeowner-dashboard.html" class="mbn-item active">
+    <span class="mbn-icon"><i data-lucide="home" style="width:20px;height:20px"></i></span>Find
+  </a>  <a href="post-project.html" class="mbn-item ">
+    <span class="mbn-icon"><i data-lucide="file-plus" style="width:20px;height:20px"></i></span>Post
+  </a>  <a href="homeowner-projects.html" class="mbn-item ">
+    <span class="mbn-icon"><i data-lucide="folder" style="width:20px;height:20px"></i></span>Projects
+  </a>  <a href="homeowner-messages.html" class="mbn-item ">
+    <span class="mbn-icon"><i data-lucide="message-circle" style="width:20px;height:20px"></i></span>Messages
+  </a>  <a href="homeowner-notifications.html" class="mbn-item ">
+    <span class="mbn-icon"><i data-lucide="bell" style="width:20px;height:20px"></i></span>Alerts
+  </a>
+  </nav>
+
+  <script>
+  const GUIDES = {
+    driveway: {
+      cat: 'Cost Guide · Driveways',
+      title: 'Driveway Cost in Cranston, RI (2026 Guide)',
+      meta: '5 min read · Updated May 2026 · Based on Cranston, RI contractor data',
+      body: `<p>Getting quotes for a new driveway in Cranston? Here's what local contractors are actually charging in 2026.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Average costs near you</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+  <li><strong>Asphalt:</strong> $8–$15 per sq ft. A typical 600 sq ft driveway runs $4,800–$9,000.</li>
+  <li><strong>Concrete:</strong> $10–$20 per sq ft. Same size runs $6,000–$12,000.</li>
+  <li><strong>Pavers:</strong> $18–$35 per sq ft. Higher end — $10,800–$21,000.</li>
+</ul>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">What drives the price up?</h3>
+<p style="margin-bottom:10px">Slope, grading difficulty, demolition of your old driveway ($1–$3/sqft extra), drainage issues, and tree roots near the surface all add cost. A flat driveway with good access is always the cheapest scenario.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Tips before you hire</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px">
+  <li>Get at least 3 quotes and compare scope line by line</li>
+  <li>Ask what's included: base prep, grading, edging, cleanup</li>
+  <li>Avoid cash-only deals or full payment upfront</li>
+  <li>A good asphalt driveway lasts 20–30 years with sealcoating every 3–5 years</li>
+</ul>`
+    },
+    roof: {
+      cat: 'Cost Guide · Roofing',
+      title: 'Roof Replacement Cost in Rhode Island (2026)',
+      meta: '5 min read · Updated March 2026 · RI contractor data',
+      body: `<p>The average Rhode Island homeowner pays $9,000–$16,000 for a full roof replacement. Here's what drives that number.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Cost by material</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px;margin-bottom:12px">
+  <li><strong>Architectural asphalt shingles:</strong> $8,000–$13,000. Most common in RI.</li>
+  <li><strong>Metal roofing:</strong> $15,000–$28,000. Lasts 50+ years, handles RI snow loads well.</li>
+  <li><strong>Slate:</strong> $20,000–$45,000. Very long-lasting, popular on older New England homes.</li>
+</ul>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">What should be included</h3>
+<p style="margin-bottom:10px">A complete quote should include: tear-off and disposal, ice and water shield (required in RI), new decking if damaged, all flashing at valleys and chimneys, and the shingles with manufacturer warranty.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Getting a fair price</h3>
+<p>Get 3 quotes from licensed RI contractors. Verify CRLB license at crb.ri.gov. Ask about decking — hidden rot can add $500–$2,000 to the final cost if not disclosed upfront.</p>`
+    },
+    spring: {
+      cat: 'Maintenance · Seasonal',
+      title: 'Spring Home Maintenance Checklist for RI Homeowners',
+      meta: '4 min read · Seasonal guide · Rhode Island specific',
+      body: `<p>RI winters are hard on homes. Use this checklist every April to catch issues before they become expensive repairs.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Exterior — check these first</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
+  <li><strong>Roof:</strong> Look for lifted, cracked, or missing shingles. Check flashing around chimney and vents.</li>
+  <li><strong>Gutters:</strong> Clear winter debris, check for sagging or separation from fascia.</li>
+  <li><strong>Driveway:</strong> Freeze-thaw cycles crack asphalt and concrete. Patch cracks before they grow.</li>
+  <li><strong>Foundation:</strong> Walk the perimeter, look for new cracks, check soil grades away from foundation.</li>
+  <li><strong>Siding:</strong> Look for warped, cracked, or missing pieces — especially the north side.</li>
+</ul>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Interior checks</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:7px">
+  <li>Test all smoke and CO detectors, replace batteries</li>
+  <li>Run water in infrequently used fixtures</li>
+  <li>Check basement for water intrusion signs</li>
+  <li>Schedule HVAC tune-up before summer cooling season</li>
+</ul>
+<p style="margin-top:12px;font-size:13px;color:#6b7280">Catching these in spring — before contractors are fully booked — typically saves 15–20% on repair costs.</p>`
+    },
+    quotes: {
+      cat: 'Hiring Guide',
+      title: 'How to Compare Contractor Quotes the Right Way',
+      meta: '5 min read · Hiring advice · Property Pros',
+      body: `<p>Getting multiple quotes is standard advice, but most homeowners just look at the total and pick the lowest number. That's how you end up with problems.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">What to compare line by line</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:7px;margin-bottom:12px">
+  <li><strong>Scope of work:</strong> Are all three quotes for the exact same job? One may include demolition while another doesn't.</li>
+  <li><strong>Materials:</strong> Brand and grade matter. "Asphalt shingles" can mean a 25-year or a 15-year product.</li>
+  <li><strong>Timeline:</strong> How long will it take? Will they be there every day?</li>
+  <li><strong>Warranty:</strong> What does the workmanship warranty cover and for how long?</li>
+  <li><strong>Payment terms:</strong> 10–30% deposit is reasonable. Full payment upfront is a red flag.</li>
+</ul>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">The lowest quote isn't always the best deal</h3>
+<p style="margin-bottom:10px">A contractor bidding 40% below the others is either cutting corners on materials, underestimating the job, or will come back asking for more money. The best value is usually the second or third lowest from a licensed, insured contractor with strong reviews.</p>
+<h3 style="font-size:15px;font-weight:900;margin:16px 0 8px">Always ask every contractor</h3>
+<ul style="padding-left:20px;display:flex;flex-direction:column;gap:6px">
+  <li>Can I see your RI contractor license number?</li>
+  <li>Do you carry general liability and workers' comp?</li>
+  <li>Who specifically will be doing the work?</li>
+  <li>What happens if the job runs over budget?</li>
+</ul>`
+    }
+  };
+
+  function openGuide(id) {
+    const g = GUIDES[id];
+    if (!g) return;
+    document.getElementById('guide-category').textContent = g.cat;
+    document.getElementById('guide-title').textContent = g.title;
+    document.getElementById('guide-meta').textContent = g.meta;
+    document.getElementById('guide-body').innerHTML = g.body;
+    const overlay = document.getElementById('guide-modal-overlay');
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGuide() {
+    document.getElementById('guide-modal-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGuide(); });
+  </script>
+
+  <script>
+  function toggleHwMenu() {
+    const drawer = document.getElementById('hw-drawer');
+    const burger = document.getElementById('hw-hamburger');
+    const overlay = document.getElementById('hw-overlay');
+    const isOpen = drawer.classList.contains('open');
+    drawer.classList.toggle('open', !isOpen);
+    burger.classList.toggle('open', !isOpen);
+    overlay.classList.toggle('open', !isOpen);
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+  }
+  function closeHwMenu() {
+    document.getElementById('hw-drawer').classList.remove('open');
+    document.getElementById('hw-hamburger').classList.remove('open');
+    document.getElementById('hw-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.addEventListener('resize', () => { if (window.innerWidth > 1100) closeHwMenu(); });
+  document.querySelectorAll('.hw-drawer-link, .hw-drawer-logout').forEach(el => {
+    el.addEventListener('click', closeHwMenu);
+  });
+  </script>
+
+  <script>
+  let hwStarRatings = {};
+
+  function setHwStars(reviewId, rating) {
+    hwStarRatings[reviewId] = rating;
+    const stars = document.querySelectorAll('#hw-stars-' + reviewId + ' .hw-star');
+    stars.forEach((s, i) => {
+      s.style.filter = i < rating ? 'grayscale(0)' : 'grayscale(1)';
+      s.style.transform = i < rating ? 'scale(1.1)' : 'scale(1)';
+    });
+  }
+
+  function submitHwReview(reviewId) {
+    const rating = hwStarRatings[reviewId];
+    const comment = document.getElementById('hw-comment-' + reviewId).value;
+    if (!rating) { alert('Please select a star rating before submitting.'); return; }
+    const prompt = document.getElementById('review-prompt-' + reviewId);
+    prompt.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+        <div style="width:36px;height:36px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:18px">✓</div>
+        <div>
+          <div style="font-size:13px;font-weight:900;color:#16a34a">Review submitted!</div>
+          <div style="font-size:12px;font-weight:700;color:#6b7280">It will post once the pro reviews you — or in 7 days, whichever comes first.</div>
+        </div>
+      </div>`;
+  }
+
+  function skipHwReview(reviewId) {
+    const prompt = document.getElementById('review-prompt-' + reviewId);
+    prompt.style.opacity = '0';
+    prompt.style.transition = 'opacity .3s';
+    setTimeout(() => prompt.remove(), 300);
+  }
+  </script>
+  </div>
+</body>
+</html>

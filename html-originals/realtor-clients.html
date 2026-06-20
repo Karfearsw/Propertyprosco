@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clients · Property Pros</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --dark:#111827; --gray:#6b7280; --border:#e5e7eb; --bg:#f3f4f6; --white:#fff;
+    --gold:#b45309; --gold-light:#fef3c7; --brown:#1c1007; --accent:#fcd34d;
+    --green:#16a34a; --green-light:#f0fdf4; --blue:#2563eb; --blue-light:#eff6ff;
+    --red:#dc2626; --font:'Manrope',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh}
+  a{text-decoration:none;color:inherit}
+
+  /* layout */
+  .shell{display:flex}
+  .sidebar{width:224px;min-height:100vh;background:var(--brown);position:sticky;top:0;height:100vh;flex-shrink:0;display:flex;flex-direction:column;padding:14px 12px}
+  .side-brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
+  .side-brand .logo{width:30px;height:30px;border-radius:8px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:11px;color:#fff}
+  .side-brand .name{font-size:15px;font-weight:900;color:#fff}
+  .side-brand .name span{color:var(--accent)}
+  .nav-label{font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:var(--accent);padding:14px 8px 6px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);cursor:pointer;margin-bottom:2px}
+  .nav-item i{width:17px;height:17px}
+  .nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+  .nav-item.active{background:var(--gold);color:#fff}
+  .main{flex:1;min-width:0}
+
+  /* header */
+  header{background:var(--brown);height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+  .h-right{display:flex;align-items:center;gap:6px}
+  .h-icon{position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#cbb8a8}
+  .h-icon .dot{position:absolute;top:7px;right:8px;width:8px;height:8px;background:var(--gold);border-radius:50%;border:2px solid var(--brown)}
+  .h-avatar{width:34px;height:34px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+  .hamb{display:none;width:38px;height:38px;border-radius:9px;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none}
+  .hamb span{display:block;width:20px;height:2px;background:#cbb8a8;border-radius:2px}
+
+  /* content */
+  .wrap{max-width:880px;margin:0 auto;padding:28px 24px 80px}
+  .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+  .page-title{font-size:26px;font-weight:900;letter-spacing:-.02em}
+  .page-sub{color:var(--gray);font-size:14px;margin-top:3px;max-width:440px;line-height:1.5}
+  .add-btn{display:inline-flex;align-items:center;gap:7px;background:var(--gold);color:#fff;border:none;border-radius:11px;padding:12px 18px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font);white-space:nowrap;box-shadow:0 6px 18px rgba(180,83,9,.28)}
+  .add-btn:hover{background:#92400e}
+  .add-btn i{width:17px;height:17px}
+
+  .summary{display:flex;gap:10px;margin:20px 0 22px;flex-wrap:wrap}
+  .sum{flex:1;min-width:120px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 16px}
+  .sum .n{font-size:22px;font-weight:900}
+  .sum .l{font-size:11.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-top:1px}
+
+  /* client cards */
+  .clients{display:flex;flex-direction:column;gap:14px}
+  .client{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .c-top{display:flex;align-items:flex-start;gap:13px}
+  .c-av{width:46px;height:46px;border-radius:12px;background:var(--gold-light);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;flex-shrink:0}
+  .c-id{flex:1;min-width:0}
+  .c-name{font-size:16px;font-weight:800}
+  .c-addr{font-size:13px;color:var(--gray);font-weight:600;margin-top:2px;display:flex;align-items:center;gap:5px}
+  .c-addr i{width:13px;height:13px}
+  .need-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:999px;font-size:11.5px;font-weight:800}
+  .need-pill.sell{background:var(--blue-light);color:var(--blue)}
+  .need-pill.repair{background:var(--green-light);color:var(--green)}
+  .need-pill.inspect{background:#f5f3ff;color:#7c3aed}
+  .need-pill i{width:13px;height:13px}
+
+  /* need chooser */
+  .choose{margin-top:15px;padding-top:15px;border-top:1px dashed var(--border)}
+  .choose-q{font-size:13px;font-weight:800;color:var(--dark);margin-bottom:9px}
+  .choose-row{display:flex;flex-direction:column;gap:9px}
+  .choose-btn{flex:1;display:flex;align-items:center;gap:10px;padding:13px;border-radius:12px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-family:var(--font);text-align:left;transition:all .15s}
+  .choose-btn:hover{border-color:var(--gold);background:#fffdf8}
+  .choose-btn .ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .choose-btn.sell .ic{background:var(--blue-light);color:var(--blue)}
+  .choose-btn.repair .ic{background:var(--green-light);color:var(--green)}
+  .choose-btn.inspect .ic{background:#f5f3ff;color:#7c3aed}
+  .choose-btn .t{font-size:13.5px;font-weight:800}
+  .choose-btn .s{font-size:11.5px;color:var(--gray);font-weight:600;margin-top:1px}
+
+  /* progress */
+  .track{margin-top:15px;padding-top:15px;border-top:1px solid var(--border)}
+  .track-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;gap:10px}
+  .status-badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800}
+  .status-badge .pulse{width:9px;height:9px;border-radius:50%;background:var(--gold);animation:pulse 1.3s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .meta{font-size:12px;color:var(--gray);font-weight:700;text-align:right;white-space:nowrap}
+  .meta b{color:var(--dark)}
+  .steps{display:flex;gap:6px}
+  .step{flex:1;height:6px;border-radius:4px;background:var(--border)}
+  .step.done{background:var(--gold)}
+  .step-labels{display:flex;justify-content:space-between;margin-top:7px}
+  .step-labels span{font-size:10px;font-weight:700;color:var(--gray)}
+  .step-labels span.now{color:var(--gold)}
+  .c-action{margin-top:14px;display:flex;gap:9px;flex-wrap:wrap}
+  .btn{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font);border:none}
+  .btn-gold{background:var(--gold);color:#fff}
+  .btn-gold:hover{background:#92400e}
+  .btn-ghost{background:var(--bg);color:var(--dark);border:1px solid var(--border)}
+  .btn-ghost:hover{background:#e9ebee}
+
+  /* modal */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:200;align-items:center;justify-content:center;padding:18px}
+  .overlay.on{display:flex}
+  .modal{background:var(--white);border-radius:18px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+  .m-head{padding:20px 22px 0;display:flex;align-items:flex-start;justify-content:space-between}
+  .m-title{font-size:18px;font-weight:900}
+  .m-sub{font-size:13px;color:var(--gray);font-weight:600;margin-top:3px}
+  .m-x{background:none;border:none;cursor:pointer;color:var(--gray);padding:4px}
+  .m-body{padding:18px 22px 22px}
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}
+  .field input,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);outline:none}
+  .field input:focus,.field textarea:focus{border-color:var(--gold)}
+  .svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:6px}
+  .svc{display:flex;align-items:center;gap:9px;padding:11px;border:1.5px solid var(--border);border-radius:11px;cursor:pointer;font-size:13px;font-weight:700;user-select:none}
+  .svc:hover{border-color:var(--gold)}
+  .svc.sel{border-color:var(--gold);background:#fffdf8}
+  .svc .check{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .svc.sel .check{background:var(--gold);border-color:var(--gold);color:#fff}
+  .svc .check i{width:13px;height:13px;opacity:0}
+  .svc.sel .check i{opacity:1}
+  .photo-drop{border:1.5px dashed var(--border);border-radius:12px;padding:22px;text-align:center;cursor:pointer;color:var(--gray)}
+  .photo-drop:hover{border-color:var(--gold);color:var(--gold)}
+  .photo-drop i{width:26px;height:26px;margin-bottom:6px}
+  .photo-prev{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .photo-prev img{width:64px;height:64px;object-fit:cover;border-radius:9px}
+  .m-foot{display:flex;gap:9px;margin-top:6px}
+  .m-foot .btn{flex:1;text-align:center}
+
+  /* pro responses */
+  .pro-resp{display:flex;align-items:center;gap:12px;padding:13px;border:1.5px solid var(--border);border-radius:13px;margin-bottom:10px}
+  .pro-resp .pav{width:40px;height:40px;border-radius:10px;background:#7f1d1d;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0}
+  .pro-resp .pinfo{flex:1;min-width:0}
+  .pro-resp .pname{font-size:14px;font-weight:800}
+  .pro-resp .pmeta{font-size:12px;color:var(--gray);font-weight:600;margin-top:1px}
+  .pro-resp .pprice{font-size:16px;font-weight:900;color:var(--gold)}
+
+  .finding{display:flex;align-items:center;gap:11px;padding:12px;border:1px solid var(--border);border-radius:12px;margin-bottom:9px}
+  .finding .sev{width:8px;height:40px;border-radius:4px;flex-shrink:0}
+  .insp-select{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);background:var(--white)}
+  .empty{text-align:center;padding:60px 20px;color:var(--gray)}
+  .empty i{width:42px;height:42px;color:#d1d5db;margin-bottom:12px}
+  .empty .et{font-size:16px;font-weight:800;color:var(--dark)}
+  .empty .es{font-size:13.5px;margin-top:4px}
+
+  /* drawer */
+  .drawer{display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:var(--brown);border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto}
+  .drawer.on{display:flex}
+  .drawer .nav-item{color:rgba(255,255,255,.7)}
+
+  @media(max-width:760px){ .sidebar{display:none} .hamb{display:flex} .svc-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="realtor-dashboard.html" style="display:flex;align-items:center;gap:10px">
+    <div style="width:32px;height:32px;border-radius:9px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+    <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:var(--accent)">Property</span> Pros</div>
+  </a>
+  <div class="h-right">
+    <a href="realtor-notifications.html" class="h-icon"><i data-lucide="bell"></i><span class="dot"></span></a>
+    <div class="h-avatar" onclick="toggleHwMenu()">SR</div>
+    <button class="hamb" onclick="toggleHwMenu()"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="side-brand"><div class="logo">PP</div><div class="name"><span>Property</span> Pros</div></div>
+    <div class="nav-label">Workspace</div>
+    <a href="realtor-dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+    <a href="realtor-clients.html" class="nav-item active"><i data-lucide="users"></i> Clients</a>
+    <a href="realtor-messages.html" class="nav-item"><i data-lucide="message-square"></i> Messages</a>
+    <a href="realtor-notifications.html" class="nav-item"><i data-lucide="bell"></i> Notifications</a>
+    <div class="nav-label">Account</div>
+    <a href="realtor-billing.html" class="nav-item"><i data-lucide="credit-card"></i> Plan &amp; Billing</a>
+    <a href="realtor-settings.html" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="wrap">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Clients</div>
+          <div class="page-sub">Add a client, pick what they need, and Property Pros connects them with local pros on demand.</div>
+        </div>
+        <button class="add-btn" onclick="openAdd()"><i data-lucide="plus"></i> Add Client</button>
+      </div>
+
+      <div class="summary" id="summary"></div>
+      <div class="clients" id="clients"></div>
+    </div>
+  </main>
+</div>
+
+<!-- DRAWER (mobile) -->
+<div class="drawer" id="hw-drawer">
+  <a href="realtor-dashboard.html" class="nav-item"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+  <a href="realtor-clients.html" class="nav-item"><i data-lucide="users"></i> Clients</a>
+  <a href="realtor-messages.html" class="nav-item"><i data-lucide="message-square"></i> Messages</a>
+  <a href="realtor-notifications.html" class="nav-item"><i data-lucide="bell"></i> Notifications</a>
+  <a href="realtor-billing.html" class="nav-item"><i data-lucide="credit-card"></i> Plan &amp; Billing</a>
+  <a href="realtor-settings.html" class="nav-item"><i data-lucide="settings"></i> Settings</a>
+</div>
+
+<!-- ADD CLIENT MODAL -->
+<div class="overlay" id="addOverlay">
+  <div class="modal">
+    <div class="m-head">
+      <div><div class="m-title">Add a client</div><div class="m-sub">You can choose what they need after adding them.</div></div>
+      <button class="m-x" onclick="closeAdd()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="m-body">
+      <div class="field"><label>Client name</label><input id="f-name" placeholder="e.g. James Carter" /></div>
+      <div class="field"><label>Property address</label><input id="f-addr" placeholder="e.g. 24 Maple St, Cranston, RI" /></div>
+      <div class="field"><label>Phone</label><input id="f-phone" placeholder="(401) 555-0199" /></div>
+      <div class="field"><label>Email</label><input id="f-email" placeholder="james@email.com" /></div>
+      <div class="m-foot">
+        <button class="btn btn-ghost" onclick="closeAdd()">Cancel</button>
+        <button class="btn btn-gold" onclick="addClient()">Add client</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REQUEST MODAL (sell menu OR repair photo-post) -->
+<div class="overlay" id="reqOverlay">
+  <div class="modal">
+    <div class="m-head">
+      <div><div class="m-title" id="req-title">Request</div><div class="m-sub" id="req-sub"></div></div>
+      <button class="m-x" onclick="closeReq()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="m-body" id="req-body"></div>
+  </div>
+</div>
+
+<!-- RESPONSES MODAL -->
+<div class="overlay" id="respOverlay">
+  <div class="modal">
+    <div class="m-head">
+      <div><div class="m-title">Responses</div><div class="m-sub" id="resp-sub"></div></div>
+      <button class="m-x" onclick="closeResp()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="m-body" id="resp-body"></div>
+  </div>
+</div>
+
+<!-- INSPECTION REPORT MODAL -->
+<div class="overlay" id="reportOverlay">
+  <div class="modal">
+    <div class="m-head">
+      <div><div class="m-title">Inspection report</div><div class="m-sub" id="report-sub"></div></div>
+      <button class="m-x" onclick="closeReport()"><i data-lucide="x"></i></button>
+    </div>
+    <div class="m-body" id="report-body"></div>
+  </div>
+</div>
+
+<script>
+/* ---------------- data ---------------- */
+let clients = [
+  {id:1, name:'James Carter', initials:'JC', addr:'24 Maple St, Cranston, RI', phone:'(401) 555-0199', email:'james@email.com',
+   added:'Jun 9, 2026', need:'sell', status:'responded', services:['Deep clean','Interior paint','Photography'],
+   cost:'$2,400 est.', target:'Target list: Jun 24', responses:sampleResponses('sell')},
+  {id:2, name:'Maria Delgado', initials:'MD', addr:'88 Hope Ave, Providence, RI', phone:'(401) 555-0142', email:'maria@email.com',
+   added:'Jun 10, 2026', need:'repair', status:'scheduled', desc:'Roof leak over the back bedroom after last storm.',
+   cost:'$1,150', target:'Scheduled: Jun 13', chosen:{name:'Apex Roofing Group', initials:'AR'}, responses:[]},
+  {id:3, name:'Priya Shah', initials:'PS', addr:'12 Elm Ct, Warwick, RI', phone:'(401) 555-0177', email:'priya@email.com',
+   added:'Jun 11, 2026', need:null, status:'new', responses:[]},
+  {id:4, name:'Daniel Reed', initials:'DR', addr:'5 Cove Rd, Bristol, RI', phone:'(401) 555-0188', email:'daniel@email.com',
+   added:'Jun 8, 2026', need:'inspection', status:'report', inspType:'Full home inspection',
+   chosen:{name:'Ocean State Home Inspections', initials:'OS'}, cost:'Report ready', target:'3 issues found',
+   findings:sampleFindings(), responses:[]},
+];
+let nextId = 4;
+let activeClient = null;
+
+const STATUS_INDEX = {new:-1, finding:0, responded:1, scheduled:2, ready:3, report:3};
+function stepsFor(need){
+  if(need==='inspection') return ['Requested','Inspectors responded','Scheduled','Report ready'];
+  if(need==='repair') return ['Requested','Pros responded','Scheduled','Done'];
+  return ['Requested','Pros responded','Scheduled','Ready to list'];
+}
+const SELL_SERVICES = ['Deep clean','Interior paint','Staging','Photography','Landscaping','Minor repairs'];
+
+function sampleResponses(kind){
+  const pool = [
+    {name:'Apex Roofing Group', initials:'AR', rating:'4.9', eta:'Can start Fri'},
+    {name:'BrightHome Services', initials:'BH', rating:'4.8', eta:'Available tomorrow'},
+    {name:'Coastal Pro Painters', initials:'CP', rating:'4.7', eta:'Start Mon'},
+  ];
+  const base = kind==='sell' ? 2200 : 900;
+  return pool.map((p,i)=>({...p, price:'$'+(base + i*350).toLocaleString()}));
+}
+function sampleInspectors(){
+  return [
+    {name:'Ocean State Home Inspections', initials:'OS', rating:'4.9', eta:'Earliest Jun 13', price:'$425'},
+    {name:'BayView Inspectors', initials:'BV', rating:'4.8', eta:'Earliest Jun 14', price:'$385'},
+    {name:'Cornerstone Inspection Co.', initials:'CI', rating:'4.9', eta:'Earliest Jun 12', price:'$450'},
+  ];
+}
+function sampleFindings(){
+  return [
+    {area:'Roof', sev:'moderate', note:'Flashing damage near the chimney; recommend repair.', repair:null},
+    {area:'Electrical', sev:'major', note:'Outdated panel; recommend a licensed evaluation.', repair:null},
+    {area:'Plumbing', sev:'minor', note:'Slow drain in the master bath.', repair:null},
+    {area:'HVAC', sev:'ok', note:'Furnace serviced recently — no issues found.', repair:null},
+  ];
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  const active = clients.length;
+  const out = clients.filter(c=>['finding','responded'].includes(c.status)).length;
+  const ready = clients.filter(c=>['ready','scheduled','report'].includes(c.status)).length;
+  document.getElementById('summary').innerHTML = `
+    <div class="sum"><div class="n">${active}</div><div class="l">Active clients</div></div>
+    <div class="sum"><div class="n" style="color:var(--gold)">${out}</div><div class="l">Requests out</div></div>
+    <div class="sum"><div class="n" style="color:var(--green)">${ready}</div><div class="l">Moving to close</div></div>`;
+
+  const wrap = document.getElementById('clients');
+  if(!clients.length){
+    wrap.innerHTML = `<div class="empty"><i data-lucide="users"></i><div class="et">No clients yet</div><div class="es">Add your first client to get started.</div></div>`;
+    lucide.createIcons(); return;
+  }
+  wrap.innerHTML = clients.map(cardHTML).join('');
+  lucide.createIcons();
+}
+
+function cardHTML(c){
+  const pill = c.need==='sell' ? `<span class="need-pill sell"><i data-lucide="home"></i> Selling</span>`
+            : c.need==='repair' ? `<span class="need-pill repair"><i data-lucide="wrench"></i> Repairs</span>`
+            : c.need==='inspection' ? `<span class="need-pill inspect"><i data-lucide="clipboard-check"></i> Inspection</span>` : '';
+  let inner = '';
+  if(c.status==='new'){
+    inner = `
+      <div class="choose">
+        <div class="choose-q">What does this client need?</div>
+        <div class="choose-row">
+          <button class="choose-btn sell" onclick="chooseNeed(${c.id},'sell')">
+            <div class="ic"><i data-lucide="home"></i></div>
+            <div><div class="t">Selling</div><div class="s">Prep the home to list</div></div>
+          </button>
+          <button class="choose-btn repair" onclick="chooseNeed(${c.id},'repair')">
+            <div class="ic"><i data-lucide="wrench"></i></div>
+            <div><div class="t">Repairs</div><div class="s">Fix a specific issue</div></div>
+          </button>
+          <button class="choose-btn inspect" onclick="chooseNeed(${c.id},'inspection')">
+            <div class="ic"><i data-lucide="clipboard-check"></i></div>
+            <div><div class="t">Inspection</div><div class="s">Book a home inspector</div></div>
+          </button>
+        </div>
+      </div>`;
+  } else {
+    inner = trackHTML(c);
+  }
+  return `
+    <div class="client">
+      <div class="c-top">
+        <div class="c-av">${c.initials}</div>
+        <div class="c-id">
+          <div class="c-name">${c.name}</div>
+          <div class="c-addr"><i data-lucide="map-pin"></i> ${c.addr}</div>
+        </div>
+        ${pill}
+      </div>
+      ${inner}
+    </div>`;
+}
+
+function trackHTML(c){
+  const S = stepsFor(c.need);
+  const idx = STATUS_INDEX[c.status];
+  const steps = S.map((s,i)=>`<div class="step ${i<=idx?'done':''}"></div>`).join('');
+  const labels = S.map((s,i)=>`<span class="${i===idx?'now':''}">${s}</span>`).join('');
+  let badge='', action='';
+  const who = c.need==='inspection' ? 'inspectors' : 'pros';
+  if(c.status==='finding'){
+    badge = `<span class="status-badge" style="color:var(--gold)"><span class="pulse"></span> Finding ${who} near ${(c.addr.split(',')[1]||'').trim()}…</span>`;
+  } else if(c.status==='responded'){
+    badge = `<span class="status-badge" style="color:var(--gold)"><i data-lucide="zap" style="width:15px;height:15px"></i> ${c.responses.length} ${who} responded</span>`;
+    action = `<button class="btn btn-gold" onclick="openResp(${c.id})">View ${who} (${c.responses.length})</button>
+              <button class="btn btn-ghost" onclick="openReqExisting(${c.id})">Edit request</button>`;
+  } else if(c.status==='scheduled' && c.need==='inspection'){
+    badge = `<span class="status-badge" style="color:var(--blue)"><i data-lucide="calendar-check" style="width:15px;height:15px"></i> Inspection scheduled${c.chosen?' · '+c.chosen.name:''}</span>`;
+    action = `<button class="btn btn-gold" onclick="completeInspection(${c.id})">Inspection done · view report</button>
+              <button class="btn btn-ghost" onclick="msgPro()">Message inspector</button>`;
+  } else if(c.status==='scheduled'){
+    badge = `<span class="status-badge" style="color:var(--blue)"><i data-lucide="calendar-check" style="width:15px;height:15px"></i> Scheduled${c.chosen?' · '+c.chosen.name:''}</span>`;
+    action = `<button class="btn btn-gold" onclick="markReady(${c.id})">Mark ready to list</button>
+              <button class="btn btn-ghost" onclick="msgPro()">Message pro</button>`;
+  } else if(c.status==='report'){
+    const issues=(c.findings||[]).filter(f=>f.sev!=='ok').length;
+    const fixed=(c.findings||[]).filter(f=>f.repair&&f.repair.booked).length;
+    badge = `<span class="status-badge" style="color:var(--gold)"><i data-lucide="clipboard-list" style="width:15px;height:15px"></i> Report ready · ${issues} issue${issues!==1?'s':''}${fixed?` · ${fixed} fixed`:''}</span>`;
+    action = `<button class="btn btn-gold" onclick="openReport(${c.id})">View report &amp; fix issues</button>`;
+  } else if(c.status==='ready'){
+    badge = `<span class="status-badge" style="color:var(--green)"><i data-lucide="check-circle-2" style="width:15px;height:15px"></i> Ready to list</span>`;
+    action = `<button class="btn btn-ghost" onclick="alert('In the full app this hands off to your listing workflow.')">Start listing</button>`;
+  }
+  const meta = (c.cost||c.target) ? `<div class="meta">${c.cost?'<b>'+c.cost+'</b><br>':''}${c.target||''}</div>` : '';
+  return `
+    <div class="track">
+      <div class="track-head">${badge}${meta}</div>
+      <div class="steps">${steps}</div>
+      <div class="step-labels">${labels}</div>
+      ${action?`<div class="c-action">${action}</div>`:''}
+    </div>`;
+}
+
+/* ---------------- add client ---------------- */
+function openAdd(){ document.getElementById('addOverlay').classList.add('on'); }
+function closeAdd(){ document.getElementById('addOverlay').classList.remove('on'); }
+function addClient(){
+  const name=val('f-name'); const addr=val('f-addr');
+  if(!name||!addr){ alert('Add a name and property address.'); return; }
+  const initials = name.trim().split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  clients.unshift({id:nextId++, name, initials, addr, phone:val('f-phone'), email:val('f-email'),
+    added:'Today', need:null, status:'new', responses:[]});
+  ['f-name','f-addr','f-phone','f-email'].forEach(i=>document.getElementById(i).value='');
+  closeAdd(); render();
+}
+
+/* ---------------- choose need -> request ---------------- */
+function chooseNeed(id, need){ const c = clients.find(x=>x.id===id); c.need = need; openReq(c); }
+function openReqExisting(id){ openReq(clients.find(x=>x.id===id)); }
+
+function openReq(c){
+  activeClient = c;
+  if(c.need==='sell'){
+    document.getElementById('req-title').textContent='Prep '+c.name.split(' ')[0]+"'s home to sell";
+    document.getElementById('req-sub').textContent='Pick the services to send to Property Pros.';
+    const sel = c.services||[];
+    document.getElementById('req-body').innerHTML = `
+      <div class="svc-grid">
+        ${SELL_SERVICES.map(s=>`
+          <div class="svc ${sel.includes(s)?'sel':''}" onclick="toggleSvc(this)" data-s="${s}">
+            <div class="check"><i data-lucide="check"></i></div>${s}
+          </div>`).join('')}
+      </div>
+      <div class="m-foot">
+        <button class="btn btn-ghost" onclick="closeReq()">Cancel</button>
+        <button class="btn btn-gold" onclick="sendSell()">Send to Property Pros</button>
+      </div>`;
+  } else if(c.need==='inspection'){
+    document.getElementById('req-title').textContent='Book an inspection';
+    document.getElementById('req-sub').textContent='Find a home inspector for '+c.addr;
+    document.getElementById('req-body').innerHTML = `
+      <div class="field"><label>Inspection type</label>
+        <select id="insp-type" class="insp-select">
+          <option>Full home inspection</option>
+          <option>Pre-listing inspection</option>
+          <option>Specific concern (roof, foundation, etc.)</option>
+        </select></div>
+      <div class="field"><label>Preferred date</label><input id="insp-date" type="date" /></div>
+      <div class="field"><label>Notes (optional)</label><textarea id="insp-notes" rows="2" placeholder="Buyer wants it done before the contingency date…"></textarea></div>
+      <div class="m-foot">
+        <button class="btn btn-ghost" onclick="closeReq()">Cancel</button>
+        <button class="btn btn-gold" onclick="sendInspection()">Find inspectors</button>
+      </div>`;
+  } else {
+    document.getElementById('req-title').textContent='What needs repair?';
+    document.getElementById('req-sub').textContent='Snap a photo, pros send prices — like Quick Jobs.';
+    document.getElementById('req-body').innerHTML = `
+      <div class="field"><label>Describe the issue</label><textarea id="rep-desc" rows="3" placeholder="e.g. Roof leak over the back bedroom after last storm">${c.desc||''}</textarea></div>
+      <div class="field">
+        <label>Add a photo (optional)</label>
+        <div class="photo-drop" onclick="document.getElementById('rep-photo').click()">
+          <i data-lucide="camera"></i><div style="font-size:13px;font-weight:700">Tap to add a photo of the problem</div>
+        </div>
+        <input type="file" id="rep-photo" accept="image/*" style="display:none" onchange="previewPhoto(this)" />
+        <div class="photo-prev" id="rep-prev"></div>
+      </div>
+      <div class="m-foot">
+        <button class="btn btn-ghost" onclick="closeReq()">Cancel</button>
+        <button class="btn btn-gold" onclick="sendRepair()">Send to Property Pros</button>
+      </div>`;
+  }
+  document.getElementById('reqOverlay').classList.add('on'); lucide.createIcons();
+}
+function closeReq(){ document.getElementById('reqOverlay').classList.remove('on'); render(); }
+function toggleSvc(el){ el.classList.toggle('sel'); }
+function previewPhoto(input){
+  const f=input.files[0]; if(!f) return;
+  document.getElementById('rep-prev').innerHTML = `<img src="${URL.createObjectURL(f)}" />`;
+}
+
+function sendSell(){
+  const picked=[...document.querySelectorAll('#req-body .svc.sel')].map(e=>e.dataset.s);
+  if(!picked.length){ alert('Pick at least one service.'); return; }
+  activeClient.services = picked;
+  activeClient.cost = '~$'+(picked.length*800).toLocaleString()+' est.';
+  activeClient.target = 'Target list: Jun '+(20+activeClient.id);
+  dispatch(activeClient,'sell');
+}
+function sendRepair(){
+  const desc=val('rep-desc'); if(!desc){ alert('Add a short description.'); return; }
+  activeClient.desc = desc; activeClient.cost = 'Awaiting prices'; activeClient.target = '';
+  dispatch(activeClient,'repair');
+}
+function sendInspection(){
+  activeClient.inspType = document.getElementById('insp-type').value;
+  activeClient.cost='Awaiting quotes'; activeClient.target='';
+  dispatch(activeClient,'inspection');
+}
+
+/* ---------------- on-demand dispatch ---------------- */
+function dispatch(c, kind){
+  c.status='finding'; c.responses=[];
+  closeReq();
+  setTimeout(()=>{
+    c.responses = kind==='inspection' ? sampleInspectors() : sampleResponses(kind);
+    if(kind==='repair') c.cost = c.responses[0].price+'–'+c.responses[2].price;
+    if(kind==='inspection') c.cost = c.responses[1].price+'–'+c.responses[2].price;
+    c.status='responded'; render();
+  }, 2200);
+}
+
+/* ---------------- responses ---------------- */
+function openResp(id){
+  const c=clients.find(x=>x.id===id); activeClient=c;
+  document.getElementById('resp-sub').textContent = c.name+' · '+c.addr;
+  document.getElementById('resp-body').innerHTML = c.responses.map((p,i)=>`
+    <div class="pro-resp">
+      <div class="pav">${p.initials}</div>
+      <div class="pinfo">
+        <div class="pname">${p.name}</div>
+        <div class="pmeta">★ ${p.rating} · ${p.eta}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="pprice">${p.price}</div>
+        <button class="btn btn-gold" style="padding:6px 12px;margin-top:5px;font-size:12px" onclick="acceptPro(${id},${i})">Accept</button>
+      </div>
+    </div>`).join('') + `<div style="font-size:12px;color:var(--gray);text-align:center;margin-top:6px">Accepting books the pro and moves ${c.name.split(' ')[0]} toward close.</div>`;
+  document.getElementById('respOverlay').classList.add('on'); lucide.createIcons();
+}
+function closeResp(){ document.getElementById('respOverlay').classList.remove('on'); }
+function acceptPro(id, i){
+  const c=clients.find(x=>x.id===id); const p=c.responses[i];
+  c.chosen={name:p.name, initials:p.initials}; c.cost=p.price; c.status='scheduled';
+  c.target='Scheduled · '+p.eta;
+  closeResp(); render();
+}
+function markReady(id){ const c=clients.find(x=>x.id===id); c.status='ready'; c.target='Listing-ready'; render(); }
+function msgPro(){ window.location='realtor-messages.html'; }
+
+/* ---------------- inspection report -> repairs ---------------- */
+function completeInspection(id){
+  const c=clients.find(x=>x.id===id);
+  if(!c.findings) c.findings=sampleFindings();
+  c.status='report'; c.target=c.findings.filter(f=>f.sev!=='ok').length+' issues found';
+  render(); openReport(id);
+}
+function openReport(id){
+  const c=clients.find(x=>x.id===id); activeClient=c; renderReport(c);
+  document.getElementById('reportOverlay').classList.add('on'); lucide.createIcons();
+}
+function renderReport(c){
+  document.getElementById('report-sub').textContent = c.name+' · '+c.addr;
+  const col={major:'var(--red)',moderate:'var(--gold)',minor:'#2563eb',ok:'var(--green)'};
+  const lab={major:'Major',moderate:'Moderate',minor:'Minor',ok:'OK'};
+  document.getElementById('report-body').innerHTML = c.findings.map((f,i)=>{
+    let act='';
+    if(f.sev==='ok') act=`<span style="font-size:12px;color:var(--green);font-weight:800;white-space:nowrap">✓ No action</span>`;
+    else if(!f.repair) act=`<button class="btn btn-gold" style="padding:7px 12px;font-size:12px;white-space:nowrap" onclick="quoteFinding(${c.id},${i})">Get repair quote</button>`;
+    else if(f.repair==='quoting') act=`<span class="status-badge" style="font-size:12px;color:var(--gold)"><span class="pulse"></span> Finding pros…</span>`;
+    else if(f.repair.booked) act=`<span style="font-size:12px;color:var(--green);font-weight:800;white-space:nowrap">✓ Booked</span>`;
+    else act=`<div style="text-align:right"><div style="font-weight:900;color:var(--gold)">${f.repair.price}</div><button class="btn btn-gold" style="padding:5px 11px;font-size:11.5px;margin-top:4px" onclick="bookFinding(${c.id},${i})">Book ${f.repair.pro.split(' ')[0]}</button></div>`;
+    return `<div class="finding"><div class="sev" style="background:${col[f.sev]}"></div>
+      <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:800">${f.area} <span style="font-size:11px;color:${col[f.sev]};font-weight:800">· ${lab[f.sev]}</span></div>
+      <div style="font-size:12.5px;color:var(--gray);font-weight:600;margin-top:2px">${f.note}</div></div>
+      <div style="flex-shrink:0">${act}</div></div>`;
+  }).join('') + `<div style="font-size:12px;color:var(--gray);text-align:center;margin-top:8px">Fixing inspection items with Property Pros keeps the deal moving toward close.</div>`;
+}
+function quoteFinding(id,i){
+  const c=clients.find(x=>x.id===id); c.findings[i].repair='quoting'; renderReport(c);
+  setTimeout(()=>{
+    const pros=['Apex Roofing Group','BrightHome Services','Coastal Pro Painters'];
+    c.findings[i].repair={pro:pros[i%pros.length], price:'$'+(450+i*300).toLocaleString(), booked:false};
+    renderReport(c);
+  },1600);
+}
+function bookFinding(id,i){ const c=clients.find(x=>x.id===id); c.findings[i].repair.booked=true; renderReport(c); render(); }
+function closeReport(){ document.getElementById('reportOverlay').classList.remove('on'); render(); }
+
+/* ---------------- util ---------------- */
+function val(id){ return (document.getElementById(id)?.value||'').trim(); }
+function toggleHwMenu(){ document.getElementById('hw-drawer').classList.toggle('on'); }
+function closeHwMenu(){ document.getElementById('hw-drawer').classList.remove('on'); }
+
+render();
+lucide.createIcons();
+</script>
+</body>
+</html>

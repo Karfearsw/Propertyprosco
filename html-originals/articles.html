@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Home improvement guides and resources from Property Pros for Rhode Island homeowners." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Center — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6;
+      --white: #ffffff; --green: #16a34a; --green-light: #f0fdf4;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --purple: #7c3aed; --purple-light: #f5f3ff;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --font: 'Manrope', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* HEADER */
+    header { background: var(--dark); padding: 0 40px; height: 64px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+    .header-nav { display: flex; gap: 24px; align-items: center; }
+    .header-link { font-size: 14px; font-weight: 700; color: #9ca3af; transition: color .15s; display: flex; align-items: center; gap: 6px; }
+    .header-link:hover { color: #fff; }
+    .header-link.active { color: #fff; }
+    .btn { padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.12); }
+    .btn-ghost:hover { background: rgba(255,255,255,.14); }
+
+    /* HERO */
+    .hero { background: var(--dark); padding: 56px 40px 64px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; background: radial-gradient(circle at 70% 50%, rgba(220,38,38,.1) 0%, transparent 60%); }
+    .hero-inner { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; text-align: center; }
+    .hero-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: #f87171; margin-bottom: 14px; }
+    .hero-title { font-size: clamp(32px, 5vw, 48px); font-weight: 900; color: #fff; letter-spacing: -1px; line-height: 1.1; margin-bottom: 14px; }
+    .hero-sub { font-size: 16px; color: #9ca3af; line-height: 1.7; margin-bottom: 32px; }
+
+    /* SEARCH BAR */
+    .search-bar { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 14px; padding: 6px 6px 6px 18px; display: flex; align-items: center; gap: 10px; max-width: 560px; margin: 0 auto; }
+    .search-bar input { background: none; border: none; outline: none; font-size: 15px; font-weight: 700; color: #fff; flex: 1; font-family: var(--font); }
+    .search-bar input::placeholder { color: #6b7280; }
+    .search-bar button { background: var(--red); border: none; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 800; color: #fff; cursor: pointer; font-family: var(--font); display: flex; align-items: center; gap: 7px; transition: background .15s; }
+    .search-bar button:hover { background: var(--red-dark); }
+
+    /* POPULAR SEARCHES */
+    .popular { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 16px; }
+    .popular-tag { font-size: 12px; font-weight: 700; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 999px; padding: 5px 12px; color: #9ca3af; cursor: pointer; transition: all .15s; }
+    .popular-tag:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+    /* MAIN */
+    .main { max-width: 1100px; margin: 0 auto; padding: 40px 40px 80px; }
+
+    /* USER TYPE TABS */
+    .user-tabs { display: flex; gap: 10px; margin-bottom: 36px; flex-wrap: wrap; }
+    .user-tab { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px; border: 1px solid var(--border); background: var(--white); cursor: pointer; transition: all .15s; font-size: 14px; font-weight: 800; color: var(--gray); }
+    .user-tab:hover { border-color: var(--dark); color: var(--dark); }
+    .user-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+    .user-tab.homeowner.active { background: var(--green); border-color: var(--green); }
+    .user-tab.pro.active { background: var(--red); border-color: var(--red); }
+    .user-tab.realtor.active { background: var(--gold); border-color: var(--gold); }
+    .user-tab-count { font-size: 11px; font-weight: 800; background: rgba(0,0,0,.1); padding: 2px 7px; border-radius: 999px; }
+    .user-tab.active .user-tab-count { background: rgba(255,255,255,.2); }
+
+    /* SECTION */
+    .articles-section { margin-bottom: 48px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+    .section-title { font-size: 18px; font-weight: 900; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+    .section-count { font-size: 12px; font-weight: 700; color: var(--gray); }
+
+    /* ARTICLE GRID */
+    .articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+    /* ARTICLE CARD */
+    .article-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 22px; cursor: pointer; transition: all .2s; display: flex; flex-direction: column; gap: 12px; }
+    .article-card:hover { border-color: var(--red); box-shadow: 0 4px 20px rgba(0,0,0,.06); transform: translateY(-2px); }
+    .ac-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; text-align: center;}
+    .ac-title { font-size: 14px; font-weight: 900; line-height: 1.4; letter-spacing: -0.2px; }
+    .ac-sub { font-size: 13px; color: var(--gray); line-height: 1.6; font-weight: 700; flex: 1; }
+    .ac-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--border); }
+    .ac-read { font-size: 12px; font-weight: 800; color: var(--red); display: flex; align-items: center; gap: 4px; }
+    .ac-time { font-size: 11px; font-weight: 700; color: var(--gray); display: flex; align-items: center; gap: 4px; }
+
+    /* ARTICLE MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 200; align-items: flex-start; justify-content: center; padding: 40px 16px; overflow-y: auto; backdrop-filter: blur(4px); }
+    .modal-overlay.open { display: flex; }
+    .article-modal { background: var(--white); border-radius: 22px; width: 100%; max-width: 660px; box-shadow: 0 28px 70px rgba(0,0,0,.2); }
+    .am-header { padding: 28px 32px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: flex-start; }
+    .am-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .am-eyebrow { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 6px; }
+    .am-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; line-height: 1.2; }
+    .am-close { margin-left: auto; background: var(--bg); border: 1px solid var(--border); border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: all .15s; }
+    .am-close:hover { background: var(--red-light); border-color: #fecaca; }
+    .am-body { padding: 28px 32px; }
+    .am-body h3 { font-size: 15px; font-weight: 900; margin-bottom: 8px; margin-top: 20px; color: var(--dark); }
+    .am-body h3:first-child { margin-top: 0; }
+    .am-body p { font-size: 14px; color: var(--dark3); line-height: 1.8; margin-bottom: 12px; font-weight: 600; }
+    .am-body ol, .am-body ul { padding-left: 20px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .am-body li { font-size: 14px; color: var(--dark3); line-height: 1.7; font-weight: 600; }
+    .am-tip { background: var(--blue-light); border: 1px solid #bfdbfe; border-radius: 12px; padding: 14px 16px; display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; }
+    .am-tip-text { font-size: 13px; font-weight: 700; color: #1e40af; line-height: 1.6; }
+    .am-footer { padding: 20px 32px; border-top: 1px solid var(--border); background: var(--bg); border-radius: 0 0 22px 22px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .am-helpful { font-size: 13px; font-weight: 700; color: var(--gray); display: flex; align-items: center; gap: 10px; }
+    .helpful-btn { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: flex; align-items: center; gap: 5px; }
+    .helpful-btn:hover { background: var(--bg); }
+
+    /* STILL NEED HELP BANNER */
+    .help-banner { background: var(--dark); border-radius: 20px; padding: 36px 40px; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; position: relative; overflow: hidden; }
+    .help-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 80% 50%, rgba(220,38,38,.15) 0%, transparent 60%); }
+    .hb-content { position: relative; z-index: 1; }
+    .hb-title { font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 6px; letter-spacing: -0.4px; }
+    .hb-sub { font-size: 14px; color: #9ca3af; line-height: 1.6; }
+    .hb-actions { display: flex; gap: 10px; position: relative; z-index: 1; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer { background: var(--dark2); padding: 32px 40px; border-top: 1px solid rgba(255,255,255,.06); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+    .footer-link { font-size: 13px; font-weight: 700; color: #6b7280; transition: color .15s; }
+    .footer-link:hover { color: #fff; }
+
+    /* MOBILE */
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; }
+    .hamburger span { width:22px; height:2px; background:#fff; border-radius:2px; display:block; }
+    .mobile-nav { display:none; position:fixed; top:64px; left:0; right:0; background:var(--dark); padding:12px 16px 20px; border-bottom:1px solid rgba(255,255,255,.1); z-index:99; flex-direction:column; gap:2px; }
+    .mobile-nav.open { display:flex; }
+    .mobile-nav-link { padding:12px 16px; border-radius:10px; font-size:14px; font-weight:700; color:#9ca3af; text-decoration:none; }
+    .mobile-nav-link:hover { background:rgba(255,255,255,.06); color:#fff; }
+    .mobile-nav-cta { margin-top:8px; padding:12px 16px; border-radius:10px; background:var(--red); color:#fff; font-size:14px; font-weight:800; text-decoration:none; text-align:center; }
+
+    @keyframes toastSlide { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+
+    /* GLOBAL MOBILE */
+    @media (max-width:768px) {
+      .header-nav { display:none !important; }
+      .hamburger { display:flex; }
+      .articles-grid { grid-template-columns:1fr 1fr !important; }
+      .main { padding:24px 16px 60px; }
+      header { padding:0 16px; }
+      .hero { padding:40px 20px 48px; }
+      .help-banner { padding:24px; flex-direction:column; align-items:flex-start; }
+      .modal-overlay { padding:0; align-items:flex-end; }
+      .article-modal { border-radius:20px 20px 0 0; }
+    }
+    @media (max-width:480px) {
+      .articles-grid { grid-template-columns:1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="header-link">
+        <i data-lucide="home" style="width:14px;height:14px"></i> Home
+      </a>
+      <a href="pricing.html" class="header-link">
+        <i data-lucide="credit-card" style="width:14px;height:14px"></i> Pricing
+      </a>
+      <a href="about.html" class="header-link">
+        <i data-lucide="info" style="width:14px;height:14px"></i> About
+      </a>
+      <a href="contact.html" class="header-link">
+        <i data-lucide="message-circle" style="width:14px;height:14px"></i> Contact
+      </a>
+      <a href="articles.html" class="header-link active">
+        <i data-lucide="book-open" style="width:14px;height:14px"></i> Help Center
+      </a>
+    </nav>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button class="hamburger" id="hamburger-btn" onclick="toggleMobileNav()">
+        <span></span><span></span><span></span>
+      </button>
+      <a href="login.html" class="btn btn-ghost">
+        <i data-lucide="log-in" style="width:15px;height:15px"></i> Log in
+      </a>
+      <a href="login.html" class="btn btn-red">Get started</a>
+    </div>
+  </header>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="pricing.html" class="mobile-nav-link">Pricing</a>
+    <a href="about.html" class="mobile-nav-link">About</a>
+    <a href="contact.html" class="mobile-nav-link">Contact</a>
+    <a href="articles.html" class="mobile-nav-link active">Help Center</a>
+    <a href="login.html" class="mobile-nav-cta">Get started free</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Help Center</div>
+      <h1 class="hero-title">How can we help you?</h1>
+      <p class="hero-sub">Find answers to common questions about posting projects, getting quotes, verification, billing, and more.</p>
+      <div class="search-bar">
+        <i data-lucide="search" style="width:18px;height:18px;color:#6b7280;flex-shrink:0"></i>
+        <input type="text" id="search-input" placeholder="Search articles..." oninput="searchArticles(this.value)" />
+        <button onclick="searchArticles(document.getElementById('search-input').value)">
+          <i data-lucide="search" style="width:15px;height:15px"></i> Search
+        </button>
+      </div>
+      <div class="popular">
+        <span style="font-size:12px;font-weight:700;color:#4b5563">Popular:</span>
+        <div class="popular-tag" onclick="openArticle('post-project')">How to post a project</div>
+        <div class="popular-tag" onclick="openArticle('verified-badge')">Getting verified</div>
+        <div class="popular-tag" onclick="openArticle('flat-rate')">How pricing works</div>
+        <div class="popular-tag" onclick="openArticle('quotes-how')">How quotes work</div>
+        <div class="popular-tag" onclick="openArticle('referral-link')">Referral links</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- USER TYPE TABS -->
+    <div class="user-tabs">
+      <div class="user-tab active" onclick="filterUser('all', this)">
+        <i data-lucide="layout-grid" style="width:16px;height:16px"></i>
+        All articles
+        <span class="user-tab-count">24</span>
+      </div>
+      <div class="user-tab homeowner" onclick="filterUser('homeowner', this)">
+        <i data-lucide="home" style="width:16px;height:16px"></i>
+        Property Owners
+        <span class="user-tab-count">8</span>
+      </div>
+      <div class="user-tab pro" onclick="filterUser('pro', this)">
+        <i data-lucide="hammer" style="width:16px;height:16px"></i>
+        Service Pros
+        <span class="user-tab-count">9</span>
+      </div>
+      <div class="user-tab realtor" onclick="filterUser('realtor', this)">
+        <i data-lucide="briefcase" style="width:16px;height:16px"></i>
+        Realtors
+        <span class="user-tab-count">7</span>
+      </div>
+    </div>
+
+    <!-- ══ HOMEOWNER ARTICLES ══ -->
+    <div class="articles-section" data-section="homeowner">
+      <div class="section-header">
+        <div class="section-title">
+          <i data-lucide="home" style="width:20px;height:20px;color:var(--green)"></i>
+          For Property Owners
+        </div>
+        <div class="section-count">8 articles</div>
+      </div>
+      <div class="articles-grid">
+
+        <div class="article-card" onclick="openArticle('post-project')" data-tags="post project homeowner">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="file-plus" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">How to post a project</div>
+          <div class="ac-sub">Post your project in 4 simple steps. No contact info re-entry — your account details are used automatically.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('quotes-how')" data-tags="quotes homeowner receive">
+          <div class="ac-icon" style="background:var(--blue-light)">
+            <i data-lucide="file-badge" style="width:22px;height:22px;color:var(--blue)"></i>
+          </div>
+          <div class="ac-title">How quotes work</div>
+          <div class="ac-sub">Understand how pros send you quotes, how to compare them side by side, and how to accept the right one.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('verified-badge')" data-tags="verified badge trust homeowner">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="shield-check" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">What the Verified badge means</div>
+          <div class="ac-sub">Every pro with a Verified badge has had their license and insurance confirmed by our team before being allowed on the platform.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('trust-score')" data-tags="trust score homeowner rating">
+          <div class="ac-icon" style="background:var(--amber-light)">
+            <i data-lucide="badge-check" style="width:22px;height:22px;color:var(--amber)"></i>
+          </div>
+          <div class="ac-title">What is a Trust Score?</div>
+          <div class="ac-sub">Your Trust Score (0–100) is shown to pros when they browse projects. Learn what affects it and how to keep it high.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('leave-review')" data-tags="review rating homeowner complete">
+          <div class="ac-icon" style="background:var(--amber-light)">
+            <i data-lucide="star" style="width:22px;height:22px;color:var(--amber)"></i>
+          </div>
+          <div class="ac-title">How to leave a review</div>
+          <div class="ac-sub">After marking a project complete, you'll be prompted to rate your pro. Reviews are anonymous until both parties submit.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('no-show')" data-tags="no show dispute homeowner problem">
+          <div class="ac-icon" style="background:var(--red-light)">
+            <i data-lucide="alert-triangle" style="width:22px;height:22px;color:var(--red)"></i>
+          </div>
+          <div class="ac-title">What if a pro doesn't show up?</div>
+          <div class="ac-sub">If a hired pro fails to show up or abandons a lead, here's exactly how to report it and what happens next.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('project-expiry')" data-tags="project expire close homeowner">
+          <div class="ac-icon" style="background:var(--amber-light)">
+            <i data-lucide="clock" style="width:22px;height:22px;color:var(--amber)"></i>
+          </div>
+          <div class="ac-title">When do projects expire?</div>
+          <div class="ac-sub">Projects stay open for 30 days. After that they close automatically. You can extend or repost at any time.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('always-free')" data-tags="free cost homeowner pricing">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="dollar-sign" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">Is Property Pros really free for Property Owners?</div>
+          <div class="ac-sub">Yes — always. No subscription, no commission on leads, no hidden fees. Property Owners never pay to use Property Pros.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ PRO ARTICLES ══ -->
+    <div class="articles-section" data-section="pro">
+      <div class="section-header">
+        <div class="section-title">
+          <i data-lucide="hammer" style="width:20px;height:20px;color:var(--red)"></i>
+          For Service Pros
+        </div>
+        <div class="section-count">9 articles</div>
+      </div>
+      <div class="articles-grid">
+
+        <div class="article-card" onclick="openArticle('leads-how')" data-tags="leads pro how works">
+          <div class="ac-icon" style="background:var(--red-light)">
+            <i data-lucide="zap" style="width:22px;height:22px;color:var(--red)"></i>
+          </div>
+          <div class="ac-title">How leads work</div>
+          <div class="ac-sub">Matched leads appear in your dashboard automatically when a homeowner posts a project in your trade and area.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('flat-rate')" data-tags="flat rate pricing pro cost">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="credit-card" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">How flat-rate pricing works</div>
+          <div class="ac-sub">$9.99 per month. Unlimited leads. Unlimited quotes. Keep 100% of everything you earn. No per-lead fees ever.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('get-verified')" data-tags="verified badge pro license insurance">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="shield-check" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">How to get the Verified badge</div>
+          <div class="ac-sub">Upload your contractor license and insurance certificate in Settings. Our team verifies within 24 hours.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('service-area')" data-tags="service area radius pro location">
+          <div class="ac-icon" style="background:var(--blue-light)">
+            <i data-lucide="map-pin" style="width:22px;height:22px;color:var(--blue)"></i>
+          </div>
+          <div class="ac-title">How to set your service area</div>
+          <div class="ac-sub">Define the radius you're willing to travel. Leads outside this radius won't appear in your dashboard.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('send-quote')" data-tags="send quote pro respond">
+          <div class="ac-icon" style="background:var(--red-light)">
+            <i data-lucide="send" style="width:22px;height:22px;color:var(--red)"></i>
+          </div>
+          <div class="ac-title">How to send a winning quote</div>
+          <div class="ac-sub">Quotes with a personal message are accepted 3× more often. Learn what to include and how to stand out.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('ratings-pro')" data-tags="ratings reviews pro reputation">
+          <div class="ac-icon" style="background:var(--amber-light)">
+            <i data-lucide="star" style="width:22px;height:22px;color:var(--amber)"></i>
+          </div>
+          <div class="ac-title">How ratings affect your visibility</div>
+          <div class="ac-sub">Pros with higher ratings appear first in homeowner search results and matched lead notifications.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('cancel-sub')" data-tags="cancel subscription pro billing">
+          <div class="ac-icon" style="background:var(--red-light)">
+            <i data-lucide="x-circle" style="width:22px;height:22px;color:var(--red)"></i>
+          </div>
+          <div class="ac-title">How to cancel your subscription</div>
+          <div class="ac-sub">Cancel anytime from your Billing page. Your plan stays active until the end of your current billing period.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('quick-jobs-pro-how')" data-tags="quick jobs pro instant booking">
+          <div class="ac-icon" style="background:#fff7ed">
+            <i data-lucide="zap" style="width:22px;height:22px;color:#ea580c"></i>
+          </div>
+          <div class="ac-title">How Quick Leads works for pros</div>
+          <div class="ac-sub">Opt into instant booking, set your prices, and get booked by homeowners without any quoting back and forth.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('trial')" data-tags="free trial pro 14 day">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="gift" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">How the 14-day free trial works</div>
+          <div class="ac-sub">Sign up as a pro and get 14 days of full access — all features, all leads, no charge until day 15.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ REALTOR ARTICLES ══ -->
+    <div class="articles-section" data-section="realtor">
+      <div class="section-header">
+        <div class="section-title">
+          <i data-lucide="briefcase" style="width:20px;height:20px;color:var(--gold)"></i>
+          For Realtors
+        </div>
+        <div class="section-count">7 articles</div>
+      </div>
+      <div class="articles-grid">
+
+        <div class="article-card" onclick="openArticle('post-for-client')" data-tags="realtor post project client">
+          <div class="ac-icon" style="background:var(--gold-light)">
+            <i data-lucide="clipboard-list" style="width:22px;height:22px;color:var(--gold)"></i>
+          </div>
+          <div class="ac-title">How to post a project for a client</div>
+          <div class="ac-sub">Post projects on behalf of buyers or sellers directly from your client management dashboard in 6 steps.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('referral-link')" data-tags="realtor referral link closing gift">
+          <div class="ac-icon" style="background:var(--gold-light)">
+            <i data-lucide="link" style="width:22px;height:22px;color:var(--gold)"></i>
+          </div>
+          <div class="ac-title">How the referral link works</div>
+          <div class="ac-sub">Generate a personalized closing gift link for each client. When they sign up and stay active, you earn $3/month in credits.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('inspection-tracker')" data-tags="realtor inspection tracker repairs">
+          <div class="ac-icon" style="background:var(--gold-light)">
+            <i data-lucide="clipboard-check" style="width:22px;height:22px;color:var(--gold)"></i>
+          </div>
+          <div class="ac-title">How the inspection tracker works</div>
+          <div class="ac-sub">Tag each inspection repair item as a project, get quotes, and track completion before the closing deadline.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 3 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('earn-credits')" data-tags="realtor credits referral earn">
+          <div class="ac-icon" style="background:var(--green-light)">
+            <i data-lucide="trending-up" style="width:22px;height:22px;color:var(--green)"></i>
+          </div>
+          <div class="ac-title">How to earn and use credits</div>
+          <div class="ac-sub">Every active referral earns you $3/month in credits. Refer 10 clients and your subscription is entirely free.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('add-client')" data-tags="realtor add client roster">
+          <div class="ac-icon" style="background:var(--gold-light)">
+            <i data-lucide="users" style="width:22px;height:22px;color:var(--gold)"></i>
+          </div>
+          <div class="ac-title">How to add clients to your roster</div>
+          <div class="ac-sub">Add clients manually or import from a CSV. Tag them as buyers, sellers, or closed clients and track their stage.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 2 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('realtor-pricing')" data-tags="realtor pricing plan cost">
+          <div class="ac-icon" style="background:var(--gold-light)">
+            <i data-lucide="dollar-sign" style="width:22px;height:22px;color:var(--gold)"></i>
+          </div>
+          <div class="ac-title">Realtor Pro pricing explained</div>
+          <div class="ac-sub">$24.99/Annually — includes full client management, inspection tracker, referral system, and unlimited projects.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+        <div class="article-card" onclick="openArticle('deadline-reminders')" data-tags="realtor deadline reminder inspection">
+          <div class="ac-icon" style="background:var(--red-light)">
+            <i data-lucide="bell" style="width:22px;height:22px;color:var(--red)"></i>
+          </div>
+          <div class="ac-title">How deadline reminders work</div>
+          <div class="ac-sub">Get notified 7 days, 3 days, and day-of your client's inspection repair deadline so nothing falls through the cracks.</div>
+          <div class="ac-footer">
+            <div class="ac-read"><i data-lucide="arrow-right" style="width:13px;height:13px"></i> Read article</div>
+            <div class="ac-time"><i data-lucide="clock" style="width:12px;height:12px"></i> 1 min read</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STILL NEED HELP -->
+    <div class="help-banner">
+      <div class="hb-content">
+        <div class="hb-title">Still need help?</div>
+        <div class="hb-sub">Can't find what you're looking for? Our support team responds within a few hours.</div>
+      </div>
+      <div class="hb-actions">
+        <a href="contact.html" class="btn btn-red">
+          <i data-lucide="message-circle" style="width:16px;height:16px"></i>
+          Contact support
+        </a>
+        <a href="mailto:support@propertypros.com" class="btn btn-ghost">
+          <i data-lucide="mail" style="width:16px;height:16px"></i>
+          Email us
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo">PP</div>
+        <div class="brand-name" style="color:#fff"><span>Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="pricing.html" class="footer-link">Pricing</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+        <a href="articles.html" class="footer-link">Help Center</a>
+        <a href="terms.html" class="footer-link">Terms</a>
+        <a href="privacy.html" class="footer-link">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+  <!-- ══ ARTICLE MODAL ══ -->
+  <div class="modal-overlay" id="article-modal" onclick="if(event.target===this)closeArticle()">
+    <div class="article-modal" id="article-modal-content">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <script>
+    // ── ARTICLE CONTENT ──
+    const articles = {
+      'post-project': {
+        icon: 'file-plus', iconBg: '#f0fdf4', iconColor: '#16a34a',
+        category: 'For Homeowners',
+        title: 'How to post a project',
+        content: `
+          <h3>It takes under 2 minutes</h3>
+          <p>Posting a project on Property Pros is the fastest way to get quotes from verified local pros. Because you're already logged in, your name, email, phone, and location are pulled from your account automatically — you never have to enter contact info again.</p>
+          <div class="am-tip">
+            <i data-lucide="zap" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Most homeowners receive their first quote within 2 hours of posting.</div>
+          </div>
+          <h3>Step 1 — Choose a service category</h3>
+          <p>Select the type of work you need — Roofing, Driveways, Painting, Landscaping, and more. Then give your project a short title like "Roof replacement — 2,200 sq ft colonial."</p>
+          <h3>Step 2 — Describe your project</h3>
+          <p>Write a description of the work, upload any photos, and confirm your location. The more detail you include the better your quotes will be — pros who understand the scope will quote more accurately.</p>
+          <h3>Step 3 — Set your budget and timeline</h3>
+          <p>Enter your budget range and when you need the work done. You're not locked into this — it's a guide for pros to respond appropriately.</p>
+          <h3>Step 4 — Confirm and post</h3>
+          <p>Review your project summary. Your account details are shown automatically. Hit "Post my project" and verified pros in your area are notified immediately.</p>
+          <h3>What happens after you post?</h3>
+          <p>Matched pros see your project in their leads dashboard and can send you a quote with their price, timeline, and a personal message. You'll receive an in-app notification and email when each quote arrives. Compare them on your My Projects page and accept the one you trust most.</p>`
+      },
+      'quotes-how': {
+        icon: 'file-badge', iconBg: '#eff6ff', iconColor: '#2563eb',
+        category: 'For Homeowners',
+        title: 'How quotes work',
+        content: `
+          <h3>What is a quote?</h3>
+          <p>A quote is a formal proposal from a verified pro responding to your posted project. It includes their price, the type of quote (fixed or estimate), how long the job will take, when they can start, and a personal message about your specific project.</p>
+          <h3>How do quotes arrive?</h3>
+          <p>After you post a project, matched pros in your area see it in their dashboard. They review your description and decide whether to quote. When they do, you receive an in-app notification and an email — usually within 2 hours of posting.</p>
+          <h3>Comparing quotes</h3>
+          <p>Visit your My Projects page and click "View quotes" on any project. You'll see all received quotes side by side — each showing the pro's name, rating, verified status, price, timeline, and message. You can also click through to the pro's full profile to see their portfolio and reviews.</p>
+          <div class="am-tip">
+            <i data-lucide="info" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Message a pro before accepting to ask questions. Good pros respond fast — response time is shown on their profile.</div>
+          </div>
+          <h3>Accepting a quote</h3>
+          <p>When you're ready, click "Accept this quote" on the quote you want. The pro is notified immediately and will reach out to confirm the start date. All other pros on that project are notified the job has been filled.</p>
+          <h3>You're never obligated</h3>
+          <p>Receiving quotes is completely free and non-binding. You can receive as many quotes as you want, ask questions, and walk away without hiring anyone — at no cost to you.</p>`
+      },
+      'verified-badge': {
+        icon: 'shield-check', iconBg: '#f0fdf4', iconColor: '#16a34a',
+        category: 'For Homeowners & Pros',
+        title: 'What the Verified badge means',
+        content: `
+          <h3>The Verified badge is earned — not automatic</h3>
+          <p>Every pro with a Verified badge on Property Pros has gone through a manual review process before they can respond to a single lead. The badge only appears after all three checks pass.</p>
+          <h3>What we verify</h3>
+          <ol>
+            <li><strong>Contractor's license</strong> — We confirm the license number with the relevant state licensing board and verify it is active and in good standing.</li>
+            <li><strong>General liability insurance</strong> — We review the insurance certificate to confirm it is current and covers the contractor's trade and service area.</li>
+            <li><strong>Identity</strong> — We verify the contractor's legal name matches their license and insurance documentation.</li>
+          </ol>
+          <h3>Why it matters for homeowners</h3>
+          <p>Hiring an unverified contractor is one of the leading causes of home improvement scams and disputes. The Verified badge gives you confidence that the pro you're considering has proven credentials before you ever engage with them.</p>
+          <div class="am-tip">
+            <i data-lucide="shield-check" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Verified pros win 40% more jobs than unverified pros on the platform.</div>
+          </div>`
+      },
+      'flat-rate': {
+        icon: 'credit-card', iconBg: '#f0fdf4', iconColor: '#16a34a',
+        category: 'For Service Pros',
+        title: 'How flat-rate pricing works',
+        content: `
+          <h3>One price. Everything included.</h3>
+          <p>Property Pros charges service pros $9.99 per month — flat. That's it. No per-lead fees, no commission on jobs won, no premium tier with more leads. Every pro pays the same amount and gets access to every feature and lead on the platform.</p>
+          <h3>What's included at $9.99/month</h3>
+          <ul>
+            <li>Unlimited matched leads in your trade and service area</li>
+            <li>Browse all open projects marketplace</li>
+            <li>Verified badge (license and insurance)</li>
+            <li>Professional public profile with portfolio</li>
+            <li>Full messaging with homeowners</li>
+            <li>Schedule, calendar, and job management</li>
+            <li>Earnings dashboard and analytics</li>
+            <li>Instant lead notifications</li>
+            <li>Two-way rating system with Trust Scores</li>
+            <li>Zero commission on jobs won</li>
+          </ul>
+          <h3>How does this compare to competitors?</h3>
+          <p>Thumbtack charges $25–$80 per lead. Angi charges $15–$100 per lead. HomeAdvisor charges $20–$80 per lead. A contractor responding to 20 leads a month on those platforms could spend $400–$1,600 in lead fees alone — before winning a single job. On Property Pros that same contractor pays $9.99 total.</p>
+          <div class="am-tip">
+            <i data-lucide="trending-up" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Contractors who switch from pay-per-lead platforms typically save $500–$800 per month.</div>
+          </div>`
+      },
+      'get-verified': {
+        icon: 'shield-check', iconBg: '#f0fdf4', iconColor: '#16a34a',
+        category: 'For Service Pros',
+        title: 'How to get the Verified badge',
+        content: `
+          <h3>Why get verified?</h3>
+          <p>Verified pros appear first in homeowner search results, win 40% more jobs, and build trust with homeowners before the first conversation. Getting verified takes about 5 minutes and our team reviews within 24 hours.</p>
+          <h3>Step by step</h3>
+          <ol>
+            <li>Go to your <strong>Settings</strong> page in the pro dashboard</li>
+            <li>Click the <strong>Verification</strong> tab</li>
+            <li>Upload a photo or scan of your <strong>contractor's license</strong></li>
+            <li>Upload your current <strong>general liability insurance certificate</strong></li>
+            <li>Submit — our team reviews within 24 hours</li>
+          </ol>
+          <h3>What documents are accepted?</h3>
+          <p>We accept clear photos, PDFs, or scans of your license and insurance certificate. The documents must be legible and show your name, license number or policy number, and expiration date. Expired documents are not accepted.</p>
+          <div class="am-tip">
+            <i data-lucide="info" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Your documents are stored securely and never shared publicly. Only the Verified badge is shown on your profile.</div>
+          </div>`
+      },
+      'referral-link': {
+        icon: 'link', iconBg: '#fef3c7', iconColor: '#b45309',
+        category: 'For Realtors',
+        title: 'How the referral link works',
+        content: `
+          <h3>Your personalized closing gift link</h3>
+          <p>Every realtor on Property Pros gets a unique referral link they can share with clients. When a client signs up through your link and stays active, you earn $3 per month in account credits — automatically, every month they're subscribed.</p>
+          <h3>Generating your link</h3>
+          <ol>
+            <li>Go to your <strong>Referrals</strong> page in the realtor dashboard</li>
+            <li>Click <strong>Generate new link</strong></li>
+            <li>Name the link (e.g. "Smith Family — Apr 2026")</li>
+            <li>Copy and share via email, text, or your closing gift process</li>
+          </ol>
+          <h3>The math</h3>
+          <p>Refer 10 active clients and earn $30/month in credits. That covers your entire $29.99/month subscription. Every referral beyond 10 is pure profit on top of a platform you're already using.</p>
+          <div class="am-tip">
+            <i data-lucide="trending-up" style="width:16px;height:16px;color:#16a34a;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">A realtor closing 30 transactions per year and sending a referral link at every closing earns an average of $540/year in credits.</div>
+          </div>
+          <h3>Tracking your referrals</h3>
+          <p>The Referrals page shows every link you've created, how many clicks each received, how many converted to active accounts, and exactly how much credit you've earned to date.</p>`
+      },
+      'inspection-tracker': {
+        icon: 'clipboard-check', iconBg: '#fef3c7', iconColor: '#b45309',
+        category: 'For Realtors',
+        title: 'How the inspection tracker works',
+        content: `
+          <h3>Keep deals on track</h3>
+          <p>Inspection repair delays are one of the most common reasons deals fall through. The Property Pros inspection tracker lets you tag each flagged repair item, post it as a project, get contractor quotes, and track completion — all before the closing deadline.</p>
+          <h3>How to use it</h3>
+          <ol>
+            <li>Open a client's profile in your dashboard</li>
+            <li>Click the <strong>Inspection</strong> tab</li>
+            <li>Add each flagged item from the inspection report</li>
+            <li>Click <strong>Post as project</strong> on any item to send it to the marketplace</li>
+            <li>Track quote status and completion on each item from the same view</li>
+          </ol>
+          <h3>Deadlines and reminders</h3>
+          <p>Set the inspection repair deadline on the client's profile. You'll receive automatic reminders 7 days, 3 days, and on the day of the deadline — so nothing slips through the cracks in a busy transaction.</p>
+          <div class="am-tip">
+            <i data-lucide="clock" style="width:16px;height:16px;color:#b45309;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Most inspection repair projects receive their first quote within 2 hours — fast enough to meet even tight closing timelines.</div>
+          </div>`
+      },
+      'trust-score': {
+        icon: 'badge-check', iconBg: '#fffbeb', iconColor: '#d97706',
+        category: 'For Homeowners',
+        title: 'What is a Trust Score?',
+        content: `
+          <h3>What is it?</h3>
+          <p>Your Trust Score is a number from 0 to 100 that represents your reliability and track record as a homeowner on Property Pros. It's shown to pros on your public profile when they're considering whether to quote your project.</p>
+          <h3>What affects your Trust Score?</h3>
+          <ul>
+            <li><strong>Project completion rate</strong> — Did you follow through and hire a pro after receiving quotes?</li>
+            <li><strong>Communication rating</strong> — How responsive were you when pros messaged you?</li>
+            <li><strong>Reviews from pros</strong> — Ratings left by pros who completed work for you</li>
+            <li><strong>Payment history</strong> — (Relevant when payment processing is added)</li>
+          </ul>
+          <h3>Starting score</h3>
+          <p>All new homeowners start with a Trust Score of 70 — a solid baseline. Your score goes up as you complete projects and receive positive reviews from pros.</p>
+          <div class="am-tip">
+            <i data-lucide="info" style="width:16px;height:16px;color:#2563eb;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Homeowners with a Trust Score above 80 receive faster responses from pros and attract more quotes per project.</div>
+          </div>`
+      },
+      'leads-how': {
+        icon: 'zap', iconBg: '#fef2f2', iconColor: '#dc2626',
+        category: 'For Service Pros',
+        title: 'How leads work',
+        content: `
+          <h3>Two ways to get leads</h3>
+          <p>Property Pros gives you leads two ways — matched leads that come to you automatically, and the browse marketplace where you actively find projects to quote.</p>
+          <h3>Matched leads</h3>
+          <p>Every time a homeowner posts a project, Property Pros scans all pro profiles and finds the best matches based on trade, service area, and availability. If you match, the project appears in your My Leads dashboard immediately and you receive a notification.</p>
+          <h3>Browse marketplace</h3>
+          <p>Beyond your matched leads, you can actively browse all open projects in your area from the Browse Projects page. Filter by trade, budget, distance, and timeline. Any project you can see, you can quote.</p>
+          <h3>Responding to a lead</h3>
+          <p>Click "View details" on any lead to see the full project — description, photos, homeowner Trust Score, budget, and how many other pros have already quoted. Then click "Send quote" to respond with your price and a personal message.</p>
+          <div class="am-tip">
+            <i data-lucide="zap" style="width:16px;height:16px;color:#dc2626;flex-shrink:0;margin-top:2px"></i>
+            <div class="am-tip-text">Pros who respond to leads within the first hour win significantly more jobs than those who wait. Turn on instant notifications so you never miss a new lead.</div>
+          </div>`
+      },
+    };
+
+    // Fill remaining articles with defaults
+    const defaultArticles = {
+      'leave-review': { icon:'star', iconBg:'#fffbeb', iconColor:'#d97706', category:'For Homeowners', title:'How to leave a review', content:'<h3>After the job is done</h3><p>When a project is marked complete, you\'ll be prompted to rate your pro from 1 to 5 stars and leave a written review. Reviews are anonymous until both the homeowner and pro have submitted — this prevents retaliation and ensures honest feedback.</p><h3>What to include</h3><p>Rate the quality of work, punctuality, communication, and overall value. Be specific — detailed reviews help other homeowners make better decisions and reward pros who do great work.</p>' },
+      'no-show': { icon:'alert-triangle', iconBg:'#fef2f2', iconColor:'#dc2626', category:'For Homeowners', title:'What if a pro doesn\'t show up?', content:'<h3>If a hired pro fails to show up</h3><p>First, message the pro directly from your Messages page to check on the status. If you receive no response within a reasonable time, contact our support team through the Help Center.</p><h3>Reporting a no-show</h3><p>Go to your My Projects page, find the project, and click "Report an issue." Our team will investigate and help you either reschedule with the same pro or find an alternative quickly.</p><p>Pros who repeatedly no-show are removed from the platform.</p>' },
+      'project-expiry': { icon:'clock', iconBg:'#fffbeb', iconColor:'#d97706', category:'For Homeowners', title:'When do projects expire?', content:'<h3>30-day window</h3><p>All projects stay open and visible to pros for 30 days from the posting date. After 30 days without a hired pro, the project closes automatically and no new quotes can be submitted.</p><h3>Extending a project</h3><p>Before a project expires you can extend it from your My Projects page. After it expires, you can repost the same project in a few clicks — your description and details are saved.</p>' },
+      'always-free': { icon:'dollar-sign', iconBg:'#f0fdf4', iconColor:'#16a34a', category:'For Homeowners', title:'Is Property Pros really free for homeowners?', content:'<h3>Yes — always free</h3><p>Homeowners never pay to use Property Pros. There is no subscription, no premium tier, no commission on jobs won, and no hidden fees of any kind. You can post unlimited projects, receive unlimited quotes, and message unlimited pros completely free.</p><h3>How do we make money?</h3><p>Service pros pay $9.99/month and realtors pay $29.99/month. This flat subscription model means pros are motivated to win your business — not just respond to collect a per-lead fee.</p>' },
+      'service-area': { icon:'map-pin', iconBg:'#eff6ff', iconColor:'#2563eb', category:'For Service Pros', title:'How to set your service area', content:'<h3>Set your radius in Settings</h3><p>Go to Settings → Service Area and enter your home base location and the maximum distance you\'re willing to travel for jobs. Projects outside this radius will not appear in your matched leads.</p><h3>Tips</h3><p>Start with a realistic radius — one you\'re actually willing to drive. You can expand it later. Pros with tighter, more focused service areas tend to win more jobs because homeowners see them as local specialists.</p>' },
+      'send-quote': { icon:'send', iconBg:'#fef2f2', iconColor:'#dc2626', category:'For Service Pros', title:'How to send a winning quote', content:'<h3>Quotes with personal messages win 3× more</h3><p>When you send a quote, include a personal message that shows you actually read the homeowner\'s project description. Reference specific details — the material they mentioned, the size they listed, the timeline they need.</p><h3>What to include</h3><ul><li>Your price — fixed or estimate</li><li>How long the job will take</li><li>When you can start</li><li>What\'s included (materials, cleanup, etc.)</li><li>A personal note about their specific project</li></ul>' },
+      'ratings-pro': { icon:'star', iconBg:'#fffbeb', iconColor:'#d97706', category:'For Service Pros', title:'How ratings affect your visibility', content:'<h3>Ratings determine your position</h3><p>When a homeowner searches for pros or when matched leads are ranked, higher-rated pros appear first. A 4.9-star pro consistently appears above a 4.5-star pro for the same trade in the same area.</p><h3>How to maintain a high rating</h3><p>Show up on time, do what you quoted, communicate proactively, and clean up when you\'re done. The best way to get great reviews is to deliver great work and ask satisfied clients to rate you after the job.</p>' },
+      'cancel-sub': { icon:'x-circle', iconBg:'#fef2f2', iconColor:'#dc2626', category:'For Service Pros', title:'How to cancel your subscription', content:'<h3>Cancel anytime</h3><p>Go to Billing in your pro dashboard and click "Cancel subscription." Your plan stays active until the end of your current billing period — you won\'t lose access immediately.</p><h3>No cancellation fees</h3><p>There are no cancellation fees, no questions asked. If you cancel mid-month you retain access until your billing period ends. You can reactivate anytime.</p>' },
+      'quick-jobs-pro-how': { icon:'zap', iconBg:'#fff7ed', iconColor:'#ea580c', category:'For Service Pros', title:'How Quick Jobs works for pros', content:'<h3>Instant bookings, no quoting required</h3><p>Quick Jobs lets homeowners book you directly at a fixed price — no back-and-forth, no waiting. You opt into the services you offer, set your price, and your availability is shown to homeowners who can book you on the spot.</p><h3>Setting up Quick Jobs</h3><p>Go to Quick Jobs Setup in your sidebar. Toggle on the services you want to offer, set your price for each, and configure your available days and time slots. You control everything.</p><p>A 5% platform fee applies to each Quick Job booking. You keep the rest.</p>' },
+      'trial': { icon:'gift', iconBg:'#f0fdf4', iconColor:'#16a34a', category:'For Service Pros', title:'How the 14-day free trial works', content:'<h3>Full access, no charge</h3><p>When you sign up as a service pro, your 14-day free trial starts immediately. You get full access to every feature — matched leads, the browse marketplace, messaging, your verified badge, and everything else.</p><h3>When does billing start?</h3><p>Your card is not charged until day 15. If you cancel before day 15 you pay nothing. No questions asked.</p><p>After the trial, billing is $9.99/month. Cancel anytime from your Billing page.</p>' },
+      'post-for-client': { icon:'clipboard-list', iconBg:'#fef3c7', iconColor:'#b45309', category:'For Realtors', title:'How to post a project for a client', content:'<h3>Post on behalf of your client</h3><p>You don\'t need your client to be logged in — you post the project from your realtor dashboard and it\'s tagged to their account. They\'ll be notified when quotes arrive.</p><h3>The 6-step flow</h3><ol><li>Go to Post a Project in your dashboard</li><li>Select the client from your roster</li><li>Choose the project type and describe the work</li><li>Enter property details and upload inspection report if applicable</li><li>Set the timeline — mark as urgent if there\'s a closing deadline</li><li>Review and post</li></ol>' },
+      'earn-credits': { icon:'trending-up', iconBg:'#f0fdf4', iconColor:'#16a34a', category:'For Realtors', title:'How to earn and use credits', content:'<h3>$3 per active referral per month</h3><p>Every client who signs up through your referral link and maintains an active account earns you $3/month in Property Pros credits. Credits are applied automatically to your next billing cycle.</p><h3>Using your credits</h3><p>Credits appear in your Billing page and are deducted from your monthly subscription automatically. If your credits exceed $29.99, your subscription is free that month and the excess rolls forward.</p>' },
+      'add-client': { icon:'users', iconBg:'#fef3c7', iconColor:'#b45309', category:'For Realtors', title:'How to add clients to your roster', content:'<h3>Two ways to add clients</h3><p><strong>Manually</strong> — Click "Add client" in your Clients page. Enter their name, email, property address, transaction stage (buyer, seller, or closed), and expected closing date.</p><p><strong>CSV import</strong> — Export your client list from your CRM and import it via the CSV import tool in Settings. Map columns to match our format and all clients are added at once.</p>' },
+      'realtor-pricing': { icon:'dollar-sign', iconBg:'#fef3c7', iconColor:'#b45309', category:'For Realtors', title:'Realtor Pro pricing explained', content:'<h3>$29.99/month — everything included</h3><p>The Realtor Pro plan includes full client management, the inspection repair tracker, your personalized referral link system, preferred contractor list, unlimited project posting for clients, and direct messaging with contractors.</p><h3>Free trial</h3><p>New realtors get a 14-day free trial with full access. Your card is not charged until day 15. Cancel anytime before then and pay nothing.</p><h3>Reducing your cost with credits</h3><p>Refer 10 active clients and earn $30/month in credits — your entire subscription cost covered automatically.</p>' },
+      'deadline-reminders': { icon:'bell', iconBg:'#fef2f2', iconColor:'#dc2626', category:'For Realtors', title:'How deadline reminders work', content:'<h3>Never miss a deadline</h3><p>When you set an inspection repair deadline on a client\'s profile, Property Pros sends you automatic reminders at 7 days out, 3 days out, and on the day of the deadline — in-app and by email.</p><h3>Urgent notifications</h3><p>If a repair project has not received any quotes as a deadline approaches, we escalate the urgency level and send additional notifications to ensure you have time to take action before the closing date.</p>' },
+    };
+
+    Object.assign(articles, defaultArticles);
+
+    // ── OPEN ARTICLE ──
+    function openArticle(key) {
+      const a = articles[key];
+      if (!a) return;
+      const modal = document.getElementById('article-modal');
+      document.getElementById('article-modal-content').innerHTML = `
+        <div class="am-header">
+          <div class="am-icon" style="background:${a.iconBg}">
+            <i data-lucide="${a.icon}" style="width:24px;height:24px;color:${a.iconColor}"></i>
+          </div>
+          <div style="flex:1">
+            <div class="am-eyebrow">${a.category}</div>
+            <div class="am-title">${a.title}</div>
+          </div>
+          <button class="am-close" onclick="closeArticle()">
+            <i data-lucide="x" style="width:16px;height:16px;color:var(--gray)"></i>
+          </button>
+        </div>
+        <div class="am-body">${a.content}</div>
+        <div class="am-footer">
+          <div class="am-helpful">
+            Was this helpful?
+            <button class="helpful-btn" onclick="markHelpful(true, this)">
+              <i data-lucide="thumbs-up" style="width:13px;height:13px"></i> Yes
+            </button>
+            <button class="helpful-btn" onclick="markHelpful(false, this)">
+              <i data-lucide="thumbs-down" style="width:13px;height:13px"></i> No
+            </button>
+          </div>
+          <a href="contact.html" style="font-size:13px;font-weight:800;color:var(--red);display:flex;align-items:center;gap:5px">
+            <i data-lucide="message-circle" style="width:14px;height:14px"></i>
+            Still need help?
+          </a>
+        </div>`;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeArticle() {
+      document.getElementById('article-modal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function markHelpful(yes, btn) {
+      const parent = btn.closest('.am-helpful');
+      parent.innerHTML = yes
+        ? '<span style="color:var(--green);font-weight:800;display:flex;align-items:center;gap:6px"><i data-lucide="check-circle" style="width:14px;height:14px;color:var(--green)"></i> Thanks for the feedback!</span>'
+        : '<span style="font-weight:800;color:var(--gray);display:flex;align-items:center;gap:6px"><i data-lucide="message-circle" style="width:14px;height:14px"></i> <a href="contact.html" style="color:var(--red)">Contact support</a> and we\'ll help directly.</span>';
+      lucide.createIcons();
+    }
+
+    // ── FILTER BY USER TYPE ──
+    function filterUser(type, el) {
+      document.querySelectorAll('.user-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      document.querySelectorAll('.articles-section').forEach(s => {
+        s.style.display = (type === 'all' || s.dataset.section === type) ? '' : 'none';
+      });
+    }
+
+    // ── SEARCH ──
+    function searchArticles(q) {
+      if (!q.trim()) {
+        document.querySelectorAll('.article-card').forEach(c => c.style.display = '');
+        document.querySelectorAll('.articles-section').forEach(s => s.style.display = '');
+        return;
+      }
+      const query = q.toLowerCase();
+      document.querySelectorAll('.article-card').forEach(card => {
+        const text = (card.dataset.tags + ' ' + card.querySelector('.ac-title').textContent + ' ' + card.querySelector('.ac-sub').textContent).toLowerCase();
+        card.style.display = text.includes(query) ? '' : 'none';
+      });
+      document.querySelectorAll('.articles-section').forEach(s => {
+        const visible = [...s.querySelectorAll('.article-card')].some(c => c.style.display !== 'none');
+        s.style.display = visible ? '' : 'none';
+      });
+    }
+
+    // ── MOBILE NAV ──
+    function toggleMobileNav() {
+      document.getElementById('mobile-nav').classList.toggle('open');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeArticle(); });
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.article-card') && !e.target.closest('.popular-tag')) return;
+    });
+
+    lucide.createIcons();
+  </script>
+
+</body>
+</html>

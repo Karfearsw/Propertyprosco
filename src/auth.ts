@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth'
+import { CredentialsSignin } from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { SubscriptionStatus } from '@prisma/client'
 import type { Provider } from 'next-auth/providers'
@@ -9,6 +10,10 @@ import bcrypt from 'bcryptjs'
 import { db } from '@/lib/db'
 import { normalizeEmail } from '@/lib/auth-flows'
 import { env, hasAppleAuth, hasGoogleAuth } from '@/lib/env'
+
+class EmailNotVerifiedError extends CredentialsSignin {
+  code = 'email_not_verified'
+}
 
 const providers: Provider[] = [
   CredentialsProvider({
@@ -26,6 +31,10 @@ const providers: Provider[] = [
         where: { email },
       })
       if (!user || !user.password) return null
+
+      if (!user.emailVerified) {
+        throw new EmailNotVerifiedError()
+      }
 
       const valid = await bcrypt.compare(
         credentials.password as string,
@@ -132,6 +141,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       if ((account?.provider === 'google' || account?.provider === 'apple') && user.email) {
         const existing = await db.user.findUnique({ where: { email: user.email } })
+        if (existing && !existing.emailVerified) {
+          await db.user.update({
+            where: { id: existing.id },
+            data: { emailVerified: new Date() },
+          })
+        }
+
         if (existing) return true
       }
       return true

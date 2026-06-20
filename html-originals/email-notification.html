@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Property Pros email notification." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email Notification Template — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Manrope', sans-serif; background: #f3f4f6; padding: 40px 20px; color: #111827; }
+
+    /* DEMO CONTROLS */
+    .demo-bar { max-width: 600px; margin: 0 auto 24px; background: #111827; border-radius: 12px; padding: 14px 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .demo-label { font-size: 12px; font-weight: 700; color: #6b7280; }
+    .demo-btn { padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.15); background: none; font-size: 12px; font-weight: 800; color: #d1d5db; cursor: pointer; font-family: inherit; transition: all .15s; }
+    .demo-btn:hover, .demo-btn.active { background: #dc2626; border-color: #dc2626; color: #fff; }
+
+    /* EMAIL WRAPPER */
+    .email-wrap { max-width: 600px; margin: 0 auto; }
+
+    /* EMAIL SHELL */
+    .email { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.1); }
+
+    /* HEADER */
+    .email-header { background: #111827; padding: 28px 40px; display: flex; align-items: center; gap: 12px; }
+    .email-logo { width: 40px; height: 40px; border-radius: 10px; background: #dc2626; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff; flex-shrink: 0; }
+    .email-brand { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .email-brand span { color: #f87171; }
+
+    /* HERO BAND */
+    .email-hero { padding: 36px 40px 28px; text-align: center; border-bottom: 1px solid #f3f4f6; }
+    .email-hero-icon { font-size: 52px; margin-bottom: 16px; display: block; }
+    .email-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #2563eb; margin-bottom: 10px; }
+    .email-title { font-size: 24px; font-weight: 900; color: #111827; letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 10px; }
+    .email-sub { font-size: 15px; color: #6b7280; line-height: 1.7; max-width: 400px; margin: 0 auto; }
+
+    /* BODY */
+    .email-body { padding: 28px 40px; }
+
+    /* PROJECT CONTEXT CARD */
+    .project-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; }
+    .pc-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #6b7280; margin-bottom: 8px; }
+    .pc-name { font-size: 15px; font-weight: 900; color: #111827; margin-bottom: 4px; }
+    .pc-meta { font-size: 13px; color: #6b7280; font-weight: 700; }
+
+    /* QUOTE CARD */
+    .quote-card { border: 2px solid #e5e7eb; border-radius: 14px; padding: 20px; margin-bottom: 20px; }
+    .quote-card.featured { border-color: #2563eb; }
+    .qc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .qc-pro { display: flex; gap: 12px; align-items: center; }
+    .qc-avatar { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #fff; flex-shrink: 0; }
+    .qc-name { font-size: 14px; font-weight: 900; color: #111827; }
+    .qc-rating { font-size: 12px; color: #d97706; font-weight: 700; margin-top: 2px; }
+    .qc-verified { font-size: 11px; font-weight: 800; color: #16a34a; margin-top: 2px; }
+    .qc-price { text-align: right; }
+    .qc-amount { font-size: 24px; font-weight: 900; color: #111827; letter-spacing: -0.5px; }
+    .qc-type { font-size: 11px; color: #6b7280; font-weight: 700; }
+    .qc-msg { background: #f9fafb; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #374151; line-height: 1.7; font-style: italic; margin-bottom: 12px; }
+    .qc-details { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; font-weight: 700; color: #6b7280; }
+    .qc-badge { display: inline-block; font-size: 10px; font-weight: 900; background: #eff6ff; color: #1e40af; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+
+    /* EXTRA QUOTES */
+    .more-quotes { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .mq-text { font-size: 14px; font-weight: 800; color: #111827; }
+    .mq-sub { font-size: 12px; color: #6b7280; font-weight: 700; margin-top: 2px; }
+
+    /* CTA */
+    .cta-wrap { text-align: center; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; padding: 16px 40px; background: #dc2626; color: #fff; border-radius: 12px; font-size: 16px; font-weight: 900; text-decoration: none; letter-spacing: -0.3px; }
+    .cta-sub { font-size: 13px; color: #6b7280; margin-top: 10px; font-weight: 700; }
+
+    /* TIPS */
+    .tips-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 16px 18px; margin-bottom: 20px; }
+    .tips-title { font-size: 13px; font-weight: 900; color: #92400e; margin-bottom: 10px; }
+    .tip-item { display: flex; gap: 8px; font-size: 13px; color: #78350f; font-weight: 700; margin-bottom: 6px; line-height: 1.5; }
+    .tip-item:last-child { margin-bottom: 0; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: #f3f4f6; margin: 20px 0; }
+
+    /* FOOTER */
+    .email-footer { background: #f9fafb; padding: 24px 40px; border-top: 1px solid #e5e7eb; text-align: center; }
+    .ef-links { display: flex; gap: 20px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .ef-link { font-size: 12px; font-weight: 700; color: #6b7280; text-decoration: none; }
+    .ef-copy { font-size: 12px; color: #9ca3af; line-height: 1.6; }
+    .ef-unsubscribe { font-size: 11px; color: #9ca3af; margin-top: 8px; }
+    .ef-unsubscribe a { color: #9ca3af; text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- DEMO BAR -->
+  <div class="demo-bar">
+    <span class="demo-label">📧 Email template preview:</span>
+    <button class="demo-btn active" onclick="showTemplate('quote')">New quote</button>
+    <button class="demo-btn" onclick="showTemplate('multi')">Multiple quotes</button>
+    <button class="demo-btn" onclick="showTemplate('message')">New message</button>
+    <button class="demo-btn" onclick="showTemplate('expiry')">Project expiring</button>
+  </div>
+
+  <!-- EMAIL PREVIEW -->
+  <div class="email-wrap">
+
+    <!-- ══ TEMPLATE 1: NEW QUOTE ══ -->
+    <div class="email" id="tpl-quote">
+      <div class="email-header">
+        <div class="email-logo">PP</div>
+        <div class="email-brand"><span>Property</span> Pros</div>
+      </div>
+
+      <div class="email-hero">
+        <span class="email-hero-icon">💰</span>
+        <div class="email-eyebrow">New quote received</div>
+        <div class="email-title">You have a new quote on your roof replacement project</div>
+        <div class="email-sub">Apex Roofing Group just sent you a quote. Review it and accept or keep waiting for more.</div>
+      </div>
+
+      <div class="email-body">
+        <div class="project-card">
+          <div class="pc-label">Your project</div>
+          <div class="pc-name">Full roof replacement — colonial home, 2,200 sq ft</div>
+          <div class="pc-meta">Posted Apr 18 · 4 quotes received so far · Budget $5,000–$10,000</div>
+        </div>
+
+        <div class="quote-card featured">
+          <div class="qc-badge">⭐ Best match based on rating and price</div>
+          <div class="qc-header">
+            <div class="qc-pro">
+              <div class="qc-avatar" style="background:#111827">AR</div>
+              <div>
+                <div class="qc-name">Apex Roofing Group</div>
+                <div class="qc-rating">★ 4.9 · 214 reviews</div>
+                <div class="qc-verified">✓ License & insurance verified</div>
+              </div>
+            </div>
+            <div class="qc-price">
+              <div class="qc-amount">$4,200</div>
+              <div class="qc-type">Fixed price</div>
+            </div>
+          </div>
+          <div class="qc-msg">"We reviewed your project and can start April 22. Full shingle removal, GAF Timberline HDZ architectural shingles, underlayment, flashing, and cleanup. 25-year warranty included."</div>
+          <div class="qc-details">
+            <span>📅 Start: Apr 22</span>
+            <span>⏱ 2–3 days</span>
+            <span>✓ Materials included</span>
+            <span>✓ Cleanup included</span>
+          </div>
+        </div>
+
+        <div class="tips-box">
+          <div class="tips-title">💡 Tips for reviewing quotes</div>
+          <div class="tip-item"><span>→</span> Check their reviews and portfolio before accepting</div>
+          <div class="tip-item"><span>→</span> Message the pro to ask questions — good pros respond fast</div>
+          <div class="tip-item"><span>→</span> Make sure materials, cleanup, and warranty are included</div>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="homeowner-projects.html" class="cta-btn">View quote &amp; compare →</a>
+          <div class="cta-sub">Or message the pro directly from your dashboard</div>
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <div class="ef-links">
+          <a href="homeowner-projects.html" class="ef-link">My Projects</a>
+          <a href="homeowner-messages.html" class="ef-link">Messages</a>
+          <a href="homeowner-notifications.html" class="ef-link">Notifications</a>
+          <a href="homeowner-settings.html" class="ef-link">Settings</a>
+        </div>
+        <div class="ef-copy">You're receiving this because you posted a project on Property Pros.<br>© 2026 Property Pros, LLC · All rights reserved</div>
+        <div class="ef-unsubscribe">
+          <a href="homeowner-settings.html">Manage notification preferences</a> · <a href="#">Unsubscribe from project updates</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TEMPLATE 2: MULTIPLE QUOTES ══ -->
+    <div class="email" id="tpl-multi" style="display:none">
+      <div class="email-header">
+        <div class="email-logo">PP</div>
+        <div class="email-brand"><span>Property</span> Pros</div>
+      </div>
+
+      <div class="email-hero">
+        <span class="email-hero-icon">📨</span>
+        <div class="email-eyebrow">4 quotes ready for review</div>
+        <div class="email-title">You have 4 quotes on your roof replacement — time to compare</div>
+        <div class="email-sub">Your project has been active for 2 days and 4 pros have submitted quotes. Here's a summary.</div>
+      </div>
+
+      <div class="email-body">
+        <div class="project-card">
+          <div class="pc-label">Your project</div>
+          <div class="pc-name">Full roof replacement — colonial home, 2,200 sq ft</div>
+          <div class="pc-meta">Posted Apr 18 · Budget $5,000–$10,000</div>
+        </div>
+
+        <!-- Best quote -->
+        <div class="quote-card featured">
+          <div class="qc-badge">⭐ Best match</div>
+          <div class="qc-header">
+            <div class="qc-pro">
+              <div class="qc-avatar" style="background:#111827">AR</div>
+              <div>
+                <div class="qc-name">Apex Roofing Group</div>
+                <div class="qc-rating">★ 4.9 · 214 reviews</div>
+                <div class="qc-verified">✓ Verified</div>
+              </div>
+            </div>
+            <div class="qc-price">
+              <div class="qc-amount">$4,200</div>
+              <div class="qc-type">Fixed price</div>
+            </div>
+          </div>
+          <div class="qc-details">
+            <span>📅 Start: Apr 22</span>
+            <span>⏱ 2–3 days</span>
+            <span>✓ All inclusive</span>
+          </div>
+        </div>
+
+        <!-- Other quotes summary -->
+        <div class="more-quotes">
+          <div>
+            <div class="mq-text">3 more quotes available</div>
+            <div class="mq-sub">Ranging from $3,850 to $5,100 · All from verified pros</div>
+          </div>
+          <a href="homeowner-projects.html" style="font-size:13px;font-weight:800;color:#dc2626;text-decoration:none">Compare all →</a>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="homeowner-projects.html" class="cta-btn">Compare all 4 quotes →</a>
+          <div class="cta-sub">Accept the best one or keep waiting — your project stays open for 30 days</div>
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <div class="ef-links">
+          <a href="homeowner-projects.html" class="ef-link">My Projects</a>
+          <a href="homeowner-messages.html" class="ef-link">Messages</a>
+          <a href="homeowner-settings.html" class="ef-link">Settings</a>
+        </div>
+        <div class="ef-copy">© 2026 Property Pros, LLC · All rights reserved</div>
+        <div class="ef-unsubscribe"><a href="homeowner-settings.html">Manage notification preferences</a> · <a href="#">Unsubscribe</a></div>
+      </div>
+    </div>
+
+    <!-- ══ TEMPLATE 3: NEW MESSAGE ══ -->
+    <div class="email" id="tpl-message" style="display:none">
+      <div class="email-header">
+        <div class="email-logo">PP</div>
+        <div class="email-brand"><span>Property</span> Pros</div>
+      </div>
+
+      <div class="email-hero">
+        <span class="email-hero-icon">💬</span>
+        <div class="email-eyebrow">New message</div>
+        <div class="email-title">Kev Hernandez Contracting sent you a message</div>
+        <div class="email-sub">Regarding your roof replacement project</div>
+      </div>
+
+      <div class="email-body">
+        <div class="quote-card">
+          <div class="qc-header">
+            <div class="qc-pro">
+              <div class="qc-avatar" style="background:#7c3aed">KH</div>
+              <div>
+                <div class="qc-name">Kev Hernandez Contracting</div>
+                <div class="qc-rating">★ 4.8 · 168 reviews</div>
+                <div class="qc-verified">✓ License & insurance verified</div>
+              </div>
+            </div>
+          </div>
+          <div class="qc-msg">"Hi Maria, I reviewed your project details and I'm confident we can get this done right. We've replaced roofs on dozens of colonial homes in your area. Are you available for a free estimate this week? I can do Tuesday or Thursday morning."</div>
+          <div style="font-size:12px;color:#6b7280;font-weight:700">Sent today at 7:30 AM</div>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="homeowner-messages.html" class="cta-btn">Reply to message →</a>
+          <div class="cta-sub">Or view their full profile and portfolio before replying</div>
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <div class="ef-links">
+          <a href="homeowner-messages.html" class="ef-link">Messages</a>
+          <a href="homeowner-projects.html" class="ef-link">My Projects</a>
+          <a href="homeowner-settings.html" class="ef-link">Settings</a>
+        </div>
+        <div class="ef-copy">© 2026 Property Pros, LLC · All rights reserved</div>
+        <div class="ef-unsubscribe"><a href="homeowner-settings.html">Manage notification preferences</a> · <a href="#">Unsubscribe</a></div>
+      </div>
+    </div>
+
+    <!-- ══ TEMPLATE 4: PROJECT EXPIRING ══ -->
+    <div class="email" id="tpl-expiry" style="display:none">
+      <div class="email-header">
+        <div class="email-logo">PP</div>
+        <div class="email-brand"><span>Property</span> Pros</div>
+      </div>
+
+      <div class="email-hero" style="border-bottom:3px solid #fde68a">
+        <span class="email-hero-icon">⏰</span>
+        <div class="email-eyebrow" style="color:#d97706">Action needed</div>
+        <div class="email-title">Your project closes in 5 days — you have 4 quotes waiting</div>
+        <div class="email-sub">Projects automatically close after 30 days. Review your quotes and hire a pro before your project expires.</div>
+      </div>
+
+      <div class="email-body">
+        <div class="project-card" style="border-color:#fde68a;background:#fffbeb">
+          <div class="pc-label" style="color:#92400e">⚠️ Closing soon</div>
+          <div class="pc-name">Full roof replacement — colonial home, 2,200 sq ft</div>
+          <div class="pc-meta">Posted Apr 18 · Closes May 18 · 4 quotes received</div>
+        </div>
+
+        <div class="tips-box">
+          <div class="tips-title">⏰ Why act now?</div>
+          <div class="tip-item"><span>→</span> Once the project closes, pros can no longer quote and existing quotes expire</div>
+          <div class="tip-item"><span>→</span> You'll need to repost if you want new quotes — and start the process again</div>
+          <div class="tip-item"><span>→</span> Pros have held their pricing — accepting now locks in your quote</div>
+        </div>
+
+        <div class="cta-wrap">
+          <a href="homeowner-projects.html" class="cta-btn" style="background:#d97706">Review quotes before they expire →</a>
+          <div class="cta-sub">Or extend your project deadline from My Projects</div>
+        </div>
+      </div>
+
+      <div class="email-footer">
+        <div class="ef-links">
+          <a href="homeowner-projects.html" class="ef-link">My Projects</a>
+          <a href="homeowner-settings.html" class="ef-link">Settings</a>
+        </div>
+        <div class="ef-copy">© 2026 Property Pros, LLC · All rights reserved</div>
+        <div class="ef-unsubscribe"><a href="homeowner-settings.html">Manage notification preferences</a> · <a href="#">Unsubscribe</a></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function showTemplate(id) {
+      document.querySelectorAll('.email').forEach(e => e.style.display = 'none');
+      document.getElementById('tpl-' + id).style.display = 'block';
+      document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

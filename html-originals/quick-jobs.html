@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Quick Jobs — Property Pros</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#dc2626;--red-dark:#b91c1c;--red-light:#fef2f2;
+  --dark:#111827;--dark2:#1f2937;--dark3:#374151;
+  --gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;
+  --green:#16a34a;--green-light:#f0fdf4;
+  --font:'Manrope',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font)}
+
+/* ── HEADER ── */
+header{background:#14532d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.hw-brand{display:flex;align-items:center;gap:10px}
+.hw-logo{width:32px;height:32px;border-radius:9px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff}
+.hw-brand-name{font-size:17px;font-weight:900;color:#fff}
+.hw-brand-name span{color:#f87171}
+.hw-right{display:flex;align-items:center;gap:6px}
+.hw-bell{position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af;cursor:pointer}
+.hw-bell:hover{background:rgba(255,255,255,.08);color:#fff}
+.hw-bell-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid var(--dark)}
+.hw-avatar{width:34px;height:34px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+.hw-hamburger{width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none}
+.hw-hamburger span{display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px}
+
+/* ── OVERLAY + DRAWER ── */
+.hw-overlay{display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98}
+.hw-drawer{display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto}
+.d-sec{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px}
+.d-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:all .15s}
+.d-link:hover,.d-link.active{background:rgba(255,255,255,.06);color:#fff}
+.d-div{height:1px;background:rgba(255,255,255,.07);margin:8px 4px}
+.d-footer{margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+.d-user{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.d-av{width:36px;height:36px;border-radius:50%;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
+.d-name{font-size:13px;font-weight:800;color:#fff}
+.d-role{font-size:11px;color:#6b7280}
+.d-logout{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:800;color:#f87171;text-decoration:none}
+
+/* ── PAGE LAYOUT ── */
+.page{flex:1;display:flex;flex-direction:column}
+
+/* ── HERO STRIP ── */
+.hero-strip{background:#14532d;padding:28px 0 24px;border-bottom:1px solid rgba(255,255,255,.06)}
+.hero-strip-inner{max-width:900px;margin:0 auto;padding:0 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.hero-text .eyebrow{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#f87171;margin-bottom:6px}
+.hero-text h1{font-size:26px;font-weight:900;color:#fff;letter-spacing:-0.5px;margin-bottom:6px}
+.hero-text p{font-size:14px;color:#9ca3af;font-weight:700;line-height:1.6;max-width:480px}
+.btn-post-job{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:#dc2626;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:900;cursor:pointer;transition:background .15s;white-space:nowrap;flex-shrink:0;align-self:flex-start}
+.btn-post-job:hover{background:var(--red-dark)}
+
+/* ── CATEGORY FILTER ── */
+.cat-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0;display:flex;justify-content:center;overflow-x:auto}
+.cat-bar-inner{max-width:900px;width:100%;padding:0 28px;display:flex;align-items:center;gap:4px}
+.cat-tab{padding:14px 16px;font-size:13px;font-weight:800;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0;background:none;border-top:none;border-left:none;border-right:none}
+.cat-tab:hover{color:var(--dark)}
+.cat-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.cat-count{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--bg);font-size:10px;font-weight:900;color:var(--gray);margin-left:5px}
+.cat-tab.active .cat-count{background:var(--red-light);color:var(--red)}
+
+/* ── MAIN CONTENT ── */
+.content{max-width:900px;margin:0 auto;width:100%;padding:24px 28px 60px;display:flex;flex-direction:column;gap:14px}
+
+/* ── JOB POST CARD ── */
+.job-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.job-card:hover{border-color:#d1d5db;box-shadow:0 4px 20px rgba(0,0,0,.07)}
+.job-card.new-post{border-left:3px solid var(--red)}
+
+/* Card header */
+.jc-head{display:flex;align-items:center;gap:12px;padding:18px 20px 0}
+.jc-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;background:#7c3aed}
+.jc-meta{flex:1;min-width:0}
+.jc-name{font-size:14px;font-weight:900;color:var(--dark)}
+.jc-sub{font-size:12px;font-weight:700;color:var(--gray);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.jc-dot{width:3px;height:3px;border-radius:50%;background:var(--gray)}
+.jc-badge{padding:3px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.badge-new{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa}
+.badge-open{background:var(--green-light);color:var(--green);border:1px solid #bbf7d0}
+.badge-closed{background:var(--bg);color:var(--gray);border:1px solid var(--border)}
+
+/* Card body */
+.jc-body{padding:12px 20px}
+.jc-title{font-size:15px;font-weight:900;color:var(--dark);margin-bottom:5px}
+.jc-desc{font-size:13px;font-weight:700;color:var(--dark3);line-height:1.7;margin-bottom:12px}
+
+/* Photo strip */
+.jc-photos{display:grid;gap:4px;margin-bottom:12px;border-radius:10px;overflow:hidden}
+.jc-photos.one{grid-template-columns:1fr}
+.jc-photos.two{grid-template-columns:1fr 1fr}
+.jc-photos.three{grid-template-columns:2fr 1fr;grid-template-rows:auto auto}
+.jc-photo{background:var(--bg);aspect-ratio:4/3;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;cursor:pointer}
+.jc-photo:nth-child(1):only-child{aspect-ratio:16/9}
+.jc-photos.three .jc-photo:first-child{grid-row:span 2;aspect-ratio:auto}
+.jc-photos.three .jc-photo:not(:first-child){aspect-ratio:4/3}
+.jc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.jc-photo:hover img{transform:scale(1.03)}
+.jc-photo-more{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:#fff}
+
+/* Category chip */
+.jc-cat{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;background:var(--bg);color:var(--gray);border:1px solid var(--border);margin-bottom:10px}
+
+/* Responses */
+.jc-responses{background:var(--bg);border-radius:10px;padding:12px 14px;margin-bottom:12px}
+.jc-responses-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:8px}
+.jc-response-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.jc-response-row:last-child{border-bottom:none;padding-bottom:0}
+.jc-resp-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#fff;flex-shrink:0;background:#dc2626}
+.jc-resp-name{font-size:13px;font-weight:800;color:var(--dark);flex:1}
+.jc-resp-rating{font-size:11px;font-weight:700;color:#f59e0b}
+.jc-resp-price{font-size:15px;font-weight:900;color:var(--red);flex-shrink:0}
+.jc-resp-note{font-size:11px;font-weight:700;color:var(--gray);margin-top:2px}
+.btn-accept{padding:6px 14px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0;transition:background .15s}
+.btn-accept:hover{background:#15803d}
+
+/* Card actions */
+.jc-actions{display:flex;align-items:center;gap:8px;padding:12px 20px;border-top:1px solid var(--border);background:#fafafa}
+.jc-action-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--white);font-size:12px;font-weight:800;cursor:pointer;color:var(--gray);transition:all .15s}
+.jc-action-btn:hover{border-color:var(--dark);color:var(--dark)}
+.jc-action-btn.primary{background:var(--red);color:#fff;border-color:var(--red)}
+.jc-action-btn.primary:hover{background:var(--red-dark)}
+.jc-resp-count{font-size:12px;font-weight:700;color:var(--gray);margin-left:auto}
+
+/* ── POST JOB MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:560px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+.modal-title{font-size:18px;font-weight:900;letter-spacing:-0.3px}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--gray)}
+.modal-body{flex:1;overflow-y:auto;padding:24px}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px}
+.btn-cancel{flex:1;padding:12px;border-radius:11px;border:1px solid var(--border);background:var(--white);font-size:14px;font-weight:800;cursor:pointer;color:var(--dark)}
+.btn-submit{flex:2;padding:12px;border-radius:11px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:900;cursor:pointer;transition:background .15s}
+.btn-submit:hover{background:var(--red-dark)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+
+/* Modal form */
+.mf-group{margin-bottom:20px}
+.mf-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--dark3);margin-bottom:8px;display:block}
+.mf-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);color:var(--dark);outline:none;transition:border-color .15s}
+.mf-input:focus{border-color:var(--red)}
+textarea.mf-input{min-height:90px;resize:vertical;line-height:1.6}
+.mf-select{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);color:var(--dark);outline:none;background:var(--white);cursor:pointer}
+.mf-select:focus{border-color:var(--red)}
+
+/* Photo upload in modal */
+.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:10px}
+.photo-upload-area:hover,.photo-upload-area.drag{border-color:var(--red);background:var(--red-light)}
+.pua-icon{font-size:32px;margin-bottom:8px}
+.pua-title{font-size:14px;font-weight:900;margin-bottom:3px}
+.pua-sub{font-size:12px;color:var(--gray);font-weight:700}
+.pua-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-previews{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.photo-preview-thumb{position:relative;width:80px;height:80px;border-radius:9px;overflow:hidden;border:1px solid var(--border)}
+.photo-preview-thumb img{width:100%;height:100%;object-fit:cover}
+.photo-preview-thumb .rm{position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center}
+
+/* Empty state */
+.empty-state{text-align:center;padding:56px 20px;background:var(--white);border:1px solid var(--border);border-radius:16px}
+.empty-icon{font-size:48px;margin-bottom:14px}
+.empty-title{font-size:18px;font-weight:900;margin-bottom:6px}
+.empty-sub{font-size:14px;color:var(--gray);font-weight:700;margin-bottom:20px;line-height:1.6}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;opacity:0;transition:opacity .3s}
+.toast.show{opacity:1}
+
+/* Lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;object-fit:contain}
+.lb-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
+
+@media(max-width:640px){
+  .hero-strip-inner{flex-direction:column;align-items:flex-start}
+  .content{padding:16px 16px 60px}
+  .cat-bar-inner{padding:0 16px}
+  .jc-head{padding:14px 16px 0}
+  .jc-body{padding:10px 16px}
+  .jc-actions{padding:10px 16px}
+  .hero-strip-inner{padding:0 16px}
+}
+
+  .hw-rail{} @media(max-width:640px){.hw-rail{display:none!important}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="homeowner-dashboard.html" class="hw-brand">
+    <div class="hw-logo">PP</div>
+    <div class="hw-brand-name"><span>Property</span> Pros</div>
+  </a>
+  <div class="hw-right">
+    <a href="homeowner-notifications.html" class="hw-bell">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div class="hw-bell-dot"></div>
+    </a>
+    <div class="hw-avatar" onclick="toggleHwMenu()">MS</div>
+    <button class="hw-hamburger" id="hw-hamburger" onclick="toggleHwMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="hw-overlay" id="hw-overlay" onclick="closeHwMenu()"></div>
+<div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#14532d;border-left:1px solid rgba(255,255,255,.08);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+  </div>
+
+<div class="hw-layout" style="display:flex;align-items:flex-start">
+    <aside class="hw-rail" style="width:220px;flex-shrink:0;background:#14532d;padding:18px 12px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;display:flex;flex-direction:column">
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Main</div>
+      <a href="homeowner-dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="layout-dashboard" style="width:16px;height:16px"></i> Dashboard</a>
+      <a href="homeowner-projects.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="briefcase" style="width:16px;height:16px"></i> My Projects</a>
+      <a href="quick-jobs.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:800;color:#fff;background:#16a34a;text-decoration:none;margin-bottom:2px"><i data-lucide="zap" style="width:16px;height:16px"></i> Quick Jobs</a>
+      <a href="homeowner-messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="message-circle" style="width:16px;height:16px"></i> Messages</a>
+      <a href="saved-pros.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bookmark" style="width:16px;height:16px"></i> Saved Pros</a>
+      <div style="font-size:10px;font-weight:800;letter-spacing:.9px;text-transform:uppercase;color:#86efac;padding:14px 8px 6px">Account</div>
+      <a href="homeowner-notifications.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="bell" style="width:16px;height:16px"></i> Notifications</a>
+      <a href="homeowner-billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="credit-card" style="width:16px;height:16px"></i> Billing &amp; Plus™</a>
+      <a href="homeowner-settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:rgba(255,255,255,.65);text-decoration:none;margin-bottom:2px" onmouseover="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='rgba(255,255,255,.65)'"><i data-lucide="settings" style="width:16px;height:16px"></i> Settings</a>
+    </aside>
+    <div style="flex:1;min-width:0"><div class="page">
+
+  <!-- HERO STRIP -->
+  <div class="hero-strip">
+    <div class="hero-strip-inner">
+      <div class="hero-text">
+        <div class="eyebrow">⚡ Quick Jobs</div>
+        <h1>Post a job, get prices fast</h1>
+        <p>Snap a photo, add a quick description, and local pros will send you their price. Accept the best offer and it's booked — no phone calls, no back and forth.</p>
+      </div>
+      <button class="btn-post-job" onclick="openPostModal()">
+        <i data-lucide="camera" style="width:18px;height:18px"></i>
+        Post a Quick Job
+      </button>
+    </div>
+  </div>
+
+  <!-- CATEGORY TABS -->
+  <div class="cat-bar">
+    <div class="cat-bar-inner">
+      <button class="cat-tab active" onclick="filterCat('all',this)">All <span class="cat-count" id="cnt-all">3</span></button>
+      <button class="cat-tab" onclick="filterCat('junk',this)">🚛 Junk Removal <span class="cat-count" id="cnt-junk">1</span></button>
+      <button class="cat-tab" onclick="filterCat('cleaning',this)">🧹 Cleaning <span class="cat-count" id="cnt-cleaning">1</span></button>
+      <button class="cat-tab" onclick="filterCat('lawn',this)">🌿 Lawn & Garden <span class="cat-count" id="cnt-lawn">1</span></button>
+      <button class="cat-tab" onclick="filterCat('plumbing',this)">🚿 Plumbing <span class="cat-count" id="cnt-plumbing">0</span></button>
+      <button class="cat-tab" onclick="filterCat('painting',this)">🎨 Painting <span class="cat-count" id="cnt-painting">0</span></button>
+      <button class="cat-tab" onclick="filterCat('electrical',this)">🔌 Electrical <span class="cat-count" id="cnt-electrical">0</span></button>
+      <button class="cat-tab" onclick="filterCat('other',this)">Other <span class="cat-count" id="cnt-other">0</span></button>
+    </div>
+  </div>
+
+  <!-- FEED -->
+  <div class="content" id="jobs-feed">
+
+    <!-- JOB 1 — Junk removal with responses -->
+    <div class="job-card new-post" data-cat="junk" id="job-1">
+      <div class="jc-head">
+        <div class="jc-avatar" style="background:#7c3aed">MS</div>
+        <div class="jc-meta">
+          <div class="jc-name">Maria Santos</div>
+          <div class="jc-sub">
+            <span>📍 Cranston, RI</span>
+            <div class="jc-dot"></div>
+            <span>2 hours ago</span>
+            <div class="jc-dot"></div>
+            <span class="jc-badge badge-open">🟢 Open · 2 responses</span>
+          </div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-cat">🚛 Junk Removal</div>
+        <div class="jc-title">Full garage cleanout — lots of old furniture and boxes</div>
+        <div class="jc-desc">Garage has been collecting stuff for 10 years. There's an old sofa, a broken treadmill, about 20 boxes, and some misc lumber. Need it all gone. Easy driveway access.</div>
+        <div class="jc-photos three" onclick="openLightbox(this)">
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Garage"></div>
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&q=80" alt="Boxes"></div>
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80" alt="Furniture"></div>
+        </div>
+        <div class="jc-responses">
+          <div class="jc-responses-label">Pro responses</div>
+          <div class="jc-response-row">
+            <div class="jc-resp-avatar" style="background:#dc2626">KH</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div class="jc-resp-name">Kev's Junk Removal</div>
+                <div class="jc-resp-rating">★ 4.9</div>
+              </div>
+              <div class="jc-resp-note">"Can do this Saturday morning. Full cleanout, we handle everything."</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div class="jc-resp-price">$320</div>
+              <button class="btn-accept" onclick="acceptQuote(this,'Kev\'s Junk Removal','$320','job-1')">Accept</button>
+            </div>
+          </div>
+          <div class="jc-response-row">
+            <div class="jc-resp-avatar" style="background:#2563eb">RC</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div class="jc-resp-name">Rhode Island Cleanouts</div>
+                <div class="jc-resp-rating">★ 4.7</div>
+              </div>
+              <div class="jc-resp-note">"Available this week. Price includes disposal fees."</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div class="jc-resp-price">$280</div>
+              <button class="btn-accept" onclick="acceptQuote(this,'Rhode Island Cleanouts','$280','job-1')">Accept</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="jc-actions">
+        <span class="jc-resp-count" style="font-size:12px;font-weight:700;color:var(--gray)">📅 Sat Apr 26</span>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          <button class="jc-action-btn" onclick="shareJob('job-1')"><i data-lucide="share-2" style="width:13px;height:13px"></i> Share</button>
+          <button class="jc-action-btn" onclick="deleteJob('job-1')" style="color:#dc2626;border-color:#fecaca"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOB 2 — Cleaning, no responses yet -->
+    <div class="job-card" data-cat="cleaning" id="job-2">
+      <div class="jc-head">
+        <div class="jc-avatar" style="background:#7c3aed">MS</div>
+        <div class="jc-meta">
+          <div class="jc-name">Maria Santos</div>
+          <div class="jc-sub">
+            <span>📍 Cranston, RI</span>
+            <div class="jc-dot"></div>
+            <span>5 hours ago</span>
+            <div class="jc-dot"></div>
+            <span class="jc-badge badge-new">⏳ Waiting for responses</span>
+          </div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-cat">🧹 Cleaning</div>
+        <div class="jc-title">Deep clean needed — 3 bed 2 bath, move-out condition</div>
+        <div class="jc-desc">Moving out end of month. Need a thorough deep clean — inside oven, fridge, bathrooms, windows. About 1,400 sq ft. Carpets have already been cleaned.</div>
+        <div class="jc-photos two">
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1527515637462-cff94edd1b27?w=600&q=80" alt="Kitchen"></div>
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80" alt="Bathroom"></div>
+        </div>
+      </div>
+      <div class="jc-actions">
+        <span class="jc-resp-count" style="font-size:12px;font-weight:700;color:var(--gray)">📅 Apr 30 · 0 responses</span>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          <button class="jc-action-btn" onclick="shareJob('job-2')"><i data-lucide="share-2" style="width:13px;height:13px"></i> Share</button>
+          <button class="jc-action-btn" onclick="deleteJob('job-2')" style="color:#dc2626;border-color:#fecaca"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOB 3 — Lawn -->
+    <div class="job-card" data-cat="lawn" id="job-3">
+      <div class="jc-head">
+        <div class="jc-avatar" style="background:#7c3aed">MS</div>
+        <div class="jc-meta">
+          <div class="jc-name">Maria Santos</div>
+          <div class="jc-sub">
+            <span>📍 Cranston, RI</span>
+            <div class="jc-dot"></div>
+            <span>1 day ago</span>
+            <div class="jc-dot"></div>
+            <span class="jc-badge badge-open">🟢 Open · 1 response</span>
+          </div>
+        </div>
+      </div>
+      <div class="jc-body">
+        <div class="jc-cat">🌿 Lawn & Garden</div>
+        <div class="jc-title">Backyard overgrown — needs mowing, edging and hedge trim</div>
+        <div class="jc-desc">Haven't had anyone out since last fall. Grass is about 8 inches, hedges along the fence need cutting back. Two large hedges, maybe 40 ft total.</div>
+        <div class="jc-photos one">
+          <div class="jc-photo"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800&q=80" alt="Lawn"></div>
+        </div>
+        <div class="jc-responses">
+          <div class="jc-responses-label">Pro responses</div>
+          <div class="jc-response-row">
+            <div class="jc-resp-avatar" style="background:#16a34a">GL</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px">
+                <div class="jc-resp-name">GreenScape Crew</div>
+                <div class="jc-resp-rating">★ 4.8</div>
+              </div>
+              <div class="jc-resp-note">"We can do this Thursday. Mow, edge, and full hedge trim included."</div>
+            </div>
+            <div style="text-align:right;flex-shrink:0">
+              <div class="jc-resp-price">$165</div>
+              <button class="btn-accept" onclick="acceptQuote(this,'GreenScape Crew','$165','job-3')">Accept</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="jc-actions">
+        <span class="jc-resp-count" style="font-size:12px;font-weight:700;color:var(--gray)">📅 This week</span>
+        <div style="margin-left:auto;display:flex;gap:6px">
+          <button class="jc-action-btn" onclick="shareJob('job-3')"><i data-lucide="share-2" style="width:13px;height:13px"></i> Share</button>
+          <button class="jc-action-btn" onclick="deleteJob('job-3')" style="color:#dc2626;border-color:#fecaca"><i data-lucide="trash-2" style="width:13px;height:13px"></i> Delete</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /feed -->
+</div></div>
+  </div><!-- /page -->
+
+<!-- POST JOB MODAL -->
+<div class="modal-overlay" id="post-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">📸 Post a Quick Job</div>
+      <button class="modal-close" onclick="closePostModal()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Photo upload -->
+      <div class="mf-group">
+        <label class="mf-label">Photos <span style="color:var(--red)">*</span></label>
+        <div class="photo-upload-area" id="pua">
+          <input type="file" class="pua-input" id="photo-file" multiple accept="image/*" onchange="handlePhotos(this.files)">
+          <div class="pua-icon">📷</div>
+          <div class="pua-title">Add photos of the job</div>
+          <div class="pua-sub">Tap to upload or drag & drop · JPG, PNG · Up to 5 photos</div>
+        </div>
+        <div class="photo-previews" id="photo-previews"></div>
+        <div id="photo-req" style="font-size:12px;font-weight:800;color:var(--red);margin-top:6px;display:none">At least 1 photo is required</div>
+      </div>
+
+      <!-- Category -->
+      <div class="mf-group">
+        <label class="mf-label">Service category <span style="color:var(--red)">*</span></label>
+        <select class="mf-select" id="job-category">
+          <option value="">Select a category...</option>
+          <option value="junk">🚛 Junk Removal</option>
+          <option value="cleaning">🧹 Cleaning</option>
+          <option value="lawn">🌿 Lawn & Garden</option>
+          <option value="plumbing">🚿 Plumbing</option>
+          <option value="electrical">🔌 Electrical</option>
+          <option value="painting">🎨 Painting</option>
+          <option value="handyman">🔧 Handyman</option>
+          <option value="roofing">🏠 Roofing</option>
+          <option value="moving">📦 Moving & Hauling</option>
+          <option value="pressure">🧹 Pressure Washing</option>
+          <option value="hvac">❄️ HVAC</option>
+          <option value="other">📋 Other</option>
+        </select>
+      </div>
+
+      <!-- Title -->
+      <div class="mf-group">
+        <label class="mf-label">Job title <span style="color:var(--red)">*</span></label>
+        <input class="mf-input" id="job-title" type="text" placeholder="e.g. Full garage cleanout, Deep clean 3br home, Leaky kitchen faucet..." maxlength="80">
+      </div>
+
+      <!-- Description -->
+      <div class="mf-group">
+        <label class="mf-label">Description</label>
+        <textarea class="mf-input" id="job-desc" placeholder="Add any details that will help pros give you an accurate price — size, access, urgency, anything specific about the job..."></textarea>
+      </div>
+
+      <!-- Preferred date -->
+      <div class="mf-group">
+        <label class="mf-label">Preferred date</label>
+        <input class="mf-input" id="job-date" type="date">
+      </div>
+
+      <!-- Address -->
+      <div class="mf-group" style="margin-bottom:0">
+        <label class="mf-label">Service address</label>
+        <input class="mf-input" id="job-address" type="text" placeholder="42 Oak St, Cranston, RI 02910">
+        <div style="margin-top:6px;font-size:11px;font-weight:700;color:var(--gray)">Only shared with the pro you accept.</div>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closePostModal()">Cancel</button>
+      <button class="btn-submit" id="btn-submit-job" onclick="submitJob()">
+        <i data-lucide="zap" style="width:15px;height:15px;vertical-align:middle"></i>
+        Post Quick Job
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close">×</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+let uploadedPhotos = [];
+
+// ── DRAWER ──────────────────────────────────────────────────────
+function toggleHwMenu() {
+  const drawer  = document.getElementById('hw-drawer');
+  const overlay = document.getElementById('hw-overlay');
+  const burger  = document.getElementById('hw-hamburger');
+  const isOpen  = drawer.style.display === 'flex';
+  drawer.style.display  = isOpen ? 'none' : 'flex';
+  overlay.style.display = isOpen ? 'none' : 'block';
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').style.display  = 'none';
+  document.getElementById('hw-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── CATEGORY FILTER ──────────────────────────────────────────────
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.job-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+// ── POST MODAL ───────────────────────────────────────────────────
+function openPostModal() {
+  document.getElementById('post-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // Set min date
+  document.getElementById('job-date').min = new Date().toISOString().split('T')[0];
+}
+function closePostModal() {
+  document.getElementById('post-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── PHOTO UPLOAD ─────────────────────────────────────────────────
+function handlePhotos(files) {
+  Array.from(files).forEach(file => {
+    if (uploadedPhotos.length >= 5) return;
+    const url = URL.createObjectURL(file);
+    uploadedPhotos.push({ url, name: file.name });
+  });
+  renderPreviews();
+}
+
+function renderPreviews() {
+  const container = document.getElementById('photo-previews');
+  container.innerHTML = uploadedPhotos.map((p, i) => `
+    <div class="photo-preview-thumb">
+      <img src="${p.url}" alt="">
+      <button class="rm" onclick="removePhoto(${i})">×</button>
+    </div>`).join('');
+  document.getElementById('photo-req').style.display = 'none';
+}
+
+function removePhoto(idx) {
+  uploadedPhotos.splice(idx, 1);
+  renderPreviews();
+}
+
+const pua = document.getElementById('pua');
+pua.addEventListener('dragover', e => { e.preventDefault(); pua.classList.add('drag'); });
+pua.addEventListener('dragleave', () => pua.classList.remove('drag'));
+pua.addEventListener('drop', e => {
+  e.preventDefault(); pua.classList.remove('drag');
+  handlePhotos(e.dataTransfer.files);
+});
+
+// ── SUBMIT JOB ───────────────────────────────────────────────────
+function submitJob() {
+  const title    = document.getElementById('job-title').value.trim();
+  const category = document.getElementById('job-category').value;
+
+  if (uploadedPhotos.length === 0) {
+    document.getElementById('photo-req').style.display = 'block';
+    return;
+  }
+  if (!title) {
+    document.getElementById('job-title').focus();
+    document.getElementById('job-title').style.borderColor = 'var(--red)';
+    return;
+  }
+  if (!category) {
+    document.getElementById('job-category').focus();
+    return;
+  }
+
+  closePostModal();
+  showToast('✅ Quick Job posted! Pros will start responding shortly.');
+
+  // Reset form
+  uploadedPhotos = [];
+  renderPreviews();
+  document.getElementById('job-title').value = '';
+  document.getElementById('job-desc').value = '';
+  document.getElementById('job-category').value = '';
+  document.getElementById('job-date').value = '';
+  document.getElementById('job-address').value = '';
+}
+
+// ── ACCEPT QUOTE ─────────────────────────────────────────────────
+function acceptQuote(btn, proName, price, jobId) {
+  const card = document.getElementById(jobId);
+  const responses = card.querySelector('.jc-responses');
+
+  // Replace responses with confirmation
+  responses.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;padding:8px 0">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:18px">✓</div>
+      <div>
+        <div style="font-size:14px;font-weight:900;color:var(--green)">Booked with ${proName}</div>
+        <div style="font-size:12px;font-weight:700;color:var(--gray);margin-top:2px">Agreed price: ${price} · They'll be in touch to confirm details</div>
+      </div>
+      <div style="margin-left:auto;display:flex;gap:8px;flex-shrink:0">
+        <a href="homeowner-pay.html?pro=${encodeURIComponent(proName)}&amount=${price.replace(/[^0-9]/g,'')}&service=Quick%20Job" style="padding:7px 14px;background:var(--green);border-radius:9px;font-size:12px;font-weight:800;color:#fff;text-decoration:none">Pay ${price}</a>
+        <a href="homeowner-messages.html" style="padding:7px 14px;border:1px solid var(--border);border-radius:9px;font-size:12px;font-weight:800;color:var(--dark);text-decoration:none">💬 Message</a>
+      </div>
+    </div>`;
+
+  // Update badge
+  const badge = card.querySelector('.jc-badge');
+  badge.className = 'jc-badge badge-closed';
+  badge.textContent = '✓ Booked';
+
+  showToast(`✅ Booked with ${proName} for ${price}!`);
+  launchConfetti();
+}
+
+// ── DELETE JOB ───────────────────────────────────────────────────
+function deleteJob(jobId) {
+  const card = document.getElementById(jobId);
+  card.style.transition = 'opacity .3s, transform .3s';
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(-8px)';
+  setTimeout(() => card.remove(), 300);
+  showToast('Job deleted.');
+}
+
+function shareJob(jobId) {
+  showToast('🔗 Link copied to clipboard!');
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────────
+function openLightbox(container) {
+  const img = container.querySelector('img');
+  if (!img) return;
+  document.getElementById('lb-img').src = img.src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ── TOAST ────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+// ── CONFETTI ─────────────────────────────────────────────────────
+function launchConfetti() {
+  const colors = ['#dc2626','#16a34a','#2563eb','#f59e0b','#8b5cf6'];
+  for (let i = 0; i < 50; i++) {
+    const c = document.createElement('div');
+    c.style.cssText = `position:fixed;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'2px'};background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}vw;top:-10px;z-index:999;pointer-events:none;animation:fall ${2+Math.random()*1.5}s ease-in ${Math.random()*.8}s forwards`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 3500);
+  }
+  if (!document.getElementById('fall-style')) {
+    const s = document.createElement('style');
+    s.id = 'fall-style';
+    s.textContent = '@keyframes fall{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}';
+    document.head.appendChild(s);
+  }
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

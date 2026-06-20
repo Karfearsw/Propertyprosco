@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Quick Jobs — Property Pros Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#dc2626;--red-dark:#b91c1c;--red-light:#fef2f2;
+  --dark:#111827;--dark2:#1f2937;--dark3:#374151;
+  --gray:#6b7280;--border:#e5e7eb;--bg:#f3f4f6;--white:#fff;
+  --green:#16a34a;--green-light:#f0fdf4;--orange:#ea580c;
+  --font:'Manrope',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--dark);min-height:100vh;display:flex;flex-direction:column}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--font)}
+
+/* ── HEADER ── */
+header{background:#7f1d1d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.hw-brand{display:flex;align-items:center;gap:10px}
+.hw-logo{width:32px;height:32px;border-radius:9px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff}
+.hw-brand-name{font-size:17px;font-weight:900;color:#fff}
+.hw-brand-name span{color:#f87171}
+.hw-right{display:flex;align-items:center;gap:6px}
+.hw-bell{position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af}
+.hw-bell-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid var(--dark)}
+.hw-avatar{width:34px;height:34px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)}
+.hw-hamburger{width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none}
+.hw-hamburger span{display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px}
+
+/* ── DRAWER ── */
+.hw-overlay{display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98}
+.hw-drawer{display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#7f1d1d;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto}
+.d-sec{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px}
+.d-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:all .15s}
+.d-link:hover,.d-link.active{background:rgba(255,255,255,.06);color:#fff}
+.d-div{height:1px;background:rgba(255,255,255,.07);margin:8px 4px}
+.d-footer{margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+.d-user{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.d-av{width:36px;height:36px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}
+
+/* ── LAYOUT ── */
+.app{display:flex;min-height:calc(100vh - 60px)}
+
+/* ── RED SIDEBAR ── */
+aside{width:220px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);border-top:3px solid var(--red);padding:20px 14px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.sb-sec{font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--red);padding:4px 8px 8px}
+.sb-link{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:var(--gray);text-decoration:none;margin-bottom:2px;transition:all .15s}
+.sb-link:hover{background:var(--bg)}
+.sb-link.active{background:var(--red-light);color:var(--red);font-weight:800}
+.sb-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px}
+
+/* ── MAIN ── */
+.main{flex:1;min-width:0;padding:0}
+
+/* ── TOP BAR ── */
+.top-bar{background:var(--white);border-bottom:1px solid var(--border);padding:18px 28px}
+.top-bar-inner{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.top-title{font-size:22px;font-weight:900;letter-spacing:-.4px;margin-bottom:3px}
+.top-sub{font-size:13px;font-weight:700;color:var(--gray)}
+.top-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.status-pill{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:800;border:1px solid #bbf7d0;background:var(--green-light);color:var(--green);cursor:pointer}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.btn-settings{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:10px;border:1px solid var(--border);background:var(--white);font-size:13px;font-weight:800;cursor:pointer;color:var(--dark)}
+.btn-settings:hover{background:var(--bg)}
+
+/* ── STATS STRIP ── */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+.stat-cell{background:var(--white);padding:14px 20px}
+.stat-num{font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:2px}
+.stat-label{font-size:11px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px}
+.stat-change{font-size:11px;font-weight:800;color:var(--green);margin-top:2px}
+
+/* ── FILTER BAR ── */
+.filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;gap:0;overflow-x:auto}
+.filter-tab{padding:13px 16px;font-size:13px;font-weight:800;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s;flex-shrink:0;background:none;border-top:none;border-left:none;border-right:none}
+.filter-tab:hover{color:var(--dark)}
+.filter-tab.active{color:var(--red);border-bottom-color:var(--red)}
+.filter-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;border-radius:9px;background:var(--bg);font-size:10px;font-weight:900;color:var(--gray);margin-left:5px;padding:0 4px}
+.filter-tab.active .filter-count{background:var(--red-light);color:var(--red)}
+.filter-sep{width:1px;height:20px;background:var(--border);margin:0 4px;flex-shrink:0}
+.sort-wrap{margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:16px;flex-shrink:0}
+.sort-select{height:34px;padding:0 12px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:var(--font);background:var(--white);cursor:pointer;outline:none}
+
+/* ── FEED ── */
+.feed{padding:20px 28px 60px;display:flex;flex-direction:column;gap:14px}
+
+/* ── JOB CARD ── */
+.job-card{background:var(--white);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.job-card:hover{border-color:#d1d5db;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.job-card.priority{border-left:3px solid var(--red)}
+
+.jc-head{display:flex;align-items:flex-start;gap:14px;padding:18px 20px 0}
+.jc-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;flex-shrink:0;background:#7c3aed}
+.jc-meta{flex:1;min-width:0}
+.jc-name{font-size:14px;font-weight:900}
+.jc-sub{font-size:12px;font-weight:700;color:var(--gray);display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:2px}
+.jc-dot{width:3px;height:3px;border-radius:50%;background:var(--gray)}
+.jc-rating{font-size:12px;font-weight:800;color:#f59e0b}
+.jc-badge{padding:3px 9px;border-radius:999px;font-size:10px;font-weight:900}
+.badge-new{background:#fff7ed;color:#ea580c;border:1px solid #fed7aa}
+.badge-responding{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.badge-responded{background:var(--bg);color:var(--gray);border:1px solid var(--border)}
+
+.jc-body{padding:12px 20px}
+.jc-cat{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;background:var(--bg);color:var(--gray);border:1px solid var(--border);margin-bottom:8px}
+.jc-title{font-size:15px;font-weight:900;margin-bottom:5px}
+.jc-desc{font-size:13px;font-weight:700;color:var(--dark3);line-height:1.7;margin-bottom:12px}
+
+/* Photo grid */
+.jc-photos{display:grid;gap:4px;margin-bottom:12px;border-radius:10px;overflow:hidden;cursor:pointer}
+.jc-photos.one{grid-template-columns:1fr}
+.jc-photos.two{grid-template-columns:1fr 1fr}
+.jc-photos.three{grid-template-columns:2fr 1fr;grid-template-rows:150px 150px}
+.jc-photo{background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+.jc-photos.one .jc-photo{height:240px}
+.jc-photos.two .jc-photo{height:200px}
+.jc-photos.three .jc-photo:first-child{grid-row:span 2}
+.jc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.jc-photo:hover img{transform:scale(1.04)}
+
+/* Job details strip */
+.jc-details{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.jc-detail{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--gray)}
+.jc-detail i{color:var(--red)}
+
+/* Response count */
+.jc-resp-strip{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg);border-radius:9px;margin-bottom:0}
+.jc-resp-avatars{display:flex}
+.jc-resp-av{width:24px;height:24px;border-radius:50%;border:2px solid var(--white);margin-left:-6px;font-size:9px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center}
+.jc-resp-av:first-child{margin-left:0}
+.jc-resp-text{font-size:12px;font-weight:700;color:var(--gray);flex:1}
+.jc-resp-text strong{color:var(--dark)}
+.jc-your-price{font-size:13px;font-weight:900;color:var(--green)}
+
+/* Card footer */
+.jc-footer{display:flex;align-items:center;gap:8px;padding:12px 20px;border-top:1px solid var(--border);background:#fafafa}
+.btn-send-price{display:flex;align-items:center;gap:6px;padding:9px 20px;border-radius:10px;background:var(--red);color:#fff;border:none;font-size:13px;font-weight:900;cursor:pointer;transition:background .15s;white-space:nowrap}
+.btn-send-price:hover{background:var(--red-dark)}
+.btn-view{display:flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--white);font-size:13px;font-weight:800;cursor:pointer;color:var(--dark);transition:all .15s}
+.btn-view:hover{background:var(--bg)}
+.btn-skip{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--white);font-size:12px;font-weight:800;cursor:pointer;color:var(--gray);transition:all .15s;margin-left:auto}
+.btn-skip:hover{border-color:#fecaca;color:var(--red)}
+
+/* Already responded state */
+.responded-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--green-light);border:1px solid #bbf7d0;border-radius:10px;margin-bottom:0}
+.responded-price{font-size:15px;font-weight:900;color:var(--green)}
+.responded-note{font-size:12px;font-weight:700;color:var(--green)}
+
+/* ── SEND PRICE MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:20px;width:100%;max-width:520px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+.modal-title{font-size:18px;font-weight:900;letter-spacing:-.3px}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--gray)}
+.modal-body{flex:1;overflow-y:auto;padding:24px}
+.modal-foot{padding:16px 24px;border-top:1px solid var(--border);display:flex;gap:10px}
+
+/* Job preview in modal */
+.job-preview{background:var(--bg);border-radius:12px;padding:14px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start}
+.jp-img{width:72px;height:72px;border-radius:9px;object-fit:cover;flex-shrink:0;background:var(--border)}
+.jp-title{font-size:14px;font-weight:900;margin-bottom:3px}
+.jp-sub{font-size:12px;font-weight:700;color:var(--gray)}
+
+/* Price input */
+.price-input-wrap{display:flex;align-items:center;gap:0;border:2px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;margin-bottom:16px}
+.price-input-wrap:focus-within{border-color:var(--red)}
+.price-symbol{padding:14px 16px;font-size:22px;font-weight:900;color:var(--gray);background:var(--bg);flex-shrink:0}
+.price-input{flex:1;padding:14px 16px 14px 0;font-size:28px;font-weight:900;border:none;outline:none;font-family:var(--font);color:var(--dark);background:transparent;width:100%}
+.price-input::placeholder{color:#d1d5db}
+
+.mf-label{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--dark3);margin-bottom:8px;display:block}
+.mf-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font);color:var(--dark);outline:none;transition:border-color .15s;margin-bottom:16px}
+.mf-input:focus{border-color:var(--red)}
+textarea.mf-input{min-height:90px;resize:vertical;line-height:1.6;margin-bottom:8px}
+.template-btn{font-size:11px;font-weight:800;color:var(--red);cursor:pointer;background:none;border:none;padding:0;margin-bottom:16px;display:block}
+
+/* Availability chips in modal */
+.avail-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:0}
+.avail-chip{padding:7px 13px;border-radius:9px;border:1px solid var(--border);font-size:12px;font-weight:800;cursor:pointer;color:var(--gray);transition:all .15s;background:var(--white)}
+.avail-chip:hover{border-color:var(--red);color:var(--red)}
+.avail-chip.on{background:var(--red-light);border-color:#fecaca;color:var(--red)}
+
+.btn-cancel{flex:1;padding:12px;border-radius:11px;border:1px solid var(--border);background:var(--white);font-size:14px;font-weight:800;cursor:pointer;color:var(--dark)}
+.btn-submit{flex:2;padding:12px;border-radius:11px;border:none;background:var(--red);color:#fff;font-size:14px;font-weight:900;cursor:pointer;transition:background .15s}
+.btn-submit:hover{background:var(--red-dark)}
+
+/* Lightbox */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:300;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;border-radius:10px;object-fit:contain}
+.lb-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:800;z-index:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.25);white-space:nowrap;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+
+/* Empty */
+.empty{text-align:center;padding:60px 20px;background:var(--white);border:1px solid var(--border);border-radius:14px}
+
+@media(max-width:900px){aside{display:none}}
+@media(max-width:640px){
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .feed{padding:16px 16px 60px}
+  .filter-bar{padding:0 16px}
+  .top-bar{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="dashboard.html" class="hw-brand">
+    <div class="hw-logo">PP</div>
+    <div class="hw-brand-name"><span>Property</span> Pros</div>
+  </a>
+  <div class="hw-right">
+    <a href="notifications.html" class="hw-bell">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div class="hw-bell-dot"></div>
+    </a>
+    <div class="hw-avatar" onclick="toggleHwMenu()">KH</div>
+    <button class="hw-hamburger" id="hw-hamburger" onclick="toggleHwMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="hw-overlay" id="hw-overlay" onclick="closeHwMenu()"></div>
+<div class="hw-drawer" id="hw-drawer">
+  <div class="d-sec">Main</div>
+  <a href="dashboard.html" class="d-link"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+  <a href="leads.html" class="d-link"><i data-lucide="zap" size="15"></i> Leads</a>
+  <a href="quick-jobs-pro.html" class="d-link active"><i data-lucide="bolt" size="15"></i> Quick Jobs</a>
+  <a href="quotes.html" class="d-link"><i data-lucide="send" size="15"></i> My Quotes</a>
+  <a href="messages.html" class="d-link"><i data-lucide="message-circle" size="15"></i> Messages</a>
+  <a href="schedule.html" class="d-link"><i data-lucide="calendar" size="15"></i> Schedule</a>
+  <div class="d-div"></div>
+  <div class="d-sec">Business</div>
+  <a href="billing.html" class="d-link"><i data-lucide="credit-card" size="15"></i> Billing</a>
+  <a href="settings.html" class="d-link"><i data-lucide="settings" size="15"></i> Settings</a>
+  <a href="notification-preferences.html" class="d-link"><i data-lucide="bell-ring" size="15"></i> Notification Prefs</a>
+  <div class="d-div"></div>
+  <div class="d-sec">Help</div>
+  <a href="contractor-guide.html" class="d-link"><i data-lucide="book-open" size="15"></i> Contractor guide</a>
+  <a href="contact.html" class="d-link"><i data-lucide="life-buoy" size="15"></i> Support</a>
+  <div class="d-footer">
+    <div class="d-user">
+      <div class="d-av">KH</div>
+      <div><div style="font-size:13px;font-weight:800;color:#fff">Kevin Hernandez</div><div style="font-size:11px;color:#6b7280">Pro · Apex Roofing Group</div></div>
+    </div>
+    <a href="index.html" class="d-link" style="color:#f87171"><i data-lucide="log-out" size="15"></i> Log out</a>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- RED SIDEBAR -->
+  <aside>
+    <div class="sb-sec">Main</div>
+    <a href="dashboard.html" class="sb-link"><i data-lucide="layout-dashboard" style="width:16px;height:16px;flex-shrink:0"></i> Dashboard</a>
+    <a href="leads.html" class="sb-link"><i data-lucide="zap" style="width:16px;height:16px;flex-shrink:0"></i> Leads <span class="sb-badge">4</span></a>
+    <a href="quick-jobs-pro.html" class="sb-link active"><i data-lucide="bolt" style="width:16px;height:16px;flex-shrink:0"></i> Quick Jobs <span class="sb-badge">6</span></a>
+    <a href="quotes.html" class="sb-link"><i data-lucide="send" style="width:16px;height:16px;flex-shrink:0"></i> My Quotes <span class="sb-badge">7</span></a>
+    <a href="messages.html" class="sb-link"><i data-lucide="message-circle" style="width:16px;height:16px;flex-shrink:0"></i> Messages <span class="sb-badge">3</span></a>
+    <a href="schedule.html" class="sb-link"><i data-lucide="calendar" style="width:16px;height:16px;flex-shrink:0"></i> Schedule</a>
+    <div style="height:1px;background:var(--border);margin:10px 0"></div>
+    <div class="sb-sec">Business</div>
+    <a href="billing.html" class="sb-link"><i data-lucide="credit-card" style="width:16px;height:16px;flex-shrink:0"></i> Billing</a>
+    <a href="settings.html" class="sb-link"><i data-lucide="settings" style="width:16px;height:16px;flex-shrink:0"></i> Settings</a>
+    <a href="notification-preferences.html" class="sb-link"><i data-lucide="bell-ring" style="width:16px;height:16px;flex-shrink:0"></i> Notifications</a>
+    <div style="height:1px;background:var(--border);margin:10px 0"></div>
+    <div class="sb-sec">Help</div>
+    <a href="contractor-guide.html" class="sb-link"><i data-lucide="book-open" style="width:16px;height:16px;flex-shrink:0"></i> Contractor guide</a>
+    <a href="contact.html" class="sb-link"><i data-lucide="life-buoy" style="width:16px;height:16px;flex-shrink:0"></i> Support</a>
+  </aside>
+
+  <div class="main">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div>
+          <div class="top-title">⚡ Quick Jobs</div>
+          <div class="top-sub">Homeowners near you are posting jobs — review the photos and send your price to win the booking.</div>
+        </div>
+        <div class="top-actions">
+          <div class="status-pill" onclick="toggleStatus(this)">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">Accepting jobs</span>
+          </div>
+          <a href="settings.html" class="btn-settings"><i data-lucide="settings" style="width:15px;height:15px"></i> QJ Settings</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS STRIP -->
+    <div class="stats-strip">
+      <div class="stat-cell">
+        <div class="stat-num">6</div>
+        <div class="stat-label">New posts near you</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Prices sent</div>
+        <div class="stat-change">↑ this week</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Jobs won</div>
+        <div class="stat-change">$485 earned</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">67%</div>
+        <div class="stat-label">Win rate</div>
+        <div class="stat-change">↑ vs last month</div>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-bar">
+      <button class="filter-tab active" onclick="filterTab('all',this)">All posts <span class="filter-count">6</span></button>
+      <button class="filter-tab" onclick="filterTab('new',this)">🆕 New <span class="filter-count">4</span></button>
+      <button class="filter-tab" onclick="filterTab('responded',this)">✓ Responded <span class="filter-count">2</span></button>
+      <div class="filter-sep"></div>
+      <button class="filter-tab" onclick="filterTab('junk',this)">🚛 Junk Removal</button>
+      <button class="filter-tab" onclick="filterTab('cleaning',this)">🧹 Cleaning</button>
+      <button class="filter-tab" onclick="filterTab('roofing',this)">🏠 Roofing</button>
+      <div class="sort-wrap">
+        <select class="sort-select">
+          <option>Newest first</option>
+          <option>Closest first</option>
+          <option>Least competition</option>
+          <option>Highest budget</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- FEED -->
+    <div class="feed">
+
+      <!-- JOB 1 — Junk removal, new, no responses yet -->
+      <div class="job-card priority" data-status="new" data-cat="junk" id="pjob-1">
+        <div class="jc-head">
+          <div class="jc-avatar">MS</div>
+          <div class="jc-meta">
+            <div class="jc-name">Maria S. <span class="jc-rating">⭐ 4.9</span></div>
+            <div class="jc-sub">
+              <span>📍 Cranston, RI · 2.1 mi away</span>
+              <div class="jc-dot"></div>
+              <span>Posted 20 min ago</span>
+              <div class="jc-dot"></div>
+              <span class="jc-badge badge-new">🔥 Be first to respond</span>
+            </div>
+          </div>
+        </div>
+        <div class="jc-body">
+          <div class="jc-cat">🚛 Junk Removal</div>
+          <div class="jc-title">Full garage cleanout — lots of old furniture and boxes</div>
+          <div class="jc-desc">Garage has been collecting stuff for 10 years. There's an old sofa, a broken treadmill, about 20 boxes, and misc lumber. Easy driveway access.</div>
+          <div class="jc-photos three" onclick="openLightbox(this)">
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Garage"></div>
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&q=80" alt="Boxes"></div>
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80" alt="Furniture"></div>
+          </div>
+          <div class="jc-details">
+            <div class="jc-detail"><i data-lucide="calendar" style="width:13px;height:13px"></i> Sat Apr 26</div>
+            <div class="jc-detail"><i data-lucide="map-pin" style="width:13px;height:13px"></i> Cranston, RI</div>
+            <div class="jc-detail"><i data-lucide="users" style="width:13px;height:13px"></i> 0 responses so far</div>
+          </div>
+        </div>
+        <div class="jc-footer">
+          <button class="btn-send-price" onclick="openPriceModal('pjob-1','Full garage cleanout','Maria S.','https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&q=80')">
+            <i data-lucide="send" style="width:15px;height:15px"></i> Send price
+          </button>
+          <button class="btn-view" onclick="openLightbox(document.querySelector('#pjob-1 .jc-photos'))">
+            <i data-lucide="image" style="width:14px;height:14px"></i> View photos
+          </button>
+          <button class="btn-skip" onclick="skipJob('pjob-1')">Skip</button>
+        </div>
+      </div>
+
+      <!-- JOB 2 — Cleaning, 1 response already -->
+      <div class="job-card" data-status="new" data-cat="cleaning" id="pjob-2">
+        <div class="jc-head">
+          <div class="jc-avatar" style="background:#0891b2">JL</div>
+          <div class="jc-meta">
+            <div class="jc-name">Jamie L. <span class="jc-rating">⭐ 4.7</span></div>
+            <div class="jc-sub">
+              <span>📍 Warwick, RI · 4.8 mi away</span>
+              <div class="jc-dot"></div>
+              <span>Posted 1 hour ago</span>
+              <div class="jc-dot"></div>
+              <span class="jc-badge badge-responding">💬 1 pro responded</span>
+            </div>
+          </div>
+        </div>
+        <div class="jc-body">
+          <div class="jc-cat">🧹 Cleaning</div>
+          <div class="jc-title">Deep clean needed — 3 bed 2 bath, move-out condition</div>
+          <div class="jc-desc">Moving out end of month. Need a thorough deep clean — inside oven, fridge, bathrooms, windows. About 1,400 sq ft. Carpets already cleaned.</div>
+          <div class="jc-photos two" onclick="openLightbox(this)">
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1527515637462-cff94edd1b27?w=600&q=80" alt="Kitchen"></div>
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80" alt="Bathroom"></div>
+          </div>
+          <div class="jc-details">
+            <div class="jc-detail"><i data-lucide="calendar" style="width:13px;height:13px"></i> Apr 30</div>
+            <div class="jc-detail"><i data-lucide="map-pin" style="width:13px;height:13px"></i> Warwick, RI</div>
+            <div class="jc-detail"><i data-lucide="users" style="width:13px;height:13px"></i> 1 response</div>
+          </div>
+          <div class="jc-resp-strip">
+            <div class="jc-resp-avatars">
+              <div class="jc-resp-av" style="background:#6366f1">AC</div>
+            </div>
+            <div class="jc-resp-text">1 pro has already sent a price — <strong>be competitive</strong></div>
+          </div>
+        </div>
+        <div class="jc-footer">
+          <button class="btn-send-price" onclick="openPriceModal('pjob-2','Deep clean 3bd/2ba','Jamie L.','https://images.unsplash.com/photo-1527515637462-cff94edd1b27?w=200&q=80')">
+            <i data-lucide="send" style="width:15px;height:15px"></i> Send price
+          </button>
+          <button class="btn-view" onclick="openLightbox(document.querySelector('#pjob-2 .jc-photos'))">
+            <i data-lucide="image" style="width:14px;height:14px"></i> View photos
+          </button>
+          <button class="btn-skip" onclick="skipJob('pjob-2')">Skip</button>
+        </div>
+      </div>
+
+      <!-- JOB 3 — Roofing inspection -->
+      <div class="job-card" data-status="new" data-cat="roofing" id="pjob-3">
+        <div class="jc-head">
+          <div class="jc-avatar" style="background:#b45309">TR</div>
+          <div class="jc-meta">
+            <div class="jc-name">Tom R. <span class="jc-rating">⭐ 5.0</span></div>
+            <div class="jc-sub">
+              <span>📍 Providence, RI · 6.4 mi away</span>
+              <div class="jc-dot"></div>
+              <span>Posted 3 hours ago</span>
+              <div class="jc-dot"></div>
+              <span class="jc-badge badge-responding">💬 2 pros responded</span>
+            </div>
+          </div>
+        </div>
+        <div class="jc-body">
+          <div class="jc-cat">🏠 Roofing</div>
+          <div class="jc-title">Shingles lifting near chimney — possible leak</div>
+          <div class="jc-desc">After last week's storm I noticed some shingles have lifted near the chimney. Small dark spot on the ceiling inside. Not sure if it's a leak yet but want someone to take a look and give me a repair cost.</div>
+          <div class="jc-photos one" onclick="openLightbox(this)">
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=800&q=80" alt="Roof"></div>
+          </div>
+          <div class="jc-details">
+            <div class="jc-detail"><i data-lucide="calendar" style="width:13px;height:13px"></i> This weekend</div>
+            <div class="jc-detail"><i data-lucide="map-pin" style="width:13px;height:13px"></i> Providence, RI</div>
+            <div class="jc-detail"><i data-lucide="users" style="width:13px;height:13px"></i> 2 responses</div>
+          </div>
+          <div class="jc-resp-strip">
+            <div class="jc-resp-avatars">
+              <div class="jc-resp-av" style="background:#dc2626">RG</div>
+              <div class="jc-resp-av" style="background:#2563eb">PM</div>
+            </div>
+            <div class="jc-resp-text">2 pros responded — <strong>price competitively to stand out</strong></div>
+          </div>
+        </div>
+        <div class="jc-footer">
+          <button class="btn-send-price" onclick="openPriceModal('pjob-3','Shingles lifting near chimney','Tom R.','https://images.unsplash.com/photo-1513584684374-8bab748fbf90?w=200&q=80')">
+            <i data-lucide="send" style="width:15px;height:15px"></i> Send price
+          </button>
+          <button class="btn-view" onclick="openLightbox(document.querySelector('#pjob-3 .jc-photos'))">
+            <i data-lucide="image" style="width:14px;height:14px"></i> View photos
+          </button>
+          <button class="btn-skip" onclick="skipJob('pjob-3')">Skip</button>
+        </div>
+      </div>
+
+      <!-- JOB 4 — Already responded -->
+      <div class="job-card" data-status="responded" data-cat="junk" id="pjob-4">
+        <div class="jc-head">
+          <div class="jc-avatar" style="background:#059669">SR</div>
+          <div class="jc-meta">
+            <div class="jc-name">Sam R. <span class="jc-rating">⭐ 4.6</span></div>
+            <div class="jc-sub">
+              <span>📍 Cranston, RI · 1.8 mi away</span>
+              <div class="jc-dot"></div>
+              <span>Posted 5 hours ago</span>
+              <div class="jc-dot"></div>
+              <span class="jc-badge badge-responded">✓ You responded</span>
+            </div>
+          </div>
+        </div>
+        <div class="jc-body">
+          <div class="jc-cat">🚛 Junk Removal</div>
+          <div class="jc-title">Basement cleanout — old appliances and furniture</div>
+          <div class="jc-desc">Old washer/dryer, 2 couches, some boxes of stuff. Basement has walk-out access so should be easy to remove everything.</div>
+          <div class="jc-photos two" onclick="openLightbox(this)">
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Basement"></div>
+            <div class="jc-photo"><img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80" alt="Appliances"></div>
+          </div>
+          <div class="jc-details">
+            <div class="jc-detail"><i data-lucide="calendar" style="width:13px;height:13px"></i> Flexible</div>
+            <div class="jc-detail"><i data-lucide="map-pin" style="width:13px;height:13px"></i> Cranston, RI</div>
+            <div class="jc-detail"><i data-lucide="users" style="width:13px;height:13px"></i> 3 responses</div>
+          </div>
+          <div class="responded-banner">
+            <div style="font-size:20px">✅</div>
+            <div style="flex:1">
+              <div class="responded-price">Your price: $275</div>
+              <div class="responded-note">Sent 4 hours ago · "Available any day this week, we handle all disposal."</div>
+            </div>
+            <div style="font-size:11px;font-weight:700;color:var(--gray)">Awaiting homeowner</div>
+          </div>
+        </div>
+        <div class="jc-footer">
+          <button class="btn-view" style="color:var(--green);border-color:#bbf7d0">✓ Price sent — $275</button>
+          <button class="btn-skip" onclick="skipJob('pjob-4')">Remove</button>
+        </div>
+      </div>
+
+    </div><!-- /feed -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- SEND PRICE MODAL -->
+<div class="modal-overlay" id="price-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">💰 Send your price</div>
+      <button class="modal-close" onclick="closePriceModal()">×</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- Job preview -->
+      <div class="job-preview">
+        <img class="jp-img" id="modal-job-img" src="" alt="">
+        <div>
+          <div class="jp-title" id="modal-job-title"></div>
+          <div class="jp-sub" id="modal-job-client"></div>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <label class="mf-label">Your price for this job</label>
+      <div class="price-input-wrap">
+        <div class="price-symbol">$</div>
+        <input class="price-input" id="modal-price" type="number" placeholder="0" min="0">
+      </div>
+
+      <!-- Note -->
+      <label class="mf-label">Message to homeowner</label>
+      <textarea class="mf-input" id="modal-note" placeholder="Add a note about your price, availability, or anything that helps the homeowner choose you..."></textarea>
+      <button class="template-btn" onclick="loadTemplate()">↓ Load my default response template</button>
+
+      <!-- Availability -->
+      <label class="mf-label">Your availability for this job</label>
+      <div class="avail-chips" id="avail-chips">
+        <div class="avail-chip on" onclick="this.classList.toggle('on')">Mon morning</div>
+        <div class="avail-chip on" onclick="this.classList.toggle('on')">Mon afternoon</div>
+        <div class="avail-chip on" onclick="this.classList.toggle('on')">Tue morning</div>
+        <div class="avail-chip" onclick="this.classList.toggle('on')">Tue afternoon</div>
+        <div class="avail-chip on" onclick="this.classList.toggle('on')">Wed morning</div>
+        <div class="avail-chip on" onclick="this.classList.toggle('on')">Thu morning</div>
+        <div class="avail-chip" onclick="this.classList.toggle('on')">Fri morning</div>
+        <div class="avail-chip" onclick="this.classList.toggle('on')">Fri afternoon</div>
+        <div class="avail-chip" onclick="this.classList.toggle('on')">Sat morning</div>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn-cancel" onclick="closePriceModal()">Cancel</button>
+      <button class="btn-submit" onclick="submitPrice()">
+        <i data-lucide="send" style="width:15px;height:15px;vertical-align:middle"></i>
+        Send price
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close">×</button>
+  <img id="lb-img" src="" alt="">
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+let currentJobId = null;
+
+// ── DRAWER ──────────────────────────────────────────────────────
+function toggleHwMenu() {
+  const d = document.getElementById('hw-drawer');
+  const o = document.getElementById('hw-overlay');
+  const open = d.style.display === 'flex';
+  d.style.display = open ? 'none' : 'flex';
+  o.style.display = open ? 'none' : 'block';
+  document.body.style.overflow = open ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').style.display = 'none';
+  document.getElementById('hw-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// ── STATUS TOGGLE ────────────────────────────────────────────────
+function toggleStatus(pill) {
+  const dot  = document.getElementById('status-dot');
+  const text = document.getElementById('status-text');
+  const on = text.textContent === 'Accepting jobs';
+  dot.style.background  = on ? '#6b7280' : 'var(--green)';
+  text.textContent      = on ? 'Paused' : 'Accepting jobs';
+  pill.style.background = on ? 'var(--bg)' : 'var(--green-light)';
+  pill.style.borderColor = on ? 'var(--border)' : '#bbf7d0';
+  pill.style.color       = on ? 'var(--gray)' : 'var(--green)';
+}
+
+// ── FILTER TABS ──────────────────────────────────────────────────
+function filterTab(type, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.job-card').forEach(card => {
+    const matchStatus = type === 'all' || type === card.dataset.status;
+    const matchCat    = ['all','new','responded'].includes(type) || card.dataset.cat === type;
+    card.style.display = (matchStatus && matchCat) ? '' : 'none';
+  });
+}
+
+// ── SEND PRICE MODAL ─────────────────────────────────────────────
+function openPriceModal(jobId, title, client, imgSrc) {
+  currentJobId = jobId;
+  document.getElementById('modal-job-title').textContent = title;
+  document.getElementById('modal-job-client').textContent = 'Posted by ' + client;
+  document.getElementById('modal-job-img').src = imgSrc;
+  document.getElementById('modal-price').value = '';
+  document.getElementById('modal-note').value = '';
+  document.getElementById('price-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => document.getElementById('modal-price').focus(), 100);
+}
+function closePriceModal() {
+  document.getElementById('price-modal').classList.remove('open');
+  document.body.style.overflow = '';
+  currentJobId = null;
+}
+
+function loadTemplate() {
+  document.getElementById('modal-note').value =
+    "Hi! I've reviewed your photos and this looks like something we can handle. I'm available within your preferred timeframe and can be there promptly. My price includes all labour and any necessary materials. Feel free to message me with any questions before accepting.";
+}
+
+function submitPrice() {
+  const price = document.getElementById('modal-price').value;
+  const note  = document.getElementById('modal-note').value.trim();
+  if (!price || parseFloat(price) <= 0) {
+    document.getElementById('modal-price').style.outline = '2px solid var(--red)';
+    setTimeout(() => document.getElementById('modal-price').style.outline = '', 1500);
+    return;
+  }
+
+  if (currentJobId) {
+    const card = document.getElementById(currentJobId);
+    // Update the footer
+    const footer = card.querySelector('.jc-footer');
+    footer.innerHTML = `
+      <button class="btn-view" style="color:var(--green);border-color:#bbf7d0">✓ Price sent — $${parseFloat(price).toFixed(0)}</button>
+      <button class="btn-skip" onclick="skipJob('${currentJobId}')">Remove</button>`;
+    // Update badge
+    const badge = card.querySelector('.jc-badge');
+    if (badge) { badge.className = 'jc-badge badge-responded'; badge.textContent = '✓ You responded'; }
+    // Update data-status
+    card.dataset.status = 'responded';
+    // Add responded banner before footer
+    const body = card.querySelector('.jc-body');
+    const existing = body.querySelector('.responded-banner');
+    if (!existing) {
+      const banner = document.createElement('div');
+      banner.className = 'responded-banner';
+      banner.innerHTML = `
+        <div style="font-size:20px">✅</div>
+        <div style="flex:1">
+          <div class="responded-price">Your price: $${parseFloat(price).toFixed(0)}</div>
+          <div class="responded-note">Just sent · ${note ? '"' + note.substring(0,60) + (note.length>60?'…':'"') : 'Price sent'}</div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:var(--gray)">Awaiting homeowner</div>`;
+      body.appendChild(banner);
+    }
+  }
+
+  closePriceModal();
+  showToast('💰 Price sent! You\'ll be notified when the homeowner responds.');
+}
+
+// ── SKIP JOB ─────────────────────────────────────────────────────
+function skipJob(jobId) {
+  const card = document.getElementById(jobId);
+  card.style.transition = 'opacity .25s, transform .25s';
+  card.style.opacity = '0';
+  card.style.transform = 'translateY(-6px)';
+  setTimeout(() => card.remove(), 280);
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────────
+function openLightbox(container) {
+  const img = container ? container.querySelector('img') : null;
+  if (!img) return;
+  document.getElementById('lb-img').src = img.src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// ── TOAST ────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+lucide.createIcons();
+</script>
+</body>
+</html>

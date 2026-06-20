@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Property Pros Realtor</title>
+  <meta name="description" content="Your Property Pros Realtor Pro dashboard — manage clients, projects, deadlines, and referrals." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #b45309; --gold-dark: #92400e; --gold-light: #fef3c7;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4;
+      --red: #dc2626; --red-light: #fef2f2;
+      --blue: #2563eb; --blue-light: #eff6ff;
+      --amber: #d97706; --amber-light: #fffbeb;
+      --font: 'Manrope', sans-serif;
+    }
+    body { font-family: var(--font); background: var(--bg); color: var(--dark); min-height: 100vh; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { background: #1c1007; height: 60px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .hw-brand { display: flex; align-items: center; gap: 10px; }
+    .hw-logo { width: 32px; height: 32px; border-radius: 9px; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; flex-shrink: 0; }
+    .hw-brand-name { font-size: 17px; font-weight: 900; color: #fff; }
+    .hw-brand-name span { color: #fcd34d; }
+    .hw-header-right { display: flex; align-items: center; gap: 6px; }
+    .hw-bell { position: relative; width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #9ca3af; cursor: pointer; transition: all .15s; }
+    .hw-bell:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .hw-bell-dot { position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; border: 2px solid var(--dark); }
+    .hw-avatar-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; cursor: pointer; border: 2px solid rgba(255,255,255,.15); transition: border-color .15s; }
+    .hw-avatar-btn:hover { border-color: rgba(255,255,255,.4); }
+    .hw-hamburger { width: 38px; height: 38px; border-radius: 9px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; background: transparent; border: none; transition: background .15s; }
+    .hw-hamburger:hover { background: rgba(255,255,255,.08); }
+    .hw-hamburger span { display: block; width: 20px; height: 2px; background: #9ca3af; border-radius: 2px; transition: all .25s; }
+    .hw-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: #fff; }
+    .hw-hamburger.open span:nth-child(2) { opacity: 0; }
+    .hw-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: #fff; }
+
+    /* ── DRAWER ── */
+    .hw-drawer { display: none; position: fixed; top: 60px; right: 0; width: 280px; bottom: 0; background: #1c1007; border-left: 1px solid rgba(255,255,255,.07); z-index: 99; flex-direction: column; padding: 12px; box-shadow: -8px 0 32px rgba(0,0,0,.3); overflow-y: auto; }
+    .hw-drawer.open { display: flex; }
+    .hw-drawer-section { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #4b5563; padding: 10px 10px 4px; }
+    .hw-drawer-link { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 700; color: #9ca3af; transition: all .15s; margin-bottom: 2px; }
+    .hw-drawer-link:hover, .hw-drawer-link.active { background: rgba(255,255,255,.06); color: #fff; }
+    .hw-drawer-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 4px; }
+    .hw-drawer-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.07); }
+    .hw-drawer-user { display: flex; align-items: center; gap: 10px; padding: 10px 12px; }
+    .hw-drawer-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .hw-drawer-username { font-size: 13px; font-weight: 800; color: #fff; }
+    .hw-drawer-role { font-size: 11px; color: #6b7280; }
+    .hw-drawer-logout { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; font-size: 13px; font-weight: 800; color: #fcd34d; transition: all .15s; }
+    .hw-drawer-logout:hover { background: rgba(180,83,9,.15); }
+    .hw-overlay { display: none; position: fixed; inset: 0; top: 60px; background: rgba(0,0,0,.4); z-index: 98; }
+    .hw-overlay.open { display: block; }
+
+    /* ── WELCOME STRIP ── */
+    .welcome-strip { background: #1c1007; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .welcome-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #6b7280; margin-bottom: 6px; }
+    .welcome-name { font-size: 22px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .welcome-sub { font-size: 13px; color: #9ca3af; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .realtor-badge { background: var(--gold); color: #fff; font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+    .welcome-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .w-btn { padding: 10px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 7px; border: none; }
+    .w-btn-gold { background: var(--gold); color: #fff; }
+    .w-btn-gold:hover { background: var(--gold-dark); }
+    .w-btn-ghost { background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.15) !important; }
+    .w-btn-ghost:hover { background: rgba(255,255,255,.13); }
+
+    /* ── STATS STRIP ── */
+    .stats-strip { background: var(--white); border-bottom: 1px solid var(--border); display: flex; }
+    .stat-cell { flex: 1; text-align: center; padding: 14px 16px; border-right: 1px solid var(--border); }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell-num { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 3px; }
+    .stat-cell-label { font-size: 11px; font-weight: 700; color: var(--gray); }
+
+    /* ── LAYOUT ── */
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 60px - 54px - 60px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar { background: #1c1007; border-right: 1px solid var(--border); padding: 16px 10px; position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
+    .sb-section { margin-bottom: 22px; }
+    .sb-label { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #9ca3af; padding: 4px 10px 8px; }
+    .nav-item { display: flex; align-items: center; gap: 9px; padding: 9px 10px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--gray); transition: all .15s; margin-bottom: 2px; }
+    .nav-item:hover { background: var(--bg); color: var(--dark); }
+    .nav-item.active { background: var(--gold-light); color: var(--gold); font-weight: 800; }
+    .nav-count { margin-left: auto; background: var(--gold); color: #fff; font-size: 10px; font-weight: 900; padding: 2px 7px; border-radius: 999px; }
+
+    /* ── MAIN ── */
+    .content { padding: 22px 24px 60px; min-width: 0; }
+
+    /* ── CARDS ── */
+    .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 14px; }
+    .card-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .card-title { font-size: 14px; font-weight: 900; }
+    .card-link { font-size: 12px; font-weight: 800; color: var(--gold); }
+
+    /* ── QUICK ACTIONS ── */
+    .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .qa { background: var(--white); border: 1px solid var(--border); border-radius: 13px; padding: 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 7px; text-align: center; transition: all .15s; }
+    .qa:hover { border-color: var(--gold); background: var(--gold-light); }
+    .qa-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .qa-label { font-size: 12px; font-weight: 900; color: var(--dark); }
+    .qa-sub { font-size: 11px; color: var(--gray); font-weight: 700; }
+
+    /* ── PIPELINE CARD ── */
+    .pipeline-card { background: var(--dark); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; position: relative; overflow: hidden; }
+    .pipeline-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 160px; height: 160px; border-radius: 50%; background: rgba(180,83,9,.12); }
+    .pc-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #6b7280; margin-bottom: 6px; }
+    .pc-title { font-size: 20px; font-weight: 900; color: #fff; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .pc-sub { font-size: 12px; color: #9ca3af; font-weight: 700; margin-bottom: 16px; }
+    .pc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .pc-stat { background: rgba(255,255,255,.06); border-radius: 10px; padding: 12px; text-align: center; }
+    .pc-stat-num { font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 3px; }
+    .pc-stat-label { font-size: 10px; color: #6b7280; font-weight: 700; }
+
+    /* ── CLIENT ROW ── */
+    .client-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; transition: background .15s; }
+    .client-row:last-child { border-bottom: none; }
+    .client-row:hover { background: #f9fafb; }
+    .client-av { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900; color: #fff; flex-shrink: 0; }
+    .client-info { flex: 1; min-width: 0; }
+    .client-name { font-size: 13px; font-weight: 900; color: var(--dark); margin-bottom: 2px; }
+    .client-meta { font-size: 11px; color: var(--gray); font-weight: 700; display: flex; gap: 8px; }
+    .client-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .stage-badge { font-size: 10px; font-weight: 900; padding: 2px 9px; border-radius: 999px; }
+    .stage-buyer   { background: var(--blue-light); color: var(--blue); }
+    .stage-seller  { background: var(--gold-light); color: var(--gold); }
+    .stage-closing { background: var(--green-light); color: var(--green); }
+    .btn-post { padding: 6px 12px; border-radius: 8px; background: var(--gold); color: #fff; border: none; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: background .15s; white-space: nowrap; }
+    .btn-post:hover { background: var(--gold-dark); }
+
+    /* ── DEADLINE ROW ── */
+    .deadline-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; }
+    .deadline-row:last-child { border-bottom: none; }
+    .dl-date { width: 44px; height: 44px; border-radius: 11px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+    .dl-day { font-size: 16px; font-weight: 900; line-height: 1; }
+    .dl-mon { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+    .dl-urgent { background: #fef2f2; }
+    .dl-day.urgent { color: var(--red); }
+    .dl-mon.urgent { color: var(--red); }
+    .dl-soon { background: var(--gold-light); }
+    .dl-day.soon { color: var(--gold); }
+    .dl-mon.soon { color: var(--gold); }
+    .dl-ok { background: var(--green-light); }
+    .dl-day.ok { color: var(--green); }
+    .dl-mon.ok { color: var(--green); }
+    .dl-info { flex: 1; min-width: 0; }
+    .dl-title { font-size: 13px; font-weight: 900; color: var(--dark); margin-bottom: 2px; }
+    .dl-meta { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .dl-days { font-size: 12px; font-weight: 900; flex-shrink: 0; }
+
+    /* ── PROJECT ROW ── */
+    .project-row { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid #f9fafb; }
+    .project-row:last-child { border-bottom: none; }
+    .pr-icon { font-size: 20px; flex-shrink: 0; }
+    .pr-info { flex: 1; min-width: 0; }
+    .pr-title { font-size: 13px; font-weight: 900; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+    .pr-meta { font-size: 11px; color: var(--gray); font-weight: 700; }
+    .pr-status { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 999px; flex-shrink: 0; }
+    .prs-active  { background: var(--gold-light); color: var(--gold); }
+    .prs-quoted  { background: var(--blue-light); color: var(--blue); }
+    .prs-done    { background: var(--green-light); color: var(--green); }
+
+    /* ── REFERRAL CARD ── */
+    .ref-card { background: linear-gradient(135deg, #1c1007, #2d1a00); border: 1px solid rgba(180,83,9,.25); border-radius: 16px; padding: 20px 22px; margin-bottom: 14px; }
+    .ref-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .ref-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #6b7280; margin-bottom: 6px; }
+    .ref-amount { font-size: 28px; font-weight: 900; color: #4ade80; letter-spacing: -1px; }
+    .ref-sub { font-size: 12px; color: #9ca3af; font-weight: 700; }
+    .ref-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+    .ref-stat { background: rgba(255,255,255,.06); border-radius: 10px; padding: 12px; text-align: center; }
+    .ref-stat-num { font-size: 18px; font-weight: 900; color: #fff; }
+    .ref-stat-label { font-size: 10px; color: #6b7280; font-weight: 700; margin-top: 3px; }
+    .ref-link-box { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; gap: 10px; }
+    .ref-link-url { font-size: 12px; font-weight: 700; color: #9ca3af; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ref-copy-btn { padding: 6px 13px; background: var(--gold); color: #fff; border: none; border-radius: 7px; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: background .15s; white-space: nowrap; }
+    .ref-copy-btn:hover { background: var(--gold-dark); }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--dark); color: #fff; padding: 12px 18px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 200; display: flex; align-items: center; gap: 8px; transform: translateY(20px); opacity: 0; transition: all .25s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+      .pc-grid { grid-template-columns: repeat(2, 1fr); }
+      .ref-grid { grid-template-columns: repeat(3, 1fr); }
+      .welcome-strip { padding: 20px; }
+    }
+    @media (max-width: 600px) {
+      .quick-grid { grid-template-columns: repeat(2, 1fr); }
+      .pc-grid { grid-template-columns: repeat(2, 1fr); }
+      .ref-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  
+    /* dark-sidebar link palette (scoped) */
+    .sidebar .nav-item { color: rgba(255,255,255,.65); }
+    .sidebar .nav-item:hover { background: rgba(255,255,255,.08); color:#fff; }
+    .sidebar .nav-item.active { background: var(--gold); color:#fff; }
+    .sidebar .nav-item.active .nav-count { background:#fff; color:var(--gold); }
+    .sidebar .nav-section, .sidebar .nav-label { color: #fcd34d; }
+    .need-tag{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:800}
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="realtor-dashboard.html" class="hw-brand">
+    <div class="hw-logo">PP</div>
+    <div class="hw-brand-name"><span>Property</span> Pros</div>
+  </a>
+  <div class="hw-header-right">
+    <a href="realtor-notifications.html" class="hw-bell">
+      <i data-lucide="bell" style="width:18px;height:18px"></i>
+      <div class="hw-bell-dot"></div>
+    </a>
+    <div class="hw-avatar-btn" onclick="toggleHwMenu()">SR</div>
+    <button class="hw-hamburger" id="hw-hamburger" onclick="toggleHwMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="hw-overlay" id="hw-overlay" onclick="closeHwMenu()"></div>
+
+<!-- ── DRAWER ── -->
+<div class="hw-drawer" id="hw-drawer">
+  <div class="hw-drawer-section">Workspace</div>
+  <a href="realtor-dashboard.html" class="hw-drawer-link active"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+  <a href="realtor-clients.html" class="hw-drawer-link"><i data-lucide="users" size="15"></i> Clients</a>
+  <a href="realtor-messages.html" class="hw-drawer-link"><i data-lucide="message-square" size="15"></i> Messages</a>
+  <a href="realtor-notifications.html" class="hw-drawer-link"><i data-lucide="bell" size="15"></i> Notifications</a>
+  <div class="hw-drawer-divider"></div>
+  <div class="hw-drawer-section">Account</div>
+  <a href="realtor-billing.html" class="hw-drawer-link"><i data-lucide="credit-card" size="15"></i> Plan & Billing</a>
+  <a href="realtor-settings.html" class="hw-drawer-link"><i data-lucide="settings" size="15"></i> Settings</a>
+  <div class="hw-drawer-footer">
+    <div class="hw-drawer-user">
+      <div class="hw-drawer-avatar">SR</div>
+      <div>
+        <div class="hw-drawer-username">Sarah Rivera</div>
+        <div class="hw-drawer-role">Realtor Pro · Keller Williams RI</div>
+      </div>
+    </div>
+    <a href="index.html" class="hw-drawer-logout"><i data-lucide="log-out" size="15"></i> Log out</a>
+  </div>
+</div>
+
+<!-- ── WELCOME STRIP ── -->
+<div class="welcome-strip">
+  <div>
+    <div class="welcome-eyebrow">Welcome back</div>
+    <div class="welcome-name">Sarah Rivera</div>
+    <div class="welcome-sub">
+      Keller Williams RI · Providence, RI
+      <span class="realtor-badge"><i data-lucide="home" style="width:10px;height:10px"></i> Realtor Pro</span>
+    </div>
+  </div>
+  <div class="welcome-actions">
+    <a href="realtor-clients.html" class="w-btn w-btn-gold"><i data-lucide="user-plus" style="width:15px;height:15px"></i> Add client</a>
+    <a href="realtor-clients.html" class="w-btn w-btn-ghost"><i data-lucide="users" style="width:15px;height:15px"></i> My clients</a>
+  </div>
+</div>
+
+<!-- ── STATS STRIP ── -->
+<div class="stats-strip">
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--gold)">12</div>
+    <div class="stat-cell-label">Active clients</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--blue)">5</div>
+    <div class="stat-cell-label">Requests out</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:#7c3aed">2</div>
+    <div class="stat-cell-label">Inspections</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num" style="color:var(--green)">3</div>
+    <div class="stat-cell-label">Ready to close</div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-cell-num">4</div>
+    <div class="stat-cell-label">New messages</div>
+  </div>
+</div>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Workspace</div>
+      <a href="realtor-dashboard.html" class="nav-item active"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+      <a href="realtor-clients.html" class="nav-item"><i data-lucide="users" size="15"></i> Clients</a>
+      <a href="realtor-messages.html" class="nav-item"><i data-lucide="message-square" size="15"></i> Messages</a>
+      <a href="realtor-notifications.html" class="nav-item"><i data-lucide="bell" size="15"></i> Notifications</a>
+    </div>
+    <div class="sb-section">
+      <div class="sb-label">Account</div>
+      <a href="realtor-billing.html" class="nav-item"><i data-lucide="credit-card" size="15"></i> Plan & Billing</a>
+      <a href="realtor-settings.html" class="nav-item"><i data-lucide="settings" size="15"></i> Settings</a>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="content">
+
+    <!-- OVERVIEW -->
+    <div class="pipeline-card">
+      <div class="pc-label">Your clients — June 2026</div>
+      <div class="pc-title">12 active clients</div>
+      <div class="pc-sub">5 requests out · 2 inspections in progress · 3 moving to close</div>
+      <div class="pc-grid">
+        <div class="pc-stat"><div class="pc-stat-num">4</div><div class="pc-stat-label">Selling</div></div>
+        <div class="pc-stat"><div class="pc-stat-num">5</div><div class="pc-stat-label">Repairs</div></div>
+        <div class="pc-stat"><div class="pc-stat-num">2</div><div class="pc-stat-label">Inspections</div></div>
+        <div class="pc-stat"><div class="pc-stat-num">3</div><div class="pc-stat-label">Ready to close</div></div>
+      </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="quick-grid">
+      <a href="realtor-clients.html" class="qa">
+        <div class="qa-icon" style="background:var(--gold-light)"><i data-lucide="user-plus" style="width:20px;height:20px;color:var(--gold)"></i></div>
+        <div class="qa-label">Add Client</div>
+        <div class="qa-sub">Start a new one</div>
+      </a>
+      <a href="realtor-clients.html" class="qa">
+        <div class="qa-icon" style="background:var(--blue-light)"><i data-lucide="users" style="width:20px;height:20px;color:var(--blue)"></i></div>
+        <div class="qa-label">My Clients</div>
+        <div class="qa-sub">12 active</div>
+      </a>
+      <a href="realtor-clients.html" class="qa">
+        <div class="qa-icon" style="background:#f5f3ff"><i data-lucide="clipboard-check" style="width:20px;height:20px;color:#7c3aed"></i></div>
+        <div class="qa-label">Inspections</div>
+        <div class="qa-sub">2 in progress</div>
+      </a>
+      <a href="find-a-pro.html" class="qa">
+        <div class="qa-icon" style="background:var(--green-light)"><i data-lucide="search" style="width:20px;height:20px;color:var(--green)"></i></div>
+        <div class="qa-label">Find a Pro</div>
+        <div class="qa-sub">Browse local pros</div>
+      </a>
+    </div>
+
+    <!-- NEEDS ATTENTION -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Needs your attention</div>
+        <a href="realtor-clients.html" class="card-link">View all &rarr;</a>
+      </div>
+      <div class="deadline-row">
+        <div class="dl-date dl-urgent"><div class="dl-day urgent">!</div><div class="dl-mon urgent">now</div></div>
+        <div class="dl-info"><div class="dl-title">Thomas Johnson &mdash; 42 Maple St, Cranston</div><div class="dl-meta">Inspection report ready &middot; 3 issues to fix</div></div>
+        <a href="realtor-clients.html" style="font-size:12px;font-weight:800;color:var(--red);white-space:nowrap">Fix issues &rarr;</a>
+      </div>
+      <div class="deadline-row">
+        <div class="dl-date dl-soon"><div class="dl-day soon">3</div><div class="dl-mon soon">pros</div></div>
+        <div class="dl-info"><div class="dl-title">Ana Martinez &mdash; 17 Oak Ave, Providence</div><div class="dl-meta">Selling &middot; 3 pros responded with quotes</div></div>
+        <a href="realtor-clients.html" style="font-size:12px;font-weight:800;color:var(--gold);white-space:nowrap">Review &rarr;</a>
+      </div>
+      <div class="deadline-row">
+        <div class="dl-date dl-ok"><div class="dl-day ok">&check;</div><div class="dl-mon ok">set</div></div>
+        <div class="dl-info"><div class="dl-title">Linda Chen &mdash; 88 River Rd, Warwick</div><div class="dl-meta">Repairs scheduled &middot; ready to list soon</div></div>
+        <a href="realtor-clients.html" style="font-size:12px;font-weight:800;color:var(--green);white-space:nowrap">View &rarr;</a>
+      </div>
+    </div>
+
+    <!-- CLIENTS + ON-DEMAND REQUESTS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Active clients</div><a href="realtor-clients.html" class="card-link">View all &rarr;</a></div>
+        <div class="client-row">
+          <div class="client-av" style="background:#7c3aed">TJ</div>
+          <div class="client-info"><div class="client-name">Thomas Johnson</div><div class="client-meta"><span>42 Maple St, Cranston</span></div></div>
+          <div class="client-right"><span class="need-tag" style="background:#f5f3ff;color:#7c3aed">Inspection</span><a href="realtor-clients.html"><button class="btn-post">Open</button></a></div>
+        </div>
+        <div class="client-row">
+          <div class="client-av" style="background:#1e40af">AM</div>
+          <div class="client-info"><div class="client-name">Ana Martinez</div><div class="client-meta"><span>17 Oak Ave, Providence</span></div></div>
+          <div class="client-right"><span class="need-tag" style="background:var(--blue-light);color:var(--blue)">Selling</span><a href="realtor-clients.html"><button class="btn-post">Open</button></a></div>
+        </div>
+        <div class="client-row">
+          <div class="client-av" style="background:#0f766e">LC</div>
+          <div class="client-info"><div class="client-name">Linda Chen</div><div class="client-meta"><span>88 River Rd, Warwick</span></div></div>
+          <div class="client-right"><span class="need-tag" style="background:var(--green-light);color:var(--green)">Repairs</span><a href="realtor-clients.html"><button class="btn-post" style="background:var(--green)">View</button></a></div>
+        </div>
+        <div class="client-row">
+          <div class="client-av" style="background:#9a3412">RK</div>
+          <div class="client-info"><div class="client-name">Robert Kim</div><div class="client-meta"><span>23 Pine St, Pawtucket</span></div></div>
+          <div class="client-right"><span class="need-tag" style="background:var(--blue-light);color:var(--blue)">Selling</span><a href="realtor-clients.html"><button class="btn-post">Open</button></a></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">On-demand requests</div><a href="realtor-clients.html" class="card-link">View all &rarr;</a></div>
+        <div class="project-row">
+          <div class="pr-icon"><i data-lucide="wrench" style="width:16px;height:16px;color:var(--gold)"></i></div>
+          <div class="pr-info"><div class="pr-title">Roof repair &mdash; Johnson</div><div class="pr-meta">From inspection &middot; 2 pros responded</div></div>
+          <span class="pr-status prs-active">Responded</span>
+        </div>
+        <div class="project-row">
+          <div class="pr-icon"><i data-lucide="home" style="width:16px;height:16px;color:var(--blue)"></i></div>
+          <div class="pr-info"><div class="pr-title">Prep to sell &mdash; Martinez</div><div class="pr-meta">Clean, paint, photos &middot; 3 quotes</div></div>
+          <span class="pr-status prs-quoted">3 quotes</span>
+        </div>
+        <div class="project-row">
+          <div class="pr-icon"><i data-lucide="droplet" style="width:16px;height:16px;color:var(--blue)"></i></div>
+          <div class="pr-info"><div class="pr-title">Plumbing repair &mdash; Chen</div><div class="pr-meta">Scheduled with BrightHome Services</div></div>
+          <span class="pr-status prs-quoted">Scheduled</span>
+        </div>
+        <div class="project-row">
+          <div class="pr-icon"><i data-lucide="clipboard-check" style="width:16px;height:16px;color:#7c3aed"></i></div>
+          <div class="pr-info"><div class="pr-title">Full inspection &mdash; Reed</div><div class="pr-meta">Report delivered &middot; Jun 8</div></div>
+          <span class="pr-status prs-done">&check; Done</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <i data-lucide="check-circle" size="15" style="color:var(--green)"></i>
+  <span id="toast-msg">Copied!</span>
+</div>
+
+<script>
+function toggleHwMenu() {
+  const drawer = document.getElementById('hw-drawer');
+  const burger = document.getElementById('hw-hamburger');
+  const overlay = document.getElementById('hw-overlay');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  burger.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+function closeHwMenu() {
+  document.getElementById('hw-drawer').classList.remove('open');
+  document.getElementById('hw-hamburger').classList.remove('open');
+  document.getElementById('hw-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.addEventListener('resize', () => { if (window.innerWidth > 1100) closeHwMenu(); });
+document.querySelectorAll('.hw-drawer-link, .hw-drawer-logout').forEach(el => {
+  el.addEventListener('click', closeHwMenu);
+});
+
+function copyRef() {
+  navigator.clipboard.writeText('https://propertypros.com/join?ref=sarah-rivera-kw')
+    .then(() => showToast('Referral link copied!'))
+    .catch(() => showToast('propertypros.com/join?ref=sarah-rivera-kw'));
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

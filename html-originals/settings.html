@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Manage your Property Pros contractor account settings, profile, and verification status." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile Settings — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --dark3: #374151;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--dark);
+      display: block; min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+
+
+
+
+    .sb-logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-weight: 900; font-size: 13px; color: #fff;
+    }
+
+    .sb-title { font-size: 16px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .sb-title .red { color: #f87171; }
+
+
+    .sb-section-label {
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+      color: #4b5563; font-weight: 800; padding: 10px 8px 4px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; color: #9ca3af;
+      cursor: pointer; margin-bottom: 2px;
+      text-decoration: none; transition: all .15s;
+    }
+
+    .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav-item.active { background: var(--red); color: #fff; }
+    .nav-icon { font-size: 15px; width: 18px; text-align: center; }
+
+    .nav-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 999px;
+    }
+
+    .nav-item.active .nav-badge { background: rgba(255,255,255,.25); }
+
+
+
+
+
+
+
+
+    /* MAIN */
+    .main { flex: 1; padding: 28px; max-width: 860px; }
+
+    .topbar {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; margin-bottom: 24px;
+    }
+
+    .page-title { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .page-sub { font-size: 13px; color: var(--gray); margin-top: 3px; }
+
+    .btn {
+      padding: 10px 18px; border-radius: 10px; font-size: 13px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      transition: all .15s; display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-red { background: var(--red); color: #fff; border: none; }
+    .btn-red:hover { background: var(--red-dark); }
+    .btn-outline { background: var(--white); color: var(--dark); border: 1px solid var(--border); }
+    .btn-outline:hover { background: var(--bg); }
+
+    /* TABS */
+    .tabs {
+      display: flex; gap: 4px; margin-bottom: 22px;
+      background: var(--white); padding: 6px;
+      border-radius: 14px; border: 1px solid var(--border);
+      width: fit-content;
+    }
+
+    .tab {
+      padding: 8px 16px; border-radius: 10px; font-size: 13px;
+      font-weight: 800; cursor: pointer; transition: all .15s;
+      border: none; background: none; font-family: var(--font); color: var(--gray);
+    }
+
+    .tab.active { background: var(--dark); color: #fff; }
+    .tab:hover:not(.active) { background: var(--bg); color: var(--dark); }
+
+    /* CARDS */
+    .card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 15px; font-weight: 900; margin-bottom: 4px;
+    }
+
+    .card-sub { font-size: 13px; color: var(--gray); margin-bottom: 20px; }
+
+    /* FORM */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+    label {
+      font-size: 12px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--dark3);
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"],
+    input[type="url"], select, textarea {
+      padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 10px; font-size: 14px; font-family: var(--font);
+      color: var(--dark); background: var(--white);
+      transition: border-color .15s; width: 100%;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(220,38,38,.08);
+    }
+
+    textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+    /* AVATAR UPLOAD */
+    .avatar-upload {
+      display: flex; align-items: center; gap: 20px; margin-bottom: 22px;
+    }
+
+    .avatar-big {
+      width: 72px; height: 72px; border-radius: 18px;
+      background: var(--dark); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 22px; flex-shrink: 0;
+    }
+
+    .avatar-actions { display: flex; flex-direction: column; gap: 6px; }
+    .avatar-hint { font-size: 12px; color: var(--gray); }
+
+    /* SERVICES TAGS */
+    .services-grid {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;
+    }
+
+    .service-tag {
+      padding: 8px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;
+      cursor: pointer; border: 1px solid var(--border);
+      background: var(--white); color: var(--dark); transition: all .15s;
+    }
+
+    .service-tag.selected {
+      background: var(--dark); color: #fff; border-color: var(--dark);
+    }
+
+    .service-tag:hover:not(.selected) { border-color: var(--red); color: var(--red); }
+
+    /* TOGGLE */
+    .toggle-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+    }
+
+    .toggle-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .toggle-label { font-size: 14px; font-weight: 700; }
+    .toggle-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+    .toggle {
+      width: 42px; height: 24px; border-radius: 999px;
+      background: var(--red); position: relative;
+      cursor: pointer; flex-shrink: 0; transition: background .2s;
+      border: none;
+    }
+
+    .toggle::after {
+      content: ''; width: 18px; height: 18px; background: #fff;
+      border-radius: 50%; position: absolute; top: 3px; right: 3px;
+      transition: right .2s;
+    }
+
+    .toggle.off { background: var(--border); }
+    .toggle.off::after { right: 21px; }
+
+    /* PHOTO GRID */
+    .photo-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 4px;
+    }
+
+    .photo-slot {
+      aspect-ratio: 1; border-radius: 12px; border: 1.5px dashed var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      cursor: pointer; transition: all .15s; background: var(--bg);
+      color: var(--gray); font-size: 12px; font-weight: 700; gap: 6px;
+    }
+
+    .photo-slot:hover { border-color: var(--red); color: var(--red); background: var(--red-light); }
+    .photo-slot .plus { font-size: 24px; font-weight: 300; }
+
+    .photo-filled {
+      aspect-ratio: 1; border-radius: 12px; background: var(--dark2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; color: #fff; position: relative; overflow: hidden;
+    }
+
+    /* DANGER ZONE */
+    .danger-zone {
+      border: 1px solid #fecaca; border-radius: 16px;
+      padding: 20px; background: #fff5f5;
+    }
+
+    .danger-title { font-size: 14px; font-weight: 900; color: #991b1b; margin-bottom: 4px; }
+    .danger-sub { font-size: 13px; color: #b91c1c; margin-bottom: 14px; }
+    .btn-danger { background: none; border: 1.5px solid #dc2626; color: #dc2626; padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); }
+    .btn-danger:hover { background: var(--red); color: #fff; }
+
+    /* SAVE BAR */
+    .save-bar {
+      position: sticky; bottom: 0; background: var(--white);
+      border-top: 1px solid var(--border); padding: 14px 0;
+      display: flex; justify-content: flex-end; gap: 10px;
+      margin-top: 10px;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    @media (max-width: 900px) {
+  
+      .form-row, .form-row.triple { grid-template-columns: 1fr; }
+      .photo-grid { grid-template-columns: repeat(2, 1fr); }
+      .tabs { flex-wrap: wrap; }
+    }
+    @media (max-width:768px) { aside { display:none !important; } }
+
+    
+
+    /* ── TIME SLOT GRID ── */
+    .ts-day-row { border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+    .ts-day-row.day-on { border-color:#fecaca; }
+    .ts-day-header { display:flex; align-items:center; gap:12px; padding:11px 16px; background:var(--white); cursor:pointer; user-select:none; }
+    .ts-day-row.day-on .ts-day-header { background:#fef2f2; }
+    .ts-day-label { font-size:13px; font-weight:900; width:38px; color:var(--gray); flex-shrink:0; }
+    .ts-day-row.day-on .ts-day-label { color:var(--red); }
+    .ts-slot-preview { flex:1; font-size:11px; font-weight:700; color:var(--gray); }
+    .ts-day-row.day-on .ts-slot-preview { color:var(--red); }
+    .ts-toggle { width:38px; height:21px; border-radius:999px; background:var(--border); position:relative; flex-shrink:0; transition:background .2s; pointer-events:none; }
+    .ts-day-row.day-on .ts-toggle { background:var(--red); }
+    .ts-toggle::after { content:''; position:absolute; top:2px; left:2px; width:17px; height:17px; border-radius:50%; background:#fff; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+    .ts-day-row.day-on .ts-toggle::after { left:19px; }
+    .ts-slots-wrap { display:none; padding:12px 16px 16px; border-top:1px solid #fecaca; background:var(--white); }
+    .ts-day-row.day-on .ts-slots-wrap { display:block; }
+    .ts-time-group { margin-bottom:12px; }
+    .ts-group-label { font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:#9ca3af; margin-bottom:6px; }
+    .ts-slots { display:flex; flex-wrap:wrap; gap:6px; }
+    .ts-slot { padding:7px 13px; border-radius:8px; border:1px solid var(--border); background:var(--bg); font-size:12px; font-weight:800; color:var(--gray); cursor:pointer; transition:all .15s; user-select:none; }
+    .ts-slot:hover { border-color:#fca5a5; color:var(--red); }
+    .ts-slot.slot-on { background:#fef2f2; border-color:#fecaca; color:var(--red); }
+    .ts-select-row { display:flex; gap:6px; margin-bottom:10px; }
+    .ts-select-btn { padding:4px 10px; border-radius:6px; border:1px solid var(--border); background:var(--white); font-size:10px; font-weight:800; cursor:pointer; font-family:inherit; color:var(--gray); transition:all .15s; }
+    .ts-select-btn:hover { border-color:var(--red); color:var(--red); }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+  </style>
+</head>
+<body>
+  <header style="background:#7f1d1d;height:60px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)">
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;text-decoration:none">
+      <div style="width:32px;height:32px;border-radius:9px;background:#dc2626;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:#fff">PP</div>
+      <div style="font-size:17px;font-weight:900;color:#fff"><span style="color:#f87171">Property</span> Pros</div>
+    </a>
+    <div style="display:flex;align-items:center;gap:6px">
+      <a href="notifications.html" style="position:relative;width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:#9ca3af">
+        <i data-lucide="bell" style="width:18px;height:18px"></i>
+        <div style="position:absolute;top:6px;right:6px;width:8px;height:8px;background:#dc2626;border-radius:50%;border:2px solid #111827"></div>
+      </a>
+      <div onclick="toggleHwMenu()" style="width:34px;height:34px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;cursor:pointer;border:2px solid rgba(255,255,255,.15)">KH</div>
+      <button id="hw-hamburger" onclick="toggleHwMenu()" style="width:38px;height:38px;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:transparent;border:none">
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+        <span style="display:block;width:20px;height:2px;background:#9ca3af;border-radius:2px"></span>
+      </button>
+    </div>
+  </header>
+
+  <div id="hw-overlay" onclick="closeHwMenu()" style="display:none;position:fixed;inset:0;top:60px;background:rgba(0,0,0,.4);z-index:98"></div>
+  <div id="hw-drawer" style="display:none;position:fixed;top:60px;right:0;width:280px;bottom:0;background:#7f1d1d;border-left:1px solid rgba(255,255,255,.07);z-index:99;flex-direction:column;padding:12px;box-shadow:-8px 0 32px rgba(0,0,0,.3);overflow-y:auto">
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Main</div>
+    <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="layout-dashboard" size="15"></i> Dashboard</a>
+    <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="zap" size="15"></i> Leads</a>
+    <a href="quick-jobs-pro.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="bolt" size="15"></i> Quick Jobs</a>
+    <a href="quotes.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="send" size="15"></i> My Quotes</a>
+    <a href="messages.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="message-circle" size="15"></i> Messages</a>
+    <a href="schedule.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="calendar" size="15"></i> Schedule</a>
+    <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="search" size="15"></i> Browse Projects</a>
+    <div style="height:1px;background:rgba(255,255,255,.07);margin:8px 4px"></div>
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Business</div>
+    <a href="billing.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="credit-card" size="15"></i> Billing</a>
+    <a href="settings.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#fff;background:rgba(255,255,255,.06);text-decoration:none;margin-bottom:2px;transition:background .15s"><i data-lucide="settings" size="15"></i> Settings</a>
+    <a href="notification-preferences.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="bell-ring" size="15"></i> Notification Prefs</a>
+    <div style="height:1px;background:rgba(255,255,255,.07);margin:8px 4px"></div>
+    <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#4b5563;padding:10px 10px 4px">Help</div>
+    <a href="contractor-guide.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="book" size="15"></i> Contractor Guide</a>
+    <a href="contact.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:700;color:#9ca3af;text-decoration:none;margin-bottom:2px;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.06)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='#9ca3af'"><i data-lucide="life-buoy" size="15"></i> Support</a>
+    <div style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px">
+        <div style="width:36px;height:36px;border-radius:50%;background:#dc2626;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff">KH</div>
+        <div><div style="font-size:13px;font-weight:800;color:#fff">Kevin Hernandez</div><div style="font-size:11px;color:#6b7280">Pro · Apex Roofing Group</div></div>
+      </div>
+      <a href="index.html" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:800;color:#f87171;text-decoration:none;transition:background .15s" onmouseover="this.style.background='rgba(220,38,38,.1)'" onmouseout="this.style.background='transparent'"><i data-lucide="log-out" size="15"></i> Log out</a>
+    </div>
+  </div>
+
+
+<div style="display:flex;min-height:calc(100vh - 60px)">
+    <aside style="width:220px;flex-shrink:0;background:#fff;border-right:1px solid #e5e7eb;border-top:3px solid #dc2626;padding:20px 14px;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto">
+      <div style="margin-bottom:20px">
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Main</div>
+        <a href="dashboard.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="layout-dashboard" style="width:16px;height:16px;flex-shrink:0"></i> Dashboard</a>
+        <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="zap" style="width:16px;height:16px;flex-shrink:0"></i> Leads<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">4</span></a>
+        <a href="quick-jobs-pro.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="bolt" style="width:16px;height:16px;flex-shrink:0"></i> Quick Jobs<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">2</span></a>
+        <a href="quotes.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="send" style="width:16px;height:16px;flex-shrink:0"></i> My Quotes<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">7</span></a>
+        <a href="messages.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="message-circle" style="width:16px;height:16px;flex-shrink:0"></i> Messages<span style="margin-left:auto;background:#dc2626;color:#fff;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px">3</span></a>
+        <a href="schedule.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="calendar" style="width:16px;height:16px;flex-shrink:0"></i> Schedule</a>
+        <a href="leads.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="search" style="width:16px;height:16px;flex-shrink:0"></i> Browse projects</a>
+      </div>
+      <div style="margin-bottom:20px">
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Business</div>
+        <a href="billing.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="credit-card" style="width:16px;height:16px;flex-shrink:0"></i> Billing</a>
+        <a href="settings.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;background:#fef2f2;color:#dc2626;font-weight:800;text-decoration:none;margin-bottom:2px"><i data-lucide="settings" style="width:16px;height:16px;flex-shrink:0"></i> Settings</a>
+        <a href="notification-preferences.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="bell-ring" style="width:16px;height:16px;flex-shrink:0"></i> Notifications</a>
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:2px;color:#dc2626;padding:4px 8px 8px">Help</div>
+        <a href="contractor-guide.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="book" style="width:16px;height:16px;flex-shrink:0"></i> Contractor guide</a>
+        <a href="contact.html" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;font-size:13px;font-weight:700;color:#6b7280;text-decoration:none;margin-bottom:2px"><i data-lucide="life-buoy" style="width:16px;height:16px;flex-shrink:0"></i> Support</a>
+      </div>
+    </aside>
+  <div style="flex:1;min-width:0">
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="page-title">Profile settings</div>
+        <div class="page-sub">Manage how you appear to Property Owners on Property Pros.</div>
+      </div>
+      <a href="dashboard.html" class="btn btn-outline">← Back to dashboard</a>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('business')">Business info</button>
+      <button class="tab" onclick="switchTab('services')">Services</button>
+      <button class="tab" onclick="switchTab('portfolio')">Portfolio</button>
+      <button class="tab" onclick="switchTab('notifications')">Notifications</button>
+      <button class="tab" onclick="switchTab('security')">Security</button>
+    </div>
+
+    <!-- BUSINESS INFO -->
+    <div class="tab-content active" id="tab-business">
+      <div class="card">
+        <div class="card-title">Business profile</div>
+        <div class="card-sub">This info appears on your public profile and in search results.</div>
+
+        <div class="avatar-upload">
+          <div class="avatar-big">KH</div>
+          <div class="avatar-actions">
+            <button class="btn btn-outline" style="font-size:12px;padding:8px 14px">Upload logo / photo</button>
+            <div class="avatar-hint">JPG or PNG, max 2MB. Square image recommended.</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Business name</label>
+            <input type="text" value="Kev Hernandez Contracting" />
+          </div>
+          <div class="form-group">
+            <label>Owner name</label>
+            <input type="text" value="Kevin Hernandez" />
+          </div>
+        </div>
+
+        <div class="form-row single">
+          <div class="form-group">
+            <label>Business description</label>
+            <textarea>We specialize in roofing, driveways, masonry, and junk removal across Providence, Cranston, and surrounding Rhode Island communities. Licensed, insured, and trusted by 200+ Property Owners.</textarea>
+          </div>
+        </div>
+
+        <div class="form-row triple">
+          <div class="form-group">
+            <label>Phone number</label>
+            <input type="tel" value="(401) 644-1187" />
+          </div>
+          <div class="form-group">
+            <label>Email address</label>
+            <input type="email" value="kev@propertypros.com" />
+          </div>
+          <div class="form-group">
+            <label>Website</label>
+            <input type="url" placeholder="https://yoursite.com" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" value="Cranston" />
+          </div>
+          <div class="form-group">
+            <label>State</label>
+            <select>
+              <option selected>Rhode Island</option>
+              <option>Massachusetts</option>
+              <option>Connecticut</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Years in business</label>
+            <input type="text" value="8 years" />
+          </div>
+          <div class="form-group">
+            <label>License number</label>
+            <input type="text" value="RI-2024-04821" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="tab-content" id="tab-services">
+      <div class="card">
+        <div class="card-title">Services you offer</div>
+        <div class="card-sub">Select everything you're able to do. This is shown on your public profile and determines which leads and Quick Jobs you receive.</div>
+        <div class="services-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px">
+
+          <div style="grid-column:1/-1;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;padding-top:10px;margin-bottom:2px">Exterior</div>
+          <div class="service-tag selected" onclick="this.classList.toggle('selected')">🏠 Roofing</div>
+          <div class="service-tag selected" onclick="this.classList.toggle('selected')">🛣️ Driveway paving</div>
+          <div class="service-tag selected" onclick="this.classList.toggle('selected')">🧱 Masonry</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🚧 Fence installation</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🪵 Deck building</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🪟 Window replacement</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🚪 Door installation</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🏡 Siding</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🪜 Gutters & downspouts</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🎨 Exterior painting</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🧹 Pressure washing</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🏚️ Chimney service</div>
+
+          <div style="grid-column:1/-1;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;padding-top:10px;margin-bottom:2px">Interior</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🛁 Bathroom remodel</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🍳 Kitchen remodel</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🏗️ Basement finishing</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🎨 Interior painting</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🪵 Flooring</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🔌 Electrical</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🚿 Plumbing</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">❄️ HVAC / AC</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">💡 Lighting installation</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🔒 Locks & security</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🧱 Drywall & plastering</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🪛 Furniture assembly</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🔧 General handyman</div>
+
+          <div style="grid-column:1/-1;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;padding-top:10px;margin-bottom:2px">Outdoor & Property</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🌿 Landscaping</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🌳 Tree removal / trimming</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🏊 Pool service</div>
+          <div class="service-tag selected" onclick="this.classList.toggle('selected')">🚛 Junk removal</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">❄️ Snow removal</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🏗️ General contracting</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🧱 Foundation repair</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">📦 Moving & hauling</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🔑 Property management</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🐜 Pest control</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🔆 Solar panel installation</div>
+          <div class="service-tag" onclick="this.classList.toggle('selected')">🚗 Garage door repair</div>
+
+        </div>
+
+        <!-- Custom service input -->
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:#9ca3af;margin-bottom:10px">Don't see your service? Add it</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px;min-height:10px" id="custom-service-chips"></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="custom-service-input" type="text" placeholder="e.g. EV charger installation, Chimney sweep..." maxlength="50"
+              style="flex:1;padding:9px 14px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s"
+              onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'"
+              onkeydown="if(event.key==='Enter'){addCustomService2();event.preventDefault()}" />
+            <button onclick="addCustomService2()" style="padding:9px 18px;border-radius:9px;background:var(--red);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">+ Add service</button>
+          </div>
+          <div style="margin-top:8px;font-size:11px;font-weight:700;color:#9ca3af;display:flex;align-items:center;gap:5px">
+            <i data-lucide="info" style="width:12px;height:12px"></i>
+            Custom services go for review and appear in the marketplace once approved — usually within 24 hours.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Service area</div>
+        <div class="card-sub">Define where you're willing to take jobs.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Base zip code</label>
+            <input type="text" value="02910" />
+          </div>
+          <div class="form-group">
+            <label>Travel radius</label>
+            <select>
+              <option>10 miles</option>
+              <option selected>25 miles</option>
+              <option>50 miles</option>
+              <option>Statewide</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- LEAD PREFERENCES -->
+      <div class="card" id="lead-preferences">
+        <div class="card-title">🎯 Lead preferences</div>
+        <div class="card-sub">Control exactly what kinds of leads you receive. The more specific you are, the better your matches.</div>
+
+        <!-- ── LEAD STATUS ─────────────────────────────────── -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:20px">
+          <div>
+            <div style="font-size:14px;font-weight:800;color:var(--dark)">Accepting new leads</div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-top:2px">Turn off to pause incoming leads without losing your profile ranking</div>
+          </div>
+          <label style="position:relative;width:44px;height:24px;cursor:pointer;flex-shrink:0">
+            <input type="checkbox" checked id="accepting-leads-toggle" style="opacity:0;width:0;height:0" onchange="updateLeadStatus(this)">
+            <span style="position:absolute;inset:0;background:var(--red);border-radius:999px;transition:.3s" id="lead-status-bg"></span>
+            <span style="position:absolute;top:3px;left:23px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.3s" id="lead-status-thumb"></span>
+          </label>
+        </div>
+
+        <!-- ── BUDGET RANGE ───────────────────────────────── -->
+        <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">Minimum project budget</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:10px;line-height:1.6">Only receive leads where the homeowner's budget meets your minimum. Leads below this threshold won't appear in your feed.</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px" id="budget-chips">
+            <div class="budget-chip" onclick="selectBudget(this,'500')" style="border:2px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .15s">
+              <div style="font-size:13px;font-weight:900">$500+</div>
+              <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Any job</div>
+            </div>
+            <div class="budget-chip" onclick="selectBudget(this,'1000')" style="border:2px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .15s">
+              <div style="font-size:13px;font-weight:900">$1,000+</div>
+              <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Small jobs</div>
+            </div>
+            <div class="budget-chip selected" onclick="selectBudget(this,'2500')" style="border:2px solid var(--red);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .15s;background:#fef2f2">
+              <div style="font-size:13px;font-weight:900;color:var(--red)">$2,500+</div>
+              <div style="font-size:10px;color:var(--red);font-weight:700;margin-top:2px">Mid-size</div>
+            </div>
+            <div class="budget-chip" onclick="selectBudget(this,'5000')" style="border:2px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .15s">
+              <div style="font-size:13px;font-weight:900">$5,000+</div>
+              <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Large jobs</div>
+            </div>
+          </div>
+        </div>
+
+                <!-- ── LEAD TIMING ────────────────────────────────── -->
+        <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">Lead timing</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div class="form-group">
+              <label>Max lead age</label>
+              <select style="width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit">
+                <option>24 hours</option>
+                <option selected>48 hours</option>
+                <option>72 hours</option>
+                <option>1 week</option>
+                <option>Any age</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Max competing quotes</label>
+              <select style="width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit">
+                <option>1 (exclusive)</option>
+                <option selected>Up to 3</option>
+                <option>Up to 5</option>
+                <option>No limit</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── LEAD NOTIFICATIONS ─────────────────────────── -->
+        <div style="margin-bottom:20px">
+          <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">New lead alerts</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px">
+              <div>
+                <div style="font-size:13px;font-weight:800;color:var(--dark)">Instant push notification</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray);margin-top:2px">Get alerted the moment a matching lead comes in</div>
+              </div>
+              <label style="position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0">
+                <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                <span style="position:absolute;inset:0;background:var(--red);border-radius:999px"></span>
+                <span style="position:absolute;top:2px;left:21px;width:18px;height:18px;background:#fff;border-radius:50%"></span>
+              </label>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px">
+              <div>
+                <div style="font-size:13px;font-weight:800;color:var(--dark)">Email digest</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray);margin-top:2px">Daily summary of new leads matching your preferences</div>
+              </div>
+              <label style="position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0">
+                <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                <span style="position:absolute;inset:0;background:var(--red);border-radius:999px"></span>
+                <span style="position:absolute;top:2px;left:21px;width:18px;height:18px;background:#fff;border-radius:50%"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <button onclick="saveLeadPrefs()" style="padding:11px 24px;background:var(--red);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s">Save lead preferences</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Pricing</div>
+        <div class="card-sub">Help Property Owners understand your rates.</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Starting rate</label>
+            <input type="text" placeholder="e.g. $150 / job or $75 / hr" />
+          </div>
+          <div class="form-group">
+            <label>Availability</label>
+            <select>
+              <option>Weekdays only</option>
+              <option selected>Weekdays &amp; weekends</option>
+              <option>Weekends only</option>
+              <option>Available 7 days</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUICK JOBS SETTINGS -->
+      <div class="card">
+        <div class="card-title">⚡ Quick Jobs settings</div>
+        <div class="card-sub">Control how you appear and respond to Quick Jobs — photo-based job posts from homeowners in your area. Set your preferences, availability, and response template.</div>
+
+        <!-- ── MASTER TOGGLE ── -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);margin-bottom:22px">
+          <div>
+            <div style="font-size:14px;font-weight:800;color:var(--dark)">Accept Quick Jobs</div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-top:2px">You'll appear in the Quick Jobs feed for Propertyowners posting jobs near you</div>
+          </div>
+          <label style="position:relative;width:44px;height:24px;cursor:pointer;flex-shrink:0">
+            <input type="checkbox" checked id="qj-toggle" onchange="toggleQjSections()" style="opacity:0;width:0;height:0">
+            <span style="position:absolute;inset:0;background:var(--red);border-radius:999px;transition:.3s" id="qj-toggle-bg"></span>
+            <span style="position:absolute;top:3px;left:23px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.3s" id="qj-thumb"></span>
+          </label>
+        </div>
+
+        <div id="qj-sections">
+
+          <!-- ── SECTION 1: JOB TYPES YOU RESPOND TO ── -->
+          <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:6px">Job types you respond to</div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:14px;line-height:1.6">Select the types of Quick Jobs you want to see in your feed. You'll only be shown posts that match these categories.</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px" id="qj-job-types">
+              <div class="jt-chip selected" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--red);background:#fef2f2;color:var(--red);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🚛 Junk Removal</div>
+              <div class="jt-chip selected" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--red);background:#fef2f2;color:var(--red);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🏠 Roofing</div>
+              <div class="jt-chip selected" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--red);background:#fef2f2;color:var(--red);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🧱 Masonry</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🧹 Cleaning</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🌿 Lawn & Garden</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🚿 Plumbing</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🔌 Electrical</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🎨 Painting</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🔧 Handyman</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">❄️ HVAC</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">📦 Moving & Hauling</div>
+              <div class="jt-chip" onclick="toggleJobType(this)" style="padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg);color:var(--gray);font-size:12px;font-weight:800;cursor:pointer;transition:all .15s">🧹 Pressure Washing</div>
+            </div>
+          </div>
+
+          <!-- ── SECTION 2: SERVICE RADIUS ── -->
+          <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">Service radius</div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:12px">Only show Quick Jobs posted within this distance from your location.</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+              <div class="radius-chip" onclick="selectRadius(this)" style="border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+                <div style="font-size:14px;font-weight:900">5 mi</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Nearby</div>
+              </div>
+              <div class="radius-chip selected" onclick="selectRadius(this)" style="border:2px solid var(--red);border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fef2f2;transition:all .15s">
+                <div style="font-size:14px;font-weight:900;color:var(--red)">15 mi</div>
+                <div style="font-size:10px;color:var(--red);font-weight:700;margin-top:2px">Standard</div>
+              </div>
+              <div class="radius-chip" onclick="selectRadius(this)" style="border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+                <div style="font-size:14px;font-weight:900">25 mi</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Extended</div>
+              </div>
+              <div class="radius-chip" onclick="selectRadius(this)" style="border:2px solid var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;transition:all .15s">
+                <div style="font-size:14px;font-weight:900">50 mi</div>
+                <div style="font-size:10px;color:var(--gray);font-weight:700;margin-top:2px">Wide</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── SECTION 3: AVAILABILITY ── -->
+          <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray)">Availability — time slots</div>
+              <div style="display:flex;gap:6px">
+                <button onclick="copyMonToAll()" style="padding:5px 11px;border-radius:7px;border:1px solid var(--border);background:var(--white);font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--gray)">Copy Mon to all</button>
+                <button onclick="clearAllSlots()" style="padding:5px 11px;border-radius:7px;border:1px solid var(--border);background:var(--white);font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--gray)">Clear all</button>
+              </div>
+            </div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:14px;line-height:1.6">Set which days and time slots you're available to take Quick Jobs. Homeowners will see your availability when you respond to their post.</div>
+            <div id="ts-grid" style="display:flex;flex-direction:column;gap:6px"></div>
+          </div>
+
+          <!-- ── SECTION 4: RESPONSE PREFERENCES ── -->
+          <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">Response preferences</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+              <div class="form-group">
+                <label>Fastest response time</label>
+                <select style="width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit">
+                  <option>Within 1 hour</option>
+                  <option selected>Within 2 hours</option>
+                  <option>Within 4 hours</option>
+                  <option>Same day</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Max jobs per day</label>
+                <select style="width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit">
+                  <option>1</option>
+                  <option>2</option>
+                  <option selected>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>Unlimited</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px;margin-bottom:8px">
+              <div>
+                <div style="font-size:13px;font-weight:800;color:var(--dark)">Require photos from Propertyowners</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray);margin-top:2px">Only show jobs where the Propertyowners has uploaded at least one photo</div>
+              </div>
+              <label style="position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0">
+                <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                <span style="position:absolute;inset:0;background:var(--red);border-radius:999px"></span>
+                <span style="position:absolute;top:2px;left:21px;width:18px;height:18px;background:#fff;border-radius:50%"></span>
+              </label>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--bg);border-radius:10px">
+              <div>
+                <div style="font-size:13px;font-weight:800;color:var(--dark)">Notify me instantly when a match posts</div>
+                <div style="font-size:11px;font-weight:700;color:var(--gray);margin-top:2px">Push notification the moment a matching Quick Job is posted near you</div>
+              </div>
+              <label style="position:relative;width:40px;height:22px;cursor:pointer;flex-shrink:0">
+                <input type="checkbox" checked style="opacity:0;width:0;height:0">
+                <span style="position:absolute;inset:0;background:var(--red);border-radius:999px"></span>
+                <span style="position:absolute;top:2px;left:21px;width:18px;height:18px;background:#fff;border-radius:50%"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- ── SECTION 5: DEFAULT RESPONSE TEMPLATE ── -->
+          <div style="margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border)">
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:6px">Default response template</div>
+            <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:12px;line-height:1.6">Write a default message that pre-fills when you respond to a Quick Job. Personalise it per job or send as-is. Keeps your responses fast and consistent.</div>
+            <textarea id="qj-response-template" style="width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:13px;font-family:inherit;min-height:110px;resize:vertical;line-height:1.7;outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--red)'" onblur="this.style.borderColor='var(--border)'" placeholder="e.g. Hi! I reviewed your photos and can handle this job. I'm available [DATE] and can be there by [TIME]. My price includes all labour and disposal. Let me know if you have any questions.">Hi! I've reviewed your photos and this looks like something we can handle. I'm available within your preferred timeframe and can be there promptly. My price includes all labour and any necessary materials. Feel free to message me with any questions before accepting.</textarea>
+            <div style="margin-top:8px;font-size:11px;font-weight:700;color:var(--gray)">You can edit this message each time before sending — this is just your starting point.</div>
+          </div>
+
+          <!-- ── SECTION 6: PAUSING ── -->
+          <div style="margin-bottom:20px">
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px;color:var(--gray);margin-bottom:12px">Pause Quick Jobs</div>
+            <div style="background:var(--bg);border-radius:12px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:16px">
+              <div>
+                <div style="font-size:13px;font-weight:800;color:var(--dark)">Going on vacation or taking a break?</div>
+                <div style="font-size:12px;font-weight:700;color:var(--gray);margin-top:3px">Pause Quick Jobs until a specific date — your profile stays active but you won't receive new job posts.</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+                <input type="date" id="qj-pause-until" style="padding:7px 12px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:inherit;outline:none">
+                <button onclick="pauseQJ()" style="padding:8px 16px;border-radius:9px;border:1px solid var(--border);background:var(--white);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--dark);white-space:nowrap;transition:all .15s">Pause until date</button>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="saveQjSettings()" style="padding:11px 24px;background:var(--red);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s">Save Quick Jobs settings</button>
+
+        </div><!-- /qj-sections -->
+      </div>
+
+   <!-- PORTFOLIO -->    </div>
+
+    <!-- PORTFOLIO -->
+    <div class="tab-content" id="tab-portfolio">
+      <div class="card">
+        <div class="card-title">Project photos</div>
+        <div class="card-sub">Upload before/after photos of completed jobs. Strong portfolios get more leads.</div>
+        <div class="photo-grid">
+          <div class="photo-filled">🏠</div>
+          <div class="photo-filled">🛣️</div>
+          <div class="photo-filled">🧱</div>
+          <div class="photo-slot"><div class="plus">+</div><div>Add photo</div></div>
+          <div class="photo-slot"><div class="plus">+</div><div>Add photo</div></div>
+          <div class="photo-slot"><div class="plus">+</div><div>Add photo</div></div>
+          <div class="photo-slot"><div class="plus">+</div><div>Add photo</div></div>
+          <div class="photo-slot"><div class="plus">+</div><div>Add photo</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Credentials &amp; badges</div>
+        <div class="card-sub">Upload documents to earn verified badges on your profile.</div>
+    <!-- VERIFICATION TIER INFO -->
+    <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:18px;margin-bottom:20px">
+      <div style="font-size:13px;font-weight:900;color:#16a34a;margin-bottom:10px;display:flex;align-items:center;gap:8px">
+        <i data-lucide="shield-check" size="16"></i> Verification Tier System
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px">
+          <div style="font-size:11px;font-weight:900;color:#1e40af;margin-bottom:6px">TIER 1 — LICENSED &amp; INSURED</div>
+          <div style="font-size:12px;color:#1e40af;font-weight:700;margin-bottom:6px">Required trades: Roofing, Electrical, Plumbing, HVAC, General Contracting, Structural Masonry</div>
+          <div style="font-size:11px;color:#374151;font-weight:700">Upload: State license number + current certificate of insurance. Manual review 1–2 business days.</div>
+        </div>
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px">
+          <div style="font-size:11px;font-weight:900;color:#16a34a;margin-bottom:6px">TIER 2 — VERIFIED</div>
+          <div style="font-size:12px;color:#16a34a;font-weight:700;margin-bottom:6px">All other trades: Landscaping, Painting, Junk Removal, Handyman, Cleaning, and more</div>
+          <div style="font-size:11px;color:#374151;font-weight:700">Requires: Confirmed email + phone number. Automatic — no documents, no waiting.</div>
+        </div>
+      </div>
+    </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Insurance certificate</label>
+            <input type="file" style="padding:8px;font-size:13px" />
+          </div>
+          <div class="form-group">
+            <label>Business license</label>
+            <input type="file" style="padding:8px;font-size:13px" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTIFICATIONS -->
+    <div class="tab-content" id="tab-notifications">
+      <div class="card">
+        <div class="card-title">Notification preferences</div>
+        <div class="card-sub">Control how and when Property Pros contacts you.</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">New lead alerts</div>
+            <div class="toggle-sub">Get notified when a matching lead is posted in your area</div>
+          </div>
+          <button class="toggle" onclick="this.classList.toggle('off')"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Message notifications</div>
+            <div class="toggle-sub">Alerts when a homeowner sends you a new message</div>
+          </div>
+          <button class="toggle" onclick="this.classList.toggle('off')"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Quote accepted</div>
+            <div class="toggle-sub">Know instantly when a homeowner accepts your quote</div>
+          </div>
+          <button class="toggle" onclick="this.classList.toggle('off')"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Weekly lead summary</div>
+            <div class="toggle-sub">A weekly email digest of new leads in your area</div>
+          </div>
+          <button class="toggle off" onclick="this.classList.toggle('off')"></button>
+        </div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Review notifications</div>
+            <div class="toggle-sub">Get notified when a homeowner leaves you a review</div>
+          </div>
+          <button class="toggle off" onclick="this.classList.toggle('off')"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="tab-content" id="tab-security">
+      <div class="card">
+        <div class="card-title">Change password</div>
+        <div class="card-sub">Use a strong, unique password for your account.</div>
+        <div class="form-row single">
+          <div class="form-group">
+            <label>Current password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>New password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+          <div class="form-group">
+            <label>Confirm new password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Two-factor authentication</div>
+        <div class="card-sub">Add an extra layer of security to your account.</div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Enable 2FA via SMS</div>
+            <div class="toggle-sub">Receive a code by text when you log in</div>
+          </div>
+          <button class="toggle off" onclick="this.classList.toggle('off')"></button>
+        </div>
+      </div>
+
+      <div class="danger-zone">
+        <div class="danger-title">Danger zone</div>
+        <div class="danger-sub">Deleting your account is permanent and cannot be undone. All your leads, messages, and profile data will be removed.</div>
+        <button class="btn-danger">Delete my account</button>
+      </div>
+    </div>
+
+    <div class="save-bar">
+      <a href="dashboard.html" class="btn btn-outline">Cancel</a>
+      <button class="btn btn-red">Save changes</button>
+    </div>
+  </main>
+
+  <script>
+    function switchTab(name) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById('tab-' + name).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    document.querySelectorAll('.service-tag').forEach(tag => {
+      tag.addEventListener('click', () => tag.classList.toggle('selected'));
+    });
+  </script>
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+  </div>
+</div>
+
+
+
+  <script>
+  // ── LEAD PREFERENCES ──────────────────────────────────────────
+
+  function updateLeadStatus(checkbox) {
+    const bg    = document.getElementById('lead-status-bg');
+    const thumb = document.getElementById('lead-status-thumb');
+    bg.style.background = checkbox.checked ? 'var(--red)' : '#d1d5db';
+    thumb.style.left    = checkbox.checked ? '23px' : '3px';
+  }
+
+  function selectBudget(chip, val) {
+    document.querySelectorAll('.budget-chip').forEach(c => {
+      c.style.border      = '2px solid var(--border)';
+      c.style.background  = 'var(--white)';
+      c.querySelector('div').style.color = 'var(--dark)';
+      c.querySelectorAll('div')[1].style.color = 'var(--gray)';
+      c.classList.remove('selected');
+    });
+    chip.style.border     = '2px solid var(--red)';
+    chip.style.background = '#fef2f2';
+    chip.querySelector('div').style.color = 'var(--red)';
+    chip.querySelectorAll('div')[1].style.color = 'var(--red)';
+    chip.classList.add('selected');
+  }
+
+
+
+  function addCustomService2() {
+    const input = document.getElementById('custom-service-input');
+    const val = input.value.trim();
+    if (!val) return;
+    const container = document.getElementById('custom-service-chips');
+    const chip = document.createElement('div');
+    chip.style.cssText = 'display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid var(--red);background:#fef2f2;color:var(--red);font-size:12px;font-weight:800';
+    chip.innerHTML = `✏️ ${val} <span onclick="this.parentElement.remove()" style="cursor:pointer;font-size:14px;color:#fca5a5;margin-left:2px" title="Remove">×</span>`;
+    container.appendChild(chip);
+    input.value = '';
+    input.focus();
+  }
+
+
+  function toggleJobType(chip) {
+    const on = chip.classList.toggle('selected');
+    chip.style.border     = on ? '1px solid var(--red)'    : '1px solid var(--border)';
+    chip.style.background = on ? '#fef2f2'                 : 'var(--bg)';
+    chip.style.color      = on ? 'var(--red)'              : 'var(--gray)';
+  }
+
+  function saveLeadPrefs() {
+    const btn = event.target;
+    btn.textContent = '✓ Saved!';
+    btn.style.background = '#16a34a';
+    setTimeout(() => {
+      btn.textContent = 'Save lead preferences';
+      btn.style.background = 'var(--red)';
+    }, 2500);
+  }
+
+  // ── URL PARAM: scroll to section on load ──────────────────────
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('section') !== 'lead-preferences') return;
+    setTimeout(() => {
+      const section = document.getElementById('lead-preferences');
+      if (!section) return;
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      section.style.transition = 'box-shadow .3s';
+      section.style.boxShadow = '0 0 0 3px rgba(220,38,38,.2)';
+      setTimeout(() => section.style.boxShadow = '', 2500);
+    }, 200);
+  })();
+  </script>
+
+
+  <script>
+  // ── TIME SLOT AVAILABILITY ────────────────────────────────────
+
+  const TS_DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+  const TIME_GROUPS = [
+    { label: 'Morning',   slots: ['6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM','11:00 AM'] },
+    { label: 'Afternoon', slots: ['12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM'] },
+    { label: 'Evening',   slots: ['6:00 PM','7:00 PM','8:00 PM','9:00 PM'] }
+  ];
+
+  // State: which slots are on per day
+  const tsState = {
+    Mon: { on: true,  slots: new Set(['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']) },
+    Tue: { on: true,  slots: new Set(['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']) },
+    Wed: { on: true,  slots: new Set(['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']) },
+    Thu: { on: true,  slots: new Set(['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']) },
+    Fri: { on: true,  slots: new Set(['8:00 AM','9:00 AM','10:00 AM','11:00 AM','12:00 PM','1:00 PM','2:00 PM','3:00 PM','4:00 PM','5:00 PM']) },
+    Sat: { on: false, slots: new Set() },
+    Sun: { on: false, slots: new Set() }
+  };
+
+  function buildTsGrid() {
+    const grid = document.getElementById('ts-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    TS_DAYS.forEach(day => {
+      const state = tsState[day];
+      const row = document.createElement('div');
+      row.className = 'ts-day-row' + (state.on ? ' day-on' : '');
+      row.id = 'ts-row-' + day;
+
+      const preview = getSlotPreview(day);
+
+      row.innerHTML = `
+        <div class="ts-day-header" onclick="toggleTsDay('${day}')">
+          <div class="ts-day-label">${day}</div>
+          <div class="ts-slot-preview" id="ts-preview-${day}">${preview}</div>
+          <div class="ts-toggle"></div>
+        </div>
+        <div class="ts-slots-wrap">
+          <div class="ts-select-row">
+            <button class="ts-select-btn" onclick="selectGroup(event,'${day}','morning')">+ Morning</button>
+            <button class="ts-select-btn" onclick="selectGroup(event,'${day}','afternoon')">+ Afternoon</button>
+            <button class="ts-select-btn" onclick="selectGroup(event,'${day}','evening')">+ Evening</button>
+            <button class="ts-select-btn" onclick="selectGroup(event,'${day}','all')">Select all</button>
+            <button class="ts-select-btn" onclick="selectGroup(event,'${day}','none')">Clear</button>
+          </div>
+          ${TIME_GROUPS.map(group => `
+          <div class="ts-time-group">
+            <div class="ts-group-label">${group.label}</div>
+            <div class="ts-slots">
+              ${group.slots.map(slot => `
+              <div class="ts-slot${state.slots.has(slot) ? ' slot-on' : ''}"
+                   id="ts-${day}-${slot.replace(/[: ]/g,'')}"
+                   onclick="toggleTsSlot('${day}','${slot}',this)">${slot}</div>`).join('')}
+            </div>
+          </div>`).join('')}
+        </div>`;
+
+      grid.appendChild(row);
+    });
+  }
+
+  function toggleTsDay(day) {
+    tsState[day].on = !tsState[day].on;
+    const row = document.getElementById('ts-row-' + day);
+    row.classList.toggle('day-on', tsState[day].on);
+    updateTsPreview(day);
+  }
+
+  function toggleTsSlot(day, slot, el) {
+    const slots = tsState[day].slots;
+    if (slots.has(slot)) { slots.delete(slot); el.classList.remove('slot-on'); }
+    else                  { slots.add(slot);    el.classList.add('slot-on');    }
+    updateTsPreview(day);
+  }
+
+  function selectGroup(e, day, group) {
+    e.stopPropagation();
+    const state = tsState[day];
+    const allSlots = TIME_GROUPS.flatMap(g => g.slots);
+    const morning   = TIME_GROUPS[0].slots;
+    const afternoon = TIME_GROUPS[1].slots;
+    const evening   = TIME_GROUPS[2].slots;
+
+    let target = [];
+    if (group === 'morning')   target = morning;
+    if (group === 'afternoon') target = afternoon;
+    if (group === 'evening')   target = evening;
+    if (group === 'all')       target = allSlots;
+
+    if (group === 'none') {
+      state.slots.clear();
+    } else {
+      target.forEach(s => state.slots.add(s));
+    }
+
+    // Re-render slot buttons
+    allSlots.forEach(slot => {
+      const el = document.getElementById('ts-' + day + '-' + slot.replace(/[: ]/g,''));
+      if (el) el.classList.toggle('slot-on', state.slots.has(slot));
+    });
+    updateTsPreview(day);
+  }
+
+  function getSlotPreview(day) {
+    const state = tsState[day];
+    if (!state.on) return 'Day off';
+    if (!state.slots.size) return 'No slots selected — tap to add';
+    return state.slots.size + ' slot' + (state.slots.size !== 1 ? 's' : '') + ' available';
+  }
+
+  function updateTsPreview(day) {
+    const el = document.getElementById('ts-preview-' + day);
+    if (el) el.textContent = getSlotPreview(day);
+  }
+
+  function copyMonToAll() {
+    const monSlots = new Set(tsState['Mon'].slots);
+    TS_DAYS.forEach(day => {
+      tsState[day].slots = new Set(monSlots);
+      tsState[day].on = monSlots.size > 0;
+    });
+    buildTsGrid();
+  }
+
+  function clearAllSlots() {
+    TS_DAYS.forEach(day => { tsState[day].slots.clear(); tsState[day].on = false; });
+    buildTsGrid();
+  }
+
+  function toggleDay(el) {
+    const on = el.classList.toggle('on');
+    el.style.background  = on ? '#fef2f2' : 'var(--bg)';
+    el.style.borderColor = on ? '#fecaca' : 'var(--border)';
+    el.querySelector('div').style.color = on ? 'var(--red)' : 'var(--gray)';
+    el.querySelectorAll('div')[1].textContent = on ? '✓' : '–';
+  }
+
+  document.addEventListener('DOMContentLoaded', buildTsGrid);
+  </script>
+
+  <script>
+  // ── CUSTOM ITEM RATES ─────────────────────────────────────────
+  const ITEM_EMOJIS = ['🪔','🏋️','🛗','🪑','🚲','🛞','🪣','🖥️','🎹','🛒','🪴','🏺','🎸','🧳','🛁','🚿','🛋️','🪞','🖼️','🗄️','🚗','🏍️','🧰','🔩','🪚','🔑','📦','🗑️','💺','🪜'];
+  let selectedItemEmoji = '📦';
+
+  function openItemEmojiPicker() {
+    const picker = document.getElementById('item-emoji-picker');
+    const isOpen = picker.style.display === 'flex';
+    if (isOpen) { picker.style.display = 'none'; return; }
+    picker.innerHTML = ITEM_EMOJIS.map(e =>
+      `<span onclick="pickItemEmoji('${e}')" style="font-size:22px;cursor:pointer;padding:4px 6px;border-radius:6px;transition:background .1s" onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background=''">${e}</span>`
+    ).join('');
+    picker.style.display = 'flex';
+  }
+
+  function pickItemEmoji(emoji) {
+    selectedItemEmoji = emoji;
+    document.getElementById('custom-item-emoji').value = emoji;
+    document.getElementById('item-emoji-picker').style.display = 'none';
+  }
+
+  function addCustomItem() {
+    const nameInput  = document.getElementById('custom-item-name');
+    const priceInput = document.getElementById('custom-item-price');
+    const name  = nameInput.value.trim();
+    const price = priceInput.value.trim();
+
+    if (!name) {
+      nameInput.style.borderColor = 'var(--red)';
+      nameInput.focus();
+      return;
+    }
+
+    const container = document.getElementById('custom-item-rows');
+    const id = 'ci-' + Date.now();
+    const row = document.createElement('div');
+    row.id = id;
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 13px';
+    row.innerHTML = `
+      <span style="font-size:15px;flex-shrink:0">${selectedItemEmoji}</span>
+      <span style="flex:1;font-size:13px;font-weight:700;color:var(--dark)">${name}</span>
+      <span style="font-size:13px;font-weight:900;color:var(--red);flex-shrink:0">${price ? '$' + parseFloat(price).toFixed(0) : 'No price set'}</span>
+      <button onclick="document.getElementById('${id}').remove()"
+        style="width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:var(--white);cursor:pointer;font-size:14px;color:var(--gray);display:flex;align-items:center;justify-content:center;flex-shrink:0" title="Remove">×</button>`;
+    container.appendChild(row);
+
+    nameInput.value  = '';
+    priceInput.value = '';
+    nameInput.style.borderColor = 'var(--border)';
+    selectedItemEmoji = '📦';
+    document.getElementById('custom-item-emoji').value = '📦';
+    nameInput.focus();
+  }
+
+  // Close emoji picker when clicking outside
+  document.addEventListener('click', function(e) {
+    const picker = document.getElementById('item-emoji-picker');
+    const trigger = document.getElementById('custom-item-emoji');
+    if (picker && !picker.contains(e.target) && e.target !== trigger) {
+      picker.style.display = 'none';
+    }
+  });
+  </script>
+  <script>
+  // ── QUICK JOBS SETTINGS ───────────────────────────────────────
+
+  function toggleQjSections() {
+    const on       = document.getElementById('qj-toggle').checked;
+    const sections = document.getElementById('qj-sections');
+    const bg       = document.getElementById('qj-toggle-bg');
+    const thumb    = document.getElementById('qj-thumb');
+    sections.style.opacity       = on ? '1' : '0.4';
+    sections.style.pointerEvents = on ? '' : 'none';
+    if (bg)    bg.style.background = on ? 'var(--red)' : '#d1d5db';
+    if (thumb) thumb.style.left    = on ? '23px' : '3px';
+  }
+
+  function selectRadius(chip) {
+    document.querySelectorAll('.radius-chip').forEach(c => {
+      c.style.border     = '2px solid var(--border)';
+      c.style.background = 'var(--white)';
+      c.querySelector('div').style.color = 'var(--dark)';
+      if (c.querySelectorAll('div')[1]) c.querySelectorAll('div')[1].style.color = 'var(--gray)';
+      c.classList.remove('selected');
+    });
+    chip.style.border     = '2px solid var(--red)';
+    chip.style.background = '#fef2f2';
+    chip.querySelector('div').style.color = 'var(--red)';
+    if (chip.querySelectorAll('div')[1]) chip.querySelectorAll('div')[1].style.color = 'var(--red)';
+    chip.classList.add('selected');
+  }
+
+  function saveQjSettings() {
+    const btn = event.target;
+    btn.textContent = '✓ Saved!';
+    btn.style.background = '#16a34a';
+    setTimeout(() => {
+      btn.textContent = 'Save Quick Jobs settings';
+      btn.style.background = 'var(--red)';
+    }, 2500);
+  }
+
+  function pauseQJ() {
+    const date = document.getElementById('qj-pause-until').value;
+    if (!date) return;
+    const formatted = new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const toggle = document.getElementById('qj-toggle');
+    toggle.checked = false;
+    toggleQjSections();
+    const btn = event.target;
+    btn.textContent = `Paused until ${formatted}`;
+    btn.style.background = '#fef2f2';
+    btn.style.color = 'var(--red)';
+    btn.style.borderColor = '#fecaca';
+  }
+  </script>
+</body>
+</html>

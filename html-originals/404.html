@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Page not found — Property Pros. Return to the homepage or find a verified local contractor." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --font: 'Manrope', sans-serif;
+      --font-display: 'Playfair Display', serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--dark);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header {
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 66px; position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .header-btns { display: flex; gap: 10px; }
+    .btn { padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+    .btn-outline-white { border-color: rgba(255,255,255,.2); color: #fff; }
+    .btn-outline-white:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+
+    /* ── BG EFFECTS ── */
+    .bg-grid {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .bg-glow-red {
+      position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 600px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(220,38,38,.18) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .bg-glow-bottom {
+      position: fixed; bottom: -200px; right: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(220,38,38,.08) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 40px 60px;
+      position: relative; z-index: 1; text-align: center;
+    }
+
+    /* ── 404 NUMBER ── */
+    .number-wrap {
+      position: relative; margin-bottom: 8px; display: inline-block;
+    }
+
+    .number-404 {
+      font-family: var(--font-display);
+      font-size: 180px; font-weight: 900;
+      color: transparent;
+      -webkit-text-stroke: 2px rgba(255,255,255,.08);
+      letter-spacing: -8px; line-height: 1;
+      user-select: none;
+    }
+
+    .number-404-solid {
+      position: absolute; inset: 0;
+      font-family: var(--font-display);
+      font-size: 180px; font-weight: 900;
+      color: var(--red);
+      letter-spacing: -8px; line-height: 1;
+      opacity: .15;
+      user-select: none;
+      animation: glitch 4s infinite;
+    }
+
+    .house-icon {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 72px; animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-12px); }
+    }
+
+    @keyframes glitch {
+      0%, 90%, 100% { opacity: .15; transform: none; }
+      92% { opacity: .25; transform: translateX(-3px); }
+      94% { opacity: .15; transform: translateX(3px); }
+      96% { opacity: .2; transform: translateX(-2px); }
+      98% { opacity: .15; transform: none; }
+    }
+
+    /* ── TEXT ── */
+    .eyebrow {
+      font-size: 11px; font-weight: 800; letter-spacing: 3px;
+      text-transform: uppercase; color: #f87171; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .eyebrow::before, .eyebrow::after {
+      content: ''; width: 28px; height: 1px; background: rgba(248,113,113,.4);
+    }
+
+    .title {
+      font-family: var(--font-display);
+      font-size: 42px; font-weight: 900; color: #fff;
+      letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 16px;
+    }
+
+    .subtitle {
+      font-size: 17px; color: #9ca3af; line-height: 1.75;
+      max-width: 460px; margin: 0 auto 40px;
+    }
+
+    /* ── ACTION BUTTONS ── */
+    .action-btns {
+      display: flex; gap: 12px; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 56px;
+    }
+
+    .action-btn {
+      padding: 13px 26px; border-radius: 12px; font-size: 14px;
+      font-weight: 800; cursor: pointer; font-family: var(--font);
+      transition: all .2s; display: inline-flex; align-items: center; gap: 8px;
+      border: none;
+    }
+
+    .action-btn.red { background: var(--red); color: #fff; }
+    .action-btn.red:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(220,38,38,.3); }
+
+    .action-btn.outline {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      color: #d1d5db;
+    }
+
+    .action-btn.outline:hover { background: rgba(255,255,255,.1); color: #fff; transform: translateY(-1px); }
+
+    /* ── QUICK LINKS ── */
+    .quick-links-label {
+      font-size: 11px; font-weight: 800; letter-spacing: 2px;
+      text-transform: uppercase; color: #4b5563; margin-bottom: 20px;
+    }
+
+    .quick-links {
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    }
+
+    .quick-link {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px; padding: 12px 18px; cursor: pointer;
+      transition: all .2s; color: #9ca3af; font-size: 13px; font-weight: 700;
+    }
+
+    .quick-link:hover {
+      background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.14);
+      color: #fff; transform: translateY(-1px);
+    }
+
+    .quick-link-icon { font-size: 18px; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      margin-bottom: 40px; max-width: 440px; width: 100%;
+    }
+
+    .search-bar {
+      display: flex; background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; overflow: hidden;
+      transition: border-color .2s;
+    }
+
+    .search-bar:focus-within {
+      border-color: var(--red);
+      background: rgba(255,255,255,.08);
+    }
+
+    .search-input {
+      flex: 1; padding: 14px 18px; background: transparent; border: none;
+      outline: none; font-size: 14px; font-family: var(--font); color: #fff;
+    }
+
+    .search-input::placeholder { color: #4b5563; }
+
+    .search-btn {
+      background: var(--red); color: #fff; border: none;
+      padding: 0 20px; font-size: 13px; font-weight: 800;
+      cursor: pointer; font-family: var(--font); transition: background .15s;
+      white-space: nowrap;
+    }
+
+    .search-btn:hover { background: var(--red-dark); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      padding: 24px 48px; border-top: 1px solid rgba(255,255,255,.06);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-link { font-size: 13px; font-weight: 700; color: #4b5563; transition: color .15s; }
+    .footer-link:hover { color: #fff; }
+    .footer-copy { font-size: 12px; color: #374151; }
+
+    /* ── STATUS INDICATOR ── */
+    .status-bar {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; padding: 10px; margin-bottom: 40px;
+      font-size: 12px; font-weight: 700; color: #6b7280;
+    }
+
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      header { padding: 0 24px; }
+      .main { padding: 100px 24px 40px; }
+      .number-404, .number-404-solid { font-size: 120px; letter-spacing: -4px; }
+      .house-icon { font-size: 50px; }
+      .title { font-size: 30px; }
+      .action-btns { flex-direction: column; align-items: center; }
+      .quick-links { flex-direction: column; align-items: center; }
+      footer { padding: 20px 24px; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BG EFFECTS -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow-red"></div>
+  <div class="bg-glow-bottom"></div>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <div class="header-btns">
+      <a href="login.html" class="btn btn-outline-white">Log in</a>
+      <a href="index.html" class="btn btn-red">Go home</a>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- 404 GRAPHIC -->
+    <div class="number-wrap">
+      <div class="number-404">404</div>
+      <div class="number-404-solid">404</div>
+      <div class="house-icon"><i data-lucide="home"></i></div>
+    </div>
+
+    <!-- TEXT -->
+    <div class="eyebrow">Page not found</div>
+
+    <h1 class="title">
+      
+    </h1>
+
+    <p class="subtitle">
+      The page you're looking for doesn't exist, was moved, or the URL might have a typo. Let's get you back on track.
+    </p>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <div class="search-bar">
+        <input class="search-input" placeholder="Search for a pro, service, or page..." id="search-input" onkeydown="handleSearch(event)" />
+        <button class="search-btn" onclick="doSearch()">Search</button>
+      </div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="action-btns">
+      <a href="index.html" class="action-btn red"><i data-lucide="home"></i> Back to homepage</a>
+      <a href="login.html" class="action-btn outline"><i data-lucide="search"></i> Find a pro</a>
+      <a href="contact.html" class="action-btn outline"><i data-lucide="message-circle-more"></i> Contact support</a>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="quick-links-label">Or jump to a popular page</div>
+    <div class="quick-links">
+      <a href="login.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="square-chart-gantt"></i></span> Post a project
+      </a>
+      <a href="login.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="key"></i></span> Log in / Sign up
+      </a>
+      <a href="pricing.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="dollar-sign"></i></span> Pricing
+      </a>
+      <a href="about.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="handshake"></i></span> About us
+      </a>
+      <a href="contact.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="phone"></i></span> Help & contact
+      </a>
+      <a href="login.html" class="quick-link">
+        <span class="quick-link-icon"><i data-lucide="chart-column"></i></span> Pro dashboard
+      </a>
+    </div>
+
+    <!-- STATUS -->
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      All Property Pros systems are operational
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="about.html" class="footer-link">About</a>
+      <a href="pricing.html" class="footer-link">Pricing</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+      <a href="terms.html" class="footer-link">Terms</a>
+      <a href="privacy.html" class="footer-link">Privacy</a>
+    </div>
+    <div class="footer-copy">© 2026 Property Pros · All rights reserved</div>
+  </footer>
+
+  <script>
+    function handleSearch(e) {
+      if (e.key === 'Enter') doSearch();
+    }
+
+    function doSearch() {
+      const q = document.getElementById('search-input').value.trim();
+      if (!q) return;
+
+      const routes = {
+        'home': 'index.html', 'dashboard': 'dashboard.html',
+        'leads': 'leads.html', 'messages': 'messages.html',
+        'billing': 'billing.html', 'settings': 'settings.html',
+        'schedule': 'schedule.html', 'notifications': 'notifications.html',
+        'contact': 'contact.html', 'help': 'contact.html',
+        'pricing': 'pricing.html', 'price': 'pricing.html',
+        'about': 'about.html', 'login': 'login.html',
+        'signup': 'login.html', 'sign up': 'login.html',
+        'post': 'post-project.html', 'project': 'post-project.html',
+        'find': 'homeowner-dashboard.html', 'pro': 'homeowner-dashboard.html',
+        'roof': 'homeowner-dashboard.html', 'driveway': 'homeowner-dashboard.html',
+      };
+
+      const lower = q.toLowerCase();
+      for (const [key, url] of Object.entries(routes)) {
+        if (lower.includes(key)) { window.location.href = url; return; }
+      }
+
+      // Default fallback
+      window.location.href = 'homeowner-dashboard.html';
+    }
+  </script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

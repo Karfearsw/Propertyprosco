@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="description" content="Property Pros Terms of Service — the rules and guidelines for using our platform." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Terms of Service — Property Pros</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red: #dc2626;
+      --red-dark: #b91c1c;
+      --red-light: #fef2f2;
+      --dark: #111827;
+      --dark2: #1f2937;
+      --dark3: #374151;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f3f4f6;
+      --white: #ffffff;
+      --green: #16a34a;
+      --green-light: #f0fdf4;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --font: 'Manrope', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: var(--red); font-weight: 700; }
+    a:hover { text-decoration: underline; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--dark);
+      padding: 0 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 66px; position: sticky; top: 0; z-index: 50;
+    }
+
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 17px; font-weight: 900; color: #fff; letter-spacing: -0.5px; }
+    .brand-name span { color: #f87171; }
+
+    .header-nav { display: flex; gap: 28px; }
+    .header-link { font-size: 13px; font-weight: 700; color: #9ca3af; text-decoration: none; transition: color .15s; }
+    .header-link:hover { color: #fff; }
+
+    .header-btns { display: flex; gap: 10px; }
+    .btn { padding: 9px 20px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; text-decoration: none; }
+    .btn-outline-white { border-color: rgba(255,255,255,.2); color: #fff; }
+    .btn-outline-white:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; border-color: var(--red); }
+    .btn-red:hover { background: var(--red-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--dark);
+      padding: 56px 48px 64px;
+      position: relative; overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none;
+    }
+
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+
+    .hero-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #f87171; margin-bottom: 14px; }
+
+    .hero-title { font-size: 42px; font-weight: 900; color: #fff; letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 16px; }
+
+    .hero-meta { display: flex; gap: 24px; flex-wrap: wrap; }
+
+    .hero-meta-item { font-size: 13px; font-weight: 700; color: #6b7280; display: flex; align-items: center; gap: 6px; }
+    .hero-meta-item span { color: #9ca3af; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-layout {
+      max-width: 1060px; margin: 0 auto;
+      padding: 48px 48px 80px;
+      display: grid; grid-template-columns: 220px 1fr;
+      gap: 48px; align-items: start;
+    }
+
+    /* ── SIDEBAR TOC ── */
+    .toc {
+      position: sticky; top: 84px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px; overflow: hidden;
+    }
+
+    .toc-title { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gray); margin-bottom: 14px; }
+
+    .toc-item {
+      display: block; padding: 8px 12px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; color: var(--gray);
+      cursor: pointer; transition: all .15s; margin-bottom: 2px;
+      text-decoration: none; border-left: 3px solid transparent;
+    }
+
+    .toc-item:hover { background: var(--white); color: var(--dark); text-decoration: none; }
+    .toc-item.active { background: var(--white); color: var(--red); border-left-color: var(--red); }
+
+    .toc-divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+    .toc-contact {
+      background: var(--red-light); border: 1px solid #fecaca;
+      border-radius: 10px; padding: 12px; margin-top: 12px;
+      font-size: 12px; color: #991b1b; font-weight: 700; line-height: 1.6;
+    }
+
+    /* ── CONTENT ── */
+    .content { min-width: 0; }
+
+    /* SUMMARY BOX */
+    .summary-box {
+      background: var(--blue-light); border: 1px solid #bfdbfe;
+      border-radius: 14px; padding: 20px 22px; margin-bottom: 36px;
+    }
+
+    .summary-title { font-size: 14px; font-weight: 900; color: var(--blue); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+    .summary-list { display: flex; flex-direction: column; gap: 6px; }
+    .summary-item { font-size: 13px; font-weight: 700; color: var(--dark3); display: flex; gap: 8px; align-items: flex-start; line-height: 1.5; }
+    .summary-item::before { content: '→'; color: var(--blue); flex-shrink: 0; font-weight: 900; }
+
+    /* SECTIONS */
+    .section { margin-bottom: 48px; scroll-margin-top: 84px; }
+
+    .section-number { font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+
+    .section-title { font-size: 22px; font-weight: 900; color: var(--dark); margin-bottom: 16px; padding-bottom: 14px; border-bottom: 2px solid var(--border); letter-spacing: -0.5px; }
+
+    .section p { font-size: 15px; color: var(--dark3); line-height: 1.85; margin-bottom: 16px; }
+    .section p:last-child { margin-bottom: 0; }
+
+    .section ul, .section ol { padding-left: 22px; margin-bottom: 16px; }
+    .section li { font-size: 15px; color: var(--dark3); line-height: 1.85; margin-bottom: 8px; }
+    .section li:last-child { margin-bottom: 0; }
+
+    .section strong { font-weight: 800; color: var(--dark); }
+
+    /* HIGHLIGHT BOXES */
+    .highlight-box {
+      border-radius: 12px; padding: 16px 18px; margin: 18px 0;
+      display: flex; gap: 12px; align-items: flex-start;
+    }
+
+    .highlight-box.green { background: var(--green-light); border: 1px solid #bbf7d0; }
+    .highlight-box.red { background: var(--red-light); border: 1px solid #fecaca; }
+    .highlight-box.amber { background: #fffbeb; border: 1px solid #fde68a; }
+    .highlight-box.blue { background: var(--blue-light); border: 1px solid #bfdbfe; }
+
+    .highlight-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .highlight-text { font-size: 14px; font-weight: 700; line-height: 1.65; }
+    .highlight-box.green .highlight-text { color: #166534; }
+    .highlight-box.red .highlight-text { color: #991b1b; }
+    .highlight-box.amber .highlight-text { color: #92400e; }
+    .highlight-box.blue .highlight-text { color: #1e40af; }
+
+    /* DEFINITION TERM */
+    .definition { background: var(--bg); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+    .definition-term { font-size: 14px; font-weight: 900; color: var(--dark); margin-bottom: 4px; }
+    .definition-body { font-size: 13px; color: var(--gray); line-height: 1.65; font-weight: 600; }
+
+    /* DIVIDER */
+    .section-divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+    /* LAST UPDATED BANNER */
+    .updated-banner {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 10px; margin-bottom: 36px;
+    }
+
+    .updated-left { font-size: 13px; font-weight: 700; color: var(--dark3); }
+    .updated-version { font-size: 12px; font-weight: 800; background: var(--dark); color: #fff; padding: 3px 10px; border-radius: 999px; }
+
+    /* CONTACT CARD */
+    .contact-card {
+      background: var(--dark); border-radius: 16px; padding: 24px 28px;
+      margin-top: 8px;
+    }
+
+    .contact-card-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+    .contact-card-sub { font-size: 14px; color: #9ca3af; margin-bottom: 18px; line-height: 1.6; }
+    .contact-items { display: flex; flex-direction: column; gap: 10px; }
+    .contact-item { display: flex; gap: 10px; align-items: center; font-size: 14px; font-weight: 700; }
+    .contact-item-icon { width: 34px; height: 34px; border-radius: 9px; background: rgba(255,255,255,.07); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+    .contact-item-text { color: #d1d5db; }
+    .contact-item-text a { color: #f87171; text-decoration: none; font-weight: 800; }
+    .contact-item-text a:hover { text-decoration: underline; }
+
+    @media (max-width: 900px) {
+      header { padding: 0 24px; }
+      .header-nav { display: none; }
+      .hero { padding: 40px 24px 50px; }
+      .hero-title { font-size: 30px; }
+      .page-layout { grid-template-columns: 1fr; padding: 28px 24px 60px; gap: 28px; }
+      .toc { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a href="index.html" class="brand">
+      <div class="logo">PP</div>
+      <div class="brand-name"><span>Property</span> Pros</div>
+    </a>
+    <nav class="header-nav">
+      <a href="index.html" class="header-link">Home</a>
+      <a href="about.html" class="header-link">About</a>
+      <a href="pricing.html" class="header-link">Pricing</a>
+      <a href="realtor-landing.html" class="header-link">For realtors</a>
+      <a href="contact.html" class="header-link">Contact</a>
+    </nav>
+    <div class="header-btns">
+      <a href="login.html" class="btn btn-outline-white">Log in</a>
+      <a href="login.html" class="btn btn-red">Get started</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Legal</div>
+      <h1 class="hero-title">Terms of Service</h1>
+      <div class="hero-meta">
+        <div class="hero-meta-item">📅 <span>Last updated:</span> May 28, 2026</div>
+        <div class="hero-meta-item">📄 <span>Version:</span> 2.2</div>
+        <div class="hero-meta-item">⏱ <span>Reading time:</span> ~12 minutes</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE -->
+  <div class="page-layout">
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc">
+      <div class="toc-title">Contents</div>
+      <a href="#acceptance" class="toc-item active" onclick="setActive(this)">1. Acceptance</a>
+      <a href="#definitions" class="toc-item" onclick="setActive(this)">2. Definitions</a>
+      <a href="#accounts" class="toc-item" onclick="setActive(this)">3. Accounts</a>
+      <a href="#homeowners" class="toc-item" onclick="setActive(this)">4. Property Owners</a>
+      <a href="#pros" class="toc-item" onclick="setActive(this)">5. Service Pros</a>
+      <a href="#payments" class="toc-item" onclick="setActive(this)">6. Payments</a>
+      <a href="#conduct" class="toc-item" onclick="setActive(this)">7. Conduct</a>
+      <a href="#content" class="toc-item" onclick="setActive(this)">8. Content</a>
+      <a href="#ratings" class="toc-item" onclick="setActive(this)">9. Ratings</a>
+      <a href="#liability" class="toc-item" onclick="setActive(this)">10. Liability</a>
+      <a href="#termination" class="toc-item" onclick="setActive(this)">11. Termination</a>
+      <a href="#disputes" class="toc-item" onclick="setActive(this)">12. Disputes</a>
+      <a href="#changes" class="toc-item" onclick="setActive(this)">13. Changes</a>
+      <a href="#contact-legal" class="toc-item" onclick="setActive(this)">14. Contact</a>
+      <div class="toc-divider"></div>
+      <a href="privacy.html" class="toc-item" style="font-size:12px">→ Privacy Policy</a>
+      <div class="toc-contact">
+        Questions? <a href="contact.html" style="color:var(--red)">Contact us</a> or email legal@propertypros.com
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- UPDATED BANNER -->
+      <div class="updated-banner">
+        <div class="updated-left">These terms were last updated on <strong>May 28th, 2026</strong>. By continuing to use Property Pros after this date, you agree to the updated terms.</div>
+        <div class="updated-version">v2.2</div>
+      </div>
+
+      <!-- PLAIN ENGLISH SUMMARY -->
+      <div class="summary-box">
+        <div class="summary-title">💡 Plain English summary</div>
+        <div class="summary-list">
+          <div class="summary-item">Property Pros connects Property Owners with service professionals. We are a platform, not a contractor.</div>
+          <div class="summary-item">Property Owners use the platform for free. Service pros pay $9.99/month after a 14-day trial.</div>
+          <div class="summary-item">You are responsible for what you post, say, and do on the platform.</div>
+          <div class="summary-item">We can suspend or terminate accounts that violate these terms.</div>
+          <div class="summary-item">We're not liable for the quality of work done by pros hired through our platform.</div>
+          <div class="summary-item">Disputes between Owners and pros are handled between the parties directly.</div>
+        </div>
+      </div>
+
+      <!-- 1. ACCEPTANCE -->
+      <div class="section" id="acceptance">
+        <div class="section-number">Section 01</div>
+        <div class="section-title">Acceptance of Terms</div>
+        <p>By accessing or using Property Pros (the "Platform"), including through our website at propertypros.com, mobile applications, or any related services, you agree to be bound by these Terms of Service ("Terms"). Please read them carefully.</p>
+        <p>If you do not agree to these Terms, you may not access or use the Platform. If you are using the Platform on behalf of a business or organization, you represent that you have the authority to bind that entity to these Terms.</p>
+        <div class="highlight-box blue">
+          <span class="highlight-icon">ℹ️</span>
+          <div class="highlight-text">These Terms constitute a legally binding agreement between you and Property Pros, LLC, a limited liability company. By creating an account, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="privacy.html">Privacy Policy</a>.</div>
+        </div>
+        <p>We reserve the right to update these Terms at any time. We will notify registered users by email at least 30 days before material changes take effect. Your continued use of the Platform after changes take effect constitutes acceptance of the revised Terms.</p>
+      </div>
+
+      <!-- 2. DEFINITIONS -->
+      <div class="section" id="definitions">
+        <div class="section-number">Section 02</div>
+        <div class="section-title">Definitions</div>
+        <p>For clarity, the following terms have specific meanings throughout this document:</p>
+
+        <div class="definition">
+          <div class="definition-term">"Platform" or "Property Pros"</div>
+          <div class="definition-body">The Property Pros website, mobile applications, and all related services operated by Property Pros, LLC.</div>
+        </div>
+        <div class="definition">
+          <div class="definition-term">"Property Owners" or "User"</div>
+          <div class="definition-body">Any individual or entity that registers a free account to post projects, receive quotes, or hire service professionals through the Platform.</div>
+        </div>
+        <div class="definition">
+          <div class="definition-term">"Service Pro" or "Pro"</div>
+          <div class="definition-body">Any individual, business, or contractor that registers a paid subscription account to access leads, send quotes, and offer services through the Platform.</div>
+        </div>
+        <div class="definition">
+          <div class="definition-term">"Project"</div>
+          <div class="definition-body">A home service request posted by a Owner describing work to be performed at a property.</div>
+        </div>
+        <div class="definition">
+          <div class="definition-term">"Quote"</div>
+          <div class="definition-body">A formal proposal submitted by a Service Pro to a Owner in response to a posted Project, including pricing, timeline, and scope of work.</div>
+        </div>
+        <div class="definition">
+          <div class="definition-term">"Content"</div>
+          <div class="definition-body">Any text, images, videos, reviews, ratings, messages, or other material submitted to or displayed on the Platform by any user.</div>
+        </div>
+      </div>
+
+      <!-- 3. ACCOUNTS -->
+      <div class="section" id="accounts">
+        <div class="section-number">Section 03</div>
+        <div class="section-title">Accounts & Registration</div>
+        <p>To use most features of the Platform, you must create an account. You agree to provide accurate, current, and complete information during registration and to keep your account information updated.</p>
+        <p><strong>Age requirement.</strong> You must be at least 18 years of age to create an account. By registering, you represent that you meet this requirement. We reserve the right to terminate accounts of users found to be under 18.</p>
+        <p><strong>Account security.</strong> You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. You agree to notify us immediately at security@propertypros.com if you suspect unauthorized access to your account.</p>
+        <p><strong>One account per person.</strong> You may not create multiple accounts or share your account with others. Service Pros may not create separate accounts for different trade categories — all services must be managed under a single account.</p>
+        <div class="highlight-box amber">
+          <span class="highlight-icon">⚠️</span>
+          <div class="highlight-text">We reserve the right to suspend or permanently terminate any account that we believe, in our sole discretion, has provided false registration information, violated these Terms, or is being used for fraudulent purposes.</div>
+        </div>
+      </div>
+
+      <!-- 4. HOMEOWNERS -->s
+      <div class="section" id="homeowners">
+        <div class="section-number">Section 04</div>
+        <div class="section-title">Property Owner Terms</div>
+        <p><strong>Free access.</strong> Property owner  accounts are free of charge. Property Pros does not charge owners subscription fees, lead fees, or commissions on jobs awarded through the Platform.</p>
+        <p><strong>Project accuracy.</strong> When posting a Project, you agree to provide an honest and accurate description of the work required, including the scope, size, condition of the property, and any other details that would affect a Pro's ability to quote accurately. Deliberately misleading descriptions that result in wasted time or resources for Service Pros may result in account suspension.</p>
+        <p><strong>Responsiveness.</strong> While we do not require Owners to respond to every quote, we encourage timely communication. Owners who consistently ignore quotes or fail to communicate may receive a lower Trust Score, which is visible to Service Pros.</p>
+        <p><strong>No obligation to hire.</strong> Receiving a quote does not obligate you to hire that Pro. You are free to accept, decline, or ignore any quote at your discretion. However, if you accept a quote and subsequently fail to honor that agreement, this may be reflected in your customer rating.</p>
+        <div class="highlight-box green">
+          <span class="highlight-icon">✅</span>
+          <div class="highlight-text">Property Owners are never charged for using Property Pros. If you are ever asked to pay a fee directly to the Platform for posting a project or receiving quotes, please report this immediately to our support team.</div>
+        </div>
+        <p><strong>Property ownership.</strong> By posting a Project, you represent that you are the owner of the property, an authorized agent of the owner, or otherwise legally authorized to arrange for the services requested.</p>
+      </div>
+
+      <!-- 5. SERVICE PROS -->
+      <div class="section" id="pros">
+        <div class="section-number">Section 05</div>
+        <div class="section-title">Service Pro Terms</div>
+        <p><strong>Subscription requirement.</strong> Service Pros must maintain an active paid subscription at $9.99 per month to access leads, send quotes, and use the Platform's business tools. Subscriptions begin after a 14-day free trial. Service Pros who cancel their subscription lose access to leads and messaging but retain their public profile.</p>
+        <p><strong>Licensing and insurance.</strong> By registering as a Service Pro, you represent that you hold all licenses, permits, certifications, and insurance required by applicable law to perform the services you offer in your service area. You agree to maintain these credentials throughout the duration of your account.</p>
+        <p><strong>Verified badge.</strong> The Property Pros "Verified" badge is awarded after our team reviews submitted license and insurance documentation. The badge does not constitute an endorsement by Property Pros of the quality of your work, nor does it guarantee compliance with all applicable regulations. Misrepresenting credentials to obtain the Verified badge is grounds for immediate account termination.</p>
+        <p><strong>Quote accuracy.</strong> Quotes submitted to Owners must be honest, accurate, and based on the information provided in the Project posting. Submitting deliberately low quotes with the intent to increase pricing later, or quotes that do not reflect your actual ability to perform the work, is a violation of these Terms.</p>
+        <p><strong>Work quality.</strong> Property Pros does not guarantee the quality of work performed by Service Pros. Service Pros are independent contractors and are not employees, agents, or representatives of Property Pros. You are solely responsible for the quality, safety, and legality of all work performed.</p>
+        <div class="highlight-box red">
+          <span class="highlight-icon">🚫</span>
+          <div class="highlight-text">Service Pros may not solicit Property Owners to conduct transactions or communicate outside of the Property Pros platform with the intent to avoid platform fees or policies. Circumventing the Platform after making initial contact through Property Pros is a violation of these Terms and may result in immediate account termination.</div>
+        </div>
+      </div>
+
+      <!-- 6. PAYMENTS -->
+      <div class="section" id="payments">
+        <div class="section-number">Section 06</div>
+        <div class="section-title">Payments & Billing</div>
+        <p><strong>Subscription fee.</strong> Service Pro subscriptions are billed at $9.99 per month, charged on the same date each month following the end of the free trial period. All fees are in U.S. dollars.</p>
+        <p><strong>Free trial.</strong> New Service Pro accounts receive a 14-day free trial. No credit card is required to start the trial. If you add a payment method and cancel before the trial ends, you will not be charged. After the trial period, your subscription begins automatically.</p>
+        <p><strong>Payment processing.</strong> Payments are processed securely through Stripe. Property Pros does not store your full credit card information. By providing payment details, you authorize Property Pros to charge your payment method on a recurring monthly basis until you cancel.</p>
+        <p><strong>Failed payments.</strong> If a payment fails, we will notify you by email and attempt to charge your payment method again after 3 days, then again after 7 days. If payment continues to fail after 10 days, your account will be suspended until payment is resolved.</p>
+        <p><strong>Cancellation.</strong> You may cancel your subscription at any time from your account's Billing settings. Cancellation takes effect at the end of your current billing period. No refunds are issued for partial months, except as provided under our 30-day money-back guarantee.</p>
+        <p><strong>Money-back guarantee.</strong> If you complete your profile, respond to at least 5 leads in your first 30 days of paid subscription, and do not win a single job through the Platform, you are eligible for a full refund of your first month's subscription fee. Refund requests must be submitted to support@propertypros.com within 60 days of your first payment.</p>
+        <p><strong>Price changes.</strong> We reserve the right to change subscription pricing. We will provide at least 60 days' written notice to active subscribers before any price increase takes effect. Subscribers at the time of a price change will be grandfathered at their current rate for a minimum of 12 months from the date of notice.</p>
+      </div>
+
+      <!-- 7. CONDUCT -->
+      <div class="section" id="conduct">
+        <div class="section-number">Section 07</div>
+        <div class="section-title">Prohibited Conduct</div>
+        <p>You agree not to engage in any of the following when using the Platform:</p>
+        <ul>
+          <li>Posting false, misleading, or fraudulent project descriptions, quotes, reviews, or profile information</li>
+          <li>Harassing, threatening, or abusing other users through the Platform's messaging system</li>
+          <li>Discriminating against Owners or Service Pros based on race, color, religion, sex, national origin, disability, age, or any other protected class</li>
+          <li>Soliciting personal contact information from other users for the purpose of conducting transactions outside the Platform</li>
+          <li>Creating fake reviews, ratings, or endorsements — including paying for or incentivizing reviews</li>
+          <li>Using automated tools, bots, or scripts to interact with the Platform or scrape content</li>
+          <li>Impersonating another person, business, or organization</li>
+          <li>Uploading or sharing content that is illegal, defamatory, obscene, or infringes on third-party intellectual property rights</li>
+          <li>Attempting to circumvent, disable, or interfere with the Platform's security features</li>
+          <li>Using the Platform to advertise or promote services unrelated to home improvement or property maintenance</li>
+        </ul>
+        <div class="highlight-box red">
+          <span class="highlight-icon">🚫</span>
+          <div class="highlight-text">Violations of these conduct rules may result in content removal, temporary suspension, or permanent termination of your account, at our sole discretion. We reserve the right to report illegal conduct to appropriate law enforcement authorities.</div>
+        </div>
+      </div>
+
+      <!-- 8. CONTENT -->
+      <div class="section" id="content">
+        <div class="section-number">Section 08</div>
+        <div class="section-title">User Content</div>
+        <p><strong>Your content.</strong> You retain ownership of content you submit to the Platform, including project descriptions, portfolio photos, messages, and reviews. By submitting content, you grant Property Pros a non-exclusive, royalty-free, worldwide license to use, display, reproduce, and distribute your content for the purpose of operating and promoting the Platform.</p>
+        <p><strong>Content standards.</strong> All content you submit must be accurate, lawful, and not violate any third party's rights. You may not submit content that contains personal information of others without their consent, includes deceptive or misleading claims, or violates any applicable law or regulation.</p>
+        <p><strong>Photo and video content.</strong> Images and videos submitted through the Platform must depict actual work you have performed or property you own. Stock images, AI-generated images, or images of work not performed by you may not be used in portfolio sections.</p>
+        <p><strong>Content removal.</strong> We reserve the right to remove any content that violates these Terms, that we believe is harmful to other users, or that we are required to remove by law. We will attempt to notify you when content is removed, unless prohibited from doing so.</p>
+        <p><strong>Platform content.</strong> All content created by Property Pros, including the Platform's design, text, graphics, logos, and software, is owned by Property Pros, LLC and protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works from this content without our written permission.</p>
+      </div>
+
+      <!-- 9. RATINGS -->
+      <div class="section" id="ratings">
+        <div class="section-number">Section 09</div>
+        <div class="section-title">Ratings & Reviews</div>
+        <p><strong>Two-way rating system.</strong> Property Pros operates a two-way rating system in which Owners rate Service Pros and Service Pros rate Property Owners after a job is completed. Both parties agree to provide honest, good-faith ratings based on their actual experience.</p>
+        <p><strong>Rating anonymity.</strong> Ratings are kept anonymous until both parties have submitted their rating for a given job, after which both ratings become visible. This is designed to encourage honest feedback without fear of retaliation.</p>
+        <p><strong>Prohibited rating conduct.</strong> The following rating behaviors are prohibited and may result in account suspension:</p>
+        <ul>
+          <li>Submitting ratings for jobs you did not perform or participate in</li>
+          <li>Rating a counterparty before a job has been completed or agreed upon</li>
+          <li>Coordinating with others to artificially inflate or deflate ratings</li>
+          <li>Threatening to leave a negative review unless certain demands are met</li>
+          <li>Leaving reviews that contain false factual claims</li>
+        </ul>
+        <p><strong>Rating disputes.</strong> If you believe a rating is false, defamatory, or otherwise violates these Terms, you may flag it for review through your account or by contacting support@propertypros.com. We will investigate and take appropriate action, which may include removing the rating. We do not remove ratings solely because a party disagrees with the content.</p>
+        <p><strong>Trust Score.</strong> Property Owners are assigned a Trust Score (0–100) based on their payment history, communication ratings, project history, and other factors. This score is visible to Service Pros and is designed to help them make informed decisions about which projects to quote.</p>
+      </div>
+
+      <!-- 10. LIABILITY -->
+      <div class="section" id="liability">
+        <div class="section-number">Section 10</div>
+        <div class="section-title">Limitation of Liability</div>
+        <p><strong>Platform role.</strong> Property Pros is a marketplace platform that connects Property Owners with independent service professionals. We do not perform home improvement services, employ Service Pros, or supervise the work they perform. All agreements for services are made directly between Owners and Service Pros.</p>
+        <p><strong>No warranty on services.</strong> Property Pros makes no warranty, express or implied, regarding the quality, safety, legality, or fitness for purpose of any services performed by Service Pros through the Platform. Any disputes regarding the quality or outcome of work must be resolved directly between the homeowner and the Service Pro.</p>
+        <p><strong>Platform availability.</strong> We strive to maintain 99.9% uptime but do not guarantee uninterrupted access to the Platform. We are not liable for any loss or damage arising from temporary unavailability of the Platform due to technical issues, maintenance, or events outside our reasonable control.</p>
+        <div class="highlight-box amber">
+          <span class="highlight-icon">⚠️</span>
+          <div class="highlight-text"><strong>Limitation of damages.</strong> To the fullest extent permitted by law, Property Pros, LLC shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from your use of the Platform, including but not limited to loss of profits, loss of data, or property damage, even if we have been advised of the possibility of such damages. Our total liability to you for any claims arising from these Terms shall not exceed the amount you paid to us in the 3 months preceding the claim.</div>
+        </div>
+        <p><strong>Third-party services.</strong> The Platform may contain links to third-party websites or integrate with third-party services. We are not responsible for the content, privacy practices, or reliability of any third-party services.</p>
+      </div>
+
+      <!-- 11. TERMINATION -->
+      <div class="section" id="termination">
+        <div class="section-number">Section 11</div>
+        <div class="section-title">Termination & Suspension</div>
+        <p><strong>Termination by you.</strong> You may close your account at any time by visiting your Account Settings and selecting "Delete account," or by contacting support@propertypros.com. Upon deletion, your profile and project history will be permanently removed within 30 days, subject to any legal hold requirements.</p>
+        <p><strong>Termination by Property Pros.</strong> We reserve the right to suspend or terminate your account, with or without notice, for any of the following reasons:</p>
+        <ul>
+          <li>Violation of any provision of these Terms</li>
+          <li>Engaging in fraudulent, deceptive, or illegal activity</li>
+          <li>Providing false information during registration or in connection with a Verified badge application</li>
+          <li>Failure to pay subscription fees after reasonable notice</li>
+          <li>Conduct that we believe poses a risk of harm to other users, the Platform, or Property Pros</li>
+        </ul>
+        <p><strong>Effect of termination.</strong> Upon termination, your right to access and use the Platform immediately ceases. If your account is terminated for a violation of these Terms, you are not eligible for a refund of any paid subscription fees. We reserve the right to retain certain information as required by law or for legitimate business purposes.</p>
+        <p><strong>Appeals.</strong> If you believe your account was terminated in error, you may contact us at legal@propertypros.com within 30 days of termination to request a review. We will respond within 10 business days.</p>
+      </div>
+
+      <!-- 12. DISPUTES -->
+      <div class="section" id="disputes">
+        <div class="section-number">Section 12</div>
+        <div class="section-title">Dispute Resolution</div>
+        <p><strong>Between users.</strong> Property Pros does not mediate or arbitrate disputes between Owners and Service Pros regarding the quality, completion, or payment of services. We encourage users to resolve disputes directly and in good faith. We may, at our discretion, provide a platform for reporting serious misconduct, but we are not obligated to intervene in contractual disputes.</p>
+        <p><strong>Between you and Property Pros.</strong> Any dispute arising out of or relating to these Terms or your use of the Platform shall be resolved through binding arbitration administered by the American Arbitration Association under its Consumer Arbitration Rules. The arbitration will take place remotely or, if an in-person hearing is required, in Providence, Rhode Island.</p>
+        <p><strong>Class action waiver.</strong> You agree to resolve any disputes with Property Pros on an individual basis. You waive any right to participate in a class action lawsuit or class-wide arbitration against Property Pros.</p>
+        <p><strong>Governing law.</strong> These Terms are governed by and construed in accordance with the laws of the State of Rhode Island, without regard to its conflict of law provisions. For matters not subject to arbitration, you consent to the exclusive jurisdiction of the state and federal courts located in Providence County, Rhode Island.</p>
+        <p><strong>Time limit.</strong> Any claim against Property Pros must be brought within one (1) year of the event giving rise to the claim, or it is permanently barred.</p>
+      </div>
+
+      <!-- 13. CHANGES -->
+      <div class="section" id="changes">
+        <div class="section-number">Section 13</div>
+        <div class="section-title">Changes to These Terms</div>
+        <p>We may update these Terms from time to time to reflect changes in our services, legal requirements, or business practices. When we make material changes, we will:</p>
+        <ul>
+          <li>Post the updated Terms on this page with a new "Last updated" date</li>
+          <li>Send an email notification to all registered users at least 30 days before the changes take effect</li>
+          <li>Display a prominent notice on the Platform for 30 days following the update</li>
+        </ul>
+        <p>Your continued use of the Platform after the effective date of any changes constitutes your acceptance of the revised Terms. If you do not agree with the updated Terms, you must stop using the Platform and close your account before the changes take effect.</p>
+        <p>We maintain an archive of previous versions of these Terms. If you would like to review a previous version, please contact us at legal@propertypros.com.</p>
+      </div>
+
+      <!-- 14. CONTACT -->
+      <div class="section" id="contact-legal">
+        <div class="section-number">Section 14</div>
+        <div class="section-title">Contact & Legal Notices</div>
+        <p>If you have questions about these Terms, wish to report a violation, or need to send a legal notice to Property Pros, please use the following contact information:</p>
+
+        <div class="contact-card">
+          <div class="contact-card-title">Property Pros, LLC</div>
+          <div class="contact-card-sub">For legal inquiries, Terms of Service questions, and formal notices.</div>
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-item-icon">📧</div>
+              <div class="contact-item-text">Legal: <a href="mailto:legal@propertypros.com">legal@propertypros.com</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">🛡️</div>
+              <div class="contact-item-text">Security issues: <a href="mailto:security@propertypros.com">security@propertypros.com</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">💬</div>
+              <div class="contact-item-text">General support: <a href="contact.html">Contact page</a> or support@propertypros.com</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item-icon">📍</div>
+              <div class="contact-item-text" style="color:#9ca3af">Property Pros, LLC · 123 Westminster Street · Providence, RI 02903</div>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:24px">These Terms of Service, together with our <a href="privacy.html">Privacy Policy</a>, constitute the entire agreement between you and Property Pros regarding your use of the Platform, and supersede all prior agreements, representations, and understandings.</p>
+        <p><em style="color:var(--gray);font-size:14px">© 2026 Property Pros, LLC. All rights reserved. Unauthorized reproduction or distribution of these Terms is prohibited.</em></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--dark);border-top:1px solid rgba(255,255,255,.06);padding:32px 48px;">
+    <div style="max-width:1060px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="logo">PP</div>
+        <div class="brand-name"><span>Property</span> Pros</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <a href="about.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">About</a>
+        <a href="pricing.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Pricing</a>
+        <a href="contact.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Contact</a>
+        <a href="terms.html" style="font-size:13px;font-weight:700;color:#f87171;text-decoration:none">Terms</a>
+        <a href="privacy.html" style="font-size:13px;font-weight:700;color:#6b7280;text-decoration:none">Privacy</a>
+      </div>
+      <div style="font-size:12px;color:#4b5563">© 2026 Property Pros, LLC · All rights reserved</div>
+    </div>
+  </footer>
+
+  <script>
+    function setActive(el) {
+      document.querySelectorAll('.toc-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Highlight active section on scroll
+    const sections = document.querySelectorAll('.section[id]');
+    const tocItems = document.querySelectorAll('.toc-item[href^="#"]');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      tocItems.forEach(item => {
+        item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

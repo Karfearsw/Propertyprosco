@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Fund — Property Pros</title>
+  <meta name="description" content="Half of every Property Pros Plus™ membership goes directly to Rhode Island nonprofits. Learn about the Property Pros Community Fund." />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --red: #dc2626; --red-dark: #b91c1c; --red-light: #fef2f2;
+      --dark: #111827; --dark2: #1f2937; --dark3: #374151;
+      --gray: #6b7280; --border: #e5e7eb; --bg: #f3f4f6; --white: #fff;
+      --green: #16a34a; --green-light: #f0fdf4; --green-dark: #14532d;
+      --gold: #b45309; --gold-light: #fef3c7;
+      --fund: #0f766e; --fund-light: #f0fdfa; --fund-dark: #134e4a;
+      --font: 'Manrope', sans-serif;
+      --display: 'Playfair Display', serif;
+    }
+    body { font-family: var(--font); background: var(--white); color: var(--dark); }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── HEADER ── */
+    header { background: var(--dark); padding: 0 48px; height: 66px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo { width: 36px; height: 36px; border-radius: 10px; background: var(--red); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; color: #fff; }
+    .brand-name { font-size: 18px; font-weight: 900; color: #fff; }
+    .brand-name span { color: #f87171; }
+    .pp-nav { display: flex; gap: 4px; }
+    .pp-nav-link { font-size: 13px; font-weight: 700; color: #9ca3af; padding: 7px 12px; border-radius: 8px; transition: all .15s; }
+    .pp-nav-link:hover, .pp-nav-link.active { color: #fff; background: rgba(255,255,255,.07); }
+    .hdr-btns { display: flex; gap: 8px; }
+    .btn { padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .15s; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+    .btn-ghost { border-color: rgba(255,255,255,.2); color: #fff; }
+    .btn-ghost:hover { background: rgba(255,255,255,.08); }
+    .btn-red { background: var(--red); color: #fff; }
+    .btn-red:hover { background: var(--red-dark); }
+    /* Hamburger */
+    .pp-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; border-radius: 8px; background: transparent; border: none; }
+    .pp-hamburger span { display: block; width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: all .25s; }
+    .pp-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .pp-hamburger.open span:nth-child(2) { opacity: 0; }
+    .pp-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .pp-drawer { display: none; position: fixed; top: 66px; left: 0; right: 0; bottom: 0; background: var(--dark); z-index: 99; flex-direction: column; padding: 16px; overflow-y: auto; }
+    .pp-drawer.open { display: flex; }
+    .pp-drawer-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; font-size: 15px; font-weight: 700; color: #9ca3af; transition: all .15s; }
+    .pp-drawer-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .pp-drawer-divider { height: 1px; background: rgba(255,255,255,.07); margin: 8px 0; }
+    .pp-drawer-btns { display: flex; flex-direction: column; gap: 8px; margin-top: auto; padding-top: 16px; }
+    .pp-drawer-btn { padding: 14px; border-radius: 12px; font-size: 14px; font-weight: 800; text-align: center; border: none; cursor: pointer; font-family: var(--font); }
+    .pp-drawer-btn-ghost { background: rgba(255,255,255,.06); color: #fff; border: 1px solid rgba(255,255,255,.12) !important; }
+    .pp-drawer-btn-red { background: var(--red); color: #fff; }
+
+    /* ── HERO ── */
+    .hero { background: var(--dark); padding: 80px 48px 0; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(15,118,110,.2) 0%, transparent 60%); }
+    .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 100%, rgba(220,38,38,.1) 0%, transparent 50%); }
+    .hero-inner { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; gap: 60px; align-items: flex-end; }
+    .hero-text { padding-bottom: 56px; }
+    .hero-eyebrow { font-size: 11px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #5eead4; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: rgba(94,234,212,.4); }
+    .hero h1 { font-family: var(--display); font-size: 56px; font-weight: 900; color: #fff; letter-spacing: -2px; line-height: 1.0; margin-bottom: 20px; }
+    .hero h1 em { color: #5eead4; font-style: normal; display: block; }
+    .hero-sub { font-size: 18px; color: #9ca3af; font-weight: 700; line-height: 1.7; max-width: 500px; margin-bottom: 32px; }
+    .hero-sub strong { color: #e2e8f0; }
+    .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-btn { padding: 13px 26px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: all .2s; display: inline-flex; align-items: center; gap: 8px; border: none; }
+    .hero-btn-teal { background: var(--fund); color: #fff; }
+    .hero-btn-teal:hover { background: var(--fund-dark); }
+    .hero-btn-outline { background: rgba(255,255,255,.07); color: #fff; border: 1px solid rgba(255,255,255,.15) !important; }
+    .hero-btn-outline:hover { background: rgba(255,255,255,.12); }
+    /* Split visual */
+    .hero-split { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 24px 24px 0 0; padding: 28px; margin-bottom: 0; width: 280px; flex-shrink: 0; align-self: flex-end; }
+    .hs-label { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #6b7280; margin-bottom: 16px; text-align: center; }
+    .hs-bar { height: 12px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 16px; }
+    .hs-bar-fill { height: 100%; width: 50%; background: linear-gradient(90deg, #0f766e, #14b8a6); border-radius: 999px; }
+    .hs-row { display: flex; justify-content: space-between; gap: 12px; }
+    .hs-half { flex: 1; border-radius: 14px; padding: 16px; text-align: center; }
+    .hs-half-you { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); }
+    .hs-half-charity { background: rgba(15,118,110,.2); border: 1px solid rgba(20,184,166,.2); }
+    .hs-amount { font-size: 24px; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 4px; }
+    .hs-desc { font-size: 11px; font-weight: 700; line-height: 1.4; }
+
+    /* ── MISSION SECTION ── */
+    .mission { max-width: 1100px; margin: 0 auto; padding: 72px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .mission-text .label { font-size: 11px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--fund); margin-bottom: 14px; }
+    .mission-text h2 { font-family: var(--display); font-size: 38px; font-weight: 900; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 18px; }
+    .mission-text h2 em { color: var(--fund); font-style: normal; }
+    .mission-text p { font-size: 15px; color: var(--gray); line-height: 1.8; font-weight: 700; margin-bottom: 14px; }
+    .mission-text p strong { color: var(--dark); }
+    .mission-visual { display: flex; flex-direction: column; gap: 12px; }
+    .mv-card { background: var(--bg); border-radius: 16px; padding: 20px; display: flex; gap: 14px; align-items: flex-start; }
+    .mv-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 22px; }
+    .mv-title { font-size: 14px; font-weight: 900; margin-bottom: 4px; }
+    .mv-desc { font-size: 13px; color: var(--gray); font-weight: 700; line-height: 1.6; }
+
+    /* ── HOW IT WORKS ── */
+    .how { background: var(--dark); padding: 72px 48px; }
+    .how-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 11px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: #5eead4; margin-bottom: 14px; text-align: center; }
+    .section-title { font-family: var(--display); font-size: 38px; font-weight: 900; color: #fff; letter-spacing: -1.2px; text-align: center; margin-bottom: 10px; }
+    .section-sub { font-size: 15px; color: #9ca3af; font-weight: 700; text-align: center; margin-bottom: 48px; }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .step { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.07); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+    .step::before { content: attr(data-num); position: absolute; top: -8px; right: 16px; font-family: var(--display); font-size: 80px; font-weight: 900; color: rgba(255,255,255,.04); line-height: 1; }
+    .step-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(15,118,110,.2); border: 1px solid rgba(20,184,166,.15); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+    .step-title { font-size: 16px; font-weight: 900; color: #fff; margin-bottom: 8px; letter-spacing: -0.3px; }
+    .step-desc { font-size: 13px; color: #9ca3af; font-weight: 700; line-height: 1.7; }
+    .step-highlight { margin-top: 12px; font-size: 12px; font-weight: 900; color: #5eead4; display: flex; align-items: center; gap: 6px; }
+
+    /* ── PARTNERS ── */
+    .partners { max-width: 1100px; margin: 0 auto; padding: 72px 48px; }
+    .partners-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; flex-wrap: wrap; gap: 16px; }
+    .partners-head-text .label { font-size: 11px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; color: var(--fund); margin-bottom: 10px; }
+    .partners-head-text h2 { font-family: var(--display); font-size: 36px; font-weight: 900; letter-spacing: -1px; line-height: 1.1; }
+    .partners-head-text p { font-size: 14px; color: var(--gray); font-weight: 700; margin-top: 8px; max-width: 480px; line-height: 1.6; }
+    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+    .partner-card { border-radius: 20px; padding: 28px; border: 2px solid var(--border); transition: all .2s; position: relative; overflow: hidden; }
+    .partner-card.active { border-color: #99f6e4; background: var(--fund-light); }
+    .partner-card.coming { background: var(--bg); border-style: dashed; }
+    .partner-status { position: absolute; top: 14px; right: 14px; font-size: 10px; font-weight: 900; padding: 3px 10px; border-radius: 999px; }
+    .ps-active { background: #ccfbf1; color: var(--fund-dark); border: 1px solid #99f6e4; }
+    .ps-coming { background: var(--bg); color: var(--gray); border: 1px solid var(--border); }
+    .partner-icon { font-size: 40px; margin-bottom: 14px; display: block; }
+    .partner-name { font-size: 17px; font-weight: 900; margin-bottom: 6px; letter-spacing: -0.3px; }
+    .partner-type { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--gray); margin-bottom: 10px; }
+    .partner-desc { font-size: 13px; color: var(--gray); line-height: 1.65; font-weight: 700; margin-bottom: 14px; }
+    .partner-ref-box { background: var(--white); border: 1px solid #99f6e4; border-radius: 10px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .partner-ref-label { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--fund); margin-bottom: 3px; }
+    .partner-ref-code { font-size: 15px; font-weight: 900; color: var(--dark); font-family: monospace; letter-spacing: 1px; }
+    .partner-ref-copy { padding: 6px 12px; background: var(--fund); color: #fff; border: none; border-radius: 7px; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font); transition: background .15s; white-space: nowrap; }
+    .partner-ref-copy:hover { background: var(--fund-dark); }
+    .partner-coming-inner { text-align: center; padding: 12px 0; }
+    .partner-coming-inner p { font-size: 13px; color: var(--gray); font-weight: 700; }
+
+    /* ── APPLY CTA ── */
+    .apply-cta { background: linear-gradient(135deg, var(--fund-dark), var(--fund)); border-radius: 24px; padding: 48px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+    .apply-cta h2 { font-family: var(--display); font-size: 32px; font-weight: 900; color: #fff; letter-spacing: -1px; margin-bottom: 10px; }
+    .apply-cta p { font-size: 15px; color: rgba(255,255,255,.75); font-weight: 700; line-height: 1.65; max-width: 520px; }
+    .apply-checklist { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+    .apply-check { display: flex; align-items: center; gap: 9px; font-size: 13px; color: #ccfbf1; font-weight: 700; }
+    .apply-check-dot { width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.15); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; flex-shrink: 0; }
+    .apply-form { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 24px; min-width: 300px; flex-shrink: 0; }
+    .apply-form-title { font-size: 15px; font-weight: 900; color: #fff; margin-bottom: 14px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: rgba(255,255,255,.6); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 13px; border: 1px solid rgba(255,255,255,.15); border-radius: 9px; font-size: 13px; font-family: var(--font); color: #fff; background: rgba(255,255,255,.08); }
+    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,.35); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #5eead4; }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .form-group select option { color: var(--dark); background: #fff; }
+    .submit-btn { width: 100%; padding: 12px; background: #fff; color: var(--fund-dark); border: none; border-radius: 10px; font-size: 14px; font-weight: 900; cursor: pointer; font-family: var(--font); transition: all .15s; }
+    .submit-btn:hover { background: #f0fdfa; }
+
+    /* ── FAQ ── */
+    .faq-section { background: var(--bg); padding: 72px 48px; }
+    .faq-inner { max-width: 720px; margin: 0 auto; }
+    .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: 13px; margin-bottom: 10px; overflow: hidden; }
+    .faq-q { padding: 16px 20px; font-size: 14px; font-weight: 800; cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; gap: 12px; }
+    .faq-q i { transition: transform .2s; flex-shrink: 0; }
+    .faq-item.open .faq-q i { transform: rotate(180deg); }
+    .faq-a { display: none; padding: 0 20px 16px; font-size: 13px; color: var(--gray); line-height: 1.75; font-weight: 700; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark); padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .fl { display: flex; gap: 18px; flex-wrap: wrap; }
+    .fl a { font-size: 13px; font-weight: 700; color: #4b5563; transition: color .15s; }
+    .fl a:hover { color: #fff; }
+    .fc { font-size: 12px; color: #374151; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; bottom: 28px; right: 28px; background: var(--dark); color: #fff; padding: 13px 20px; border-radius: 12px; font-size: 13px; font-weight: 800; z-index: 200; display: flex; align-items: center; gap: 8px; transform: translateY(20px); opacity: 0; transition: all .25s; pointer-events: none; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    @media (max-width: 860px) {
+      .pp-nav, .hdr-btns { display: none; }
+      .pp-hamburger { display: flex; }
+      header { padding: 0 20px; }
+      .hero { padding: 48px 24px 0; }
+      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      .hero h1 { font-size: 38px; }
+      .hero-split { width: 100%; border-radius: 16px; }
+      .mission { grid-template-columns: 1fr; padding: 48px 24px; gap: 36px; }
+      .how { padding: 48px 24px; }
+      .steps { grid-template-columns: 1fr; }
+      .partners { padding: 48px 24px; }
+      .partners-grid { grid-template-columns: 1fr; }
+      .apply-cta { grid-template-columns: 1fr; padding: 32px 24px; }
+      .apply-form { min-width: unset; }
+      .faq-section { padding: 48px 24px; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a href="index.html" class="brand">
+    <div class="logo">PP</div>
+    <div class="brand-name"><span>Property</span> Pros</div>
+  </a>
+  <nav class="pp-nav">
+    <a href="index.html" class="pp-nav-link">Home</a>
+    <a href="find-a-pro.html" class="pp-nav-link">Find a Pro</a>
+    <a href="how-it-works.html" class="pp-nav-link">How It Works</a>
+    <a href="pricing.html" class="pp-nav-link">Pricing</a>
+    <a href="community-fund.html" class="pp-nav-link active">Community Fund</a>
+    <a href="about.html" class="pp-nav-link">About</a>
+  </nav>
+  <div class="hdr-btns">
+    <a href="login.html" class="btn btn-ghost">Log in</a>
+    <a href="plus.html" class="btn btn-red">Get Plus™</a>
+  </div>
+  <button class="pp-hamburger" id="pp-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<div class="pp-drawer" id="pp-drawer">
+  <a href="index.html" class="pp-drawer-link">🏠 Home</a>
+  <a href="find-a-pro.html" class="pp-drawer-link">🔍 Find a Pro</a>
+  <a href="how-it-works.html" class="pp-drawer-link">💡 How It Works</a>
+  <a href="pricing.html" class="pp-drawer-link">🏷️ Pricing</a>
+  <a href="community-fund.html" class="pp-drawer-link">❤️ Community Fund</a>
+  <a href="about.html" class="pp-drawer-link">ℹ️ About</a>
+  <div class="pp-drawer-divider"></div>
+  <div class="pp-drawer-btns">
+    <a href="login.html" class="pp-drawer-btn pp-drawer-btn-ghost">Log in</a>
+    <a href="plus.html" class="pp-drawer-btn pp-drawer-btn-red">Get Plus™ →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Property Pros Community Fund</div>
+      <h1>Half goes to you.<br><em>Half goes to your community.</em></h1>
+      <p class="hero-sub">Plus™ is just $9.99 a year — and it works twice. Half unlocks your member perks: <strong>AI property tools, contractor discounts, and priority support.</strong> The other <strong>$4.99 goes straight to Rhode Island nonprofits.</strong> No fine print. No someday. Right now.</p>
+      <div class="hero-cta">
+        <a href="plus.html" class="hero-btn hero-btn-teal"><i data-lucide="star" size="16"></i> Get Plus™ — $9.99/year</a>
+        <a href="#apply" class="hero-btn hero-btn-outline"><i data-lucide="heart" size="16"></i> Partner with us</a>
+      </div>
+    </div>
+    <div class="hero-split">
+      <div class="hs-label">Your $9.99/year splits as</div>
+      <div class="hs-bar"><div class="hs-bar-fill"></div></div>
+      <div class="hs-row">
+        <div class="hs-half hs-half-you">
+          <div class="hs-amount" style="color:#fff">$5.00</div>
+          <div class="hs-desc" style="color:#9ca3af">Your perks +<br>the platform</div>
+        </div>
+        <div class="hs-half hs-half-charity">
+          <div class="hs-amount" style="color:#5eead4">$4.99</div>
+          <div class="hs-desc" style="color:#99f6e4">RI nonprofit<br>partners</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="mission">
+  <div class="mission-text">
+    <div class="label">Why we do this</div>
+    <h2>Built in Rhode Island.<br><em>Giving back</em> to Rhode Island.</h2>
+    <p>Property Pros started in Rhode Island because we believe local communities deserve local tools. The contractors on our platform live here. The homeowners are our neighbors. It only made sense that the business we're building gives something back to the place that's supporting it.</p>
+    <p>We didn't want the charitable component to be an afterthought or a marketing line. So we built it into the price from day one — <strong>half of every Plus™ subscription goes to nonprofits working in RI communities.</strong> Not someday. From the first signup.</p>
+    <p>If you're a nonprofit serving Rhode Island and want to become a partner, scroll down and apply. We vet every partner and work with organizations doing real work in housing, food security, education, and community development.</p>
+  </div>
+  <div class="mission-visual">
+    <div class="mv-card">
+      <div class="mv-icon" style="background:#fef2f2">🏠</div>
+      <div>
+        <div class="mv-title">Housing</div>
+        <div class="mv-desc">Partners working on affordable housing, homeownership programs, and housing stability across Rhode Island.</div>
+      </div>
+    </div>
+    <div class="mv-card">
+      <div class="mv-icon" style="background:#f0fdf4">🥫</div>
+      <div>
+        <div class="mv-title">Food security</div>
+        <div class="mv-desc">Organizations fighting hunger and food insecurity in communities across the state.</div>
+      </div>
+    </div>
+    <div class="mv-card">
+      <div class="mv-icon" style="background:#eff6ff">🎓</div>
+      <div>
+        <div class="mv-title">Education & youth</div>
+        <div class="mv-desc">After-school programs, youth development, and education access initiatives in RI cities and towns.</div>
+      </div>
+    </div>
+    <div class="mv-card">
+      <div class="mv-icon" style="background:#f0fdfa">🌱</div>
+      <div>
+        <div class="mv-title">Community development</div>
+        <div class="mv-desc">Nonprofits strengthening neighborhoods, supporting small businesses, and building local resilience.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div class="how-inner">
+    <div class="section-eyebrow">How it works</div>
+    <div class="section-title">Simple by design</div>
+    <div class="section-sub">No complicated opt-ins. Use a partner's referral code and your half goes to them — sign up on your own and it flows to the Community Fund. Either way, it just works.</div>
+    <div class="steps">
+      <div class="step" data-num="1">
+        <div class="step-icon"><i data-lucide="user-plus" size="20" style="color:#5eead4"></i></div>
+        <div class="step-title">You subscribe to Plus™</div>
+        <div class="step-desc">A homeowner signs up for Property Pros Plus™ for $9.99/year. They get AI property tools, contractor discounts, and priority support.</div>
+        <div class="step-highlight"><i data-lucide="arrow-right" size="13"></i> $9.99 charged at signup</div>
+      </div>
+      <div class="step" data-num="2">
+        <div class="step-icon"><i data-lucide="split" size="20" style="color:#5eead4"></i></div>
+        <div class="step-title">The split happens automatically</div>
+        <div class="step-desc">At payment, your $4.99 is allocated automatically — to the partner charity whose referral code you used, or to the Community Fund if you signed up on your own.</div>
+        <div class="step-highlight"><i data-lucide="arrow-right" size="13"></i> $4.99 goes to the fund instantly</div>
+      </div>
+      <div class="step" data-num="3">
+        <div class="step-icon"><i data-lucide="heart" size="20" style="color:#5eead4"></i></div>
+        <div class="step-title">Nonprofits receive support</div>
+        <div class="step-desc">Verified nonprofit partners receive support — directly from the subscribers who used their referral code, plus a share of the Community Fund.</div>
+        <div class="step-highlight"><i data-lucide="arrow-right" size="13"></i> Partners rewarded for referrals</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PARTNERS -->
+<div class="partners">
+  <div class="partners-head">
+    <div class="partners-head-text">
+      <div class="label">Our partners</div>
+      <h2>Organizations we support</h2>
+      <p>We partner with vetted Rhode Island nonprofits doing real work in their communities. Each partner receives a unique referral code — when someone signs up through their link, their allocation goes directly to that organization.</p>
+    </div>
+  </div>
+
+  <div class="partners-grid">
+
+    <!-- PARTNER 1 — Habitat for Humanity RI -->
+    <div class="partner-card active">
+      <span class="partner-status ps-active">Active partner</span>
+      <span class="partner-icon">🏠</span>
+      <div class="partner-name">Habitat for Humanity RI</div>
+      <div class="partner-type">Housing · Statewide</div>
+      <div class="partner-desc">Building and rehabilitating affordable homes across Rhode Island. Habitat RI helps families achieve stability through homeownership and home repair programs.</div>
+      <div class="partner-ref-box">
+        <div>
+          <div class="partner-ref-label">Referral code</div>
+          <div class="partner-ref-code">HABITAT-RI</div>
+        </div>
+        <button class="partner-ref-copy" onclick="copyCode('HABITAT-RI')">Copy code</button>
+      </div>
+    </div>
+
+    <!-- PARTNER 2 — RI Community Food Bank -->
+    <div class="partner-card active">
+      <span class="partner-status ps-active">Active partner</span>
+      <span class="partner-icon">🥫</span>
+      <div class="partner-name">RI Community Food Bank</div>
+      <div class="partner-type">Food Security · Statewide</div>
+      <div class="partner-desc">The largest hunger-relief organization in Rhode Island, distributing millions of meals annually through a network of local food pantries and meal programs.</div>
+      <div class="partner-ref-box">
+        <div>
+          <div class="partner-ref-label">Referral code</div>
+          <div class="partner-ref-code">RIFOODBANK</div>
+        </div>
+        <button class="partner-ref-copy" onclick="copyCode('RIFOODBANK')">Copy code</button>
+      </div>
+    </div>
+
+    <!-- PARTNER 3 — Providence After School -->
+    <div class="partner-card active">
+      <span class="partner-status ps-active">Active partner</span>
+      <span class="partner-icon">🎓</span>
+      <div class="partner-name">Providence After School Alliance</div>
+      <div class="partner-type">Education & Youth · Providence</div>
+      <div class="partner-desc">Connecting Providence youth with high-quality after-school and summer learning programs. Serving thousands of students with safe, enriching environments to grow.</div>
+      <div class="partner-ref-box">
+        <div>
+          <div class="partner-ref-label">Referral code</div>
+          <div class="partner-ref-code">PASA-PVD</div>
+        </div>
+        <button class="partner-ref-copy" onclick="copyCode('PASA-PVD')">Copy code</button>
+      </div>
+    </div>
+
+    <!-- COMING SOON slots -->
+    <div class="partner-card coming">
+      <span class="partner-status ps-coming">Coming soon</span>
+      <div class="partner-coming-inner" style="padding-top:20px">
+        <div style="font-size:36px;margin-bottom:12px">🌱</div>
+        <div style="font-size:15px;font-weight:900;color:var(--dark);margin-bottom:6px">Partner slot open</div>
+        <p>We're actively vetting organizations in community development and environmental stewardship.</p>
+      </div>
+    </div>
+
+    <div class="partner-card coming">
+      <span class="partner-status ps-coming">Coming soon</span>
+      <div class="partner-coming-inner" style="padding-top:20px">
+        <div style="font-size:36px;margin-bottom:12px">🤝</div>
+        <div style="font-size:15px;font-weight:900;color:var(--dark);margin-bottom:6px">Partner slot open</div>
+        <p>Looking for organizations focused on workforce development and economic opportunity in RI.</p>
+      </div>
+    </div>
+
+    <div class="partner-card coming">
+      <span class="partner-status ps-coming">Coming soon</span>
+      <div class="partner-coming-inner" style="padding-top:20px">
+        <div style="font-size:36px;margin-bottom:12px">💊</div>
+        <div style="font-size:15px;font-weight:900;color:var(--dark);margin-bottom:6px">Partner slot open</div>
+        <p>Evaluating organizations focused on health equity and community wellness across Rhode Island.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- APPLY CTA -->
+  <div class="apply-cta" id="apply">
+    <div>
+      <h2>Is your nonprofit a fit?</h2>
+      <p>We're looking for Rhode Island organizations doing meaningful work in housing, food security, education, youth development, and community resilience. Partners receive a unique referral code and a direct allocation from every subscriber who signs up through their link.</p>
+      <div class="apply-checklist">
+        <div class="apply-check"><div class="apply-check-dot">✓</div> Must be a registered 501(c)(3) in Rhode Island</div>
+        <div class="apply-check"><div class="apply-check-dot">✓</div> Must serve RI communities directly</div>
+        <div class="apply-check"><div class="apply-check-dot">✓</div> Must agree to promote Property Pros Plus™ to your audience</div>
+        <div class="apply-check"><div class="apply-check-dot">✓</div> No application fee — free to apply</div>
+      </div>
+    </div>
+    <div class="apply-form">
+      <div class="apply-form-title">Apply to become a partner</div>
+      <div class="form-group">
+        <label>Organization name</label>
+        <input type="text" placeholder="e.g. Crossroads Rhode Island" />
+      </div>
+      <div class="form-group">
+        <label>Contact name</label>
+        <input type="text" placeholder="Your full name" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@yourorg.org" />
+      </div>
+      <div class="form-group">
+        <label>Focus area</label>
+        <select>
+          <option value="">Select one</option>
+          <option>Housing & homeownership</option>
+          <option>Food security</option>
+          <option>Education & youth</option>
+          <option>Community development</option>
+          <option>Health & wellness</option>
+          <option>Workforce development</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell us about your work</label>
+        <textarea placeholder="Brief description of your organization and the communities you serve..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitApplication()">Submit application →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="font-size:11px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--fund);margin-bottom:12px">FAQ</div>
+      <div style="font-family:var(--display);font-size:34px;font-weight:900;letter-spacing:-1px">Common questions</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">Does every homeowner contribute, or just Plus™ subscribers? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">Only Plus™ subscribers ($9.99/year) contribute to the fund. The basic Property Pros experience is free for homeowners and always will be — the charitable component is part of the Plus™ value proposition, not a requirement.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">What does "referral code" mean for nonprofits? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">Each nonprofit partner receives a unique referral code (e.g. HABITAT-RI). When a homeowner signs up for Plus™ using that code, the $4.99 from their subscription is allocated directly to that organization. The nonprofit promotes the code to their community — donors, volunteers, newsletter subscribers — and every signup through their code directly benefits them.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">What happens to subscriptions with no referral code? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">Subscriptions without a referral code contribute to the general Property Pros Community Fund. These funds are distributed to active partner organizations. Partners who drive more referrals receive proportionally more from the general pool.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">How do nonprofits receive their donations? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">Partner organizations receive donations via direct bank transfer. Distribution details, frequency, and reporting are agreed upon at the time of partnership. We provide partners with a dashboard showing referral activity and allocation amounts.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">Is my contribution tax deductible? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">The $9.99 Plus™ subscription is a payment for services (contractor discounts, platform features, AI tools) and is not tax deductible as a charitable donation. The $4.99 portion is allocated to the nonprofit partners by Property Pros as part of our business model. We recommend consulting a tax professional for your specific situation.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.closest('.faq-item').classList.toggle('open')">Can I see how much has been donated in total? <i data-lucide="chevron-down" size="16"></i></div>
+      <div class="faq-a">We'll publish an annual impact report showing total donations distributed to partner organizations. We won't display a real-time balance — we believe the mission speaks for itself without needing a live counter.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="index.html">Home</a>
+    <a href="find-a-pro.html">Find a Pro</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="plus.html">Plus™</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="terms.html">Terms</a>
+    <a href="privacy.html">Privacy</a>
+  </div>
+  <div class="fc">© 2026 Property Pros · All rights reserved</div>
+</footer>
+
+<div class="toast" id="toast">
+  <i data-lucide="check-circle" size="16" style="color:#5eead4"></i>
+  <span id="toast-msg">Copied!</span>
+</div>
+
+<script>
+function copyCode(code) {
+  navigator.clipboard.writeText(code)
+    .then(() => showToast(`Code "${code}" copied to clipboard`))
+    .catch(() => showToast(`Code: ${code}`));
+}
+
+function submitApplication() {
+  showToast('Application submitted — we\'ll be in touch within 5 business days');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function toggleMenu() {
+  const drawer = document.getElementById('pp-drawer');
+  const burger = document.getElementById('pp-hamburger');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  burger.classList.toggle('open', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+}
+
+document.querySelectorAll('.pp-drawer-link, .pp-drawer-btn').forEach(el => {
+  el.addEventListener('click', () => {
+    document.getElementById('pp-drawer').classList.remove('open');
+    document.getElementById('pp-hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
+</script>
+<script>lucide.createIcons();</script>
+</body>
+</html>
