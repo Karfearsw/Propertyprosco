@@ -35,25 +35,75 @@ function requireEnv(name: string) {
 }
 
 export const env = {
-  databaseUrl: requireEnv('DATABASE_URL'),
-  authSecret: requireEnv('AUTH_SECRET'),
-  nextAuthUrl: readEnv('NEXTAUTH_URL'),
-  googleClientId: readEnv('GOOGLE_CLIENT_ID'),
-  googleClientSecret: readEnv('GOOGLE_CLIENT_SECRET'),
-  appleClientId: readEnv('APPLE_CLIENT_ID'),
-  appleClientSecret: readEnv('APPLE_CLIENT_SECRET'),
-  stripeSecretKey: readEnv('STRIPE_SECRET_KEY'),
-  stripePublishableKey: readEnv('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY'),
-  stripeWebhookSecret: readEnv('STRIPE_WEBHOOK_SECRET'),
-  stripeProPriceId: readEnv('STRIPE_PRO_PRICE_ID'),
-  stripeRealtorPriceId: readEnv('STRIPE_REALTOR_PRICE_ID'),
-  stripeBillingPortalReturnUrl: readEnv('STRIPE_BILLING_PORTAL_RETURN_URL'),
-  smtpHost: readEnv('SMTP_HOST'),
-  smtpPort: readNumberEnv('SMTP_PORT'),
-  smtpUser: readEnv('SMTP_USER'),
-  smtpPass: readEnv('SMTP_PASS'),
-  smtpFrom: readEnv('SMTP_FROM'),
-  smtpSecure: readBooleanEnv('SMTP_SECURE'),
+  get databaseUrl() {
+    return requireEnv('DATABASE_URL')
+  },
+  get authSecret() {
+    return requireEnv('AUTH_SECRET')
+  },
+  get nextAuthUrl() {
+    return readEnv('NEXTAUTH_URL')
+  },
+  get googleClientId() {
+    return readEnv('GOOGLE_CLIENT_ID')
+  },
+  get googleClientSecret() {
+    return readEnv('GOOGLE_CLIENT_SECRET')
+  },
+  get appleClientId() {
+    return readEnv('APPLE_CLIENT_ID')
+  },
+  get appleClientSecret() {
+    return readEnv('APPLE_CLIENT_SECRET')
+  },
+  get stripeSecretKey() {
+    return readEnv('STRIPE_SECRET_KEY')
+  },
+  get stripePublishableKey() {
+    return readEnv('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY')
+  },
+  get stripeWebhookSecret() {
+    return readEnv('STRIPE_WEBHOOK_SECRET')
+  },
+  get stripeProPriceId() {
+    return readEnv('STRIPE_PRO_PRICE_ID')
+  },
+  get stripeRealtorPriceId() {
+    return readEnv('STRIPE_REALTOR_PRICE_ID')
+  },
+  get stripeBillingPortalReturnUrl() {
+    return readEnv('STRIPE_BILLING_PORTAL_RETURN_URL')
+  },
+  get smtpHost() {
+    return readEnv('SMTP_HOST')
+  },
+  get smtpPort() {
+    return readNumberEnv('SMTP_PORT')
+  },
+  get smtpUser() {
+    return readEnv('SMTP_USER')
+  },
+  get smtpPass() {
+    return readEnv('SMTP_PASS')
+  },
+  get smtpFrom() {
+    return readEnv('SMTP_FROM')
+  },
+  get smtpSecure() {
+    return readBooleanEnv('SMTP_SECURE')
+  },
+}
+
+export function requireDatabaseUrl() {
+  return env.databaseUrl
+}
+
+export function requireAuthSecret() {
+  return env.authSecret
+}
+
+export function getNextAuthUrl() {
+  return env.nextAuthUrl
 }
 
 export function hasGoogleAuth() {

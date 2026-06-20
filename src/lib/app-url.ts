@@ -1,5 +1,5 @@
 import 'server-only'
-import { env } from '@/lib/env'
+import { getNextAuthUrl } from '@/lib/env'
 
 const LOCAL_HOSTNAMES = new Set(['localhost', '127.0.0.1', '::1'])
 
@@ -8,8 +8,9 @@ function normalizeOrigin(origin: string) {
 }
 
 export function getAppBaseUrl(fallbackOrigin?: string) {
-  if (env.nextAuthUrl) {
-    return normalizeOrigin(env.nextAuthUrl)
+  const nextAuthUrl = getNextAuthUrl()
+  if (nextAuthUrl) {
+    return normalizeOrigin(nextAuthUrl)
   }
 
   if (fallbackOrigin) {

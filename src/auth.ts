@@ -3,19 +3,19 @@ import { CredentialsSignin } from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { SubscriptionStatus } from '@prisma/client'
 import type { Provider } from 'next-auth/providers'
-import AppleProvider from 'next-auth/providers/apple'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import GoogleProvider from 'next-auth/providers/google'
 import bcrypt from 'bcryptjs'
+import authConfig from '@/auth.config'
 import { db } from '@/lib/db'
 import { normalizeEmail } from '@/lib/auth-flows'
-import { env, hasAppleAuth, hasGoogleAuth } from '@/lib/env'
+import { requireAuthSecret } from '@/lib/env'
 
 class EmailNotVerifiedError extends CredentialsSignin {
   code = 'email_not_verified'
 }
 
 const providers: Provider[] = [
+  ...((authConfig.providers as Provider[] | undefined) ?? []),
   CredentialsProvider({
     name: 'credentials',
     credentials: {
@@ -47,37 +47,13 @@ const providers: Provider[] = [
   }),
 ]
 
-if (hasGoogleAuth()) {
-  providers.unshift(
-    GoogleProvider({
-      clientId: env.googleClientId!,
-      clientSecret: env.googleClientSecret!,
-      allowDangerousEmailAccountLinking: true,
-      authorization: {
-        params: {
-          prompt: 'select_account',
-        },
-      },
-    }),
-  )
-}
-
-if (hasAppleAuth()) {
-  providers.unshift(
-    AppleProvider({
-      clientId: env.appleClientId!,
-      clientSecret: env.appleClientSecret!,
-      allowDangerousEmailAccountLinking: true,
-    }),
-  )
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  ...authConfig,
   adapter: PrismaAdapter(db),
-  session: { strategy: 'jwt' },
   providers,
-  secret: env.authSecret,
+  secret: requireAuthSecret(),
   callbacks: {
+    ...authConfig.callbacks,
     async jwt({ token, user, trigger, session }) {
       if (user) {
         token.role = user.role
@@ -109,14 +85,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.role = session.role
       }
       return token
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role as string
-        session.user.id = token.id as string
-        session.user.billingStatus = (token.billingStatus as SubscriptionStatus | null | undefined) ?? null
-      }
-      return session
     },
     async signIn({ user, account, profile }) {
       if (account?.provider === 'google') {
@@ -152,9 +120,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true
     },
-  },
-  pages: {
-    signIn: '/login',
-    error:  '/login',
   },
 })

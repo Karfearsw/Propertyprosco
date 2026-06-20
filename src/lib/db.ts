@@ -1,10 +1,10 @@
 import 'server-only'
 import { PrismaClient } from '@prisma/client'
-import { env } from '@/lib/env'
+import { requireDatabaseUrl } from '@/lib/env'
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient }
 
-void env.databaseUrl
+void requireDatabaseUrl()
 
 export const db =
   globalForPrisma.prisma ??

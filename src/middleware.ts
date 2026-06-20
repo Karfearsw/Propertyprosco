@@ -1,4 +1,5 @@
-import { auth } from '@/auth'
+import NextAuth from 'next-auth'
+import authConfig from '@/auth.config'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { roleHome, type AppRole } from '@/lib/role-routes'
@@ -7,6 +8,8 @@ const proRoutes      = ['/pro']
 const homeownerRoutes = ['/homeowner']
 const realtorRoutes  = ['/realtor']
 const authRoutes     = ['/login', '/signup', '/forgot-password', '/reset-password']
+
+const { auth } = NextAuth(authConfig)
 
 function requiresActiveBilling(role?: string, billingStatus?: string | null) {
   return (role === 'PRO' || role === 'REALTOR') && billingStatus !== 'ACTIVE'
