@@ -10,6 +10,7 @@ type SubscribeCardProps = {
   features: string[]
   status: SubscriptionStatus
   subscribeHref: string
+  subscribeLabel?: string
   manageEnabled: boolean
   manageLabel?: string
   accentButtonClassName: string
@@ -24,6 +25,7 @@ export default function SubscribeCard({
   features,
   status,
   subscribeHref,
+  subscribeLabel,
   manageEnabled,
   manageLabel,
   accentButtonClassName,
@@ -31,11 +33,12 @@ export default function SubscribeCard({
   icon,
 }: SubscribeCardProps) {
   const actionLabel =
-    status === SubscriptionStatus.ACTIVE
+    subscribeLabel ??
+    (status === SubscriptionStatus.ACTIVE
       ? 'Subscription active'
       : status === SubscriptionStatus.CHECKOUT_PENDING
         ? 'Start subscription'
-        : 'Update billing'
+        : 'Update billing')
 
   return (
     <div className="bg-white border border-pp-border rounded-2xl p-6">

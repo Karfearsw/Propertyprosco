@@ -4,6 +4,7 @@ import { CreditCard } from 'lucide-react'
 import { requireRole } from '@/lib/auth-guards'
 import SubscribeCard from '@/components/billing/SubscribeCard'
 import BillingStatusBanner from '@/components/billing/BillingStatusBanner'
+import BillingActivationSection from '@/components/billing/BillingActivationSection'
 import { getBillingStatusLabel } from '@/lib/billing-state'
 import { getBillingPlan } from '@/lib/billing-config'
 
@@ -28,7 +29,7 @@ export default async function ProBillingPage() {
         <div className="mb-4">
           <BillingStatusBanner
             body="Your Pro tools stay locked until you add a payment method and activate your subscription."
-            billingHref="/pro/billing"
+            billingHref="#payment-method"
             accentClassName="bg-pp-gold-light border border-amber-200 rounded-xl p-4 text-pp-gold"
           />
         </div>
@@ -51,7 +52,8 @@ export default async function ProBillingPage() {
           description={plan.summary}
           features={plan.features.slice(0, 6)}
           status={status}
-          subscribeHref={plan.subscribePath}
+          subscribeHref="#payment-method"
+          subscribeLabel="Add payment method"
           manageEnabled={canManageBilling}
           manageLabel="Open Billing Portal"
           accentButtonClassName={plan.accentButtonClassName}
@@ -59,6 +61,12 @@ export default async function ProBillingPage() {
           icon={<CreditCard size={24} className="text-pp-red" />}
         />
       </div>
+
+      {status !== SubscriptionStatus.ACTIVE ? (
+        <div className="mb-4">
+          <BillingActivationSection plan={plan} />
+        </div>
+      ) : null}
 
       <div className="bg-white border border-pp-border rounded-2xl p-6">
         <h2 className="text-[15px] font-black text-pp-dark mb-4">Billing Details</h2>
