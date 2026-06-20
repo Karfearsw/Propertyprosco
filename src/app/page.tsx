@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { Search, MapPin, Star, Shield, Zap, Users, Home, Hammer, Briefcase, ChevronRight, CheckCircle } from 'lucide-react'
-import PublicHeader from '@/components/layout/PublicHeader'
-import Footer from '@/components/layout/Footer'
+import MarketingShell from '@/components/layout/MarketingShell'
 import ServiceIcon from '@/components/brand/ServiceIcon'
 import TrustBadge from '@/components/brand/TrustBadge'
+import DiscoverySearchForm from '@/components/find-a-pro/DiscoverySearchForm'
 
 const services = [
   { name: 'Roofing',      count: '2,400+ pros' },
@@ -31,8 +31,7 @@ const featuredPros = [
 
 export default function HomePage() {
   return (
-    <>
-      <PublicHeader />
+    <MarketingShell>
 
       {/* HERO */}
       <section className="bg-pp-dark relative overflow-hidden pt-20 pb-0">
@@ -54,23 +53,17 @@ export default function HomePage() {
               Connect with verified, rated, and insured local professionals for any home project — from roof replacements to driveways to full remodels.
             </p>
 
-            {/* Search */}
-            <div className="bg-white/8 border border-white/12 rounded-2xl p-1.5 flex gap-1.5 mb-5 max-w-xl">
-              <div className="flex-1 flex items-center gap-2 px-3 py-2">
-                <Search size={16} className="text-gray-500 shrink-0" />
-                <input className="flex-1 bg-transparent text-sm text-white placeholder-gray-600 outline-none" placeholder="What do you need done?" />
-              </div>
-              <div className="w-px bg-white/10 my-2" />
-              <div className="flex items-center gap-2 px-3">
-                <MapPin size={14} className="text-gray-500" />
-                <input className="w-24 bg-transparent text-sm text-gray-400 placeholder-gray-600 outline-none" placeholder="ZIP code" />
-              </div>
-              <Link href="/find-a-pro" className="px-5 py-2.5 rounded-xl bg-pp-red text-white text-sm font-extrabold hover:bg-pp-red-dark transition-all whitespace-nowrap">Find pros</Link>
-            </div>
+            <DiscoverySearchForm className="mb-5 max-w-2xl" submitLabel="Find pros" />
 
             <div className="flex gap-2 flex-wrap mb-7">
               {['Roofing','Driveways','Remodeling','Masonry','Painting','Landscaping','+ More'].map(s => (
-                <span key={s} className="px-3.5 py-1.5 rounded-full text-[12px] font-bold border border-white/12 text-gray-400 hover:text-white hover:border-white/30 cursor-pointer transition-all">{s}</span>
+                <Link
+                  key={s}
+                  href={s === '+ More' ? '/find-a-pro' : `/find-a-pro?category=${encodeURIComponent(s)}`}
+                  className="px-3.5 py-1.5 rounded-full text-[12px] font-bold border border-white/12 text-gray-400 hover:text-white hover:border-white/30 transition-all"
+                >
+                  {s}
+                </Link>
               ))}
             </div>
 
@@ -238,7 +231,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Footer />
-    </>
+    </MarketingShell>
   )
 }
