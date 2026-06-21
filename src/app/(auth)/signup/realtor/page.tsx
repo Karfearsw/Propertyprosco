@@ -27,8 +27,7 @@ export default function RealtorSignupPage() {
       return
     }
 
-    const email = encodeURIComponent(json.email ?? form.email)
-    router.push(`/verify-email?email=${email}`)
+    router.push(json.nextStep ?? `/verify-email?email=${encodeURIComponent(json.email ?? form.email)}`)
   }
 
   return (
@@ -43,7 +42,7 @@ export default function RealtorSignupPage() {
           <p className="text-[11px] font-black tracking-[2px] uppercase text-yellow-500 mb-4">Realtor Signup</p>
           <h2 className="text-[34px] font-black text-white tracking-tight leading-tight mb-4">Manage your clients<br />like a pro.</h2>
           <p className="text-[15px] text-gray-400 leading-relaxed mb-6">One dashboard for all your clients, contractors, and deadlines. Close faster. Stress less.</p>
-          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-6">Monthly billing starts after you activate your subscription.</div>
+          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-6">Stripe billing is collected during signup, and access unlocks after payment plus email verification.</div>
           <div className="space-y-3.5">
             {plan.features.slice(0, 4).map((feature) => (
               <div key={feature} className="flex items-center gap-3 text-[14px] font-bold text-gray-300">
@@ -59,7 +58,7 @@ export default function RealtorSignupPage() {
         <div className="w-full max-w-[440px]">
           <h1 className="text-[24px] font-black text-pp-dark tracking-tight mb-1.5">Create your realtor account</h1>
           <p className="text-[14px] text-pp-gray mb-5">Already have an account? <Link href="/login" className="text-pp-red font-extrabold hover:underline">Log in</Link></p>
-          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-5">You&apos;ll go to billing next to activate your {plan.amountLabel} subscription.</div>
+          <div className="bg-pp-gold-light border border-amber-200 rounded-xl p-3.5 text-[13px] font-bold text-amber-800 mb-5">Next step: add your payment method and complete secure Stripe billing for {plan.amountLabel}.</div>
 
           {error && <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[13px] font-bold rounded-xl px-4 py-3 mb-4"><AlertCircle size={14}/>{error}</div>}
 

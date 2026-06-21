@@ -56,7 +56,7 @@ test('rejects partial Stripe billing configuration', () => {
 
   assert.ok(
     report.errors.includes(
-      'Stripe billing requires: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRO_PRICE_ID, STRIPE_REALTOR_PRICE_ID.',
+      'Stripe billing requires: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRO_PRICE_ID, STRIPE_REALTOR_PRICE_ID, STRIPE_PRO_UPSELL_STARTER_PRICE_ID, STRIPE_PRO_UPSELL_PRO_PRICE_ID, STRIPE_PRO_UPSELL_ELITE_PRICE_ID.',
     ),
   )
 })
@@ -77,6 +77,9 @@ test('rejects test Stripe keys in production validation', () => {
       STRIPE_WEBHOOK_SECRET: 'whsec_123',
       STRIPE_PRO_PRICE_ID: 'price_pro_123',
       STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+      STRIPE_PRO_UPSELL_STARTER_PRICE_ID: 'price_pro_starter_123',
+      STRIPE_PRO_UPSELL_PRO_PRICE_ID: 'price_pro_growth_123',
+      STRIPE_PRO_UPSELL_ELITE_PRICE_ID: 'price_pro_elite_123',
     },
     'production',
   )
@@ -100,6 +103,9 @@ test('rejects malformed Stripe identifier prefixes', () => {
     STRIPE_WEBHOOK_SECRET: 'webhook_123',
     STRIPE_PRO_PRICE_ID: 'pro_123',
     STRIPE_REALTOR_PRICE_ID: 'realtor_123',
+    STRIPE_PRO_UPSELL_STARTER_PRICE_ID: 'starter_123',
+    STRIPE_PRO_UPSELL_PRO_PRICE_ID: 'growth_123',
+    STRIPE_PRO_UPSELL_ELITE_PRICE_ID: 'elite_123',
   })
 
   assert.ok(report.errors.includes('STRIPE_SECRET_KEY must start with sk_.'))
@@ -109,6 +115,9 @@ test('rejects malformed Stripe identifier prefixes', () => {
   assert.ok(report.errors.includes('STRIPE_WEBHOOK_SECRET must start with whsec_.'))
   assert.ok(report.errors.includes('STRIPE_PRO_PRICE_ID must start with price_.'))
   assert.ok(report.errors.includes('STRIPE_REALTOR_PRICE_ID must start with price_.'))
+  assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_STARTER_PRICE_ID must start with price_.'))
+  assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_PRO_PRICE_ID must start with price_.'))
+  assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_ELITE_PRICE_ID must start with price_.'))
 })
 
 test('accepts a complete production-ready contract', () => {
@@ -127,6 +136,9 @@ test('accepts a complete production-ready contract', () => {
       STRIPE_WEBHOOK_SECRET: 'whsec_123',
       STRIPE_PRO_PRICE_ID: 'price_pro_123',
       STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+      STRIPE_PRO_UPSELL_STARTER_PRICE_ID: 'price_pro_starter_123',
+      STRIPE_PRO_UPSELL_PRO_PRICE_ID: 'price_pro_growth_123',
+      STRIPE_PRO_UPSELL_ELITE_PRICE_ID: 'price_pro_elite_123',
     },
     'production',
   )

@@ -2,6 +2,7 @@ export type BillingRole = 'PRO' | 'REALTOR'
 
 export type BillingPlan = {
   role: BillingRole
+  productKey: 'PRO_BASE' | 'REALTOR_BASE'
   planName: string
   marketingName: string
   amountCents: number
@@ -24,9 +25,27 @@ export type BillingPlan = {
   stripeBuyButtonIdReference?: string
 }
 
+export type ProUpsellTierKey = 'STARTER' | 'PRO' | 'ELITE'
+
+export type ProUpsellTier = {
+  key: ProUpsellTierKey
+  name: string
+  marketingName: string
+  amountCents: number
+  amountLabel: string
+  priceIdEnv:
+    | 'STRIPE_PRO_UPSELL_STARTER_PRICE_ID'
+    | 'STRIPE_PRO_UPSELL_PRO_PRICE_ID'
+    | 'STRIPE_PRO_UPSELL_ELITE_PRICE_ID'
+  description: string
+  badge?: string
+  features: string[]
+}
+
 export const billingPlans: Record<BillingRole, BillingPlan> = {
   PRO: {
     role: 'PRO',
+    productKey: 'PRO_BASE',
     planName: 'Pro Plan',
     marketingName: 'Service Pro',
     amountCents: 999,
@@ -60,6 +79,7 @@ export const billingPlans: Record<BillingRole, BillingPlan> = {
   },
   REALTOR: {
     role: 'REALTOR',
+    productKey: 'REALTOR_BASE',
     planName: 'Realtor Plan',
     marketingName: 'Realtor',
     amountCents: 2499,
@@ -92,6 +112,57 @@ export const billingPlans: Record<BillingRole, BillingPlan> = {
   },
 }
 
+export const proUpsellTiers: ProUpsellTier[] = [
+  {
+    key: 'STARTER',
+    name: 'Starter',
+    marketingName: 'Pro Starter',
+    amountCents: 3900,
+    amountLabel: '$39 / mo',
+    priceIdEnv: 'STRIPE_PRO_UPSELL_STARTER_PRICE_ID',
+    description: 'For new pros just getting started on the platform.',
+    features: [
+      'Up to 10 leads / month',
+      'Basic profile listing',
+      'Quote tool',
+    ],
+  },
+  {
+    key: 'PRO',
+    name: 'Pro plan',
+    marketingName: 'Pro Growth',
+    amountCents: 7900,
+    amountLabel: '$79 / mo',
+    priceIdEnv: 'STRIPE_PRO_UPSELL_PRO_PRICE_ID',
+    description: 'For established pros growing their client base.',
+    badge: 'Most popular',
+    features: [
+      'Unlimited leads',
+      'Verified pro badge',
+      'Priority in search',
+      'Quote tracking',
+      'Analytics dashboard',
+    ],
+  },
+  {
+    key: 'ELITE',
+    name: 'Pro Elite',
+    marketingName: 'Pro Elite',
+    amountCents: 14900,
+    amountLabel: '$149 / mo',
+    priceIdEnv: 'STRIPE_PRO_UPSELL_ELITE_PRICE_ID',
+    description: 'For high-volume pros who want maximum exposure.',
+    features: [
+      'Everything in Growth',
+      'Featured homepage placement',
+      'Promoted in search results',
+      'Dedicated account manager',
+      'Review boost tools',
+      'Priority support',
+    ],
+  },
+]
+
 export function isBillingRole(role?: string | null): role is BillingRole {
   return role === 'PRO' || role === 'REALTOR'
 }
@@ -104,9 +175,43 @@ export function formatBillingAmount(amountCents: number) {
   return `$${(amountCents / 100).toFixed(2)}`
 }
 
-export function getBillingPriceId(role: BillingRole, input: {
-  stripeProPriceId?: string
-  stripeRealtorPriceId?: string
-}) {
+export function getBillingPriceId(
+  role: BillingRole,
+  input: {
+    stripeProPriceId?: string
+    stripeRealtorPriceId?: string
+  },
+) {
   return role === 'PRO' ? input.stripeProPriceId : input.stripeRealtorPriceId
+}
+
+export function getProUpsellTierPriceId(
+  tier: ProUpsellTierKey,
+  input: {
+    stripeProUpsellStarterPriceId?: string
+    stripeProUpsellProPriceId?: string
+    stripeProUpsellElitePriceId?: string
+  },
+) {
+  if (tier === 'STARTER') return input.stripeProUpsellStarterPriceId
+  if (tier === 'PRO') return input.stripeProUpsellProPriceId
+  return input.stripeProUpsellElitePriceId
+}
+
+export function getProUpsellTierByPriceId(
+  priceId: string | null | undefined,
+  input: {
+    stripeProUpsellStarterPriceId?: string
+    stripeProUpsellProPriceId?: string
+    stripeProUpsellElitePriceId?: string
+  },
+) {
+  if (!priceId) return null
+
+  return (
+    proUpsellTiers.find((tier) => {
+      const candidate = getProUpsellTierPriceId(tier.key, input)
+      return candidate === priceId
+    }) ?? null
+  )
 }

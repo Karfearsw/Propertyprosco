@@ -19,6 +19,9 @@ const STRIPE_REQUIRED_VARS = [
   'STRIPE_WEBHOOK_SECRET',
   'STRIPE_PRO_PRICE_ID',
   'STRIPE_REALTOR_PRICE_ID',
+  'STRIPE_PRO_UPSELL_STARTER_PRICE_ID',
+  'STRIPE_PRO_UPSELL_PRO_PRICE_ID',
+  'STRIPE_PRO_UPSELL_ELITE_PRICE_ID',
 ] as const
 
 function readEnvValue(input: EnvMap, name: string) {
@@ -94,6 +97,9 @@ function validateStripeFormats(report: EnvValidationReport, input: EnvMap) {
   validatePrefix(report, input, 'STRIPE_WEBHOOK_SECRET', 'whsec_')
   validatePrefix(report, input, 'STRIPE_PRO_PRICE_ID', 'price_')
   validatePrefix(report, input, 'STRIPE_REALTOR_PRICE_ID', 'price_')
+  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_STARTER_PRICE_ID', 'price_')
+  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_PRO_PRICE_ID', 'price_')
+  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_ELITE_PRICE_ID', 'price_')
 }
 
 function validateStripeMode(report: EnvValidationReport, input: EnvMap, target: ValidationTarget) {

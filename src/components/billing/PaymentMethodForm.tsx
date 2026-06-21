@@ -8,10 +8,20 @@ import { stripeClientPromise } from '@/lib/stripe-client'
 
 type PaymentMethodFormProps = {
   plan: BillingPlan
+  setupIntentPath?: string
+  setupIntentBody?: Record<string, unknown>
+  submitPath?: string
+  submitBody?: Record<string, unknown>
+  submitButtonLabel?: string
+  submitPendingLabel?: string
 }
 
 function PaymentMethodFields({
   plan,
+  submitPath = '/api/billing/checkout',
+  submitBody,
+  submitButtonLabel = 'Save payment method and continue',
+  submitPendingLabel = 'Saving payment method...',
 }: PaymentMethodFormProps) {
   const stripe = useStripe()
   const elements = useElements()
@@ -45,10 +55,10 @@ function PaymentMethodFields({
         throw new Error('Stripe did not return a payment method.')
       }
 
-      const response = await fetch('/api/billing/checkout', {
+      const response = await fetch(submitPath, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ paymentMethodId }),
+        body: JSON.stringify({ paymentMethodId, ...(submitBody ?? {}) }),
       })
       const data = await response.json()
 
@@ -85,13 +95,14 @@ function PaymentMethodFields({
         disabled={!stripe || !elements || isSaving}
         className="w-full rounded-xl bg-pp-dark py-3.5 text-[15px] font-black text-white hover:bg-pp-dark-2 transition-all disabled:cursor-not-allowed disabled:opacity-70"
       >
-        {isSaving ? 'Saving payment method...' : 'Save payment method and continue'}
+        {isSaving ? submitPendingLabel : submitButtonLabel}
       </button>
     </form>
   )
 }
 
 export default function PaymentMethodForm(props: PaymentMethodFormProps) {
+  const { setupIntentPath = '/api/billing/setup-intent', setupIntentBody } = props
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -101,7 +112,11 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
     async function createSetupIntent() {
       try {
         setError(null)
-        const response = await fetch('/api/billing/setup-intent', { method: 'POST' })
+        const response = await fetch(setupIntentPath, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: setupIntentBody ? JSON.stringify(setupIntentBody) : undefined,
+        })
         const data = await response.json()
 
         if (!response.ok) {
@@ -123,7 +138,7 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [setupIntentBody, setupIntentPath])
 
   const options = useMemo<StripeElementsOptions | undefined>(() => {
     if (!clientSecret) return undefined

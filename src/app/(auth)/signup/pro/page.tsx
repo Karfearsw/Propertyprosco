@@ -54,8 +54,7 @@ export default function ProSignupPage() {
       return
     }
 
-    const email = encodeURIComponent(json.email ?? form.email)
-    router.push(`/verify-email?email=${email}`)
+    router.push(json.nextStep ?? `/verify-email?email=${encodeURIComponent(json.email ?? form.email)}`)
   }
 
   return (
@@ -69,7 +68,7 @@ export default function ProSignupPage() {
         <div className="flex-1 flex flex-col justify-center relative z-10">
           <p className="text-[11px] font-black tracking-[2px] uppercase text-red-400 mb-4">Service Pro Signup</p>
           <h2 className="text-[34px] font-black text-white tracking-tight leading-tight mb-4">Start getting<br />leads today.</h2>
-          <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-6">Monthly billing starts after you activate your subscription.</div>
+          <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-6">Stripe billing is collected during signup, and your workspace unlocks after payment plus email verification.</div>
           <div className="space-y-3.5">
             {plan.features.slice(0, 4).map((feature) => (
               <div key={feature} className="flex items-center gap-3 text-[14px] font-bold text-gray-300">
@@ -189,7 +188,7 @@ export default function ProSignupPage() {
                 <div><span className="text-pp-gray">License:</span> {form.licenseNumber||'Not added yet'}</div>
                 <div><span className="text-pp-gray">Credentials:</span> {[form.licensed && 'Licensed', form.insured && 'Insured', form.backgroundCheck && 'Background checked'].filter(Boolean).join(', ') || 'Pending setup'}</div>
               </div>
-              <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">You&apos;ll head to billing next to activate your {plan.amountLabel} subscription.</div>
+              <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">Next step: add your payment method and complete secure Stripe billing for {plan.amountLabel}.</div>
               <div className="flex gap-3">
                 <button onClick={()=>setStep(2)} className="flex-shrink-0 px-5 py-3.5 rounded-xl bg-pp-dark text-white text-[14px] font-bold">← Back</button>
                 <button onClick={submit} disabled={loading} className="flex-1 py-3.5 rounded-xl bg-pp-red text-white text-[15px] font-black hover:bg-pp-red-dark transition-all disabled:opacity-60">

@@ -6,6 +6,7 @@ import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-
 import { issueEmailVerificationChallenge, normalizeEmail } from '@/lib/auth-flows'
 import { db } from '@/lib/db'
 import { calculateProProfileCompletion, sanitizeStringArray } from '@/lib/profile-completion'
+import { issueSignupBillingToken } from '@/lib/signup-billing'
 
 const schema = z.object({
   email: z.string().email(),
@@ -173,11 +174,27 @@ export async function POST(req: Request) {
       })
     }
 
+    const signupBillingToken =
+      data.role === 'PRO' || data.role === 'REALTOR'
+        ? issueSignupBillingToken({
+            userId: user.id,
+            email,
+            role: data.role,
+          })
+        : null
+
     return NextResponse.json({
       success: true,
       userId: user.id,
       email,
       requiresEmailVerification: true,
+      signupBillingToken,
+      nextStep:
+        data.role === 'PRO'
+          ? `/signup/pro/billing?token=${encodeURIComponent(signupBillingToken ?? '')}`
+          : data.role === 'REALTOR'
+            ? `/signup/realtor/billing?token=${encodeURIComponent(signupBillingToken ?? '')}`
+            : `/verify-email?email=${encodeURIComponent(email)}`,
     })
   } catch (error) {
     if (error instanceof z.ZodError) {

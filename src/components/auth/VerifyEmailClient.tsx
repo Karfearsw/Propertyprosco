@@ -7,6 +7,7 @@ import { AlertCircle, ArrowLeft, CheckCircle2, LoaderCircle, Mail, ShieldCheck }
 type VerifyState = 'pending' | 'verifying' | 'verified' | 'invalid'
 
 type VerifyEmailClientProps = {
+  initialBillingComplete?: boolean
   initialEmail?: string
   initialToken?: string
 }
@@ -16,6 +17,7 @@ function normalizeCode(value: string) {
 }
 
 export function VerifyEmailClient({
+  initialBillingComplete = false,
   initialEmail = '',
   initialToken = '',
 }: VerifyEmailClientProps) {
@@ -26,7 +28,9 @@ export function VerifyEmailClient({
   const [message, setMessage] = useState(
     initialToken
       ? ''
-      : 'We sent a verification email with both a secure link and a 6-digit code. Use either option to confirm your account.'
+      : initialBillingComplete
+        ? 'Your billing is complete. We sent a verification email with both a secure link and a 6-digit code so you can unlock access.'
+        : 'We sent a verification email with both a secure link and a 6-digit code. Use either option to confirm your account.'
   )
   const [submittingCode, setSubmittingCode] = useState(false)
   const [submittingResend, setSubmittingResend] = useState(false)
@@ -62,7 +66,9 @@ export function VerifyEmailClient({
           setMessage(
             json.alreadyVerified
               ? 'This email address was already confirmed. You can log in now.'
-              : 'Your email has been verified. You can log in and continue your account setup.'
+              : initialBillingComplete
+                ? 'Your email has been verified and billing is already secured. You can log in now.'
+                : 'Your email has been verified. You can log in and continue your account setup.'
           )
           setError('')
         }
@@ -82,7 +88,7 @@ export function VerifyEmailClient({
     return () => {
       cancelled = true
     }
-  }, [initialEmail, initialToken])
+  }, [initialBillingComplete, initialEmail, initialToken])
 
   const canSubmitCode = useMemo(
     () => email.trim().length > 0 && code.trim().length === 6,
@@ -115,7 +121,9 @@ export function VerifyEmailClient({
       setMessage(
         json.alreadyVerified
           ? 'This email address was already confirmed. You can log in now.'
-          : 'Your email has been verified. You can log in and continue your account setup.'
+          : initialBillingComplete
+            ? 'Your email has been verified and billing is already secured. You can log in now.'
+            : 'Your email has been verified. You can log in and continue your account setup.'
       )
       setCode('')
       setDeliveryMode(null)

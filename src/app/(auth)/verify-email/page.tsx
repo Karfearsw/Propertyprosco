@@ -3,6 +3,7 @@ import { VerifyEmailClient } from '@/components/auth/VerifyEmailClient'
 type VerifyEmailPageProps = {
   searchParams?: Promise<{
     email?: string | string[]
+    billing?: string | string[]
     token?: string | string[]
   }>
 }
@@ -16,6 +17,7 @@ export default async function VerifyEmailPage({ searchParams }: VerifyEmailPageP
 
   return (
     <VerifyEmailClient
+      initialBillingComplete={readParam(params.billing) === '1'}
       initialEmail={readParam(params.email)}
       initialToken={readParam(params.token)}
     />
