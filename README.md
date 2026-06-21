@@ -157,3 +157,41 @@ Recommended deployment notes:
 - Run migrations before shifting live traffic to a new build.
 - Keep Stripe webhook signing secrets and SMTP credentials in your host secret manager, not in source control.
 - Verify `NEXTAUTH_URL`, Stripe products and prices, and SMTP sender identity per environment before release.
+
+## GitHub Push Workflow
+
+This local repo is configured to work with both:
+
+- `origin` -> your fork: `Karfearsw/Propertyprosco`
+- `upstream` -> original repo: `propertyprosco/Main_Prop_Pro`
+
+Main branch only workflow:
+
+```bash
+git checkout main
+git fetch origin main
+git merge --ff-only origin/main
+```
+
+Push `main` to your fork:
+
+```bash
+git push origin main:main
+```
+
+Attempt a direct push to the upstream repo:
+
+```bash
+git push upstream main:main
+```
+
+Recommended policy:
+
+- Use `origin` as the default publish target unless you have confirmed write access to `upstream`.
+- Use `upstream` only when you intentionally want to publish directly to the main repository.
+- If `git push upstream main:main` returns `403`, your credentials can see the repo but do not have push permission there.
+
+Security note:
+
+- Use a credential helper or GitHub auth tool for PAT-backed pushes instead of embedding tokens in remote URLs.
+- If a PAT is ever pasted into chat or command history, rotate it after setup.
