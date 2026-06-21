@@ -9,6 +9,13 @@ type EnvMap = Record<string, string | undefined>
 
 const CORE_REQUIRED_VARS = ['DATABASE_URL', 'AUTH_SECRET'] as const
 const PRODUCTION_REQUIRED_VARS = ['NEXTAUTH_URL'] as const
+const AUTH0_REQUIRED_VARS = [
+  'APP_BASE_URL',
+  'AUTH0_DOMAIN',
+  'AUTH0_CLIENT_ID',
+  'AUTH0_CLIENT_SECRET',
+  'AUTH0_SECRET',
+] as const
 const GOOGLE_AUTH_VARS = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET'] as const
 const APPLE_AUTH_VARS = ['APPLE_CLIENT_ID', 'APPLE_CLIENT_SECRET'] as const
 const SMTP_REQUIRED_VARS = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_FROM'] as const
@@ -91,6 +98,20 @@ function validatePrefix(report: EnvValidationReport, input: EnvMap, name: string
   report.errors.push(`${name} must start with ${prefix}.`)
 }
 
+function validateUrlLike(report: EnvValidationReport, input: EnvMap, name: string) {
+  const value = readEnvValue(input, name)
+  if (!value) return
+
+  try {
+    const parsed = new URL(value)
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      throw new Error('unsupported protocol')
+    }
+  } catch {
+    report.errors.push(`${name} must be a valid absolute URL.`)
+  }
+}
+
 function validateStripeFormats(report: EnvValidationReport, input: EnvMap) {
   validatePrefix(report, input, 'STRIPE_SECRET_KEY', 'sk_')
   validatePrefix(report, input, 'NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY', 'pk_')
@@ -146,6 +167,13 @@ export function validateEnvContract(
   pushGroupError(report, 'Apple OAuth', APPLE_AUTH_VARS, input)
   pushGroupError(report, 'SMTP authentication', SMTP_AUTH_VARS, input)
 
+  const hasAnyAuth0 = hasAny(input, AUTH0_REQUIRED_VARS)
+  if (hasAnyAuth0 && !hasAll(input, AUTH0_REQUIRED_VARS)) {
+    const missingAuth0 = findMissing(input, AUTH0_REQUIRED_VARS)
+    report.errors.push(`Auth0 requires: ${missingAuth0.join(', ')}.`)
+  }
+
+  validateUrlLike(report, input, 'APP_BASE_URL')
   const hasAnySmtp = hasAny(input, [...SMTP_REQUIRED_VARS, ...SMTP_AUTH_VARS, 'SMTP_SECURE'])
   const hasCompleteSmtp = hasAll(input, SMTP_REQUIRED_VARS) && hasAll(input, SMTP_AUTH_VARS)
   const hasAnonymousSmtp = hasAll(input, SMTP_REQUIRED_VARS) && !hasAny(input, SMTP_AUTH_VARS)

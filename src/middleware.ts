@@ -2,12 +2,21 @@ import NextAuth from 'next-auth'
 import authConfig from '@/auth.config'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { auth0 } from '@/lib/auth0'
 import { roleHome, type AppRole } from '@/lib/role-routes'
 
 const proRoutes      = ['/pro']
 const homeownerRoutes = ['/homeowner']
 const realtorRoutes  = ['/realtor']
 const authRoutes     = ['/login', '/signup', '/forgot-password', '/reset-password']
+const auth0Routes    = [
+  '/auth/login',
+  '/auth/logout',
+  '/auth/callback',
+  '/auth/profile',
+  '/auth/access-token',
+  '/auth/backchannel-logout',
+]
 
 const { auth } = NextAuth(authConfig)
 
@@ -17,6 +26,11 @@ function requiresActiveBilling(role?: string, billingStatus?: string | null) {
 
 export default auth(async (req: NextRequest & { auth: { user?: { role?: string; billingStatus?: string | null } } | null }) => {
   const { pathname } = req.nextUrl
+
+  if (auth0Routes.some((route) => pathname.startsWith(route))) {
+    return auth0.middleware(req)
+  }
+
   const session      = req.auth
   const role         = session?.user?.role
   const billingStatus = session?.user?.billingStatus

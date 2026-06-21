@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
+import { Auth0SessionBridge } from '@/components/auth/Auth0SessionBridge'
 import {
   ensureRoleOnboardingState,
   getAuthFlowUser,
@@ -9,6 +10,8 @@ import {
   parseDesiredRole,
   roleLabel,
 } from '@/lib/auth-flows'
+import { auth0 } from '@/lib/auth0'
+import { ensureAuth0LinkedUser, issueAuth0BridgeToken } from '@/lib/auth0-user'
 import { getBillingPlan } from '@/lib/billing-config'
 import { roleHome } from '@/lib/role-routes'
 
@@ -47,15 +50,31 @@ interface ContinuePageProps {
 }
 
 export default async function ContinuePage({ searchParams }: ContinuePageProps) {
-  const session = await auth()
-  if (!session?.user?.id) {
-    redirect('/login')
-  }
-
   const params = (await searchParams) ?? {}
   const desiredRole = parseDesiredRole(
     Array.isArray(params.desiredRole) ? params.desiredRole[0] : params.desiredRole,
   )
+  const callbackUrl = desiredRole ? `/auth/continue?desiredRole=${desiredRole}` : '/auth/continue'
+  const session = await auth()
+
+  if (!session?.user?.id) {
+    const auth0Session = await auth0.getSession()
+    const linkedUser = await ensureAuth0LinkedUser(auth0Session)
+
+    if (!linkedUser) {
+      redirect('/login')
+    }
+
+    const bridgeToken = await issueAuth0BridgeToken(linkedUser.id)
+
+    return (
+      <Auth0SessionBridge
+        callbackUrl={callbackUrl}
+        email={linkedUser.email}
+        token={bridgeToken}
+      />
+    )
+  }
 
   const user = await getAuthFlowUser(session.user.id)
   if (!user) {

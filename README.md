@@ -29,6 +29,27 @@ Run `npm run validate:env` before booting a new environment. Run `npm run valida
 - `DATABASE_URL`: PostgreSQL connection string used by Prisma.
 - `AUTH_SECRET`: secret used by NextAuth session and token handling.
 
+### Auth0 Regular Web App
+
+Auth0 is configured in this repo as an additional hosted login/signup path for local development on port `5000`.
+
+- `APP_BASE_URL`: local app origin for Auth0 routes. Use `http://localhost:5000`.
+- `AUTH0_DOMAIN`: your Auth0 tenant domain.
+- `AUTH0_CLIENT_ID`: the Auth0 application client ID.
+- `AUTH0_CLIENT_SECRET`: the Auth0 application client secret.
+- `AUTH0_SECRET`: 64-character hex secret used to encrypt Auth0 cookies.
+
+For the current tenant and app shape, configure your Auth0 application with:
+
+- Allowed Callback URLs: `http://localhost:5000/auth/callback`
+- Allowed Logout URLs: `http://localhost:5000`
+- Application Type: `Regular Web Application`
+- Token Endpoint Authentication Method: `client_secret_post`
+
+Important Auth0 note:
+
+- Login and logout will fail with callback or logout mismatch errors until those URLs are saved in the Auth0 dashboard.
+
 ### Required In Production
 
 - `NEXTAUTH_URL`: canonical public app origin used for auth callbacks and email links.
@@ -86,6 +107,30 @@ Production billing guidance:
 - `npm run validate:env`: validates the local env contract.
 - `npm run validate:env:production`: validates production-required env coverage.
 - `npm run verify`: runs Prisma validation, typecheck, and tests together.
+
+## Auth0 SDK Setup
+
+Use this sequence to enable Auth0 in the current project without changing the existing email/password flow:
+
+1. Install dependencies with `npm ci`.
+2. Copy `.env.example` to `.env.local`.
+3. Fill in:
+   - `APP_BASE_URL=http://localhost:5000`
+   - `AUTH0_DOMAIN=dev-viz41cje0o6t1h2d.us.auth0.com`
+   - `AUTH0_CLIENT_ID=j6lD2b54P9Lj3exlh9azR1QrdmrBIcef`
+   - `AUTH0_CLIENT_SECRET=<your-secret>`
+   - `AUTH0_SECRET=<64-char-hex-secret>`
+4. In the Auth0 dashboard, add:
+   - `http://localhost:5000/auth/callback` to Allowed Callback URLs
+   - `http://localhost:5000` to Allowed Logout URLs
+5. Start the app with `npm run dev`.
+6. Open `http://localhost:5000/login` and use the Auth0 buttons to test hosted login/signup.
+
+Implementation notes for this repo:
+
+- The custom login form still supports the existing credentials flow.
+- Auth0 login/signup uses the SDK-managed routes under `/auth/*`.
+- New Auth0 users are linked into the existing local user table and then routed through `/auth/continue` for role selection.
 
 ## Database Workflow
 

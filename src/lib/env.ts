@@ -35,11 +35,26 @@ function requireEnv(name: string) {
 }
 
 export const env = {
+  get appBaseUrl() {
+    return readEnv('APP_BASE_URL')
+  },
   get databaseUrl() {
     return requireEnv('DATABASE_URL')
   },
   get authSecret() {
     return requireEnv('AUTH_SECRET')
+  },
+  get auth0Domain() {
+    return readEnv('AUTH0_DOMAIN')
+  },
+  get auth0ClientId() {
+    return readEnv('AUTH0_CLIENT_ID')
+  },
+  get auth0ClientSecret() {
+    return readEnv('AUTH0_CLIENT_SECRET')
+  },
+  get auth0Secret() {
+    return readEnv('AUTH0_SECRET')
   },
   get nextAuthUrl() {
     return readEnv('NEXTAUTH_URL')
@@ -111,8 +126,32 @@ export function requireAuthSecret() {
   return env.authSecret
 }
 
+export function getAppBaseUrl() {
+  return env.appBaseUrl
+}
+
 export function getNextAuthUrl() {
   return env.nextAuthUrl
+}
+
+export function hasAuth0Config() {
+  return Boolean(
+    env.appBaseUrl &&
+      env.auth0Domain &&
+      env.auth0ClientId &&
+      env.auth0ClientSecret &&
+      env.auth0Secret,
+  )
+}
+
+export function requireAuth0Env() {
+  return {
+    appBaseUrl: requireEnv('APP_BASE_URL'),
+    auth0Domain: requireEnv('AUTH0_DOMAIN'),
+    auth0ClientId: requireEnv('AUTH0_CLIENT_ID'),
+    auth0ClientSecret: requireEnv('AUTH0_CLIENT_SECRET'),
+    auth0Secret: requireEnv('AUTH0_SECRET'),
+  }
 }
 
 export function hasGoogleAuth() {

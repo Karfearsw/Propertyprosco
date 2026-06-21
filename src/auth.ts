@@ -6,6 +6,7 @@ import type { Provider } from 'next-auth/providers'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import authConfig from '@/auth.config'
+import { consumeAuth0BridgeToken } from '@/lib/auth0-user'
 import { db } from '@/lib/db'
 import { normalizeEmail } from '@/lib/auth-flows'
 import { requireAuthSecret } from '@/lib/env'
@@ -16,6 +17,22 @@ class EmailNotVerifiedError extends CredentialsSignin {
 
 const providers: Provider[] = [
   ...((authConfig.providers as Provider[] | undefined) ?? []),
+  CredentialsProvider({
+    id: 'auth0-bridge',
+    name: 'auth0-bridge',
+    credentials: {
+      token: { label: 'Bridge token', type: 'text' },
+    },
+    async authorize(credentials) {
+      const token = typeof credentials?.token === 'string' ? credentials.token : ''
+      if (!token) return null
+
+      const user = await consumeAuth0BridgeToken(token)
+      if (!user) return null
+
+      return user
+    },
+  }),
   CredentialsProvider({
     name: 'credentials',
     credentials: {

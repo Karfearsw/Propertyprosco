@@ -23,6 +23,34 @@ test('requires NEXTAUTH_URL for production validation', () => {
   assert.equal(report.errors[0], 'Missing production-required variables: NEXTAUTH_URL.')
 })
 
+test('rejects partial Auth0 configuration', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    AUTH0_DOMAIN: 'dev-viz41cje0o6t1h2d.us.auth0.com',
+  })
+
+  assert.ok(
+    report.errors.includes(
+      'Auth0 requires: APP_BASE_URL, AUTH0_CLIENT_ID, AUTH0_CLIENT_SECRET, AUTH0_SECRET.',
+    ),
+  )
+})
+
+test('rejects invalid APP_BASE_URL when Auth0 is configured', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    APP_BASE_URL: 'localhost:5000',
+    AUTH0_DOMAIN: 'dev-viz41cje0o6t1h2d.us.auth0.com',
+    AUTH0_CLIENT_ID: 'client-id',
+    AUTH0_CLIENT_SECRET: 'client-secret',
+    AUTH0_SECRET: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
+  })
+
+  assert.ok(report.errors.includes('APP_BASE_URL must be a valid absolute URL.'))
+})
+
 test('rejects partial SMTP configuration', () => {
   const report = validateEnvContract({
     DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
@@ -142,6 +170,20 @@ test('accepts a complete production-ready contract', () => {
     },
     'production',
   )
+
+  assert.deepEqual(report.errors, [])
+})
+
+test('accepts a complete local Auth0 contract', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    APP_BASE_URL: 'http://localhost:5000',
+    AUTH0_DOMAIN: 'dev-viz41cje0o6t1h2d.us.auth0.com',
+    AUTH0_CLIENT_ID: 'client-id',
+    AUTH0_CLIENT_SECRET: 'client-secret',
+    AUTH0_SECRET: '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef',
+  })
 
   assert.deepEqual(report.errors, [])
 })
