@@ -107,6 +107,25 @@ Production billing guidance:
 - `npm run validate:env`: validates the local env contract.
 - `npm run validate:env:production`: validates production-required env coverage.
 - `npm run verify`: runs Prisma validation, typecheck, and tests together.
+- `npm run qa:check`: runs the recommended local quality gate before commits and pull requests.
+- `npm run release:check`: runs the release-oriented validation chain before deployment-sensitive work.
+
+## Engineering Workflow
+
+Use the repo operating docs when planning, building, debugging, and shipping:
+
+- `docs/propertyprosco-engineering-constitution.md`: permanent engineering rules and product quality standards
+- `docs/development-workflow.md`: practical build workflow for daily implementation work
+- `docs/commands/build-webapp.md`: copy-paste-ready AI workflow command for building features end to end
+- `AGENTS.md`: repo-level AI operating rules for agent-assisted development
+
+Recommended day-to-day flow:
+
+1. Inspect existing patterns in `src/app`, `src/components`, `src/lib`, `prisma`, and `tests`.
+2. Write a short plan with goal, affected files, DB or API impact, risks, and implementation steps.
+3. Build with shared patterns first and keep sensitive logic server-side.
+4. Run `npm run qa:check` before commit-ready handoff.
+5. Run `npm run release:check` before deployment-sensitive work.
 
 ## Auth0 SDK Setup
 

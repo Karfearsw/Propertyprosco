@@ -12,6 +12,8 @@
     "validate:env": "tsx scripts/validate-env.ts",
     "validate:env:production": "tsx scripts/validate-env.ts --target=production",
     "verify": "npm run prisma:validate && npm run typecheck && npm run test",
+    "qa:check": "npm run validate:env && npm run verify",
+    "release:check": "npm run validate:env:production && npm run verify && npm run build",
     "db:push:local": "prisma db push",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
