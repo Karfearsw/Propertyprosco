@@ -69,24 +69,6 @@ export async function PATCH(
       )
     }
 
-    if (decision === QuoteStatus.ACCEPTED) {
-      const homeowner = await db.user.findUnique({
-        where: { id: user.id },
-        select: { homeownerStripeDefaultPaymentMethodId: true },
-      })
-
-      if (!homeowner?.homeownerStripeDefaultPaymentMethodId) {
-        return NextResponse.json(
-          {
-            error:
-              'Add a payment method before accepting a quote so we can charge for completed work and platform fees.',
-            redirectTo: '/homeowner/billing/add-card',
-          },
-          { status: 409 },
-        )
-      }
-    }
-
     const updatedQuote = await db.$transaction(async (tx) => {
       if (decision === QuoteStatus.ACCEPTED) {
         const existingAcceptedQuote = await tx.quote.findFirst({

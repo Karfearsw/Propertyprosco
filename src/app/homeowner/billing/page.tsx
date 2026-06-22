@@ -16,16 +16,17 @@ export default function HomeownerBillingPage() {
         </p>
       </div>
       <div className="bg-white border border-pp-border rounded-2xl p-6 mb-4">
-        <h2 className="text-[15px] font-black text-pp-dark mb-2">Card on file</h2>
+        <h2 className="text-[15px] font-black text-pp-dark mb-2">Billing updates</h2>
         <p className="text-[13px] font-bold text-pp-gray leading-relaxed">
-          Add a card so we can charge you for completed work and platform fees after you hire a Pro.
+          Homeowner card setup is being updated right now. Your account stays free, and you can
+          keep posting projects and hiring pros while we finish the billing upgrade.
         </p>
         <div className="mt-4">
           <Link
             href="/homeowner/billing/add-card"
             className="inline-flex items-center justify-center rounded-xl bg-pp-dark px-5 py-3 text-[14px] font-black text-white transition-all hover:bg-pp-dark-2"
           >
-            Add payment method
+            View billing status
           </Link>
         </div>
       </div>

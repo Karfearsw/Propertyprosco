@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
-import { db } from '@/lib/db'
 
 export async function GET() {
   const session = await auth()
@@ -8,19 +7,9 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const user = await db.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      homeownerStripeCustomerId: true,
-      homeownerStripeDefaultPaymentMethodId: true,
-    },
-  })
-
-  const hasPaymentMethod = Boolean(user?.homeownerStripeDefaultPaymentMethodId)
-
   return NextResponse.json({
-    hasPaymentMethod,
-    hasCustomer: Boolean(user?.homeownerStripeCustomerId),
+    hasPaymentMethod: false,
+    hasCustomer: false,
+    billingSetupRequired: false,
   })
 }
-
