@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import Link from 'next/link'
 import { AlertCircle, CreditCard, ShieldCheck } from 'lucide-react'
 import type { BillingPlan } from '@/lib/billing-config'
@@ -11,6 +12,8 @@ type SignupBillingStepProps = {
 }
 
 export default function SignupBillingStep({ plan, token }: SignupBillingStepProps) {
+  const billingPayload = useMemo(() => ({ token }), [token])
+
   if (!token) {
     return (
       <div className="mx-auto max-w-xl rounded-3xl border border-pp-border bg-white p-8 shadow-sm">
@@ -78,9 +81,9 @@ export default function SignupBillingStep({ plan, token }: SignupBillingStepProp
       <PaymentMethodForm
         plan={plan}
         setupIntentPath="/api/signup/billing/setup-intent"
-        setupIntentBody={{ token }}
+        setupIntentBody={billingPayload}
         submitPath="/api/signup/billing/checkout"
-        submitBody={{ token }}
+        submitBody={billingPayload}
         submitButtonLabel="Pay and continue to email verification"
         submitPendingLabel="Processing secure signup billing..."
       />

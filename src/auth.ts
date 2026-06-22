@@ -15,6 +15,10 @@ class EmailNotVerifiedError extends CredentialsSignin {
   code = 'email_not_verified'
 }
 
+class Auth0BridgeSigninError extends CredentialsSignin {
+  code = 'auth0_bridge_failed'
+}
+
 const providers: Provider[] = [
   ...((authConfig.providers as Provider[] | undefined) ?? []),
   CredentialsProvider({
@@ -25,10 +29,14 @@ const providers: Provider[] = [
     },
     async authorize(credentials) {
       const token = typeof credentials?.token === 'string' ? credentials.token : ''
-      if (!token) return null
+      if (!token) {
+        throw new Auth0BridgeSigninError()
+      }
 
       const user = await consumeAuth0BridgeToken(token)
-      if (!user) return null
+      if (!user) {
+        throw new Auth0BridgeSigninError()
+      }
 
       return user
     },

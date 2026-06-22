@@ -19,12 +19,24 @@ export function Auth0SessionBridge({ callbackUrl, email, token }: Auth0SessionBr
     if (hasStarted.current) return
     hasStarted.current = true
 
-    void signIn('auth0-bridge', {
-      token,
-      callbackUrl,
-    }).catch(() => {
-      setError('We could not finish your Auth0 sign-in. Please try again.')
-    })
+    void (async () => {
+      try {
+        const result = await signIn('auth0-bridge', {
+          token,
+          callbackUrl,
+          redirect: false,
+        })
+
+        if (!result?.ok || result.error) {
+          setError('Your secure sign-in session expired or was interrupted. Start your sign-in again.')
+          return
+        }
+
+        window.location.href = result.url ?? callbackUrl
+      } catch {
+        setError('Your secure sign-in session expired or was interrupted. Start your sign-in again.')
+      }
+    })()
   }, [callbackUrl, token])
 
   if (error) {

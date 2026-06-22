@@ -115,19 +115,19 @@ export async function consumeAuth0BridgeToken(rawToken: string) {
   const token = rawToken.trim()
   if (!token) return null
 
+  const hashedToken = hashToken(token)
   const record = await db.verificationToken.findUnique({
-    where: { token: hashToken(token) },
+    where: { token: hashedToken },
   })
 
   if (!record || !record.identifier.startsWith(AUTH0_BRIDGE_PREFIX)) {
     return null
   }
 
-  await db.verificationToken.delete({
-    where: { token: record.token },
-  })
-
   if (record.expires < new Date()) {
+    await db.verificationToken.deleteMany({
+      where: { token: hashedToken },
+    })
     return null
   }
 

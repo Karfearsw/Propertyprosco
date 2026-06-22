@@ -7,6 +7,10 @@ import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
 
 function authErrorMessage(errorCode: string | null, credentialsCode: string | null) {
+  if (credentialsCode === 'auth0_bridge_failed') {
+    return 'Your secure social sign-in session expired or was interrupted. Continue with Google or Apple again.'
+  }
+
   if (errorCode === 'CredentialsSignin' && credentialsCode === 'email_not_verified') {
     return 'Verify your email address before logging in. Use the link or 6-digit code from your inbox.'
   }

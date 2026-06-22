@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { StripeElementsOptions } from '@stripe/stripe-js'
 import type { BillingPlan } from '@/lib/billing-config'
@@ -105,17 +105,41 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
   const { setupIntentPath = '/api/billing/setup-intent', setupIntentBody } = props
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const lastInitializedRequestKey = useRef<string | null>(null)
+  const pendingRequestKey = useRef<string | null>(null)
+
+  const setupIntentBodyKey = useMemo(() => JSON.stringify(setupIntentBody ?? null), [setupIntentBody])
+  const requestKey = useMemo(
+    () => `${setupIntentPath}:${setupIntentBodyKey}`,
+    [setupIntentBodyKey, setupIntentPath],
+  )
+  const requestBody = useMemo(
+    () => (setupIntentBodyKey === 'null' ? undefined : setupIntentBodyKey),
+    [setupIntentBodyKey],
+  )
 
   useEffect(() => {
     let isMounted = true
 
+    if (
+      lastInitializedRequestKey.current === requestKey ||
+      pendingRequestKey.current === requestKey
+    ) {
+      return () => {
+        isMounted = false
+      }
+    }
+
+    pendingRequestKey.current = requestKey
+    setClientSecret(null)
+    setError(null)
+
     async function createSetupIntent() {
       try {
-        setError(null)
         const response = await fetch(setupIntentPath, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: setupIntentBody ? JSON.stringify(setupIntentBody) : undefined,
+          body: requestBody,
         })
         const data = await response.json()
 
@@ -124,11 +148,16 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
         }
 
         if (isMounted) {
+          lastInitializedRequestKey.current = requestKey
           setClientSecret(data.clientSecret)
         }
       } catch (err) {
         if (isMounted) {
           setError(err instanceof Error ? err.message : 'Unable to initialize billing.')
+        }
+      } finally {
+        if (pendingRequestKey.current === requestKey) {
+          pendingRequestKey.current = null
         }
       }
     }
@@ -138,7 +167,7 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
     return () => {
       isMounted = false
     }
-  }, [setupIntentBody, setupIntentPath])
+  }, [requestBody, requestKey, setupIntentPath])
 
   const options = useMemo<StripeElementsOptions | undefined>(() => {
     if (!clientSecret) return undefined
