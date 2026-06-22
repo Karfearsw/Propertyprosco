@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { SubscriptionStatus } from '@prisma/client'
+import { Prisma, SubscriptionStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
@@ -31,6 +31,16 @@ const schema = z.object({
 function cleanOptionalString(value?: string) {
   const trimmed = value?.trim()
   return trimmed ? trimmed : undefined
+}
+
+function isAuthEmailDeliveryError(error: unknown) {
+  const message = error instanceof Error ? error.message : ''
+
+  return (
+    message.includes('SMTP mailer configuration is incomplete') ||
+    message.includes('SMTP mailer configuration is required') ||
+    message.includes('Complete the SMTP settings before sending auth emails')
+  )
 }
 
 export async function POST(req: Request) {
@@ -66,12 +76,24 @@ export async function POST(req: Request) {
         const verification = await issueEmailVerificationChallenge(email)
 
         if (verification.issued && verification.rawToken && verification.code) {
-          await sendVerificationEmail({
-            code: verification.code,
-            email,
-            fallbackOrigin: origin,
-            token: verification.rawToken,
-          })
+          try {
+            await sendVerificationEmail({
+              code: verification.code,
+              email,
+              fallbackOrigin: origin,
+              token: verification.rawToken,
+            })
+          } catch (deliveryError) {
+            console.error(deliveryError)
+
+            return NextResponse.json({
+              success: true,
+              email,
+              requiresEmailVerification: true,
+              resent: false,
+              verificationEmailSent: false,
+            })
+          }
         }
 
         return NextResponse.json({
@@ -79,6 +101,7 @@ export async function POST(req: Request) {
           email,
           requiresEmailVerification: true,
           resent: true,
+          verificationEmailSent: true,
         })
       }
 
@@ -166,12 +189,40 @@ export async function POST(req: Request) {
     const verification = await issueEmailVerificationChallenge(email)
 
     if (verification.issued && verification.rawToken && verification.code) {
-      await sendVerificationEmail({
-        code: verification.code,
-        email,
-        fallbackOrigin: origin,
-        token: verification.rawToken,
-      })
+      try {
+        await sendVerificationEmail({
+          code: verification.code,
+          email,
+          fallbackOrigin: origin,
+          token: verification.rawToken,
+        })
+      } catch (deliveryError) {
+        console.error(deliveryError)
+
+        const signupBillingToken =
+          data.role === 'PRO' || data.role === 'REALTOR'
+            ? issueSignupBillingToken({
+                userId: user.id,
+                email,
+                role: data.role,
+              })
+            : null
+
+        return NextResponse.json({
+          success: true,
+          userId: user.id,
+          email,
+          requiresEmailVerification: true,
+          verificationEmailSent: false,
+          signupBillingToken,
+          nextStep:
+            data.role === 'PRO'
+              ? `/signup/pro/billing?token=${encodeURIComponent(signupBillingToken ?? '')}`
+              : data.role === 'REALTOR'
+                ? `/signup/realtor/billing?token=${encodeURIComponent(signupBillingToken ?? '')}`
+                : `/verify-email?email=${encodeURIComponent(email)}`,
+        })
+      }
     }
 
     const signupBillingToken =
@@ -188,6 +239,7 @@ export async function POST(req: Request) {
       userId: user.id,
       email,
       requiresEmailVerification: true,
+      verificationEmailSent: true,
       signupBillingToken,
       nextStep:
         data.role === 'PRO'
@@ -201,12 +253,36 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
     }
 
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2022') {
+      console.error(error)
+
+      return NextResponse.json(
+        {
+          error:
+            'Registration is temporarily unavailable while we finish a database update. Please try again in a few minutes.',
+        },
+        { status: 503 },
+      )
+    }
+
+    if (isAuthEmailDeliveryError(error)) {
+      console.error(error)
+
+      return NextResponse.json(
+        {
+          error:
+            'Registration is temporarily unavailable because verification email delivery is not configured correctly yet.',
+        },
+        { status: 503 },
+      )
+    }
+
     console.error(error)
     return NextResponse.json(
       {
-        error: 'Registration failed or verification email could not be sent.',
+        error: 'We could not create your account right now. Please try again in a few minutes.',
       },
       { status: 500 },
     )
-}
+  }
 }
