@@ -36,13 +36,6 @@ enum SubscriptionStatus {
   INCOMPLETE
 }
 
-enum ProjectPaymentStatus {
-  REQUIRES_ACTION
-  SUCCEEDED
-  FAILED
-  CANCELED
-}
-
 model User {
   id            String    @id @default(cuid())
   email         String    @unique
@@ -58,9 +51,6 @@ model User {
   smsNotifications   Boolean @default(false)
   marketingEmails    Boolean @default(false)
   role          UserRole  @default(HOMEOWNER)
-  homeownerStripeCustomerId             String?
-  homeownerStripeDefaultPaymentMethodId String?
-  homeownerStripePaymentMethodAddedAt   DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -76,8 +66,6 @@ model User {
   savedPros        SavedPro[]
   reviews          Review[]       @relation("ReviewAuthor")
   reviewsReceived  Review[]       @relation("ReviewSubject")
-  homeownerPayments ProjectPayment[] @relation("ProjectPaymentHomeowner")
-  proPayments       ProjectPayment[] @relation("ProjectPaymentPro")
 }
 
 model Account {
@@ -185,28 +173,8 @@ model Project {
   realtorClient RealtorClient? @relation(fields: [realtorClientId], references: [id], onDelete: SetNull)
   quotes        Quote[]
   leads         ProLead[]
-  payment      ProjectPayment?
 
   @@index([realtorClientId])
-}
-
-model ProjectPayment {
-  id                   String               @id @default(cuid())
-  projectId             String               @unique
-  homeownerId           String
-  proId                 String?
-  jobAmountCents        Int
-  platformFeeCents      Int
-  totalAmountCents      Int
-  currency              String               @default("usd")
-  status                ProjectPaymentStatus @default(REQUIRES_ACTION)
-  stripePaymentIntentId String               @unique
-  createdAt             DateTime             @default(now())
-  updatedAt             DateTime             @updatedAt
-
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  homeowner User    @relation("ProjectPaymentHomeowner", fields: [homeownerId], references: [id], onDelete: Cascade)
-  pro       User?   @relation("ProjectPaymentPro", fields: [proId], references: [id], onDelete: SetNull)
 }
 
 model Quote {
