@@ -42,7 +42,7 @@ export const env = {
     return requireEnv('DATABASE_URL')
   },
   get authSecret() {
-    return requireEnv('AUTH_SECRET')
+    return readEnv('AUTH_SECRET') ?? readEnv('NEXTAUTH_SECRET')
   },
   get auth0Domain() {
     return readEnv('AUTH0_DOMAIN')
@@ -123,7 +123,11 @@ export function requireDatabaseUrl() {
 }
 
 export function requireAuthSecret() {
-  return env.authSecret
+  const value = env.authSecret
+  if (!value) {
+    throw new Error('Missing required environment variable: AUTH_SECRET (or NEXTAUTH_SECRET)')
+  }
+  return value
 }
 
 export function getAppBaseUrl() {

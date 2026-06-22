@@ -7,7 +7,7 @@ export type EnvValidationReport = {
 
 type EnvMap = Record<string, string | undefined>
 
-const CORE_REQUIRED_VARS = ['DATABASE_URL', 'AUTH_SECRET'] as const
+const CORE_REQUIRED_VARS = ['DATABASE_URL'] as const
 const PRODUCTION_REQUIRED_VARS = ['NEXTAUTH_URL'] as const
 const AUTH0_REQUIRED_VARS = [
   'APP_BASE_URL',
@@ -149,7 +149,13 @@ export function validateEnvContract(
     warnings: [],
   }
 
-  const missingCore = findMissing(input, CORE_REQUIRED_VARS)
+  const missingCore: string[] = findMissing(input, CORE_REQUIRED_VARS)
+  const hasAuthSecret = Boolean(
+    readEnvValue(input, 'AUTH_SECRET') || readEnvValue(input, 'NEXTAUTH_SECRET'),
+  )
+  if (!hasAuthSecret) {
+    missingCore.push('AUTH_SECRET (or NEXTAUTH_SECRET)')
+  }
   if (missingCore.length > 0) {
     report.errors.push(`Missing required variables: ${missingCore.join(', ')}.`)
   }

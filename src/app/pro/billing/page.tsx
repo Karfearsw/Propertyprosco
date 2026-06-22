@@ -10,11 +10,36 @@ import BillingMutationButton from '@/components/billing/BillingMutationButton'
 import AddPaymentMethodForm from '@/components/billing/AddPaymentMethodForm'
 import { getProBillingDashboardData } from '@/lib/pro-billing-dashboard'
 import { proUpsellTiers } from '@/lib/billing-config'
+import { hasStripeBilling } from '@/lib/env'
 
 export const metadata = { title: 'Billing' }
 
 export default async function ProBillingPage() {
   const user = await requireRole('PRO')
+  if (!hasStripeBilling()) {
+    return (
+      <div className="max-w-3xl p-5 lg:p-6">
+        <h1 className="text-[28px] font-black tracking-tight text-pp-dark">Billing is temporarily unavailable</h1>
+        <p className="mt-3 text-[13px] font-bold text-pp-gray">
+          Stripe billing is not configured for this environment. Add the required Stripe environment variables in Vercel to enable Pro subscriptions and plan management.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href="/pro/dashboard"
+            className="rounded-xl bg-pp-dark px-5 py-3 text-[14px] font-black text-white transition-all hover:bg-pp-dark-2"
+          >
+            Back to dashboard
+          </a>
+          <a
+            href="/contact"
+            className="rounded-xl border border-pp-border px-5 py-3 text-[14px] font-black text-pp-dark transition-all hover:border-pp-red hover:text-pp-red"
+          >
+            Contact support
+          </a>
+        </div>
+      </div>
+    )
+  }
   const data = await getProBillingDashboardData(user.id)
   const maxRevenue = Math.max(...data.revenueSeries.map((item) => item.totalEarned), 1)
 

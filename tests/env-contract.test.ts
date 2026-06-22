@@ -11,6 +11,15 @@ test('accepts the minimum local environment', () => {
   assert.deepEqual(report.errors, [])
 })
 
+test('accepts NEXTAUTH_SECRET as an AUTH_SECRET alias', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    NEXTAUTH_SECRET: 'local-secret',
+  })
+
+  assert.deepEqual(report.errors, [])
+})
+
 test('requires NEXTAUTH_URL for production validation', () => {
   const report = validateEnvContract(
     {
