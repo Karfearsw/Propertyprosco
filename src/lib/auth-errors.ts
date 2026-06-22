@@ -5,6 +5,10 @@ export type AuthErrorCode =
   | 'email_already_in_use'
   | 'account_locked'
   | 'rate_limited'
+  | 'signup_billing_token_missing'
+  | 'signup_billing_token_invalid'
+  | 'signup_billing_session_invalid'
+  | 'billing_configuration_error'
   | 'verification_token_missing'
   | 'verification_token_invalid'
   | 'verification_code_invalid'
@@ -74,6 +78,27 @@ export function getSignupErrorMessage(code?: string | null, fallback?: string | 
       return fallback && fallback.trim().length > 0
         ? fallback
         : 'We could not create your account right now. Please try again in a few minutes.'
+  }
+}
+
+export function getSignupBillingErrorMessage(code?: string | null, fallback?: string | null) {
+  switch (code) {
+    case 'signup_billing_token_missing':
+      return 'This billing link is missing its secure signup token. Start signup again to continue.'
+    case 'signup_billing_token_invalid':
+      return 'This signup billing link is invalid or has expired. Start signup again to continue.'
+    case 'signup_billing_session_invalid':
+      return 'This signup billing session is no longer valid. Start signup again to continue.'
+    case 'billing_configuration_error':
+      return 'Billing is temporarily unavailable while we finish a secure configuration update. Please try again shortly.'
+    case 'validation_error':
+      return fallback && fallback.trim().length > 0
+        ? fallback
+        : 'Check the payment details and try again.'
+    default:
+      return fallback && fallback.trim().length > 0
+        ? fallback
+        : 'Unable to continue secure signup billing right now.'
   }
 }
 

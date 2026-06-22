@@ -9,6 +9,7 @@ const proRoutes      = ['/pro']
 const homeownerRoutes = ['/homeowner']
 const realtorRoutes  = ['/realtor']
 const authRoutes     = ['/login', '/signup', '/forgot-password', '/reset-password']
+const signupBillingRoutes = ['/signup/pro/billing', '/signup/realtor/billing']
 const auth0Routes    = [
   '/auth/login',
   '/auth/logout',
@@ -24,6 +25,15 @@ function requiresActiveBilling(role?: string, billingStatus?: string | null) {
   return (role === 'PRO' || role === 'REALTOR') && billingStatus !== 'ACTIVE'
 }
 
+function redirectIfNeeded(req: NextRequest, destination: string) {
+  const url = new URL(destination, req.url)
+  if (url.pathname === req.nextUrl.pathname) {
+    return NextResponse.next()
+  }
+
+  return NextResponse.redirect(url)
+}
+
 export default auth(async (req: NextRequest & { auth: { user?: { role?: string; billingStatus?: string | null } } | null }) => {
   const { pathname } = req.nextUrl
 
@@ -36,40 +46,41 @@ export default auth(async (req: NextRequest & { auth: { user?: { role?: string; 
   const billingStatus = session?.user?.billingStatus
 
   const isAuthed = !!session
+  const isSignupBillingRoute = signupBillingRoutes.some((route) => pathname.startsWith(route))
 
-  if (authRoutes.some(r => pathname.startsWith(r))) {
+  if (!isSignupBillingRoute && authRoutes.some(r => pathname.startsWith(r))) {
     if (isAuthed) {
       if (requiresActiveBilling(role, billingStatus)) {
         const billingDest = role === 'PRO' ? '/pro/billing' : '/realtor/billing'
-        return NextResponse.redirect(new URL(billingDest, req.url))
+        return redirectIfNeeded(req, billingDest)
       }
       const dest =
         role === 'PRO'      ? '/pro/dashboard' :
         role === 'REALTOR'  ? '/realtor/dashboard' :
                               '/homeowner/dashboard'
-      return NextResponse.redirect(new URL(dest, req.url))
+      return redirectIfNeeded(req, dest)
     }
     return NextResponse.next()
   }
 
   if (proRoutes.some(r => pathname.startsWith(r))) {
-    if (!isAuthed) return NextResponse.redirect(new URL('/login', req.url))
-    if (role !== 'PRO') return NextResponse.redirect(new URL(roleHome(role as AppRole), req.url))
+    if (!isAuthed) return redirectIfNeeded(req, '/login')
+    if (role !== 'PRO') return redirectIfNeeded(req, roleHome(role as AppRole))
     if (requiresActiveBilling(role, billingStatus) && !pathname.startsWith('/pro/billing')) {
-      return NextResponse.redirect(new URL('/pro/billing', req.url))
+      return redirectIfNeeded(req, '/pro/billing')
     }
   }
 
   if (homeownerRoutes.some(r => pathname.startsWith(r))) {
-    if (!isAuthed) return NextResponse.redirect(new URL('/login', req.url))
-    if (role !== 'HOMEOWNER') return NextResponse.redirect(new URL(roleHome(role as AppRole), req.url))
+    if (!isAuthed) return redirectIfNeeded(req, '/login')
+    if (role !== 'HOMEOWNER') return redirectIfNeeded(req, roleHome(role as AppRole))
   }
 
   if (realtorRoutes.some(r => pathname.startsWith(r))) {
-    if (!isAuthed) return NextResponse.redirect(new URL('/login', req.url))
-    if (role !== 'REALTOR') return NextResponse.redirect(new URL(roleHome(role as AppRole), req.url))
+    if (!isAuthed) return redirectIfNeeded(req, '/login')
+    if (role !== 'REALTOR') return redirectIfNeeded(req, roleHome(role as AppRole))
     if (requiresActiveBilling(role, billingStatus) && !pathname.startsWith('/realtor/billing')) {
-      return NextResponse.redirect(new URL('/realtor/billing', req.url))
+      return redirectIfNeeded(req, '/realtor/billing')
     }
   }
 

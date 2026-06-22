@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { db } from '@/lib/db'
+import { authError } from '@/lib/auth-errors'
 import { requireStripeBillingEnv } from '@/lib/env'
 import { getStripeServer } from '@/lib/stripe-server'
 import { verifySignupBillingToken } from '@/lib/signup-billing'
@@ -11,14 +12,46 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const { token } = schema.parse(await request.json())
+    const body = await request.json()
+    const token = typeof body?.token === 'string' ? body.token.trim() : ''
+
+    if (!token) {
+      return NextResponse.json(
+        authError('signup_billing_token_missing', 'Missing signup billing token.'),
+        { status: 400 },
+      )
+    }
+
+    const parsed = schema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        authError('validation_error', parsed.error.errors[0].message),
+        { status: 422 },
+      )
+    }
+
     const payload = verifySignupBillingToken(token)
 
     if (!payload) {
-      return NextResponse.json({ error: 'This signup billing session is invalid or expired.' }, { status: 401 })
+      return NextResponse.json(
+        authError('signup_billing_token_invalid', 'This signup billing session is invalid or expired.'),
+        { status: 401 },
+      )
     }
 
-    requireStripeBillingEnv()
+    try {
+      requireStripeBillingEnv()
+    } catch (error) {
+      console.error('[signup-billing][setup-intent] billing configuration error', error)
+      return NextResponse.json(
+        authError(
+          'billing_configuration_error',
+          'Billing is not configured for secure signup right now.',
+        ),
+        { status: 503 },
+      )
+    }
+
     const stripe = getStripeServer()
     const user = await db.user.findUnique({
       where: { id: payload.userId },
@@ -29,7 +62,10 @@ export async function POST(request: Request) {
     })
 
     if (!user || user.email !== payload.email || user.role !== payload.role) {
-      return NextResponse.json({ error: 'This signup billing session is no longer valid.' }, { status: 404 })
+      return NextResponse.json(
+        authError('signup_billing_session_invalid', 'This signup billing session is no longer valid.'),
+        { status: 404 },
+      )
     }
 
     let customerId =
@@ -80,10 +116,16 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
     }
 
-    console.error(error)
-    return NextResponse.json({ error: 'Unable to initialize signup billing.' }, { status: 500 })
+    console.error('[signup-billing][setup-intent] unexpected error', error)
+    return NextResponse.json(
+      authError('internal_error', 'Unable to initialize signup billing.'),
+      { status: 500 },
+    )
   }
 }

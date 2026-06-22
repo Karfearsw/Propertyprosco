@@ -32,6 +32,55 @@ class RateLimitedSigninError extends CredentialsSignin {
   code = 'rate_limited'
 }
 
+class AuthConfigurationError extends CredentialsSignin {
+  code = 'auth_configuration_error'
+}
+
+function redactEmail(email: string) {
+  const [localPart, domainPart] = email.split('@')
+  const visibleLocal = localPart ? localPart.slice(0, 2) : 'u'
+  const maskedLocal = `${visibleLocal}${localPart && localPart.length > 2 ? '***' : ''}`
+
+  return domainPart ? `${maskedLocal}@${domainPart}` : maskedLocal
+}
+
+function logCredentialsEvent(
+  level: 'info' | 'warn' | 'error',
+  message: string,
+  metadata?: Record<string, unknown>,
+) {
+  const logger = level === 'error' ? console.error : level === 'warn' ? console.warn : console.info
+  logger(`[auth][credentials] ${message}`, metadata ?? {})
+}
+
+async function handleInvalidCredentials(email: string): Promise<never> {
+  try {
+    const failure = await recordFailedLogin(email)
+
+    if (!failure.ok) {
+      logCredentialsEvent('warn', 'login failure escalated', {
+        email: redactEmail(email),
+        code: failure.code,
+      })
+
+      if (failure.code === 'account_locked') {
+        throw new AccountLockedError()
+      }
+    }
+  } catch (error) {
+    if (error instanceof AccountLockedError) {
+      throw error
+    }
+
+    logCredentialsEvent('error', 'failed to persist login failure state', {
+      email: redactEmail(email),
+      error: error instanceof Error ? error.message : 'unknown_error',
+    })
+  }
+
+  throw new InvalidCredentialsError()
+}
+
 const providers: Provider[] = [
   ...((authConfig.providers as Provider[] | undefined) ?? []),
   CredentialsProvider({
@@ -61,14 +110,37 @@ const providers: Provider[] = [
       password: { label: 'Password', type: 'password' },
     },
     async authorize(credentials, request) {
-      if (!credentials?.email || !credentials?.password) {
+      const emailInput = typeof credentials?.email === 'string' ? credentials.email : ''
+      const password = typeof credentials?.password === 'string' ? credentials.password : ''
+      const email = normalizeEmail(emailInput)
+
+      if (!email || !password) {
+        logCredentialsEvent('warn', 'missing email or password')
         throw new InvalidCredentialsError()
       }
 
-      const email = normalizeEmail(credentials.email as string)
+      if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
+        logCredentialsEvent('error', 'missing auth secret for credentials provider')
+        throw new AuthConfigurationError()
+      }
 
-      const gate = await guardLoginAttempt(email, request)
+      let gate
+      try {
+        gate = await guardLoginAttempt(email, request)
+      } catch (error) {
+        logCredentialsEvent('error', 'failed to evaluate login throttle state', {
+          email: redactEmail(email),
+          error: error instanceof Error ? error.message : 'unknown_error',
+        })
+        throw new AuthConfigurationError()
+      }
+
       if (!gate.ok) {
+        logCredentialsEvent('warn', 'credentials attempt denied by throttle guard', {
+          email: redactEmail(email),
+          code: gate.code,
+        })
+
         if (gate.code === 'account_locked') {
           throw new AccountLockedError()
         }
@@ -76,38 +148,91 @@ const providers: Provider[] = [
         throw new RateLimitedSigninError()
       }
 
-      const user = await db.user.findUnique({
-        where: { email },
-      })
-      if (!user || !user.password) {
-        const failure = await recordFailedLogin(email)
-        if (!failure.ok && failure.code === 'account_locked') {
-          throw new AccountLockedError()
-        }
-
-        throw new InvalidCredentialsError()
+      let user
+      try {
+        user = await db.user.findUnique({
+          where: { email },
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            role: true,
+            password: true,
+            emailVerified: true,
+          },
+        })
+      } catch (error) {
+        logCredentialsEvent('error', 'database lookup failed during credentials signin', {
+          email: redactEmail(email),
+          error: error instanceof Error ? error.message : 'unknown_error',
+        })
+        throw new AuthConfigurationError()
       }
 
-      if (!user.emailVerified) {
+      if (!user || !user.password) {
+        logCredentialsEvent('warn', 'credentials user not found or password missing', {
+          email: redactEmail(email),
+          userFound: Boolean(user),
+        })
+        await handleInvalidCredentials(email)
+      }
+
+      const loginUser = user as {
+        id: string
+        email: string
+        name: string | null
+        role: string
+        password: string
+        emailVerified: Date | null
+      }
+
+      if (!loginUser.emailVerified) {
+        logCredentialsEvent('warn', 'credentials signin blocked because email is not verified', {
+          email: redactEmail(email),
+        })
         throw new EmailNotVerifiedError()
       }
 
-      const valid = await bcrypt.compare(
-        credentials.password as string,
-        user.password,
-      )
-      if (!valid) {
-        const failure = await recordFailedLogin(email)
-        if (!failure.ok && failure.code === 'account_locked') {
-          throw new AccountLockedError()
-        }
-
-        throw new InvalidCredentialsError()
+      let valid = false
+      try {
+        valid = await bcrypt.compare(password, loginUser.password)
+      } catch (error) {
+        logCredentialsEvent('error', 'password comparison failed', {
+          email: redactEmail(email),
+          error: error instanceof Error ? error.message : 'unknown_error',
+        })
+        throw new AuthConfigurationError()
       }
 
-      await clearFailedLoginState(email)
+      if (!valid) {
+        logCredentialsEvent('warn', 'credentials password mismatch', {
+          email: redactEmail(email),
+        })
+        await handleInvalidCredentials(email)
+      }
 
-      return user
+      try {
+        await clearFailedLoginState(email)
+      } catch (error) {
+        logCredentialsEvent('error', 'failed to clear login failure state after success', {
+          email: redactEmail(email),
+          error: error instanceof Error ? error.message : 'unknown_error',
+        })
+        throw new AuthConfigurationError()
+      }
+
+      logCredentialsEvent('info', 'credentials signin succeeded', {
+        email: redactEmail(email),
+        userId: loginUser.id,
+      })
+
+      return {
+        id: loginUser.id,
+        email: loginUser.email,
+        name: loginUser.name,
+        role: loginUser.role,
+        billingStatus: null,
+      }
     },
   }),
 ]

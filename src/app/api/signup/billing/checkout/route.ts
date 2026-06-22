@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { SubscriptionStatus } from '@prisma/client'
 import { z } from 'zod'
 import { db } from '@/lib/db'
+import { authError } from '@/lib/auth-errors'
 import { getBillingPlan, getBillingPriceId } from '@/lib/billing-config'
 import { env, requireStripeBillingEnv } from '@/lib/env'
 import { normalizeStripeSubscriptionStatus } from '@/lib/billing-state'
@@ -15,14 +16,47 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const { token, paymentMethodId } = schema.parse(await request.json())
+    const body = await request.json()
+    const token = typeof body?.token === 'string' ? body.token.trim() : ''
+
+    if (!token) {
+      return NextResponse.json(
+        authError('signup_billing_token_missing', 'Missing signup billing token.'),
+        { status: 400 },
+      )
+    }
+
+    const parsed = schema.safeParse(body)
+    if (!parsed.success) {
+      return NextResponse.json(
+        authError('validation_error', parsed.error.errors[0].message),
+        { status: 422 },
+      )
+    }
+
+    const { paymentMethodId } = parsed.data
     const payload = verifySignupBillingToken(token)
 
     if (!payload) {
-      return NextResponse.json({ error: 'This signup billing session is invalid or expired.' }, { status: 401 })
+      return NextResponse.json(
+        authError('signup_billing_token_invalid', 'This signup billing session is invalid or expired.'),
+        { status: 401 },
+      )
     }
 
-    requireStripeBillingEnv()
+    try {
+      requireStripeBillingEnv()
+    } catch (error) {
+      console.error('[signup-billing][checkout] billing configuration error', error)
+      return NextResponse.json(
+        authError(
+          'billing_configuration_error',
+          'Billing is not configured for secure signup right now.',
+        ),
+        { status: 503 },
+      )
+    }
+
     const stripe = getStripeServer()
     const plan = getBillingPlan(payload.role)
     const priceId = getBillingPriceId(payload.role, {
@@ -31,7 +65,10 @@ export async function POST(request: Request) {
     })
 
     if (!priceId) {
-      return NextResponse.json({ error: 'Billing is not configured for this plan yet.' }, { status: 500 })
+      return NextResponse.json(
+        authError('billing_configuration_error', 'Billing is not configured for this plan yet.'),
+        { status: 503 },
+      )
     }
 
     const user = await db.user.findUnique({
@@ -43,19 +80,28 @@ export async function POST(request: Request) {
     })
 
     if (!user || user.email !== payload.email || user.role !== payload.role) {
-      return NextResponse.json({ error: 'This signup billing session is no longer valid.' }, { status: 404 })
+      return NextResponse.json(
+        authError('signup_billing_session_invalid', 'This signup billing session is no longer valid.'),
+        { status: 404 },
+      )
     }
 
     const profile = payload.role === 'PRO' ? user.proProfile : user.realtorProfile
     if (!profile?.stripeCustomerId) {
-      return NextResponse.json({ error: 'Start payment setup before activating billing.' }, { status: 400 })
+      return NextResponse.json(
+        authError('validation_error', 'Start payment setup before activating billing.'),
+        { status: 400 },
+      )
     }
 
     if (
       profile.subscriptionStatus === SubscriptionStatus.ACTIVE &&
       profile.stripeSubscriptionId
     ) {
-      return NextResponse.json({ error: 'An active subscription already exists.' }, { status: 409 })
+      return NextResponse.json(
+        authError('validation_error', 'An active subscription already exists.'),
+        { status: 409 },
+      )
     }
 
     await stripe.customers.update(profile.stripeCustomerId, {
@@ -118,10 +164,16 @@ export async function POST(request: Request) {
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
     }
 
-    console.error(error)
-    return NextResponse.json({ error: 'Unable to activate subscription during signup.' }, { status: 500 })
+    console.error('[signup-billing][checkout] unexpected error', error)
+    return NextResponse.json(
+      authError('internal_error', 'Unable to activate subscription during signup.'),
+      { status: 500 },
+    )
   }
 }

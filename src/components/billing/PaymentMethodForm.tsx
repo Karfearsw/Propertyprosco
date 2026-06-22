@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import type { StripeElementsOptions } from '@stripe/stripe-js'
 import type { BillingPlan } from '@/lib/billing-config'
+import { getSignupBillingErrorMessage } from '@/lib/auth-errors'
 import { stripeClientPromise } from '@/lib/stripe-client'
 
 type PaymentMethodFormProps = {
@@ -14,6 +15,34 @@ type PaymentMethodFormProps = {
   submitBody?: Record<string, unknown>
   submitButtonLabel?: string
   submitPendingLabel?: string
+}
+
+type BillingErrorResponse = {
+  code?: string
+  error?: string
+}
+
+function isSignupBillingPath(path: string) {
+  return path.startsWith('/api/signup/billing/')
+}
+
+function resolveBillingErrorMessage(
+  path: string,
+  data: BillingErrorResponse | null | undefined,
+  fallback: string,
+) {
+  if (isSignupBillingPath(path)) {
+    return getSignupBillingErrorMessage(data?.code, data?.error ?? fallback)
+  }
+
+  return data?.error ?? fallback
+}
+
+function isTerminalSignupBillingSetupError(code?: string) {
+  return code === 'signup_billing_token_missing' ||
+    code === 'signup_billing_token_invalid' ||
+    code === 'signup_billing_session_invalid' ||
+    code === 'billing_configuration_error'
 }
 
 function PaymentMethodFields({
@@ -60,10 +89,12 @@ function PaymentMethodFields({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ paymentMethodId, ...(submitBody ?? {}) }),
       })
-      const data = await response.json()
+      const data = await response.json() as BillingErrorResponse & { redirectTo?: string }
 
       if (!response.ok) {
-        throw new Error(data.error ?? 'Unable to start your subscription.')
+        throw new Error(
+          resolveBillingErrorMessage(submitPath, data, 'Unable to start your subscription.'),
+        )
       }
 
       window.location.href = data.redirectTo ?? plan.billingPath
@@ -107,6 +138,7 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
   const [error, setError] = useState<string | null>(null)
   const lastInitializedRequestKey = useRef<string | null>(null)
   const pendingRequestKey = useRef<string | null>(null)
+  const terminalSetupErrorRequestKey = useRef<string | null>(null)
 
   const setupIntentBodyKey = useMemo(() => JSON.stringify(setupIntentBody ?? null), [setupIntentBody])
   const requestKey = useMemo(
@@ -123,7 +155,8 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
 
     if (
       lastInitializedRequestKey.current === requestKey ||
-      pendingRequestKey.current === requestKey
+      pendingRequestKey.current === requestKey ||
+      terminalSetupErrorRequestKey.current === requestKey
     ) {
       return () => {
         isMounted = false
@@ -141,15 +174,22 @@ export default function PaymentMethodForm(props: PaymentMethodFormProps) {
           headers: { 'Content-Type': 'application/json' },
           body: requestBody,
         })
-        const data = await response.json()
+        const data = await response.json() as BillingErrorResponse & { clientSecret?: string | null }
 
         if (!response.ok) {
-          throw new Error(data.error ?? 'Unable to initialize billing.')
+          if (isTerminalSignupBillingSetupError(data.code)) {
+            terminalSetupErrorRequestKey.current = requestKey
+          }
+
+          throw new Error(
+            resolveBillingErrorMessage(setupIntentPath, data, 'Unable to initialize billing.'),
+          )
         }
 
         if (isMounted) {
+          terminalSetupErrorRequestKey.current = null
           lastInitializedRequestKey.current = requestKey
-          setClientSecret(data.clientSecret)
+          setClientSecret(data.clientSecret ?? null)
         }
       } catch (err) {
         if (isMounted) {

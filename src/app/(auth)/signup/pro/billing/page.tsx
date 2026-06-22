@@ -2,6 +2,8 @@ import { getBillingPlan } from '@/lib/billing-config'
 import SignupBillingStep from '@/components/auth/SignupBillingStep'
 
 export const metadata = { title: 'Pro Signup Billing' }
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 type ProSignupBillingPageProps = {
   searchParams?: Promise<{
