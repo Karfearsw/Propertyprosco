@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { getSignupErrorMessage } from '@/lib/auth-errors'
 
 export default function HomeownerSignupPage() {
   const router = useRouter()
@@ -19,7 +20,7 @@ export default function HomeownerSignupPage() {
     const res = await fetch('/api/auth/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...form, role:'HOMEOWNER'}) })
     const json = await res.json()
     if (!res.ok && !json.requiresEmailVerification) {
-      setError(json.error ?? 'We could not create your account right now. Please try again in a few minutes.')
+      setError(getSignupErrorMessage(json.code, json.error))
       setLoading(false)
       return
     }

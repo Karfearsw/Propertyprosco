@@ -5,14 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { getLoginErrorMessage } from '@/lib/auth-errors'
 
 function authErrorMessage(errorCode: string | null, credentialsCode: string | null) {
-  if (credentialsCode === 'auth0_bridge_failed') {
-    return 'Your secure social sign-in session expired or was interrupted. Continue with Google or Apple again.'
-  }
-
-  if (errorCode === 'CredentialsSignin' && credentialsCode === 'email_not_verified') {
-    return 'Verify your email address before logging in. Use the link or 6-digit code from your inbox.'
+  if (errorCode === 'CredentialsSignin' && credentialsCode) {
+    return getLoginErrorMessage(credentialsCode)
   }
 
   switch (errorCode) {
@@ -21,9 +18,9 @@ function authErrorMessage(errorCode: string | null, credentialsCode: string | nu
     case 'AccessDenied':
       return 'Your social sign-in could not be verified. Try a different provider or continue with email.'
     case 'Configuration':
-      return 'Authentication is temporarily unavailable. Please try again shortly.'
+      return getLoginErrorMessage('auth_configuration_error')
     case 'CredentialsSignin':
-      return 'Invalid email or password.'
+      return getLoginErrorMessage('invalid_credentials')
     default:
       return errorCode ? 'We could not sign you in. Please try again.' : ''
   }
@@ -106,7 +103,7 @@ export default function LoginClient() {
             </div>
           )}
 
-          {(callbackCode === 'email_not_verified' || error.includes('Verify your email')) && email && (
+          {callbackCode === 'email_not_verified' && email && (
             <div className="mb-5 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] font-bold leading-relaxed text-amber-800">
               Use the verification link or the 6-digit code from your inbox. Need a fresh email?{' '}
               <Link

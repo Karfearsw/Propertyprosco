@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { authError, isAuthEmailDeliveryError } from '@/lib/auth-errors'
 import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
 import {
   issueEmailVerificationChallenge,
@@ -22,12 +23,18 @@ export async function GET(req: Request) {
   const token = searchParams.get('token')
 
   if (!token) {
-    return NextResponse.json({ error: 'Missing verification token.' }, { status: 400 })
+    return NextResponse.json(
+      authError('verification_token_missing', 'Missing verification token.'),
+      { status: 400 },
+    )
   }
 
   const result = await verifyEmailWithToken(token)
   if (!result.ok) {
-    return NextResponse.json({ error: result.error }, { status: 400 })
+    return NextResponse.json(
+      authError(result.code, result.error),
+      { status: 400 },
+    )
   }
 
   return NextResponse.json({
@@ -70,11 +77,21 @@ export async function POST(req: Request) {
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
+    }
+
+    if (isAuthEmailDeliveryError(error)) {
+      return NextResponse.json(
+        authError('auth_email_delivery_unavailable', 'Unable to send the verification email right now.'),
+        { status: 503 },
+      )
     }
 
     return NextResponse.json(
-      { error: 'Unable to send the verification email right now.' },
+      authError('internal_error', 'Unable to send the verification email right now.'),
       { status: 500 },
     )
   }
@@ -88,7 +105,10 @@ export async function PUT(req: Request) {
     const result = await verifyEmailWithCode(normalizedEmail, code)
 
     if (!result.ok) {
-      return NextResponse.json({ error: result.error }, { status: 400 })
+      return NextResponse.json(
+        authError(result.code, result.error),
+        { status: 400 },
+      )
     }
 
     return NextResponse.json({
@@ -98,11 +118,14 @@ export async function PUT(req: Request) {
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
     }
 
     return NextResponse.json(
-      { error: 'Unable to verify that code right now.' },
+      authError('internal_error', 'Unable to verify that code right now.'),
       { status: 500 },
     )
   }

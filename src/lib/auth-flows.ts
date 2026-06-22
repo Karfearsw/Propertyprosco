@@ -2,6 +2,7 @@ import 'server-only'
 import bcrypt from 'bcryptjs'
 import { SubscriptionStatus } from '@prisma/client'
 import { createHash, randomBytes, randomInt } from 'crypto'
+import { authError } from '@/lib/auth-errors'
 import { db } from '@/lib/db'
 
 export type AppRole = 'HOMEOWNER' | 'PRO' | 'REALTOR' | 'ADMIN'
@@ -470,7 +471,10 @@ export async function validateEmailVerificationCode(email: string, rawCode: stri
 export async function verifyEmailWithToken(rawToken: string) {
   const tokenState = await validateEmailVerificationToken(rawToken)
   if (!tokenState) {
-    return { ok: false as const, error: 'This email verification link is invalid or has expired.' }
+    return {
+      ok: false as const,
+      ...authError('verification_token_invalid', 'This email verification link is invalid or has expired.'),
+    }
   }
 
   const user = await db.user.findUnique({
@@ -487,7 +491,10 @@ export async function verifyEmailWithToken(rawToken: string) {
     await db.verificationToken.deleteMany({
       where: { identifier: verificationIdentifier(tokenState.email) },
     })
-    return { ok: false as const, error: 'This email verification link is no longer valid.' }
+    return {
+      ok: false as const,
+      ...authError('verification_token_invalid', 'This email verification link is no longer valid.'),
+    }
   }
 
   if (user.emailVerified) {
@@ -522,7 +529,10 @@ export async function verifyEmailWithToken(rawToken: string) {
 export async function verifyEmailWithCode(email: string, rawCode: string) {
   const codeState = await validateEmailVerificationCode(email, rawCode)
   if (!codeState) {
-    return { ok: false as const, error: 'This verification code is invalid or has expired.' }
+    return {
+      ok: false as const,
+      ...authError('verification_code_invalid', 'This verification code is invalid or has expired.'),
+    }
   }
 
   const user = await db.user.findUnique({
@@ -544,7 +554,10 @@ export async function verifyEmailWithCode(email: string, rawCode: string) {
         ],
       },
     })
-    return { ok: false as const, error: 'This verification code is no longer valid.' }
+    return {
+      ok: false as const,
+      ...authError('verification_code_invalid', 'This verification code is no longer valid.'),
+    }
   }
 
   if (user.emailVerified) {
@@ -589,7 +602,10 @@ export async function verifyEmailWithCode(email: string, rawCode: string) {
 export async function resetPasswordWithToken(rawToken: string, password: string) {
   const tokenState = await validatePasswordResetToken(rawToken)
   if (!tokenState) {
-    return { ok: false as const, error: 'This password reset link is invalid or has expired.' }
+    return {
+      ok: false as const,
+      ...authError('password_reset_token_invalid', 'This password reset link is invalid or has expired.'),
+    }
   }
 
   const hashedPassword = await bcrypt.hash(password, 12)

@@ -6,6 +6,7 @@ import type { Provider } from 'next-auth/providers'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import authConfig from '@/auth.config'
+import { clearFailedLoginState, guardLoginAttempt, recordFailedLogin } from '@/lib/auth-guard'
 import { consumeAuth0BridgeToken } from '@/lib/auth0-user'
 import { db } from '@/lib/db'
 import { normalizeEmail } from '@/lib/auth-flows'
@@ -15,8 +16,20 @@ class EmailNotVerifiedError extends CredentialsSignin {
   code = 'email_not_verified'
 }
 
+class InvalidCredentialsError extends CredentialsSignin {
+  code = 'invalid_credentials'
+}
+
 class Auth0BridgeSigninError extends CredentialsSignin {
   code = 'auth0_bridge_failed'
+}
+
+class AccountLockedError extends CredentialsSignin {
+  code = 'account_locked'
+}
+
+class RateLimitedSigninError extends CredentialsSignin {
+  code = 'rate_limited'
 }
 
 const providers: Provider[] = [
@@ -47,15 +60,33 @@ const providers: Provider[] = [
       email:    { label: 'Email',    type: 'email'    },
       password: { label: 'Password', type: 'password' },
     },
-    async authorize(credentials) {
-      if (!credentials?.email || !credentials?.password) return null
+    async authorize(credentials, request) {
+      if (!credentials?.email || !credentials?.password) {
+        throw new InvalidCredentialsError()
+      }
 
       const email = normalizeEmail(credentials.email as string)
+
+      const gate = await guardLoginAttempt(email, request)
+      if (!gate.ok) {
+        if (gate.code === 'account_locked') {
+          throw new AccountLockedError()
+        }
+
+        throw new RateLimitedSigninError()
+      }
 
       const user = await db.user.findUnique({
         where: { email },
       })
-      if (!user || !user.password) return null
+      if (!user || !user.password) {
+        const failure = await recordFailedLogin(email)
+        if (!failure.ok && failure.code === 'account_locked') {
+          throw new AccountLockedError()
+        }
+
+        throw new InvalidCredentialsError()
+      }
 
       if (!user.emailVerified) {
         throw new EmailNotVerifiedError()
@@ -65,7 +96,16 @@ const providers: Provider[] = [
         credentials.password as string,
         user.password,
       )
-      if (!valid) return null
+      if (!valid) {
+        const failure = await recordFailedLogin(email)
+        if (!failure.ok && failure.code === 'account_locked') {
+          throw new AccountLockedError()
+        }
+
+        throw new InvalidCredentialsError()
+      }
+
+      await clearFailedLoginState(email)
 
       return user
     },

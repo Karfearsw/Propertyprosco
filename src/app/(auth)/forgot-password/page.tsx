@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Mail, ArrowLeft, AlertCircle } from 'lucide-react'
+import { getPasswordResetErrorMessage } from '@/lib/auth-errors'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -25,7 +26,7 @@ export default function ForgotPasswordPage() {
 
       const json = await res.json()
       if (!res.ok) {
-        setError(json.error ?? 'Unable to send reset instructions right now.')
+        setError(getPasswordResetErrorMessage(json.code, json.error))
         setLoading(false)
         return
       }

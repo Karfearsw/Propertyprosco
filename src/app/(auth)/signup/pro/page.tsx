@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Eye, EyeOff, AlertCircle, Check } from 'lucide-react'
 import { SocialAuthButtons } from '@/components/auth/SocialAuthButtons'
+import { getSignupErrorMessage } from '@/lib/auth-errors'
 import { getBillingPlan } from '@/lib/billing-config'
 
 const SERVICE_LIST = ['Roofing','Plumbing','Electrical','Painting','Landscaping','Remodeling','HVAC','Windows','Flooring','Masonry','Driveways','Fencing','Deck / Patio','Handyman','Gutters']
@@ -49,7 +50,7 @@ export default function ProSignupPage() {
       }) })
     const json = await res.json()
     if (!res.ok && !json.requiresEmailVerification) {
-      setError(json.error ?? 'We could not create your account right now. Please try again in a few minutes.')
+      setError(getSignupErrorMessage(json.code, json.error))
       setLoading(false)
       return
     }

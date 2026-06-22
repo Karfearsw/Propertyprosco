@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { AlertCircle, ArrowLeft, CheckCircle2, LoaderCircle, Mail, ShieldCheck } from 'lucide-react'
+import { getVerificationErrorMessage } from '@/lib/auth-errors'
 
 type VerifyState = 'pending' | 'verifying' | 'verified' | 'invalid'
 
@@ -52,7 +53,7 @@ export function VerifyEmailClient({
         if (!res.ok) {
           if (!cancelled) {
             setState('invalid')
-            setError(json.error ?? 'This verification link is invalid or has expired.')
+            setError(getVerificationErrorMessage(json.code, json.error))
             setMessage(
               'This link is no longer available. Enter the 6-digit code from your email or request a fresh verification message.'
             )
@@ -112,7 +113,7 @@ export function VerifyEmailClient({
       const json = await res.json()
 
       if (!res.ok) {
-        setError(json.error ?? 'Unable to verify that code right now.')
+        setError(getVerificationErrorMessage(json.code, json.error))
         return
       }
 
@@ -150,7 +151,7 @@ export function VerifyEmailClient({
       const json = await res.json()
 
       if (!res.ok) {
-        setError(json.error ?? 'Unable to resend verification email right now.')
+        setError(getVerificationErrorMessage(json.code, json.error))
         return
       }
 

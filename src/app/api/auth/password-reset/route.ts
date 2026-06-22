@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { authError, isAuthEmailDeliveryError } from '@/lib/auth-errors'
 import { assertAuthEmailDeliveryReady, sendPasswordResetEmail } from '@/lib/auth-mailer'
 import {
   issuePasswordResetToken,
@@ -26,13 +27,19 @@ export async function GET(req: Request) {
   const token = searchParams.get('token')
 
   if (!token) {
-    return NextResponse.json({ error: 'Missing reset token.' }, { status: 400 })
+    return NextResponse.json(
+      authError('password_reset_token_missing', 'Missing reset token.'),
+      { status: 400 },
+    )
   }
 
   const state = await validatePasswordResetToken(token)
   if (!state) {
     return NextResponse.json(
-      { valid: false, error: 'This password reset link is invalid or has expired.' },
+      {
+        valid: false,
+        ...authError('password_reset_token_invalid', 'This password reset link is invalid or has expired.'),
+      },
       { status: 400 },
     )
   }
@@ -75,15 +82,31 @@ export async function POST(req: Request) {
     const result = await resetPasswordWithToken(token, password)
 
     if (!result.ok) {
-      return NextResponse.json({ error: result.error }, { status: 400 })
+      return NextResponse.json(
+        authError(result.code, result.error),
+        { status: 400 },
+      )
     }
 
     return NextResponse.json({ success: true, email: result.email })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
     }
 
-    return NextResponse.json({ error: 'Unable to process password reset.' }, { status: 500 })
+    if (isAuthEmailDeliveryError(error)) {
+      return NextResponse.json(
+        authError('auth_email_delivery_unavailable', 'Unable to send reset instructions right now.'),
+        { status: 503 },
+      )
+    }
+
+    return NextResponse.json(
+      authError('internal_error', 'Unable to process password reset.'),
+      { status: 500 },
+    )
   }
 }

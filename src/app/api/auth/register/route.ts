@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server'
 import { Prisma, SubscriptionStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
+import { guardSignupAttempt } from '@/lib/auth-guard'
+import { authError, isAuthEmailDeliveryError } from '@/lib/auth-errors'
 import { assertAuthEmailDeliveryReady, sendVerificationEmail } from '@/lib/auth-mailer'
 import { issueEmailVerificationChallenge, normalizeEmail } from '@/lib/auth-flows'
 import { db } from '@/lib/db'
@@ -33,16 +35,6 @@ function cleanOptionalString(value?: string) {
   return trimmed ? trimmed : undefined
 }
 
-function isAuthEmailDeliveryError(error: unknown) {
-  const message = error instanceof Error ? error.message : ''
-
-  return (
-    message.includes('SMTP mailer configuration is incomplete') ||
-    message.includes('SMTP mailer configuration is required') ||
-    message.includes('Complete the SMTP settings before sending auth emails')
-  )
-}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json()
@@ -60,6 +52,14 @@ export async function POST(req: Request) {
       : cleanOptionalString(data.zipCode)
         ? [data.zipCode!.trim()]
         : []
+
+    const signupGate = await guardSignupAttempt(email, req)
+    if (!signupGate.ok) {
+      return NextResponse.json(
+        authError(signupGate.code, signupGate.error),
+        { status: 429 },
+      )
+    }
 
     assertAuthEmailDeliveryReady(origin)
 
@@ -105,7 +105,10 @@ export async function POST(req: Request) {
         })
       }
 
-      return NextResponse.json({ error: 'Email already in use' }, { status: 400 })
+      return NextResponse.json(
+        authError('email_already_in_use', 'Email already in use'),
+        { status: 400 },
+      )
     }
 
     const hashedPassword = await bcrypt.hash(data.password, 12)
@@ -250,17 +253,20 @@ export async function POST(req: Request) {
     })
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ error: error.errors[0].message }, { status: 422 })
+      return NextResponse.json(
+        authError('validation_error', error.errors[0].message),
+        { status: 422 },
+      )
     }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2022') {
       console.error(error)
 
       return NextResponse.json(
-        {
-          error:
-            'Registration is temporarily unavailable while we finish a database update. Please try again in a few minutes.',
-        },
+        authError(
+          'registration_unavailable',
+          'Registration is temporarily unavailable while we finish a database update. Please try again in a few minutes.',
+        ),
         { status: 503 },
       )
     }
@@ -269,19 +275,20 @@ export async function POST(req: Request) {
       console.error(error)
 
       return NextResponse.json(
-        {
-          error:
-            'Registration is temporarily unavailable because verification email delivery is not configured correctly yet.',
-        },
+        authError(
+          'auth_email_delivery_unavailable',
+          'Registration is temporarily unavailable because verification email delivery is not configured correctly yet.',
+        ),
         { status: 503 },
       )
     }
 
     console.error(error)
     return NextResponse.json(
-      {
-        error: 'We could not create your account right now. Please try again in a few minutes.',
-      },
+      authError(
+        'internal_error',
+        'We could not create your account right now. Please try again in a few minutes.',
+      ),
       { status: 500 },
     )
   }

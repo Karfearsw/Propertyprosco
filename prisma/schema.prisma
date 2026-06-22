@@ -103,6 +103,20 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model AuthThrottle {
+  id             String    @id @default(cuid())
+  scope          String
+  key            String
+  failureCount   Int       @default(0)
+  firstFailureAt DateTime?
+  lastFailureAt  DateTime?
+  lockedUntil    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([scope, key])
+}
+
 model ProProfile {
   id                           String             @id @default(cuid())
   userId                       String             @unique

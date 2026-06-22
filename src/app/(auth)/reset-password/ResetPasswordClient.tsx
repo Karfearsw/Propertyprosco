@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { AlertCircle, ArrowLeft, CheckCircle2, Eye, EyeOff, LoaderCircle } from 'lucide-react'
+import { getPasswordResetErrorMessage } from '@/lib/auth-errors'
 
 type TokenState = 'loading' | 'valid' | 'invalid'
 
@@ -56,7 +57,7 @@ export default function ResetPasswordClient() {
         if (!res.ok || !json.valid) {
           if (!cancelled) {
             setTokenState('invalid')
-            setTokenError(json.error ?? 'This password reset link is invalid or has expired.')
+            setTokenError(getPasswordResetErrorMessage(json.code, json.error))
           }
           return
         }
@@ -122,7 +123,7 @@ export default function ResetPasswordClient() {
 
       const json = await res.json()
       if (!res.ok) {
-        setError(json.error ?? 'Unable to update your password.')
+        setError(getPasswordResetErrorMessage(json.code, json.error))
         setSubmitting(false)
         return
       }
