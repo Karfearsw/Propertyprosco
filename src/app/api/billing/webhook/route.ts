@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { SubscriptionStatus } from '@prisma/client'
+import { ProjectPaymentStatus, SubscriptionStatus } from '@prisma/client'
 import type Stripe from 'stripe'
 import { db } from '@/lib/db'
 import { normalizeStripeSubscriptionStatus } from '@/lib/billing-state'
@@ -93,6 +93,30 @@ export async function POST(req: Request) {
 
   try {
     switch (event.type) {
+      case 'payment_intent.succeeded': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        await db.projectPayment.updateMany({
+          where: { stripePaymentIntentId: paymentIntent.id },
+          data: { status: ProjectPaymentStatus.SUCCEEDED },
+        })
+        break
+      }
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        await db.projectPayment.updateMany({
+          where: { stripePaymentIntentId: paymentIntent.id },
+          data: { status: ProjectPaymentStatus.FAILED },
+        })
+        break
+      }
+      case 'payment_intent.canceled': {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        await db.projectPayment.updateMany({
+          where: { stripePaymentIntentId: paymentIntent.id },
+          data: { status: ProjectPaymentStatus.CANCELED },
+        })
+        break
+      }
       case 'customer.created': {
         const customer = event.data.object as Stripe.Customer
         const userId = customer.metadata.userId

@@ -1,7 +1,7 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import { LayoutDashboard, FolderOpen, MessageCircle, Bell, CreditCard, Settings, Search, PlusCircle, Heart, LogOut, Menu, X } from 'lucide-react'
 
@@ -25,8 +25,35 @@ interface Props { children: React.ReactNode; user?: { name?: string|null } }
 
 export default function HomeownerLayout({ children, user }: Props) {
   const pathname = usePathname()
+  const router = useRouter()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const initials = user?.name?.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2) ?? 'HO'
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function enforceCardOnFile() {
+      if (pathname === '/homeowner/billing/add-card') return
+
+      try {
+        const response = await fetch('/api/homeowner/billing/status')
+        if (!response.ok) return
+
+        const data = (await response.json()) as { hasPaymentMethod?: boolean }
+        if (isMounted && data.hasPaymentMethod === false) {
+          router.replace('/homeowner/billing/add-card')
+        }
+      } catch {
+        return
+      }
+    }
+
+    void enforceCardOnFile()
+
+    return () => {
+      isMounted = false
+    }
+  }, [pathname, router])
 
   const NavItems = ({ onNav }: { onNav?: ()=>void }) => (
     <>

@@ -1,4 +1,7 @@
+import dotenv from 'dotenv'
 import { validateEnvContract, type ValidationTarget } from './env-contract'
+
+dotenv.config({ path: process.env.ENV_FILE ?? '.env' })
 
 function parseTarget(args: string[]): ValidationTarget {
   const targetArg = args.find((arg) => arg.startsWith('--target='))

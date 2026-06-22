@@ -84,6 +84,7 @@ export async function POST() {
     },
     usage: 'off_session',
   })
+
   return NextResponse.json({
     clientSecret: setupIntent.client_secret,
     customerId,

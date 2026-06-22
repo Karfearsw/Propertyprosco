@@ -60,7 +60,7 @@ export default function HomeownerSignupPage() {
           <h1 className="text-[24px] font-black text-pp-dark tracking-tight mb-1.5">Create your free account</h1>
           <p className="text-[14px] text-pp-gray mb-5">Already have an account? <Link href="/login" className="text-pp-red font-extrabold hover:underline">Log in</Link></p>
 
-          <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">🏠 Homeowner accounts are always free. No credit card, no subscription, no catch.</div>
+          <div className="bg-pp-green-light border border-green-200 rounded-xl p-3.5 text-[13px] font-bold text-green-800 mb-5">🏠 Homeowner accounts are always free. No subscription, no catch. You&apos;ll add a card after signup so we can charge for completed work.</div>
 
           {error && <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-[13px] font-bold rounded-xl px-4 py-3 mb-4"><AlertCircle size={14}/>{error}</div>}
 
