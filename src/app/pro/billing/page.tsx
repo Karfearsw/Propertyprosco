@@ -183,69 +183,76 @@ export default async function ProBillingPage() {
           </p>
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
-          {proUpsellTiers.map((tier) => {
-            const isCurrentTier = data.currentUpsellTier?.key === tier.key
-            const currentTierAmount = data.currentUpsellTier?.amountCents ?? 0
-            const isDowngrade = data.currentUpsellTier ? tier.amountCents < currentTierAmount : false
-            const actionLabel = isCurrentTier
-              ? 'Current plan'
-              : isDowngrade
-                ? 'Downgrade'
-                : tier.key === 'ELITE'
-                  ? 'Upgrade to Elite'
-                  : `Switch to ${tier.name}`
+        {data.proUpsellEnabled ? (
+          <div className="grid gap-4 lg:grid-cols-3">
+            {proUpsellTiers.map((tier) => {
+              const isCurrentTier = data.currentUpsellTier?.key === tier.key
+              const currentTierAmount = data.currentUpsellTier?.amountCents ?? 0
+              const isDowngrade = data.currentUpsellTier ? tier.amountCents < currentTierAmount : false
+              const actionLabel = isCurrentTier
+                ? 'Current plan'
+                : isDowngrade
+                  ? 'Downgrade'
+                  : tier.key === 'ELITE'
+                    ? 'Upgrade to Elite'
+                    : `Switch to ${tier.name}`
 
-            return (
-              <div key={tier.key} className="rounded-3xl border border-pp-border bg-pp-bg p-6">
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[22px] font-black tracking-tight text-pp-dark">{tier.name}</div>
-                    <div className="mt-2 text-[18px] font-black text-pp-dark">{tier.amountLabel}</div>
+              return (
+                <div key={tier.key} className="rounded-3xl border border-pp-border bg-pp-bg p-6">
+                  <div className="mb-3 flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-[22px] font-black tracking-tight text-pp-dark">{tier.name}</div>
+                      <div className="mt-2 text-[18px] font-black text-pp-dark">{tier.amountLabel}</div>
+                    </div>
+                    <div className="flex flex-col items-end gap-2">
+                      {tier.badge ? (
+                        <div className="rounded-full bg-pp-red px-3 py-1 text-[11px] font-black uppercase tracking-[1.5px] text-white">
+                          {tier.badge}
+                        </div>
+                      ) : null}
+                      {isCurrentTier ? (
+                        <div className="rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] font-black uppercase tracking-[1.5px] text-green-700">
+                          Current plan
+                        </div>
+                      ) : null}
+                    </div>
                   </div>
-                  <div className="flex flex-col items-end gap-2">
-                    {tier.badge ? (
-                      <div className="rounded-full bg-pp-red px-3 py-1 text-[11px] font-black uppercase tracking-[1.5px] text-white">
-                        {tier.badge}
+
+                  <p className="mb-4 text-[13px] font-bold text-pp-gray">{tier.description}</p>
+
+                  <div className="space-y-2">
+                    {tier.features.map((feature) => (
+                      <div key={feature} className="text-[13px] font-bold text-pp-dark">
+                        {feature}
                       </div>
-                    ) : null}
+                    ))}
+                  </div>
+
+                  <div className="mt-5">
                     {isCurrentTier ? (
-                      <div className="rounded-full border border-green-200 bg-green-50 px-3 py-1 text-[11px] font-black uppercase tracking-[1.5px] text-green-700">
+                      <div className="rounded-xl border border-pp-border px-4 py-3 text-center text-[13px] font-black text-pp-dark">
                         Current plan
                       </div>
-                    ) : null}
+                    ) : (
+                      <BillingMutationButton
+                        endpoint="/api/billing/change-plan"
+                        body={{ tierKey: tier.key }}
+                        label={actionLabel}
+                        pendingLabel="Updating plan..."
+                        className="w-full rounded-xl bg-pp-dark px-4 py-3 text-[13px] font-black text-white transition-all hover:bg-pp-dark-2"
+                      />
+                    )}
                   </div>
                 </div>
-
-                <p className="mb-4 text-[13px] font-bold text-pp-gray">{tier.description}</p>
-
-                <div className="space-y-2">
-                  {tier.features.map((feature) => (
-                    <div key={feature} className="text-[13px] font-bold text-pp-dark">
-                      {feature}
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-5">
-                  {isCurrentTier ? (
-                    <div className="rounded-xl border border-pp-border px-4 py-3 text-center text-[13px] font-black text-pp-dark">
-                      Current plan
-                    </div>
-                  ) : (
-                    <BillingMutationButton
-                      endpoint="/api/billing/change-plan"
-                      body={{ tierKey: tier.key }}
-                      label={actionLabel}
-                      pendingLabel="Updating plan..."
-                      className="w-full rounded-xl bg-pp-dark px-4 py-3 text-[13px] font-black text-white transition-all hover:bg-pp-dark-2"
-                    />
-                  )}
-                </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-pp-border bg-pp-bg p-5 text-[13px] font-bold text-pp-gray">
+            Optional Pro tier upgrades are not configured in this environment yet. Core billing,
+            cards, invoices, and your active subscription remain available.
+          </div>
+        )}
       </section>
 
       {data.status !== SubscriptionStatus.ACTIVE ? (

@@ -26,6 +26,8 @@ const STRIPE_REQUIRED_VARS = [
   'STRIPE_WEBHOOK_SECRET',
   'STRIPE_PRO_PRICE_ID',
   'STRIPE_REALTOR_PRICE_ID',
+ ] as const
+const STRIPE_PRO_UPSELL_VARS = [
   'STRIPE_PRO_UPSELL_STARTER_PRICE_ID',
   'STRIPE_PRO_UPSELL_PRO_PRICE_ID',
   'STRIPE_PRO_UPSELL_ELITE_PRICE_ID',
@@ -62,6 +64,23 @@ function pushGroupError(
   const missing = names.filter((name) => !present.includes(name))
   report.errors.push(
     `${groupName} must be configured as a complete set. Missing: ${missing.join(', ')}.`,
+  )
+}
+
+function pushGroupWarning(
+  report: EnvValidationReport,
+  groupName: string,
+  names: readonly string[],
+  input: EnvMap,
+) {
+  const present = names.filter((name) => Boolean(readEnvValue(input, name)))
+  if (present.length === 0 || present.length === names.length) {
+    return
+  }
+
+  const missing = names.filter((name) => !present.includes(name))
+  report.warnings.push(
+    `${groupName} is partially configured. Missing: ${missing.join(', ')}.`,
   )
 }
 
@@ -118,9 +137,10 @@ function validateStripeFormats(report: EnvValidationReport, input: EnvMap) {
   validatePrefix(report, input, 'STRIPE_WEBHOOK_SECRET', 'whsec_')
   validatePrefix(report, input, 'STRIPE_PRO_PRICE_ID', 'price_')
   validatePrefix(report, input, 'STRIPE_REALTOR_PRICE_ID', 'price_')
-  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_STARTER_PRICE_ID', 'price_')
-  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_PRO_PRICE_ID', 'price_')
-  validatePrefix(report, input, 'STRIPE_PRO_UPSELL_ELITE_PRICE_ID', 'price_')
+
+  for (const name of STRIPE_PRO_UPSELL_VARS) {
+    validatePrefix(report, input, name, 'price_')
+  }
 }
 
 function validateStripeMode(report: EnvValidationReport, input: EnvMap, target: ValidationTarget) {
@@ -192,11 +212,16 @@ export function validateEnvContract(
   validateNumberLike(report, input, 'SMTP_PORT')
   validateBooleanLike(report, input, 'SMTP_SECURE')
 
-  const hasAnyStripe = hasAny(input, [...STRIPE_REQUIRED_VARS, 'STRIPE_BILLING_PORTAL_RETURN_URL'])
+  const hasAnyStripe = hasAny(
+    input,
+    [...STRIPE_REQUIRED_VARS, ...STRIPE_PRO_UPSELL_VARS, 'STRIPE_BILLING_PORTAL_RETURN_URL'],
+  )
   if (hasAnyStripe && !hasAll(input, STRIPE_REQUIRED_VARS)) {
     const missingStripe = findMissing(input, STRIPE_REQUIRED_VARS)
     report.errors.push(`Stripe billing requires: ${missingStripe.join(', ')}.`)
   }
+
+  pushGroupWarning(report, 'Pro upsell Stripe pricing', STRIPE_PRO_UPSELL_VARS, input)
 
   validateStripeMode(report, input, target)
   validateStripeFormats(report, input)

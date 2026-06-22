@@ -6,7 +6,7 @@ import {
   type ProUpsellTierKey,
 } from '@/lib/billing-config'
 import { db } from '@/lib/db'
-import { requireStripeBillingEnv } from '@/lib/env'
+import { getProUpsellBillingEnv, requireStripeBillingEnv } from '@/lib/env'
 import { normalizeStripeSubscriptionStatus } from '@/lib/billing-state'
 import { getStripeServer } from '@/lib/stripe-server'
 
@@ -36,11 +36,16 @@ export async function POST(request: Request) {
     )
   }
 
-  const env = requireStripeBillingEnv()
+  requireStripeBillingEnv()
+  const proUpsellEnv = getProUpsellBillingEnv()
+  if (!proUpsellEnv) {
+    return NextResponse.json({ error: 'Pro tier upgrades are not configured yet.' }, { status: 503 })
+  }
+
   const priceId = getProUpsellTierPriceId(body.tierKey, {
-    stripeProUpsellStarterPriceId: env.stripeProUpsellStarterPriceId,
-    stripeProUpsellProPriceId: env.stripeProUpsellProPriceId,
-    stripeProUpsellElitePriceId: env.stripeProUpsellElitePriceId,
+    stripeProUpsellStarterPriceId: proUpsellEnv.stripeProUpsellStarterPriceId,
+    stripeProUpsellProPriceId: proUpsellEnv.stripeProUpsellProPriceId,
+    stripeProUpsellElitePriceId: proUpsellEnv.stripeProUpsellElitePriceId,
   })
 
   if (!priceId) {

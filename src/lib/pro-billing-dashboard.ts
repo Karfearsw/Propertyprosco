@@ -8,7 +8,7 @@ import {
   proUpsellTiers,
   type ProUpsellTierKey,
 } from '@/lib/billing-config'
-import { requireStripeBillingEnv } from '@/lib/env'
+import { getProUpsellBillingEnv, requireStripeBillingEnv } from '@/lib/env'
 import { getStripeServer } from '@/lib/stripe-server'
 
 type BillingMonth = {
@@ -56,6 +56,7 @@ export type ProBillingDashboardData = {
   roiMultiplier: number | null
   revenueSeries: BillingMonth[]
   activeTierKeys: ProUpsellTierKey[]
+  proUpsellEnabled: boolean
 }
 
 function startOfMonth(date: Date) {
@@ -76,7 +77,8 @@ function fromUnix(seconds: number | null | undefined) {
 
 export async function getProBillingDashboardData(userId: string): Promise<ProBillingDashboardData> {
   const plan = getBillingPlan('PRO')
-  const env = requireStripeBillingEnv()
+  requireStripeBillingEnv()
+  const proUpsellEnv = getProUpsellBillingEnv()
 
   const pro = await db.proProfile.findUnique({
     where: { userId },
@@ -205,11 +207,13 @@ export async function getProBillingDashboardData(userId: string): Promise<ProBil
     }
   }
 
-  const currentUpsellTier = getProUpsellTierByPriceId(pro.stripePriceId, {
-    stripeProUpsellStarterPriceId: env.stripeProUpsellStarterPriceId,
-    stripeProUpsellProPriceId: env.stripeProUpsellProPriceId,
-    stripeProUpsellElitePriceId: env.stripeProUpsellElitePriceId,
-  })
+  const currentUpsellTier = proUpsellEnv
+    ? getProUpsellTierByPriceId(pro.stripePriceId, {
+        stripeProUpsellStarterPriceId: proUpsellEnv.stripeProUpsellStarterPriceId,
+        stripeProUpsellProPriceId: proUpsellEnv.stripeProUpsellProPriceId,
+        stripeProUpsellElitePriceId: proUpsellEnv.stripeProUpsellElitePriceId,
+      })
+    : null
 
   return {
     plan,
@@ -231,6 +235,7 @@ export async function getProBillingDashboardData(userId: string): Promise<ProBil
     averageJobValue,
     roiMultiplier: totalSpentCents > 0 ? totalEarned / (totalSpentCents / 100) : null,
     revenueSeries,
-    activeTierKeys: proUpsellTiers.map((tier) => tier.key),
+    activeTierKeys: proUpsellEnv ? proUpsellTiers.map((tier) => tier.key) : [],
+    proUpsellEnabled: Boolean(proUpsellEnv),
   }
 }

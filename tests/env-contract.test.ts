@@ -93,7 +93,49 @@ test('rejects partial Stripe billing configuration', () => {
 
   assert.ok(
     report.errors.includes(
-      'Stripe billing requires: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRO_PRICE_ID, STRIPE_REALTOR_PRICE_ID, STRIPE_PRO_UPSELL_STARTER_PRICE_ID, STRIPE_PRO_UPSELL_PRO_PRICE_ID, STRIPE_PRO_UPSELL_ELITE_PRICE_ID.',
+      'Stripe billing requires: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_PRO_PRICE_ID, STRIPE_REALTOR_PRICE_ID.',
+    ),
+  )
+})
+
+test('accepts production Stripe billing without upsell price IDs', () => {
+  const report = validateEnvContract(
+    {
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+      AUTH_SECRET: 'production-secret',
+      NEXTAUTH_URL: 'https://app.example.com',
+      STRIPE_SECRET_KEY: 'sk_live_123',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_live_123',
+      STRIPE_WEBHOOK_SECRET: 'whsec_123',
+      STRIPE_PRO_PRICE_ID: 'price_pro_123',
+      STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+    },
+    'production',
+  )
+
+  assert.deepEqual(report.errors, [])
+})
+
+test('warns when Pro upsell Stripe pricing is partially configured', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    STRIPE_SECRET_KEY: 'sk_test_123',
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
+    STRIPE_WEBHOOK_SECRET: 'whsec_123',
+    STRIPE_PRO_PRICE_ID: 'price_pro_123',
+    STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+    STRIPE_PRO_UPSELL_STARTER_PRICE_ID: 'price_pro_starter_123',
+  })
+
+  assert.ok(
+    report.warnings.includes(
+      'Pro upsell Stripe pricing is partially configured. Missing: STRIPE_PRO_UPSELL_PRO_PRICE_ID, STRIPE_PRO_UPSELL_ELITE_PRICE_ID.',
+    ),
+  )
+  assert.ok(
+    !report.errors.includes(
+      'Stripe billing requires: STRIPE_PRO_UPSELL_PRO_PRICE_ID, STRIPE_PRO_UPSELL_ELITE_PRICE_ID.',
     ),
   )
 })
@@ -155,6 +197,24 @@ test('rejects malformed Stripe identifier prefixes', () => {
   assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_STARTER_PRICE_ID must start with price_.'))
   assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_PRO_PRICE_ID must start with price_.'))
   assert.ok(report.errors.includes('STRIPE_PRO_UPSELL_ELITE_PRICE_ID must start with price_.'))
+})
+
+test('does not validate missing upsell Stripe identifiers', () => {
+  const report = validateEnvContract({
+    DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/property_pros',
+    AUTH_SECRET: 'local-secret',
+    STRIPE_SECRET_KEY: 'sk_test_123',
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test_123',
+    STRIPE_WEBHOOK_SECRET: 'whsec_123',
+    STRIPE_PRO_PRICE_ID: 'price_pro_123',
+    STRIPE_REALTOR_PRICE_ID: 'price_realtor_123',
+  })
+
+  assert.ok(
+    !report.errors.includes('STRIPE_PRO_UPSELL_STARTER_PRICE_ID must start with price_.'),
+  )
+  assert.ok(!report.errors.includes('STRIPE_PRO_UPSELL_PRO_PRICE_ID must start with price_.'))
+  assert.ok(!report.errors.includes('STRIPE_PRO_UPSELL_ELITE_PRICE_ID must start with price_.'))
 })
 
 test('accepts a complete production-ready contract', () => {

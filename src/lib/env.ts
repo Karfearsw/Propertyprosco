@@ -172,8 +172,13 @@ export function hasStripeBilling() {
       env.stripePublishableKey &&
       env.stripeWebhookSecret &&
       env.stripeProPriceId &&
-      env.stripeRealtorPriceId &&
-      env.stripeProUpsellStarterPriceId &&
+      env.stripeRealtorPriceId,
+  )
+}
+
+export function hasProUpsellBilling() {
+  return Boolean(
+    env.stripeProUpsellStarterPriceId &&
       env.stripeProUpsellProPriceId &&
       env.stripeProUpsellElitePriceId,
   )
@@ -234,9 +239,18 @@ export function requireStripeBillingEnv() {
     stripeWebhookSecret: requireEnv('STRIPE_WEBHOOK_SECRET'),
     stripeProPriceId: requireEnv('STRIPE_PRO_PRICE_ID'),
     stripeRealtorPriceId: requireEnv('STRIPE_REALTOR_PRICE_ID'),
-    stripeProUpsellStarterPriceId: requireEnv('STRIPE_PRO_UPSELL_STARTER_PRICE_ID'),
-    stripeProUpsellProPriceId: requireEnv('STRIPE_PRO_UPSELL_PRO_PRICE_ID'),
-    stripeProUpsellElitePriceId: requireEnv('STRIPE_PRO_UPSELL_ELITE_PRICE_ID'),
     stripeBillingPortalReturnUrl: readEnv('STRIPE_BILLING_PORTAL_RETURN_URL'),
+  }
+}
+
+export function getProUpsellBillingEnv() {
+  if (!hasProUpsellBilling()) {
+    return null
+  }
+
+  return {
+    stripeProUpsellStarterPriceId: env.stripeProUpsellStarterPriceId!,
+    stripeProUpsellProPriceId: env.stripeProUpsellProPriceId!,
+    stripeProUpsellElitePriceId: env.stripeProUpsellElitePriceId!,
   }
 }
