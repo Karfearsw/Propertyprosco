@@ -19,7 +19,7 @@ const plans = [
     btn: 'bg-pp-green hover:bg-green-700',
     href: '/signup/homeowner',
     cta: 'Get started free',
-    features: ['Post unlimited projects','Receive unlimited quotes','Message pros directly','Two-way verified ratings','Save & manage favorite pros','Project history & tracking','Free account — card added after signup'],
+    features: ['Post unlimited projects','Receive unlimited quotes','Message pros directly','Two-way verified ratings','Save & manage favorite pros','Project history & tracking','Free homeowner account with project posting and quote comparison'],
   },
   {
     name: proPlan.marketingName,
@@ -85,7 +85,7 @@ export default function PricingPage() {
           <h2 className="font-display text-[28px] font-black text-pp-dark text-center mb-8">Frequently asked questions</h2>
           <div className="space-y-4">
             {[
-              ['Is it really free for homeowners?', 'Yes. Homeowner accounts are free with no subscription. You add a card after signup so we can charge for completed work and platform fees.'],
+              ['Is it really free for homeowners?', 'Yes. Homeowner accounts are free with no subscription. You can create your account, post projects, compare quotes, and hire pros while we finish the homeowner billing upgrade.'],
               ['Are there per-lead or per-quote fees?', 'No. Pros pay one flat monthly fee and get unlimited leads and unlimited quotes. No surprises.'],
               ['When does billing start for paid roles?', 'Billing starts once a Pro or Realtor adds a payment method and activates their subscription from the billing flow. Homeowners stay free.'],
               ['Can I cancel anytime?', 'Yes. After activation, manage or cancel your plan from the Stripe billing portal linked from your billing page.'],
