@@ -22,7 +22,7 @@ export default function RealtorSignupPage() {
     const res = await fetch('/api/auth/register', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({...form, role:'REALTOR'}) })
     const json = await res.json()
     if (!res.ok && !json.requiresEmailVerification) {
-      setError(json.error ?? 'Registration failed')
+      setError(json.error ?? 'We could not create your account right now. Please try again in a few minutes.')
       setLoading(false)
       return
     }

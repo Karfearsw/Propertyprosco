@@ -49,7 +49,7 @@ export default function ProSignupPage() {
       }) })
     const json = await res.json()
     if (!res.ok && !json.requiresEmailVerification) {
-      setError(json.error ?? 'Registration failed')
+      setError(json.error ?? 'We could not create your account right now. Please try again in a few minutes.')
       setLoading(false)
       return
     }
