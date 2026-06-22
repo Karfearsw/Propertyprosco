@@ -53,7 +53,7 @@ function logCredentialsEvent(
   logger(`[auth][credentials] ${message}`, metadata ?? {})
 }
 
-async function handleInvalidCredentials(email: string): Promise<never> {
+async function handleInvalidCredentials(email: string): Promise<null> {
   try {
     const failure = await recordFailedLogin(email)
 
@@ -78,7 +78,7 @@ async function handleInvalidCredentials(email: string): Promise<never> {
     })
   }
 
-  throw new InvalidCredentialsError()
+  return null
 }
 
 const providers: Provider[] = [
@@ -174,7 +174,7 @@ const providers: Provider[] = [
           email: redactEmail(email),
           userFound: Boolean(user),
         })
-        await handleInvalidCredentials(email)
+        return handleInvalidCredentials(email)
       }
 
       const loginUser = user as {
@@ -208,7 +208,7 @@ const providers: Provider[] = [
         logCredentialsEvent('warn', 'credentials password mismatch', {
           email: redactEmail(email),
         })
-        await handleInvalidCredentials(email)
+        return handleInvalidCredentials(email)
       }
 
       try {
