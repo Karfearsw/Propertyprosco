@@ -15,6 +15,9 @@ import { ensureAuth0LinkedUser, issueAuth0BridgeToken } from '@/lib/auth0-user'
 import { getBillingPlan } from '@/lib/billing-config'
 import { roleHome } from '@/lib/role-routes'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 const proPlan = getBillingPlan('PRO')
 const realtorPlan = getBillingPlan('REALTOR')
 

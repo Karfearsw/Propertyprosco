@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { SessionProvider } from 'next-auth/react'
 import { getAppBaseUrl } from '@/lib/app-url'
 import { buildDescription } from '@/lib/seo'
 
@@ -25,21 +24,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  let session = null
-  try {
-    const { auth } = await import('@/auth')
-    session = await auth()
-  } catch (error) {
-    console.error(error)
-  }
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-dvh bg-white text-pp-dark antialiased">
-        <SessionProvider session={session}>
-          {children}
-        </SessionProvider>
-      </body>
+      <body className="min-h-dvh bg-white text-pp-dark antialiased">{children}</body>
     </html>
   )
 }
