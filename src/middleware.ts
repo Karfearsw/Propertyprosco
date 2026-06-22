@@ -25,13 +25,26 @@ function requiresActiveBilling(role?: string, billingStatus?: string | null) {
   return (role === 'PRO' || role === 'REALTOR') && billingStatus !== 'ACTIVE'
 }
 
-function redirectIfNeeded(req: NextRequest, destination: string) {
-  const url = new URL(destination, req.url)
-  if (url.pathname === req.nextUrl.pathname) {
+type RedirectOptions = {
+  preserveCurrentSearch?: boolean
+}
+
+function redirectIfNeeded(req: NextRequest, destination: string, options?: RedirectOptions) {
+  const currentUrl = new URL(req.url)
+  const destinationUrl = new URL(destination, req.url)
+
+  if (options?.preserveCurrentSearch && !destinationUrl.search) {
+    destinationUrl.search = currentUrl.search
+  }
+
+  if (
+    destinationUrl.pathname === currentUrl.pathname &&
+    destinationUrl.search === currentUrl.search
+  ) {
     return NextResponse.next()
   }
 
-  return NextResponse.redirect(url)
+  return NextResponse.redirect(destinationUrl)
 }
 
 export default auth(async (req: NextRequest & { auth: { user?: { role?: string; billingStatus?: string | null } } | null }) => {

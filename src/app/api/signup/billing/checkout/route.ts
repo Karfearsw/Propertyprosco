@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     if (!parsed.success) {
       return NextResponse.json(
         authError('validation_error', parsed.error.errors[0].message),
-        { status: 422 },
+        { status: 400 },
       )
     }
 
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
           'billing_configuration_error',
           'Billing is not configured for secure signup right now.',
         ),
-        { status: 503 },
+        { status: 500 },
       )
     }
 
@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     if (!priceId) {
       return NextResponse.json(
         authError('billing_configuration_error', 'Billing is not configured for this plan yet.'),
-        { status: 503 },
+        { status: 500 },
       )
     }
 
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     if (!user || user.email !== payload.email || user.role !== payload.role) {
       return NextResponse.json(
         authError('signup_billing_session_invalid', 'This signup billing session is no longer valid.'),
-        { status: 404 },
+        { status: 403 },
       )
     }
 
@@ -90,7 +90,7 @@ export async function POST(request: Request) {
     if (!profile?.stripeCustomerId) {
       return NextResponse.json(
         authError('validation_error', 'Start payment setup before activating billing.'),
-        { status: 400 },
+        { status: 409 },
       )
     }
 
@@ -166,7 +166,7 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         authError('validation_error', error.errors[0].message),
-        { status: 422 },
+        { status: 400 },
       )
     }
 
